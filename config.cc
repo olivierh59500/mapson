@@ -73,7 +73,7 @@ configuration::configuration(int argc, char** argv)
     request_for_confirmation_file.assign(sentry.pwd->pw_dir).append("/.mapson/reqmail.template");
     request_for_confirmation_file.append(":/usr/local/share/mapson/reqmail.template");
     mailbox.assign("/var/spool/mail/").append(sentry.pwd->pw_name);
-    mta = "/usr/sbin/sendmail -i -t";
+    mta = "/usr/sbin/sendmail '-f<>' -i -t";
     strict_rfc_parser = false;
     let_incorrect_mails_pass = true;
     runtime_error_rc = 75;
