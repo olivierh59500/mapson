@@ -74,6 +74,8 @@ version.h:	VERSION
 	@echo >>$@ '#endif'
 	@echo Built version.h file.
 
+config.o:	Makefile
+
 clean::
 	@find . -name '*.rpo' -exec rm -f {} \;
 	@find . -name '*.a'   -exec rm -f {} \;
