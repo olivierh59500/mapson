@@ -1,8 +1,41 @@
-dnl
-dnl configure.ac -- Process this file with autoconf to produce a configure script.
+dnl Process this file with Autoconf to produce a configure script.
 dnl
 AC_PREREQ(2.52)
 AC_INIT(mapson.cc)
+
+dnl Perform some incredibly experimental magic to guess installation
+dnl paths in an unexpectedly clever way. Henceforth evaluate the paths
+dnl right away so that we can guarantee _absolute_ paths for our
+dnl customers.
+dnl
+if test "$prefix" = "NONE"; then
+    prefix=/usr/local
+    if test "$exec_prefix" = "NONE"; then
+        exec_prefix=/usr/local
+    fi
+    if test "$sysconfdir" = '${prefix}/etc'; then
+        sysconfdir=/etc
+    fi
+fi
+if test "$exec_prefix" = "NONE"; then
+    exec_prefix=$prefix
+fi
+case $prefix in
+    *mapson*)
+        ;;
+    *)
+        if test "$sysconfdir" = '${prefix}/etc'; then
+            sysconfdir=$sysconfdir/mapson
+        fi
+        if test "$datadir" = '${prefix}/share'; then
+            datadir=$datadir/mapson
+        fi
+        ;;
+esac
+bindir=`eval echo $bindir`
+mandir=`eval echo $mandir`
+datadir=`eval echo $datadir`
+sysconfdir=`eval echo $sysconfdir`
 
 dnl Get rid of the lousy '-g -O2' defaults.
 dnl
@@ -119,3 +152,16 @@ dnl Write results.
 dnl
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
+
+cat <<[EOF]
+
+The build is configured as follows:
+
+    bindir          = $bindir
+    mandir          = $mandir
+    datadir         = $datadir
+    sysconfdir      = $sysconfdir
+
+[EOF]
+
+dnl Responsibility shifts to the user after this point.
