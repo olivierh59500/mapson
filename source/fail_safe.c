@@ -91,3 +91,14 @@ leave:
     va_end(ap);
     return result;
 }
+
+void
+fail_safe_fwrite(void * buffer, size_t size, size_t nmemb, FILE * stream)
+{
+    int   rc;
+
+    rc = fwrite(buffer, size, nmemb, stream);
+    if (rc < nmemb) {
+	THROW(IO_EXCEPTION);
+    }
+}
