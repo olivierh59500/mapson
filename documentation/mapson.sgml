@@ -43,7 +43,7 @@ not!</para>
   </mediaobject>
   <mediaobject>
     <imageobject>
-      <imagedata fileref="principle2.eps" format="eps">
+      <imagedata fileref="principle2.eps" format="eps" scale="40">
     </imageobject>
     <imageobject>
       <imagedata fileref="principle2.png" format="png">
