@@ -35,11 +35,27 @@
 
 #include <sys/types.h>
 
+typedef unsigned char *  POINTER;
+
+#if (SIZEOF_UNSIGNED_INT == 4)
+   typedef unsigned int UINT4;
+#else
+#  if (SIZEOF_UNSIGNED_LONG == 4)
+      typedef unsigned long UINT4;
+#  else
+#    if (SIZEOF_UNSIGNED_SHORT == 4)
+        typedef unsigned short UINT4;
+#    else
+#      error "Ooops, we don't have a 4 byte type in C on this machine?"
+#    endif
+#  endif
+#endif
+
 /* MD5 context. */
 typedef struct MD5Context {
-	u_int32_t state[4];	/* state (ABCD) */
-	u_int32_t count[2];	/* number of bits, modulo 2^64 (lsb first) */
-	unsigned char buffer[64]; /* input buffer */
+    UINT4           state[4];	/* state (ABCD) */
+    UINT4           count[2];	/* number of bits, modulo 2^64 (lsb first) */
+    unsigned char   buffer[64];	/* input buffer */
 } MD5_CTX;
 
 void	MD5Init(MD5_CTX *);
