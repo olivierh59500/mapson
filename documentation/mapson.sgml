@@ -8,11 +8,12 @@
 <!ENTITY license SYSTEM "license.inc">
 <!ENTITY defconfig SYSTEM "defconfig.inc">
 <!ENTITY defreqmail SYSTEM "defreqmail.inc">
+<!ENTITY version SYSTEM "../VERSION">
 ]>
 
 <article lang="en">
   <articleinfo>
-    <title>The &mapson; User Manual</title>
+    <title>&mapson; &version; User Manual</title>
     <author>
       <firstname>Peter</firstname>
       <surname>Simons</surname>
@@ -27,18 +28,26 @@
 
     &description;
 
-  <mediaobject>
-    <imageobject>
-      <imagedata fileref="principle.eps" format="eps" align="center" scale="40">
-    </imageobject>
-    <imageobject>
-      <imagedata fileref="principle.png" format="png" align="center">
-    </imageobject>
-  </mediaobject>
-
   <para>This illustration will probably help nothing and only add to the
 confusion, but I made it and now I have to include it here -- helpful or
 not!</para>
+
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="principle1.eps" format="eps" align="center" scale="40">
+    </imageobject>
+    <imageobject>
+      <imagedata fileref="principle1.png" format="png" align="center">
+    </imageobject>
+  </mediaobject>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="principle2.eps" format="eps" align="center" scale="40">
+    </imageobject>
+    <imageobject>
+      <imagedata fileref="principle2.png" format="png" align="center">
+    </imageobject>
+  </mediaobject>
 
   <sect1>
     <title>Building &mapson;</title>
