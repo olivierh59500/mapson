@@ -8,7 +8,7 @@
 #       This option specifies the complete path to the user's mailbox file.
 #       That is the location where mapSoN will store incoming e-mail that
 #       passed.
-Mailbox /var/spool/mail/$LOGNAME
+Mailbox /var/spool/mail/$USER
 
 # SpoolDir <directory>
 #       This option specifies the complete path to the directory, in which
