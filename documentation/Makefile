@@ -26,7 +26,7 @@ DOCBOOKBASE	= /usr/local/sgml/dsssl/docbook
 .dvi.pdf:
 	dvipdf $< $@
 
-.PHONY: all clean distclean realclean
+.PHONY: all clean distclean realclean publish
 
 all:	mapson.html mapson.pdf man-page.txt readme.txt
 
@@ -46,7 +46,7 @@ mapson.tex	      :	principle1.eps principle2.eps
 
 readme.html:	readme.sgml building.inc ../VERSION
 
-readme.txt:	readme.html
+index.html:	description.inc effectiveness.inc ../VERSION
 
 man-page.txt:	man-page.html
 	lynx -width=78 -nolist -dump $< >$@
@@ -66,6 +66,14 @@ defreqmail.inc:../reqmail.template-sample
 		    -e 's#-#<markup>-</markup>#g' \
 		    -e 's#username@example.com#<replaceable>&</replaceable>#g' \
 		    -e 's#Real Name#<replaceable>&</replaceable>#g'
+
+publish::	mapson.html mapson.pdf index.html
+	mkdir htdocs
+	cp index.html peti.css principle?.png htdocs
+	cp mapson.html htdocs/user-manual.html
+	cp mapson.pdf htdocs/user-manual.pdf
+	rsync -vaz --delete htdocs/ mapson.sourceforge.net:/home/groups/m/ma/mapson/htdocs/
+	rm -rf htdocs
 
 clean distclean:
 	@rm -f *.aux *.dvi *.log *.toc
