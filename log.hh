@@ -17,7 +17,7 @@ void error(const char* fmt, ...) throw();
 // that because of the variadic arguments.
 
 #ifdef DEBUG
-#    define debug(x) _debug x;
+#    define debug(x) _debug x
 #else
 #    define debug(x) if (false)
 #endif
