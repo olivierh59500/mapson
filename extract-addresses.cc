@@ -1,0 +1,176 @@
+/*
+ * Copyright (C) 2001 by Peter Simons <simons@computer.org>.
+ * All rights reserved.
+ */
+
+// ISO C++ headers.
+#include <set>
+#include <cctype>
+
+// My own libraries.
+#include "librfc822/rfc822.hh"
+#include "extract-addresses.hh"
+#include "log.hh"
+#include "config.hh"
+
+using namespace std;
+
+inline size_t find_next_header_line(const string& mail, size_t pos)
+    {
+    if (mail[pos] == '\n')
+	return string::npos;	// Header ends here.
+
+    while (pos < mail.size())
+	{
+	if (mail[pos] == '\n')
+	    {
+	    if (pos+1 < mail.size())
+		{
+		if (mail[pos+1] != ' ' && mail[pos+1] != '\t')
+		    return pos+1;
+		}
+	    else
+		return string::npos;
+	    }
+	++pos;
+	}
+    return (pos < mail.size()) ? pos : string::npos;
+    }
+
+inline string to_lowercase(const string& s)
+    {
+    string tmp = s;
+    for (string::size_type i = 0; i < tmp.size(); ++i)
+        tmp[i] = tolower(tmp[i]);
+    return tmp;
+    }
+
+namespace
+    {
+    class my_committer : public rfc822parser::address_committer
+	{
+      public:
+	explicit my_committer(addrset_t& addrset) : myset(addrset) { }
+	void operator() (const rfc822address& addr)
+	    {
+	    myset.insert(to_lowercase(addr.address));
+	    }
+      private:
+	addrset_t& myset;
+	};
+    }
+
+mail_addresses extract_sender_addresses(const string& mail)
+    {
+    mail_addresses addresses;
+
+    // Parse the mail header and extract anything that contains a
+    // valid address.
+
+    for (size_t current = 0, next; current != string::npos; current = next)
+	{
+        next = find_next_header_line(mail, current);
+        string line = mail.substr(current, next - current);
+        try
+            {
+            if (strncasecmp("From ", line.c_str(), sizeof("From ") - 1) == 0)
+                {
+                if (!addresses.envelope.empty())
+                    throw rfc822_syntax_error("Mail contains duplicate 'From ' header.");
+                try
+                    {
+                    line.erase(0, sizeof("From ") - 1);
+                    rfc822parser parser(lex(line));
+                    addresses.envelope = to_lowercase(parser.addr_spec().address);
+                    }
+                catch(const rfc822_syntax_error& e)
+                    {
+                    throw rfc822_syntax_error(string(e.what()) + " in 'From " + line + "'");
+                    }
+                }
+
+            else if (strncasecmp("From: ", line.c_str(), sizeof("From:") - 1) == 0)
+                try
+                    {
+                    line.erase(0, sizeof("From:") - 1).erase(line.size() - 1, 1);
+                    my_committer committer(addresses.from);
+                    rfc822parser parser(lex(line), &committer);
+                    parser.mailboxes();
+                    if (!parser.empty())
+                        throw rfc822_syntax_error("Unexpected trailing data");
+                    }
+                catch(const rfc822_syntax_error& e)
+                    {
+                    throw rfc822_syntax_error(string(e.what()) + " in 'From:" + line + "'");
+                    }
+
+            else if (strncasecmp("Reply-To:", line.c_str(), sizeof("Reply-To:") - 1) == 0)
+                try
+                    {
+                    line.erase(0, sizeof("Reply-To:") - 1).erase(line.size() - 1, 1);
+                    my_committer committer(addresses.reply_to);
+                    rfc822parser parser(lex(line), &committer);
+                    parser.addresses();
+                    if (!parser.empty())
+                        throw rfc822_syntax_error("Unexpected trailing data");
+                    }
+                catch(const rfc822_syntax_error& e)
+                    {
+                    throw rfc822_syntax_error(string(e.what()) + " in 'Reply-To:" + line + "'");
+                    }
+
+            else if (strncasecmp("Sender:", line.c_str(), sizeof("Sender:") - 1) == 0)
+                {
+                if (!addresses.sender.empty())
+                    throw rfc822_syntax_error("Mail contains duplicate 'Sender:' header.");
+                try
+                    {
+                    line.erase(0, sizeof("Sender:") - 1).erase(line.size() - 1, 1);
+                    rfc822parser parser(lex(line));
+                    addresses.sender = to_lowercase(parser.mailbox().address);
+                    if (!parser.empty())
+                        throw rfc822_syntax_error("Unexpected trailing data");
+                    }
+                catch(const rfc822_syntax_error& e)
+                    {
+                    throw rfc822_syntax_error(string(e.what()) + " in 'Sender:" + line + "'");
+                    }
+                }
+
+            else if (strncasecmp("Return-Path:", line.c_str(), sizeof("Return-Path:") - 1) == 0)
+                {
+                if (!addresses.return_path.empty())
+                    throw rfc822_syntax_error("Mail contains duplicate 'Return-Path:' header.");
+                try
+                    {
+                    line.erase(0, sizeof("Return-Path:") - 1).erase(line.size() - 1, 1);
+                    rfc822parser parser(lex(line));
+                    addresses.return_path = to_lowercase(parser.route_addr().address);
+                    if (!parser.empty())
+                        throw rfc822_syntax_error("Unexpected trailing data");
+                    }
+                catch(const rfc822_syntax_error& e)
+                    {
+                    throw rfc822_syntax_error(string(e.what()) + " in 'Return-Path:" + line + "'");
+                    }
+                }
+            }
+        catch(const rfc822_syntax_error& e)
+            {
+            if (config->let_incorrect_mails_pass)
+                info("Tolerating syntax error: %s", e.what());
+            else
+                throw;
+            }
+        }
+
+    // Now do consistency checks on the whole thing.
+
+    if (config->strict_rfc_parser && !config->let_incorrect_mails_pass &&
+        addresses.sender.empty() && addresses.from.size() != 1)
+        {
+        throw rfc822_syntax_error("The 'From:' line contains multiple addresses but no 'Sender:' has been provided.");
+        }
+
+    return addresses;
+    }

@@ -1,0 +1,74 @@
+Configuration options:
+
+  o Paths
+
+    string config_file
+
+	The path of the mapson config file that contains these
+        options. The default is "$HOME/.mapson/config", but that may
+        be overriden on the command line.
+
+    string spool_dir
+
+	The path of the spool directory where unaccepted mails wait
+	for the arrival of the cookie.
+
+    string address_db
+
+	The path to the address database file. The default is
+	"$HOME/.mapson/address-db", but this may be overridden in the
+	config file.
+
+    string request_for_confirmation_file
+
+	The path of the mail template to be used to request a
+	confirmation cookie. The default is
+	"$HOME/.mapson/request-for-confirmation.txt", but this may be
+	overridden in the config file.
+
+    string mta
+
+	The path to the mail transport agent to be used to deliver
+	e-mail on the system. It is expected that the MTA reads the
+	mail on standard input and accepts the address(es) of the
+	recipient(s) on the command line. Additional options may be
+	specified. The default is "/usr/sbin/sendmail -i", but this
+	may be overridden in the config file.
+
+
+  o Filtering criterias
+
+    bool strict_rfc_parser
+
+	If this is set to 'true', mapson will ensure that incoming
+	mails have a correct "Sender:" header. The rule is as follows:
+	If "From:" contains more than one address, a "Sender:" must be
+	provided. If set to 'false', mapson will ignore this as long
+	as it is able to determine the sender via any of the other
+	headers. The default is 'false', but this may be overridden in
+	the config file.
+
+    bool let_incorrect_mails_pass
+
+	If this is set to 'false', _any_ syntax error in the mail will
+	cause mapson to abort processing with a return code of
+	$syntax_error_rc. If set to 'true', mapson will tolerate
+	syntax errors as long as it is able to figure out anything it
+	needs to know to process the mail. The default is 'true', but
+	this may be overridden in the config file.
+
+  o Return codes
+
+    int runtime_error_rc
+
+	This is the return code returned by mapson if any
+	runtime-error occurs, such as it not being able to open the
+	address database, etc. The default is "75" (temporary
+	failure), but this may be overridden in the config file.
+
+    int syntax_error_rc
+
+	This is the return code returned by mapson if processing is
+	aborted because of syntax errors in the mail. The default is
+	"65" (data format error), but this may be overridden in the
+	config file.
