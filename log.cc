@@ -3,9 +3,6 @@
  * All rights reserved.
  */
 
-// ISO C++ headers.
-#include <memory>
-
 // POSIX.1 system headers.
 #include <cstdio>
 #include <cstdarg>
@@ -23,7 +20,7 @@ using namespace std;
 
 namespace
     {
-    auto_ptr<file_sentry> fileh;
+    file_sentry fileh(0);
     }
 
 inline string make_timestamp()
@@ -41,8 +38,8 @@ inline string make_timestamp()
 
 void init_logging(const char* file)
     {
-    FILE* fh = fopen(file, "a");
-    if (fh == 0)
+    fileh.file = fopen(file, "a");
+    if (fileh.file == 0)
         throw system_error(string("Could not open log file ") + file);
 
     struct flock lock;
@@ -50,9 +47,8 @@ void init_logging(const char* file)
     lock.l_whence = SEEK_SET;
     lock.l_start  = 0;
     lock.l_len    = 0;
-    if (fcntl(fileno(fh), F_SETLKW, &lock) != 0)
+    if (fcntl(fileno(fileh.file), F_SETLKW, &lock) != 0)
         throw system_error(string("Can't lock file '") + file + "'");
-    fileh = new file_sentry(fh);
     }
 
 void _debug(const char* fmt, ...) throw()
@@ -66,8 +62,8 @@ void _debug(const char* fmt, ...) throw()
         new_fmt += fmt;
         new_fmt += "\n";
         vfprintf(stderr, new_fmt.c_str(), ap);
-        if (fileh.get() && fileh->file)
-            vfprintf(fileh->file, new_fmt.c_str(), ap);
+        if (fileh.file)
+            vfprintf(fileh.file, new_fmt.c_str(), ap);
         va_end(ap);
         }
     }
@@ -81,8 +77,8 @@ void info(const char* fmt, ...) throw()
     new_fmt += fmt;
     new_fmt += "\n";
     vfprintf(stderr, new_fmt.c_str(), ap);
-    if (fileh.get() && fileh->file)
-        vfprintf(fileh->file, new_fmt.c_str(), ap);
+    if (fileh.file)
+        vfprintf(fileh.file, new_fmt.c_str(), ap);
     va_end(ap);
     }
 
@@ -95,7 +91,7 @@ void error(const char* fmt, ...) throw()
     new_fmt += fmt;
     new_fmt += "\n";
     vfprintf(stderr, new_fmt.c_str(), ap);
-    if (fileh.get() && fileh->file)
-        vfprintf(fileh->file, new_fmt.c_str(), ap);
+    if (fileh.file)
+        vfprintf(fileh.file, new_fmt.c_str(), ap);
     va_end(ap);
     }
