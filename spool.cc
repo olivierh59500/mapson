@@ -18,6 +18,16 @@
 
 using namespace std;
 
+namespace
+    {
+    struct fd_sentry
+        {
+        explicit fd_sentry(int arg) throw() : fd(arg) { }
+        ~fd_sentry() throw() { close(fd); }
+        int fd;
+        };
+    }
+
 string spool(const string& mail)
     {
     // Calculate the md5 hash of the mail.
@@ -43,18 +53,15 @@ string spool(const string& mail)
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't open spool file '") + filename + "' for writing");
+    fd_sentry sentry(fd);
     for (size_t len = 0; len < mail.size(); )
 	{
 	ssize_t rc = write(fd, mail.data()+len, mail.size()-len);
 	if (rc < 0)
-            {
-            close(fd);
 	    throw system_error(string("Failed writing to the spool file '") + filename + "'");
-            }
 	else
 	    len += rc;
 	}
-    close(fd);
 
     return buf;
     }
