@@ -7,6 +7,7 @@
  *      All rights reserved.
  */
 
+#include <stdlib.h>
 #include <errno.h>
 #include <syslog.h>
 #include <assert.h>

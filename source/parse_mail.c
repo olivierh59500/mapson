@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <string.h>
 #include <syslog.h>
+#include <ctype.h>
 
 #include <rfc822.h>
 #include <myexceptions.h>
@@ -132,7 +133,7 @@ parse_mail(char * buffer)
 		q = p = mail_struct->message_id;
 		while(isspace(*p))
 		  p++;
-		while (*q++ = *p++)
+		while ((*q++ = *p++))
 		  ;
 		q -= 2;
 		while (isspace(*q)) {

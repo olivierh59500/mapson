@@ -8,10 +8,12 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <assert.h>
-#include <syslog.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <myexceptions.h>
 #include "mapson.h"
