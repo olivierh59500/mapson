@@ -1,18 +1,18 @@
 
 			  License Agreement
 
-   The mapSoN software both binary and source (hereafter "Software"), is
-intellectual property owned jointly by Peter Simons and German National
-Research Center for Information Technology (hereafter "GMD") and is
-copyrighted by GMD in all countries in the world, and ownership remains
-with the GMD.
+   The mapSoN software both binary and source (hereafter "Software"),
+is intellectual property owned jointly by Peter Simons and German
+National Research Center for Information Technology (hereafter "GMD")
+and is copyrighted by GMD in all countries in the world, and ownership
+remains with GMD.
 
-   The GMD grants you (hereafter "Licensee") a license to use the
-Software for academic, research and internal business purposes only,
-without a fee. Only for these purposes, Licensee may distribute the
-binary and source code (if released) to third parties provided that the
-copyright notice and this statement appears on all copies and that no
-charge is associated with such copies.
+   GMD grants you (hereafter "Licensee") a license to use the Software
+for academic, research and internal business purposes only, without a
+fee. Only for these purposes, Licensee may distribute the binary and
+source code (if released) to third parties provided that the copyright
+notice and this statement appears on all copies and that no charge is
+associated with such copies.
 
    Licensee may make derivative works. However, if Licensee distributes
 any derivative work based on or derived from the Software, then Licensee
@@ -21,11 +21,11 @@ will
   1. notify GMD regarding its distribution of the derivative work, and
 
   2. clearly notify users that such derivative work is a modified
-     version and not the original mapSoN distributed by the GMD.
+     version and not the original mapSoN distributed by GMD.
 
 
    Any Licensee wishing to make commercial use of the Software should
-contact the GMD, to negotiate an appropriate license for such commercial
+contact GMD, to negotiate an appropriate license for such commercial
 use. Commercial use includes
 
   1. integration of all or part of the source code into a product for
