@@ -11,6 +11,9 @@ mapson == %mapson.cc.sm +(%comile_flags) \
     +cxx_flags='-ansi -pedantic -Wall'
     +cxx_flags='-Wpointer-arith -Wcast-align -Winline -Wmissing-prototypes'
     +cxx_flags='-Wmissing-declarations -Wnested-externs -Wno-long-long'
+    +cc_flags='-pedantic -Wall'
+    +cc_flags='-Wpointer-arith -Wcast-align -Winline -Wmissing-prototypes'
+    +cc_flags='-Wmissing-declarations -Wnested-externs -Wno-long-long'
     +optimize=0
     +debug
     +define='DEBUG'
