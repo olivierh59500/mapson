@@ -6,6 +6,7 @@
 #ifndef GET_HOME_DIR_HH
 #define GET_HOME_DIR_HH
 
+// ISO C++ headers.
 #include <string>
 
 std::string get_my_user_name();

@@ -3,7 +3,10 @@
  * All rights reserved.
  */
 
+// ISO C++ headers.
 #include <set>
+
+// My own libraries.
 #include "librfc822/rfc822.hh"
 #include "extract-addresses.hh"
 

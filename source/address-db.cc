@@ -3,13 +3,19 @@
  * All rights reserved.
  */
 
+// ISO C++ headers.
+#include <cerrno>
+
+// POSIX.1 system headers.
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <cerrno>
+
+// My own libraries.
 #include "system-error.hh"
 #include "address-db.hh"
+
 using namespace std;
 
 AddressDB::AddressDB(const string& filename_arg)

@@ -3,14 +3,20 @@
  * All rights reserved.
  */
 
+// ISO C++ headers.
 #include <cerrno>
+
+// POSIX.1 system headers.
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pwd.h>
 #include <fcntl.h>
 #include <unistd.h>
+
+// My own libraries.
 #include "home-dir.hh"
 #include "system-error.hh"
+
 using namespace std;
 
 string get_my_user_name()

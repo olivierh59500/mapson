@@ -6,6 +6,7 @@
 #ifndef __SYSTEM_ERROR_HH__
 #define __SYSTEM_ERROR_HH__
 
+// ISO C++ headers.
 #include <stdexcept>
 #include <cerrno>
 #include <string>

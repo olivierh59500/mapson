@@ -6,6 +6,7 @@
 #ifndef ADDRESS_DB_HH
 #define ADDRESS_DB_HH
 
+// ISO C++ headers.
 #include <string>
 
 class AddressDB
