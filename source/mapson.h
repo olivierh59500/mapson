@@ -10,6 +10,8 @@
 #ifndef __MAPSON_H__
 #define __MAPSON_H__
 
+#include <stdio.h>
+
 #ifdef DEBUG_DMALLOC
 #  include <dmalloc.h>
 #endif
@@ -72,5 +74,9 @@ void          free_mail(struct Mail * mail_struct);
 /* confirm.c */
 
 void            send_request_for_confirmation_mail(char *, char *);
+
+/* home_dir.c */
+
+void assert_mapson_home_dir_exists(void);
 
 #endif /* !defined(__MAPSON_H__) */
