@@ -3,6 +3,9 @@
  * All rights reserved.
  */
 
+// ISO C++ headers.
+#include <cstdio>
+
 // POSIX.1 system headers.
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -160,5 +163,16 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
     varexp::unescape(mail_template, mail_template, false);
     varexp::expand(mail_template, mail_template, lookup);
     varexp::unescape(mail_template, mail_template, true);
-    debug(("Expanded mail template is:\n%s", mail_template.c_str()));
+
+    // Pipe expanded buffer into MTA.
+
+    FILE* fh = popen(config->mta.c_str(), "w");
+    if (fh == NULL)
+        throw system_error(string("Can't start MTA '") + config->mta + "'");
+    if (fwrite(mail_template.data(), mail_template.size(), 1, fh) != 1)
+        {
+        fclose(fh);
+        throw system_error(string("Failed writing to the address db '") + filename + "'");
+        }
+    fclose(fh);
     }
