@@ -1,0 +1,22 @@
+# Build mapSoN.
+
+mapson == %mapson.cc.sm +cxx_flags='-Wall -ansi -pedantic' \
+			+optimize=1 \
+			+define='DEBUG' \
+			+lib=(librfc822.a) \
+			:exe
+
+%mapson.cc.sm == <<
+    mapson.cc
+    config.cc
+    log.cc
+    address-db.cc
+    extract-addresses.cc
+
+#     home-dir.cc
+#     process-ack.cc
+
+librfc822.a == librfc822/%librfc822.a.sm :a
+
+%clean ! == !<<
+    rm -f librfc822.a mapson
