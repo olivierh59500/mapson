@@ -71,6 +71,6 @@ void          free_mail(struct Mail * mail_struct);
 
 /* forward_mail.c */
 
-void          forward_mail(const char * mail, char ** receivers);
+void          forward_mail(const char * mail, char * recipient);
 
 #endif /* !defined(__MAPSON_H__) */

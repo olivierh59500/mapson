@@ -20,40 +20,22 @@
 #define SENDMAIL_PATH "/usr/sbin/sendmail"
 
 void
-forward_mail(const char * mail, char ** receivers)
+forward_mail(const char * mail, char * recipient)
 {
     FILE *         fh;
     char *         buffer;
-    unsigned int   i,
-	           length;
 
     /* Sanity checks. */
 
     assert(mail != NULL);
-    assert(receivers != NULL);
-    assert(*receivers != NULL);
-    if (!mail || !receivers || !*receivers) {
+    assert(recipient != NULL);
+    if (!mail || !recipient) {
 	THROW(UNKNOWN_FATAL_EXCEPTION);
     }
 
-    /* Construct the command line to call sendmail. */
+    /* Send the mail back to the originator. */
 
-    for (length = strlen(SENDMAIL_PATH) + 1, i = 0;
-	 receivers[i] != NULL;
-	 i++)
-      length += strlen(receivers[i]) + 1;
-
-    buffer = fail_safe_malloc(length);
-    strcpy(buffer, "/usr/sbin/sendmail ");
-
-    for (i = 0; receivers[i] != NULL; i++) {
-	strcat(buffer, receivers[i]);
-	if (receivers[i+1] != NULL)
-	  strcat(buffer, " ");
-    }
-
-    /* Open the pipe to sendmail. */
-
+    buffer = fail_safe_sprintf("%s %s", SENDMAIL_PATH, recipient);
     fh = popen(buffer, "w");
     if (fh == NULL) {
 	syslog(LOG_ERR, "Failed to start command '%s': %m", buffer);
@@ -62,19 +44,11 @@ forward_mail(const char * mail, char ** receivers)
     }
     free(buffer);
 
-    /* Write the mail. */
-
     TRY {
 	fprintf(fh, "From: simons@rhein.de (Peter Simons)\n");
-	fprintf(fh, "To: ");
-	for (i = 0; receivers[i] != NULL; i++) {
-	    fprintf(fh, "%s", receivers[i]);
-	    if (receivers[i+1] != NULL)
-	      fprintf(fh, ", ");
-	    else
-	      fprintf(fh, "\n");
-	}
+	fprintf(fh, "To: %s\n", recipient);
 	fprintf(fh, "Subject: [mapSoN] Please re-send your mail\n");
+	fprintf(fh, "Precedence: junk\n");
 	fprintf(fh, "\n");
 	fprintf(fh, "%s\n", mail);
     }
