@@ -58,11 +58,8 @@ all:		mapson
 mapson:		$(OBJS) $(LIBS)
 	$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
 
-config.o:	config.cc
+config.o:	config.cc Makefile
 	$(CXX) -DMAILBOXDIR=\"$(mailboxdir)\" -DMTA=\"$(mta)\" -DDATADIR=\"$(datadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" $(CPPFLAGS) $(DEFS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
-
-main.o.o:	version.h
-config.o:	Makefile version.h
 
 version.h:	VERSION
 	@echo  >$@ '/* Generated automatically; do not edit! */'
@@ -129,8 +126,8 @@ realclean:: distclean
 	@rm -f configure version.h README
 	@(cd documentation && $(MAKE) realclean)
 
-depend::
-	makedepend -Y -fMakefile.in '-s# Dependencies' `find . -name '*.c*' ` 2>/dev/null
+depend::	version.h
+	makedepend -Y -fMakefile.in '-s# Dependencies' `find . -name '*.cc' -o -name '*.c'` 2>/dev/null
 	@sed <Makefile.in >Makefile.in.bak -e 's/\.\///g'
 	@mv Makefile.in.bak Makefile.in
 
@@ -157,13 +154,12 @@ dist:		mapson documentation/mapson.1 documentation/mapson.html \
 
 # Dependencies
 
-RegExp/test.o: RegExp/RegExp.hh
 accept-confirmation.o: system-error/system-error.hh log.hh config.hh
 accept-confirmation.o: libparse-config-file/parse-config-file.hh
 accept-confirmation.o: fd-sentry.hh deliver.hh accept-confirmation.hh
 address-db.o: system-error/system-error.hh fd-sentry.hh address-db.hh
 config.o: system-error/system-error.hh libvarexp/varexp.hh config.hh
-config.o: libparse-config-file/parse-config-file.hh log.hh
+config.o: libparse-config-file/parse-config-file.hh log.hh version.h
 deliver.o: system-error/system-error.hh config.hh
 deliver.o: libparse-config-file/parse-config-file.hh log.hh fd-sentry.hh
 deliver.o: deliver.hh
@@ -186,6 +182,7 @@ request-confirmation.o: extract-addresses.hh fd-sentry.hh multi-open.hh
 request-confirmation.o: request-confirmation.hh
 spool.o: libmd5/md5.h system-error/system-error.hh log.hh config.hh
 spool.o: libparse-config-file/parse-config-file.hh fd-sentry.hh spool.hh
+RegExp/test.o: RegExp/RegExp.hh
 libgetopt/getopt.o: libgetopt/getopt.h
 libgetopt/getopt1.o: libgetopt/getopt.h
 libmd5/md5.o: libmd5/md5.h
@@ -198,17 +195,6 @@ librfc822/lexer.o: librfc822/rfc822.hh
 librfc822/parser.o: librfc822/rfc822.hh
 librfc822/test.o: librfc822/rfc822.hh
 libvarexp/command.o: libvarexp/internal.hh libvarexp/varexp.hh
-libvarexp/regression-tests/empty-search-pattern.o: libvarexp/varexp.hh
-libvarexp/regression-tests/expand-character-class.o: libvarexp/internal.hh
-libvarexp/regression-tests/expand-character-class.o: libvarexp/varexp.hh
-libvarexp/regression-tests/expand1.o: libvarexp/varexp.hh
-libvarexp/regression-tests/expand2.o: libvarexp/varexp.hh
-libvarexp/regression-tests/expand3.o: libvarexp/varexp.hh
-libvarexp/regression-tests/expand4.o: libvarexp/varexp.hh
-libvarexp/regression-tests/expand5.o: libvarexp/varexp.hh
-libvarexp/regression-tests/expand6.o: libvarexp/varexp.hh
-libvarexp/regression-tests/offset-failure.o: libvarexp/varexp.hh
-libvarexp/regression-tests/unescape.o: libvarexp/varexp.hh
 libvarexp/cut-out-offset.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/error.o: libvarexp/varexp.hh
 libvarexp/expand-character-class.o: libvarexp/internal.hh
@@ -226,3 +212,14 @@ libvarexp/text.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/transpose.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/unescape.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/variable.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/regression-tests/empty-search-pattern.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand-character-class.o: libvarexp/internal.hh
+libvarexp/regression-tests/expand-character-class.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand1.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand2.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand3.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand4.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand5.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand6.o: libvarexp/varexp.hh
+libvarexp/regression-tests/offset-failure.o: libvarexp/varexp.hh
+libvarexp/regression-tests/unescape.o: libvarexp/varexp.hh
