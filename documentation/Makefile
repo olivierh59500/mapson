@@ -11,7 +11,7 @@
 	sgmltools -b onehtml $<
 
 %.txt : %.sgml
-	sgmltools -b w3m $<
+	sgmltools -b lynx $<
 
 %_version.tex : %.tex
 	sed -n -e '/^% $$Id/p' $< | \
