@@ -12,15 +12,18 @@
 
 using namespace std;
 
-inline size_t find_next_header_line(const string& header, size_t pos)
+inline size_t find_next_header_line(const string& mail, size_t pos)
     {
-    while (pos < header.size())
+    if (mail[pos] == '\n')
+	return string::npos;	// Header ends here.
+
+    while (pos < mail.size())
 	{
-	if (header[pos] == '\n')
+	if (mail[pos] == '\n')
 	    {
-	    if (pos+1 < header.size())
+	    if (pos+1 < mail.size())
 		{
-		if (header[pos+1] != ' ' && header[pos+1] != '\t')
+		if (mail[pos+1] != ' ' && mail[pos+1] != '\t')
 		    return pos+1;
 		}
 	    else
@@ -28,10 +31,10 @@ inline size_t find_next_header_line(const string& header, size_t pos)
 	    }
 	++pos;
 	}
-    return (pos < header.size()) ? pos : string::npos;
+    return (pos < mail.size()) ? pos : string::npos;
     }
 
-void extract_sender_addresses(const string& header, addrset_t& addrset)
+void extract_sender_addresses(const string& mail, addrset_t& addrset)
     {
     class my_committer : public rfc822parser::address_committer
 	{
@@ -48,8 +51,8 @@ void extract_sender_addresses(const string& header, addrset_t& addrset)
 
     for (size_t current = 0, next; current != string::npos; current = next)
 	{
-	next = find_next_header_line(header, current);
-	std::string line = header.substr(current, next - current);
+	next = find_next_header_line(mail, current);
+	std::string line = mail.substr(current, next - current);
 	if (strncasecmp("From:", line.c_str(), sizeof("From:") - 1) == 0
 	    || strncasecmp("Reply-To:", line.c_str(), sizeof("Reply-To:") - 1) == 0
 	    || strncasecmp("Sender:", line.c_str(), sizeof("Sender:") - 1) == 0

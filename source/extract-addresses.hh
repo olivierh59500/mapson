@@ -18,6 +18,6 @@ struct ltstr
 	}
     };
 typedef std::set<std::string,ltstr> addrset_t;
-void extract_sender_addresses(const std::string& header, addrset_t& addrset);
+void extract_sender_addresses(const std::string& mail, addrset_t& addrset);
 
 #endif
