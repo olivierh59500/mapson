@@ -96,3 +96,6 @@ Things to do:
     o mapSoN should have options that tell it not to look for cookies
       or to require a cookie in case the mail comes from procmail's
       +argument feature.
+
+    o Add an option that tells mapSoN to let the actual confirmation
+      mail pass, too, in case someone writes comments into it.
