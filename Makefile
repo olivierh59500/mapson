@@ -6,7 +6,7 @@
 
 SUBDIRS	= lib src #man
 
-all:	$(SUBDIRS)
+all:	.autoconf-stamp $(SUBDIRS)
 
 src::
 	@echo "====> Building mapSoN"
@@ -25,15 +25,20 @@ clean:
 	@for n in $(SUBDIRS);do (cd $$n;$(MAKE) clean);done
 	rm -f configure config.log config.cache config.log config.status
 
-build-dist:	all
-	@${MAKE} real-build-dist VERS=`sed -n -e '/^#define[	 ][	 ]*VERS/p' src/version.h | sed -e 's/^.*"\(.*\)"/\1/' -e 's/ /-/g' -e 's/-beta-/b/g'`
+dist:	all
+#	@${MAKE} real-build-dist VERS=`sed -n -e '/^#define[	 ][	 ]*VERS/p' src/version.h | sed -e 's/^.*"\(.*\)"/\1/' -e 's/ /-/g' -e 's/-beta-/b/g'`
 
+configure:	configure.in aclocal.m4
+	autoconf
 
-bump:
-#	@$$HOME/.bin/bump.sh
+.autoconf-stamp:	configure
+	./configure $(ACFLAGS)
 
 real-build-dist::
 	@echo Assembling release archive for ${VERS}
+
+bump:
+	@scripts/bump.sh
 
 ChangeLog:
 	-cp ChangeLog ChangeLog.old
