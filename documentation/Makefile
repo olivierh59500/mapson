@@ -10,15 +10,7 @@
 %.html : %.sgml
 	sgmltools -b onehtml $<
 
-%.txt : %.sgml
-	sgmltools -b lynx $<
-
-%_version.tex : %.tex
-	sed -n -e '/^% $$Id/p' $< | \
-	     awk '{ print $$5 }' | \
-	     sed -e 's#/#-#g' >$@
-
-%.dvi %.aux %.dvi %.log : %.tex
+%.dvi : %.tex
 	jadetex \\nonstopmode\\input $<; \
 	while grep -i 'Rerun' $*.log; do \
 	     jadetex \\nonstopmode\\input $<; \
@@ -27,11 +19,17 @@
 %.ps : %.dvi
 	dvips $< -o $@
 
+%.pdf : %.dvi
+	dvipdf $< $@
+
 .PHONY: all clean distclean realclean
 
-all:	mapson.html mapson.ps man-page.txt
+all:	mapson.html mapson.pdf man-page.txt
+
+man-page.txt:	man-page.html
+	lynx -width=72 -hiddenlinks=ignore -dump $< >$@
 
 clean distclean realclean:
 	rm -f *.aux *.dvi *.log *.toc
 	rm -f *.css *.fot *.html *.ps
-	rm -f *.tex *.xml *.txt
+	rm -f *.tex *.xml *.txt *.pdf

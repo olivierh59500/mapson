@@ -76,13 +76,13 @@ version.h:	VERSION
 
 config.o:	Makefile
 
-documentation/mapson.txt:
-	@(cd documentation && $(MAKE) mapson.txt)
+documentation/man-page.txt:
+	@(cd documentation && $(MAKE) man-page.txt)
 
 documentation/mapson.html:
 	@(cd documentation && $(MAKE) mapson.html)
 
-install:	mapson reqmail.template-sample config-sample documentation/mapson.txt
+install:	mapson reqmail.template-sample config-sample documentation/man-page.txt
 	$(MKDIR) -p $(DESTDIR)$(bindir)
 	$(INSTALL) -c -m 555 mapson $(DESTDIR)$(bindir)/mapson
 	$(MKDIR) -p $(DESTDIR)$(datadir)
@@ -93,7 +93,7 @@ install:	mapson reqmail.template-sample config-sample documentation/mapson.txt
 	$(MKDIR) -p $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -m 644 config-sample.local $(DESTDIR)$(sysconfdir)/config-sample
 	$(MKDIR) -p $(DESTDIR)$(mandir)/man1
-	$(INSTALL) -c -m 644 documentation/mapson.txt $(DESTDIR)$(mandir)/man1/mapson.1
+	$(INSTALL) -c -m 644 documentation/man-page.txt $(DESTDIR)$(mandir)/man1/mapson.1
 
 clean::
 	@find . -name '*.rpo' -exec rm -f {} \;
@@ -123,7 +123,7 @@ changelog::
 	cat ChangeLog.new ChangeLog.old >ChangeLog
 	rm ChangeLog.old ChangeLog.new
 
-dist:	mapson documentation/mapson.txt VERSION
+dist:	mapson documentation/man-page.txt VERSION
 	@V=`cat VERSION`; \
 	cp -ra . /tmp/mapson-$$V; \
 	$(MAKE) >/dev/null -C /tmp/mapson-$$V distclean; \
