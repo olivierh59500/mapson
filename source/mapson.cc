@@ -27,35 +27,25 @@ try
 
     AddressDB address_db(assert_mapson_home_dir_exists() + "/address.db");
 
-    // Read the e-mail coming on the standard input stream.
+    // Read the e-mail header coming on the standard input stream.
 
-    string body;
+    string header;
     char buffer[1024];
     ssize_t rc;
     for (rc = read(STDIN_FILENO, buffer, sizeof(buffer));
 	 rc > 0;
 	 rc = read(STDIN_FILENO, buffer, sizeof(buffer)))
 	{
-	body.append(buffer, rc);
+	header.append(buffer, rc);
 	}
     if (rc < 0)
 	throw system_error("Failed to read mail from standard input");
 
-    // Split mail into header and body.
-
-    string::size_type pos = body.find("\n\n");
-    if (pos == string::npos)
-	throw runtime_error("Malformatted input; expected an RFC822-compliant e-mail.");
-    string header = body.substr(0, pos+1);
-    body.erase(0, pos+2);
-
-    // Extract the sender addresses from the header.
+    // Extract the sender addresses from the header and find out
+    // whether any of the found address is known already.
 
     addrset_t addresses;
     extract_sender_addresses(header, addresses);
-
-    // Find out whether any of the found address is known already.
-
     addrset_t::const_iterator i;
     bool had_a_hit = false;
     for (i = addresses.begin(); i != addresses.end(); )
