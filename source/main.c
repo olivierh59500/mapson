@@ -22,7 +22,8 @@ main(int argc, char * argv[])
     struct Mail *  Mail;
     FILE *         fh;
     char *         mail_rescue_filename,
-         *         mail_buffer;
+         *         mail_buffer,
+	 *         p;
     unsigned int   mail_size;
     char           buffer[4096];
     int            rc, i;
@@ -101,56 +102,52 @@ main(int argc, char * argv[])
 
     /* Let the rulset check the mail to decide what we'll do with it. */
 
-    {
-	char *    p;
-
-	rc = check_ruleset_file(Mail, &p);
-	switch(rc) {
-	  case RLST_CONTINUE:
-	      for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-		  printf("DEBUG: Checking '%s' in accept-database.\n", (Mail->from)[i]);
-		  if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
-		      save_to(mail_buffer, get_mailbox_path());
-		      break;
-		  }
+    rc = check_ruleset_file(Mail, &p);
+    switch(rc) {
+      case RLST_CONTINUE:
+	  for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
+	      printf("DEBUG: Checking '%s' in accept-database.\n", (Mail->from)[i]);
+	      if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
+		  save_to(mail_buffer, get_mailbox_path());
+		  break;
 	      }
-	      if ((Mail->from)[i] == NULL) {
-		  printf("Sender is unknown. Will require confirmation.\n");
-		  store_mail_in_spool(mail_buffer, Mail->message_id);
-		  send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
-	      }
-	      break;
-	  case RLST_PASS:
-	      for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-		  printf("DEBUG: Adding '%s' to accept-database.\n", (Mail->from)[i]);
-		  add_address_to_database((Mail->from)[i]);
-	      }
-	      save_to(mail_buffer, get_mailbox_path());
-	      break;
-	  case RLST_QUICKPASS:
-	      printf("Delivering mail without adding the From: senders to the database.\n");
-	      save_to(mail_buffer, get_mailbox_path());
-	      break;
-	  case RLST_DROP:
-	      syslog(LOG_INFO, "Dropping mail from '%s'.\n", (Mail->from)[0]);
-	      break;
-	  case RLST_RFC:
-	      printf("Send request for confirmation.\n");
+	  }
+	  if ((Mail->from)[i] == NULL) {
+	      printf("Sender is unknown. Will require confirmation.\n");
 	      store_mail_in_spool(mail_buffer, Mail->message_id);
 	      send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
-	      break;
-	  case RLST_SAVETO:
-	      assert(p != NULL);
-	      if (!p) {
-		  THROW(UNKNOWN_FATAL_EXCEPTION);
-	      }
-	      printf("Write mail to file '%s'.\n", p);
-	      save_to(mail_buffer, p);
-	      break;
-	  default:
-	      assert(0==1);
+	  }
+	  break;
+      case RLST_PASS:
+	  for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
+	      printf("DEBUG: Adding '%s' to accept-database.\n", (Mail->from)[i]);
+	      add_address_to_database((Mail->from)[i]);
+	  }
+	  save_to(mail_buffer, get_mailbox_path());
+	  break;
+      case RLST_QUICKPASS:
+	  printf("Delivering mail without adding the From: senders to the database.\n");
+	  save_to(mail_buffer, get_mailbox_path());
+	  break;
+      case RLST_DROP:
+	  syslog(LOG_INFO, "Dropping mail from '%s'.\n", (Mail->from)[0]);
+	  break;
+      case RLST_RFC:
+	  printf("Send request for confirmation.\n");
+	  store_mail_in_spool(mail_buffer, Mail->message_id);
+	  send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
+	  break;
+      case RLST_SAVETO:
+	  assert(p != NULL);
+	  if (!p) {
 	      THROW(UNKNOWN_FATAL_EXCEPTION);
-	}
+	  }
+	  printf("Write mail to file '%s'.\n", p);
+	  save_to(mail_buffer, p);
+	  break;
+      default:
+	  assert(0==1);
+	  THROW(UNKNOWN_FATAL_EXCEPTION);
     }
 
 
