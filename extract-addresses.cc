@@ -79,7 +79,7 @@ mail_addresses extract_sender_addresses(const string& mail)
                     throw rfc822_syntax_error("Mail contains duplicate 'From ' header.");
                 try
                     {
-                    line.erase(0, sizeof("From ") - 1).erase(line.size() - 1, 1);
+                    line.erase(line.size() - 1, 1).erase(0, sizeof("From ") - 1);
                     rfc822parser parser(lex(line));
                     addresses.envelope = to_lowercase(parser.addr_spec().address);
                     }
@@ -92,7 +92,7 @@ mail_addresses extract_sender_addresses(const string& mail)
             else if (strncasecmp("From:", line.c_str(), sizeof("From:") - 1) == 0)
                 try
                     {
-                    line.erase(0, sizeof("From:") - 1).erase(line.size() - 1, 1);
+                    line.erase(line.size() - 1, 1).erase(0, sizeof("From:") - 1);
                     my_committer committer(addresses.from);
                     rfc822parser parser(lex(line), &committer);
                     parser.mailboxes();
@@ -107,7 +107,7 @@ mail_addresses extract_sender_addresses(const string& mail)
             else if (strncasecmp("Reply-To:", line.c_str(), sizeof("Reply-To:") - 1) == 0)
                 try
                     {
-                    line.erase(0, sizeof("Reply-To:") - 1).erase(line.size() - 1, 1);
+                    line.erase(line.size() - 1, 1).erase(0, sizeof("Reply-To:") - 1);
                     my_committer committer(addresses.reply_to);
                     rfc822parser parser(lex(line), &committer);
                     parser.addresses();
@@ -125,7 +125,7 @@ mail_addresses extract_sender_addresses(const string& mail)
                     throw rfc822_syntax_error("Mail contains duplicate 'Sender:' header.");
                 try
                     {
-                    line.erase(0, sizeof("Sender:") - 1).erase(line.size() - 1, 1);
+                    line.erase(line.size() - 1, 1).erase(0, sizeof("Sender:") - 1);
                     rfc822parser parser(lex(line));
                     addresses.sender = to_lowercase(parser.mailbox().address);
                     if (!parser.empty())
@@ -143,7 +143,7 @@ mail_addresses extract_sender_addresses(const string& mail)
                     throw rfc822_syntax_error("Mail contains duplicate 'Return-Path:' header.");
                 try
                     {
-                    line.erase(0, sizeof("Return-Path:") - 1).erase(line.size() - 1, 1);
+                    line.erase(line.size() - 1, 1).erase(0, sizeof("Return-Path:") - 1);
                     rfc822parser parser(lex(line));
                     addresses.return_path = to_lowercase(parser.route_addr().address);
                     if (!parser.empty())
