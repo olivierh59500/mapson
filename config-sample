@@ -35,7 +35,7 @@ ReqConfirmTemplate $HOME/.mapson/reqmail.template:/usr/local/share/mapson/reqmai
 #       This option specifies the command mapSoN invokes in order to
 #       deliver a request-for-confirmation e-mail. The expanded template
 #       file will be piped into this command on the standard input channel.
-MTA /usr/sbin/sendmail -i -t
+MTA /usr/sbin/sendmail '-f<>' -i -t
 
 # PassIncorrectMails <boolean>
 #       This option determines how mapSoN will deal with RFC syntax errors
