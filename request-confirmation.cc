@@ -136,7 +136,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
     // Read request-for-confirmation mail template into buffer.
 
     const string& filename = config->request_for_confirmation_file;
-    int fd = open(filename.c_str(), O_RDWR , S_IRUSR | S_IWUSR);
+    int fd = open(filename.c_str(), O_RDONLY, S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't request-mail template file '") + filename + "' for reading");
     fd_sentry sentry(fd);
