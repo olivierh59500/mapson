@@ -41,10 +41,10 @@ configure:	configure.in aclocal.m4
 include/mapson.mk:	configure
 	./configure $(ACFLAGS)
 
-bump:
+bump::
 	@scripts/bump.sh
 
-ChangeLog:
+ChangeLog::
 	-cp ChangeLog ChangeLog.old
 	rcs2log -u 'simons	Peter Simons	simons@rhein.de' >ChangeLog.new;
 	if [ -s ChangeLog.new ]; then \
