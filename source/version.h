@@ -4,4 +4,4 @@
  *
  */
 
-#define	VERS	"mapSoN 0.1"
+#define	VERS	"mapSoN 1.0-beta-1"
