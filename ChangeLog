@@ -1,3 +1,10 @@
+2002-01-24  Peter Simons  <simons@computer.org>
+
+	* Added lots of content to the documentation.
+
+	* Compiled-in system paths are available in variables in the
+	config file now. See the "config-sample" file or docs.
+
 2002-01-22  Peter Simons  <simons@computer.org>
 
 	* Released 2.0 beta 1.
