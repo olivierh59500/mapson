@@ -12,7 +12,11 @@ dnl
 
 AC_DEFUN(PETI_PATH_SRCDIR, [
 AC_MSG_CHECKING(path of top source directory)
-SRCDIR=`pwd`
+if test "$srcdir" = "."; then
+    SRCDIR=`pwd`
+else
+    SRCDIR=$srcdir
+fi
 AC_MSG_RESULT($SRCDIR)
 AC_SUBST(SRCDIR)
 ])
