@@ -13,6 +13,9 @@
 #include <fcntl.h>
 #include <string.h>
 #include <db.h>
+#ifndef O_EXLOCK
+#  define O_EXLOCK 0
+#endif
 
 #include <myexceptions.h>
 #include <paths.h>
