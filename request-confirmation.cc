@@ -77,7 +77,6 @@ namespace
                             {
                             i = find_next_header_line(mail, pos);
                             data = mail.substr(pos, i - pos);
-                            debug(("Found HEADERLINES[%d] = '%s'", idx, data.c_str()));
                             return;
                             }
                         }
@@ -94,7 +93,6 @@ namespace
                         if (i == static_cast<size_t>(idx))
                             {
                             data = mail.substr(pos, nextpos - pos);
-                            debug(("Found $HEADER[%d] = '%s'", idx, data.c_str()));
                             return;
                             }
                         }
@@ -109,7 +107,6 @@ namespace
                         if (i == static_cast<size_t>(idx))
                             {
                             data = mail.substr(pos, nextpos - pos);
-                            debug(("Found $BODY[%d] = '%s'", idx, data.c_str()));
                             return;
                             }
                         }
