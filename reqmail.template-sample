@@ -3,6 +3,9 @@ To: ${ENVELOPE:-${RETURN_PATH:-${SENDER:-${FROM[0]}}}}
 Subject: \[mapSoN\] Request for confirmation
 Precedence: junk
 Auto-Submitted: auto-generated
+References: $MESSAGEID
+In-Reply-To: $MESSAGEID
+
 
 I have received the following e-mail from you:
 

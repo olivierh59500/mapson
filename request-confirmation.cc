@@ -60,6 +60,8 @@ namespace
                 data = mail.substr(0, body_pos - 1);
             else if (strcasecmp("body", name.c_str()) == 0)
                 data = mail.substr(body_pos);
+            else if (strcasecmp("messageid", name.c_str()) == 0)
+                data = addresses.message_id;
             else
                 throw varexp::undefined_variable();
             }

@@ -16,6 +16,7 @@ struct mail_addresses
     std::string envelope;
     std::string sender;
     std::string return_path;
+    std::string message_id;
     addrset_t from;
     addrset_t reply_to;
     };
