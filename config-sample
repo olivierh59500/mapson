@@ -1,0 +1,79 @@
+#
+# mapSoN config file
+#
+# The values shown in this file are the default settings for each keyword.
+#
+
+# Mailbox <file>
+#       This option specifies the complete path to the user's mailbox file.
+#       That is the location where mapSoN will store incoming e-mail that
+#       passed.
+Mailbox /var/spool/mail/$LOGNAME
+
+# SpoolDir <directory>
+#       This option specifies the complete path to the directory, in which
+#       mapSoN will spool incoming e-mails that do not pass the test and
+#       require a confirmation. The directory will be created if it does
+#       not exist.
+SpoolDir $HOME/.mapson/spool
+
+# AddressDB <file>
+#       This option specifies the complete path the file mapSoN will use to
+#       store the known addresses. The file will be created if it does not
+#       exist.
+AddressDB $HOME/.mapson/address-db
+
+# ReqConfirmTemplate <file>
+#       This option specifies the complete path to the template file mapSoN
+#       will use when it sends out a request for confirmation. mapSoN will
+#       fail if this file does not exist.
+ReqConfirmTemplate $HOME/.mapson/request-for-confirmation.txt
+
+# MTA <command>
+#       This option specifies the command mapSoN invokes in order to
+#       deliver a request-for-confirmation e-mail. The expanded template
+#       file will be piped into this command on the standard input channel.
+MTA /usr/sbin/sendmail -i -t
+
+# PassIncorrectMails <boolean>
+#       This option determines how mapSoN will deal with RFC syntax errors
+#       in the incoming e-mail. If PassIncorrectMails is set to "true",
+#       mapSoN will terminate and return the return code configured via the
+#       SyntaxErrorRC directive when it detects an error. If this option is
+#       set to "false", mapSoN will ignore syntax errors as far as
+#       possible.
+PassIncorrectMails true
+
+# StrictRFCParser <boolean>
+#       If this option is set to "false", mapSoN's RFC parser will parse
+#       only the headers it has to -- that is, all headers that contain
+#       addresses. If StrictRFCParser is set to "true", mapSoN will parse
+#       _all_ headers of the incoming e-mail. Obviously, enabling the
+#       strict parser makes only sense if PassIncorrectMails is disabled.
+StrictRFCParser false
+
+# RuntimeErrorRC <int>
+#       This option specifies the return code mapSoN should return in case
+#       it encounters a run-time error such as failure to open the address
+#       data base file, etc. These return codes are interpreted by the MTA
+#       that called mapSoN and determine what the MTA should do with the
+#       mail.
+#
+#       Valid return codes are in the range of 0 <= rc <= 128.
+RuntimeErrorRC 75
+
+# SyntaxErrorRC <int>
+#       This option specifies the return code mapSoN should return in case
+#       it encounters a syntax error in the incoming e-mail. These return
+#       codes are interpreted by the MTA that called mapSoN and determine
+#       what the MTA should do with the mail.
+#
+#       Valid return codes are in the range of 0 <= rc <= 128.
+SyntaxErrorRC 65
+
+# Debug <boolean>
+#       If this option is set to "true", mapSoN will log extensive
+#       debugging information. Please note that debug information is only
+#       available if the program has been compiled with "DEBUG" defined by
+#       the pre-processor. Otherwise, this option is ignored.
+Debug false
