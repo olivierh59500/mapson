@@ -16,6 +16,7 @@
 #include "extract-addresses.hh"
 #include "address-db.hh"
 #include "home-dir.hh"
+#include "process-ack.hh"
 
 using namespace std;
 
@@ -23,11 +24,21 @@ int
 main(int argc, char * argv[])
 try
     {
-    // Initialize our environment.
+    // First of all, initialize our environment.
 
-    AddressDB address_db(assert_mapson_home_dir_exists() + "/address.db");
+    AddressDB address_db(get_home_directory() + "/.mapson-address-db");
 
-    // Read the e-mail header coming on the standard input stream.
+    // If we have command line parameters, we go into ACK mode.
+
+    if (argc > 1)
+	{
+	for (int i = 1; i < argc; ++i)
+	    process_ack(address_db, argv[i]);
+	return 0;
+	}
+
+    // OK, we have to decide whether to accept the mail or not. Read
+    // the e-mail header coming on the standard input stream.
 
     string header;
     char buffer[1024];
@@ -46,6 +57,8 @@ try
 
     addrset_t addresses;
     extract_sender_addresses(header, addresses);
+    if (addresses.empty())
+	throw runtime_error("Could not extract any valid address from the mail!");
     addrset_t::const_iterator i;
     bool had_a_hit = false;
     for (i = addresses.begin(); i != addresses.end(); )
