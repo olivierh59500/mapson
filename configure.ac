@@ -14,7 +14,7 @@ if test "$prefix" = "NONE"; then
         exec_prefix=/usr/local
     fi
     if test "$sysconfdir" = '${prefix}/etc'; then
-        sysconfdir=/etc
+        sysconfdir=/etc/mapson
     fi
 fi
 if test "$exec_prefix" = "NONE"; then
