@@ -23,6 +23,7 @@
 #include "request-confirmation.hh"
 #include "gather-addresses.hh"
 #include "accept-confirmation.hh"
+#include "version.h"
 
 using namespace std;
 
@@ -35,7 +36,7 @@ try
 
     // Log the fact we're here.
 
-    debug(("mapSoN verion 0.0 (%s %s) starting up", __DATE__, __TIME__));
+    debug(("mapSoN verion " VERSION " starting up", __DATE__, __TIME__));
     config->dump();
 
     // If we have parameters left on the command line that were no
