@@ -4,11 +4,9 @@
 # @configure_input@
 #
 DESTDIR		=
-prefix		= @prefix@
-exec_prefix	= @exec_prefix@
 bindir		= @bindir@
 mandir		= @mandir@
-datadir		= @datadir@/mapson
+datadir		= @datadir@
 sysconfdir	= @sysconfdir@
 mailboxdir	= @mailboxdir@
 mta		= @mta@
@@ -92,25 +90,25 @@ documentation/mapson.pdf:
 
 install:	mapson reqmail.template-sample config-sample documentation/mapson.1 \
 		documentation/mapson.html documentation/mapson.pdf
-	@$(MKDIR) -p $(DESTDIR)$(bindir)
-	@$(INSTALL) -c -m 555 mapson $(DESTDIR)$(bindir)/
-	@$(MKDIR) -p $(DESTDIR)$(datadir)
-	@$(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)$(datadir)/
-	@$(MKDIR) -p $(DESTDIR)$(sysconfdir)
-	@$(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/mapson.config-sample
-	@$(MKDIR) -p $(DESTDIR)$(mandir)/man1
-	@$(INSTALL) -c -m 644 documentation/mapson.1 $(DESTDIR)$(mandir)/man1/mapson.1
-	@$(INSTALL) -c -m 644 documentation/mapson.html $(DESTDIR)$(datadir)/
-	@$(INSTALL) -c -m 644 documentation/peti.css $(DESTDIR)$(datadir)/
-	@$(INSTALL) -c -m 644 documentation/mapson.pdf $(DESTDIR)$(datadir)/
-	@test -f $(DESTDIR)$(sysconfdir)/mapson.config || \
-	    $(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/mapson.config;
-	@test -f $(DESTDIR)$(datadir)/reqmail.template || \
-	    $(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)$(datadir)/reqmail.template
+	@$(MKDIR) -p $(DESTDIR)/$(bindir)
+	@$(INSTALL) -c -m 555 mapson $(DESTDIR)/$(bindir)/
+	@$(MKDIR) -p $(DESTDIR)/$(datadir)
+	@$(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)/$(datadir)/
+	@$(MKDIR) -p $(DESTDIR)/$(sysconfdir)
+	@$(INSTALL) -c -m 644 config-sample $(DESTDIR)/$(sysconfdir)/mapson.config-sample
+	@$(MKDIR) -p $(DESTDIR)/$(mandir)/man1
+	@$(INSTALL) -c -m 644 documentation/mapson.1 $(DESTDIR)/$(mandir)/man1/mapson.1
+	@$(INSTALL) -c -m 644 documentation/mapson.html $(DESTDIR)/$(datadir)/
+	@$(INSTALL) -c -m 644 documentation/peti.css $(DESTDIR)/$(datadir)/
+	@$(INSTALL) -c -m 644 documentation/mapson.pdf $(DESTDIR)/$(datadir)/
+	@test -f $(DESTDIR)/$(sysconfdir)/mapson.config || \
+	    $(INSTALL) -c -m 644 config-sample $(DESTDIR)/$(sysconfdir)/mapson.config;
+	@test -f $(DESTDIR)/$(datadir)/reqmail.template || \
+	    $(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)/$(datadir)/reqmail.template
 	@echo
 	@echo mapSoN is installed now. You will find the user manual at:
 	@echo
-	@echo '    $(DESTDIR)$(datadir)/'
+	@echo '    $(DESTDIR)/$(datadir)/'
 
 clean distclean realclean::
 	@(cd documentation && $(MAKE) $@)
