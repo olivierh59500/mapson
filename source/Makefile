@@ -45,3 +45,4 @@ proto.h:
 # DO NOT DELETE
 
 main.o: proto.h version.h
+mail_rescue.o: proto.h
