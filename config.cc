@@ -14,6 +14,7 @@
 
 // My own libraries.
 #include "system-error/system-error.hh"
+#include "libvarexp/varexp.hh"
 #include "config.hh"
 #include "log.hh"
 
@@ -39,6 +40,21 @@ namespace
         };
     struct no_rc_error
         {
+        };
+    struct env_lookup : public varexp::callback_t
+        {
+        virtual void operator()(const string& name, string& data)
+            {
+            const char* p = getenv(name.c_str());
+            if (p == NULL)
+                data.clear();
+            else
+                data = p;
+            }
+        virtual void operator()(const string& name, int idx, string& data)
+            {
+            throw runtime_error("Index lookups are not implemented for config files.");
+            }
         };
     }
 
@@ -146,8 +162,20 @@ inline unsigned int get_rc(const string& value)
     return i;
     }
 
-void configuration::set_option(const string& keyword, const string& data)
+void configuration::set_option(const string& keyword, const string& _data)
     {
+    // Expand environment variables in the data part.
+
+    string data;
+    env_lookup lookup;
+    varexp::config_t myconfig;
+    myconfig.startindex = myconfig.endindex = '\0';
+    varexp::unescape(_data, data, false);
+    varexp::expand(data, data, lookup);
+    varexp::unescape(data, data, true);
+
+    // Assign the value to our class.
+
     try
         {
         if (strcasecmp("debug", keyword.c_str()) == 0)
