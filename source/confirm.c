@@ -19,17 +19,18 @@
 
 #define SENDMAIL_PATH  "/usr/sbin/sendmail"
 #define MIME_SEPARATOR "mapSoN_generated_part_separator"
+
 void
-forward_mail(const char * mail, char * recipient)
+send_request_for_confirmation_mail(char * recipient, char * cookie)
 {
     FILE *         fh;
     char *         buffer;
 
     /* Sanity checks. */
 
-    assert(mail != NULL);
     assert(recipient != NULL);
-    if (!mail || !recipient) {
+    assert(cookie != NULL);
+    if (!recipient || !cookie) {
 	THROW(UNKNOWN_FATAL_EXCEPTION);
     }
 
@@ -47,22 +48,10 @@ forward_mail(const char * mail, char * recipient)
     TRY {
 	fprintf(fh, "From: simons@rhein.de (Peter Simons)\n");
 	fprintf(fh, "To: %s\n", recipient);
-	fprintf(fh, "Subject: [mapSoN] Please re-send your mail\n");
+	fprintf(fh, "Subject: [mapSoN] Request for Confirmation\n");
 	fprintf(fh, "Precedence: junk\n");
-	fprintf(fh, "Mime-Version: 1.0\n");
-	fprintf(fh, "Content-Type: multipart/mixed;\n");
-	fprintf(fh, "        boundary=\"%s\"\n", MIME_SEPARATOR);
-	fprintf(fh, "Content-Transfer-Encoding: 8bit\n");
 	fprintf(fh, "\n");
-	fprintf(fh, "--%s\n", MIME_SEPARATOR);
-	fprintf(fh, "Content-Type: text/plain; charset=US-ASCII\n");
-	fprintf(fh, "\n");
-	fprintf(fh, "bla\n");
-	fprintf(fh, "\n");
-	fprintf(fh, "--%s\n", MIME_SEPARATOR);
-	fprintf(fh, "Content-Type: message/rfc822\n");
-	fprintf(fh, "\n");
-	fprintf(fh, "%s\n", mail);
+	fprintf(fh, "Cookie: %s", cookie);
     }
     OTHERWISE {
 	syslog(LOG_ERR, "I/O error while piping mail to sendmail: %m");
