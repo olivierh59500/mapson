@@ -34,6 +34,7 @@ depend:
 #
 # DO NOT DELETE
 
-main.o: proto.h version.h
-mail_rescue.o: proto.h
-array.o: proto.h
+main.o: mapson.h version.h
+mail_rescue.o: mapson.h
+fail_safe.o: mapson.h
+array.o: mapson.h

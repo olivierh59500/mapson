@@ -12,7 +12,7 @@
 #include <assert.h>
 
 #include <myexceptions.h>
-#include "proto.h"
+#include "mapson.h"
 
 array_t
 build_array(void)

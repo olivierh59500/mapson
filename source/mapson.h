@@ -7,7 +7,10 @@
  *      All rights reserved.
  */
 
-/********** Prototypes for mapSoN **********/
+#ifndef __MAPSON_H__
+#define __MAPSON_H__
+
+/********** Prototypes for mapSoN's routines **********/
 
 /* main.c */
 
@@ -39,3 +42,5 @@ array_t build_array(void  );
 void append_to_array(array_t state, char *string);
 char **get_array(array_t state);
 void free_array(char **array);
+
+#endif /* !defined(__MAPSON_H__) */

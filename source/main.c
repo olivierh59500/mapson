@@ -9,10 +9,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <syslog.h>
 
 #include <myexceptions.h>
-#include "proto.h"
+#include "mapson.h"
 #include "version.h"
 
 int

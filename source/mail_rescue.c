@@ -9,15 +9,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <pwd.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
+#include <errno.h>
 #include <syslog.h>
 
 #include <myexceptions.h>
-#include "proto.h"
+#include "mapson.h"
 
 /* Return the path of the current user's home directory. */
 
