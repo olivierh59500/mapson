@@ -19,6 +19,7 @@ mapson == %mapson.cc.sm +(%comile_flags) \
     +define='DEBUG'
 
 %mapson.cc.sm == <<
+    accept-confirmation.cc
     address-db.cc
     config.cc
     deliver.cc
