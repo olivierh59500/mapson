@@ -96,6 +96,7 @@ send_request_for_confirmation_mail(char * recipient, char * cookie)
     fprintf(fh, "To: %s\n", recipient);
     fprintf(fh, "Subject: [mapSoN] Request for Confirmation\n");
     fprintf(fh, "Precedence: junk\n");
+    fprintf(fh, "X-mapSoN: requesting confirmation\n");
     fprintf(fh, "\n");
     fprintf(fh, mail_text, cookie_buffer);
 

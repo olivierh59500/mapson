@@ -102,6 +102,19 @@ main(int argc, char * argv[])
 	exit(0);
     }
 
+    /* Check whether the mail is a request for confirmation. */
+
+    if ((fail_safe_pattern_match(mail_buffer,
+             "^Subject: \\[mapSoN\\] Request for Confirmation") == TRUE) ||
+	(fail_safe_pattern_match(mail_buffer,
+	     "^X-mapSoN: requesting confirmation") == TRUE)) {
+
+	/* Mail is an incoming request for confirmation. */
+
+	syslog(LOG_INFO, "Received request for confirmation.");
+	save_to(mail_buffer, get_mailbox_path());
+	goto terminate;
+    }
 
     /* Check whether the mail is a comfirmation of an rfcmail. */
 
