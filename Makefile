@@ -46,10 +46,14 @@ bump::
 
 ChangeLog::
 	-cp ChangeLog ChangeLog.old
-	rcs2log -u 'simons	Peter Simons	simons@rhein.de' >ChangeLog.new;
+	rcs2log -u 'simons	Peter Simons	peter.simons@gmd.de' >ChangeLog.new;
 	if [ -s ChangeLog.new ]; then \
 		cat ChangeLog.new ChangeLog.old >ChangeLog; \
 		rm ChangeLog.new ChangeLog.old;\
 	else \
 		rm ChangeLog.new ChangeLog.old; \
 	fi
+
+install:	all
+	@(cd src;$(MAKE) install)
+	@(cd doc;$(MAKE) install)

@@ -15,6 +15,9 @@ mapson.ps:	mapson.texi
 	$(TEXI2DVI) mapson.texi
 	$(DVIPS) mapson.dvi -o mapson.ps
 
+install:	mapson.info
+	$(INSTALL) -c -m 444 ./mapson.info $(INFODIR)/mapson.info
+
 clean:
 	rm -f mapson.aux mapson.cp mapson.fn mapson.ky mapson.log
 	rm -f mapson.pg mapson.toc mapson.tp mapson.vr mapson.dvi

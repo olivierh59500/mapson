@@ -29,6 +29,9 @@ depend:
 	makedepend -Y /usr/include $(SRCS)
 	@rm -f Makefile.bak
 
+install:	all
+	$(INSTALL) -c -s -m 555 ./mapson $(BINDIR)/mapson
+
 clean:
 	@echo "====> Cleaning up"
 	rm -f mapson *.o *.core
