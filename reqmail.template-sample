@@ -1,4 +1,4 @@
-From: simons+${MD5HASH}@cryp.to (Peter Simons)
+From: simons+${MD5HASH}@cryp.to (Peter Simons' Anti-Spam-Tool)
 To: ${ENVELOPE:-${RETURN_PATH:-${SENDER:-${FROM[0]}}}}
 Subject: please confirm / bitte bestaetigen
 Precedence: junk
@@ -10,7 +10,7 @@ In-Reply-To: $MESSAGEID
 
 Because I receive several dozen spam    Da ich am Tag dutzende Spam-Mails
 mails each day, I installed a small     erhalte, habe ich ein Programm
-tool that will defer incoming e-mail    installiert, dass jede eingehende
+tool that will defer incoming e-mail    installiert, das jede eingehende
 if it comes from an address unknown     E-Mail abweist, wenn diese von einer
 to me. This is the case with the mail   mir unbekannten Absendeadresse
 you sent me, I'm afraid.                kommt. Leider ist dies bei Ihrer
@@ -35,5 +35,4 @@ is to much for me to bear.              derzeit durch das Internet geistert,
 
 Your e-mail was:                        Ihre E-Mail war:
 
-[   | ${HEADER[#]}]   |
-[   | ${BODY[#]}]{1,10}   | \[...\]
+[   | ${HEADER[#]}]   | \[...\]
