@@ -34,6 +34,18 @@ addresses to the database.</para>
     </varlistentry>
 
     <varlistentry>
+      <term><option>--cookie</option> <replaceable>cookie</replaceable></term>
+      <listitem>
+        <para>Using this parameter, you can specify a cookie on the command
+line. &mapson; will then try to approve the corresponding mail from the spool.
+If the cookie turns out to be incorrect, &mapson; will continue to process the
+mail as if none had been specified. That means, though, that if a valid cookie
+is found in the mail itself, it will approve the corresponding mail
+nonetheless.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term><option>-c <replaceable>config</replaceable></option></term>
       <term><option>--config-file <replaceable>config</replaceable></option></term>
       <listitem>
