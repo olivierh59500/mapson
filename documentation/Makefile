@@ -34,6 +34,8 @@ man-page.html:	synopsis.inc description.inc cmdloptions.inc configfile.inc \
 
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
 mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc description.inc
+mapson.html: principle.png
+mapson.html: principle.eps
 
 readme.txt:	readme.sgml building.inc ../VERSION
 
