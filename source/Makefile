@@ -8,11 +8,7 @@
 
 SRCS	= main.c mail_rescue.c fail_safe.c array.c parse_mail.c
 OBJS	= $(SRCS:.c=.o)
-LIBS   += -lrfc822 -lmpools -llists -lexceptions # -ldmalloc
-
-CFLAGS  += -Wall
-CPPFLAGS+= -I/usr/local/include #-DDEBUG_DMALLOC
-LDFLAGS += -L/usr/local/lib
+LIBS   += -lrfc822 -lmpools -llists -lexceptions
 
 all:	$(LIBS) mapson
 
