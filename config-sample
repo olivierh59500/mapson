@@ -27,7 +27,7 @@ AddressDB $HOME/.mapson/address-db
 #       This option specifies the complete path to the template file mapSoN
 #       will use when it sends out a request for confirmation. mapSoN will
 #       fail if this file does not exist.
-ReqConfirmTemplate $HOME/.mapson/request-for-confirmation.txt
+ReqConfirmTemplate $HOME/.mapson/reqmail.template
 
 # MTA <command>
 #       This option specifies the command mapSoN invokes in order to

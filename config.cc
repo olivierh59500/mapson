@@ -70,7 +70,7 @@ configuration::configuration(int argc, char** argv)
     config_file.assign(sentry.pwd->pw_dir).append("/.mapson/config");
     spool_dir.assign(sentry.pwd->pw_dir).append("/.mapson/spool");
     address_db.assign(sentry.pwd->pw_dir).append("/.mapson/address-db");
-    request_for_confirmation_file.assign(sentry.pwd->pw_dir).append("/.mapson/request-for-confirmation.txt");
+    request_for_confirmation_file.assign(sentry.pwd->pw_dir).append("/.mapson/reqmail.template");
     mailbox.assign("/var/spool/mail/").append(sentry.pwd->pw_name);
     mta = "/usr/sbin/sendmail -i -t";
     strict_rfc_parser = false;
