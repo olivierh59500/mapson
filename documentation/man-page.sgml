@@ -5,6 +5,7 @@
 <!ENTITY cmdloptions SYSTEM "cmdloptions.inc">
 <!ENTITY configfile SYSTEM "configfile.inc">
 <!ENTITY license SYSTEM "license.inc">
+<!ENTITY hellip "...">
 ]>
 
 <refentry lang="en">
