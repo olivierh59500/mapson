@@ -157,14 +157,15 @@ mail_addresses extract_sender_addresses(const string& mail)
 
             else if (strncasecmp("Message-Id:", line.c_str(), sizeof("Message-Id:") - 1) == 0)
                 {
-                if (!addresses.message_id.empty())
+                if (config->have_message_id)
                     throw rfc822_syntax_error("Mail contains duplicate 'Return-Path:' header.");
                 try
                     {
                     line.erase(line.size() - 1, 1).erase(0, sizeof("Message-Id:") - 1);
-                    addresses.message_id = line;
+                    const_cast<configuration*>(config)->message_id = line;
+                    const_cast<configuration*>(config)->have_message_id = true;
                     rfc822parser parser(lex(line));
-                    addresses.message_id.assign("<").append(parser.route_addr().address).append(">");
+                    const_cast<configuration*>(config)->message_id.assign("<").append(parser.route_addr().address).append(">");
                     if (!parser.empty())
                         throw rfc822_syntax_error("Unexpected trailing data");
                     }
@@ -188,7 +189,7 @@ mail_addresses extract_sender_addresses(const string& mail)
     debug(("    Envelope    = %s", addresses.envelope.c_str()));
     debug(("    Sender      = %s", addresses.sender.c_str()));
     debug(("    Return-Path = %s", addresses.return_path.c_str()));
-    debug(("    Message-Id  = %s", addresses.message_id.c_str()));
+    debug(("    Message-Id  = %s", config->message_id.c_str()));
     string tmp;
     for (addrset_t::const_iterator i = addresses.from.begin(); i != addresses.from.end(); ++i)
         {

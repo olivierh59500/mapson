@@ -132,7 +132,10 @@ try
         // Deliver the mail.
 
         if (!was_confirmation)
+            {
+            info("Letting mail '%s' pass.", config->message_id.c_str());
             deliver(mail);
+            }
 	}
     else
         {
@@ -146,16 +149,19 @@ try
     }
 catch(const rfc822_syntax_error& e)
     {
-    info("Syntax error in mail: %s", e.what());
+    error("Syntax error in mail '%s': %s",
+          (config) ? config->message_id.c_str() : "no-message-id", e.what());
     return (config) ? config->syntax_error_rc : 75;
     }
 catch(const exception& e)
     {
-    error("Runtime error: %s", e.what());
+    error("Runtime error while processing mail '%s': %s",
+          (config) ? config->message_id.c_str() : "no-message-id", e.what());
     return (config) ? config->syntax_error_rc : 75;
     }
 catch(...)
     {
-    error("Caught unknown exception. Aborting.");
+    error("Caught unknown exception while processing mail '%s'. Aborting.",
+          (config) ? config->message_id.c_str() : "no-message-id");
     return (config) ? config->syntax_error_rc : 75;
     }

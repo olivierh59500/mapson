@@ -40,7 +40,7 @@ string spool(const string& mail)
     // Open the spool file and write store the mail there.
 
     string filename = config->spool_dir + "/" + buf;
-    info("Spooling e-mail as '%s'.", filename.c_str());
+    info("Spooling e-mail '%s' as '%s'.", config->message_id.c_str(), filename.c_str());
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't open spool file '") + filename + "' for writing");

@@ -79,6 +79,8 @@ configuration::configuration(int argc, char** argv)
     runtime_error_rc = 75;
     syntax_error_rc = 65;
     debug = false;
+    message_id = "no-message-id";
+    have_message_id = false;
 
     // Parse the command line into temporary variables except for the
     // location of the config file.

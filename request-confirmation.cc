@@ -61,7 +61,7 @@ namespace
             else if (strcasecmp("body", name.c_str()) == 0)
                 data = mail.substr(body_pos);
             else if (strcasecmp("messageid", name.c_str()) == 0)
-                data = addresses.message_id;
+                data = config->message_id;
             else
                 throw varexp::undefined_variable();
             }
