@@ -45,7 +45,7 @@ they're separated by colons, for example:</para>
 try <filename>$DATADIR/reqmail.template</filename>, and so on, until one of the
 files can be loaded successfully.</para>
 
-        <para>This is an extreme useful feature if you are a system
+        <para>This is an extremely useful feature if you are a system
 administrator who wishes to allow all users of the system to use &mapson;
 without having to create a request-for-confirmation template of their own:
 Configure &mapson; to load that request-for-confirmation template first, that is
@@ -165,7 +165,7 @@ environment variables, which are guaranteed to be defined. You can use them
 anywhere in the data part of a configuration directive, and you can use the
 usual manipulations on them.</para>
 
-  <para>Envirenment variables are looked-up case-sensitive, so
+  <para>Environment variables are looked-up case-sensitive, so
 <varname>$home</varname> is not the same thing as <varname>$HOME</varname>. This
 behavior is different in the request-for-confirmation template, where you can
 spell the variables upper- or lower-case as you wish. That's because the
