@@ -171,7 +171,7 @@ mail_addresses extract_sender_addresses(const string& mail)
                     }
                 catch(const rfc822_syntax_error& e)
                     {
-                    throw rfc822_syntax_error(string(e.what()) + " in 'Return-Path:" + line + "'");
+                    throw rfc822_syntax_error(string(e.what()) + " in 'Message-Id:" + line + "'");
                     }
                 }
             }
