@@ -1,29 +1,33 @@
-1997-11-08  Peter Simons  <simons@rhein.de>
+1998-01-17  Peter Simons  <peter.simons@gmd.de>
 
-	* Released mapSoN 1.0 beta 2.
+	* src/cookie.c, src/main.c:
+	Added code that will create an MD5 hash over the incoming mail and use
+	it has cookie instead of the Message-Id. This saves us from any danger
+	when people use weird characters in their message ids, such as "/" or
+	":".
+
+	* etc/example_rfctext, etc/example_ruleset: Updated the example files.
+
+1997-12-21  Peter Simons  <peter.simons@gmd.de>
+
+	* src/mapson.h, src/escape_from.c, src/main.c, src/Makefile:
+	Before a mail is saved to the disk, the string "From " at the
+	beginning of a line will now be escaped, to avoid confusing mail
+	readers that use this as a seperation mark between several mails.
+
+1997-11-08  Peter Simons  <peter.simons@gmd.de>
+
+	* Released as mapSoN 1.0 beta 2.
 
 	* src/main.c:
-	The test whether an incoming mail is a request for confirmation or
-	a reply to an "rfcmail" of ours is now hardcoded into mapSoN and
-	can be removed from the ruleset.
+	The patterns that check for an RFCmail are now matched only against
+	the mail header, instead of the whole mail.
 
-	* src/confirm.c:
+	* src/mapson.h, src/Makefile, src/confirm.c, src/get_user_name.c:
 	The "request for confirmation mails" are now sent with "<>" as
 	envelope to avoid bounces coming back to us. Not that mapson couldn't
-	handle the bounces, it's just that we don't need/want them.
-
-	* src/confirm.c:
-	Added the special header "X-mapSoN: requesting confirmation" to
- 	outgoing "RFCmails",
-
-	* src/is_confirmation.c:
-	The search for a mapson-cookie is now carried out case-insensi-
- 	tively.
-
-1997-11-02  Peter Simons  <simons@rhein.de>
-
-	* Released mapSoN 1.0 beta 1.
-
-1997-10-06  Peter Simons  <simons@rhein.de>
-
-	* Genesis. The mapSoN project begun.
+	handle the bounces, it's just that we don't need/want them. Calling
+	sendmail with the envelope set requires us to specify a From: line in
+	the mail, because sendmail won't add any. Hence we're giving it the
+	username to start with. sendmail will append the appropriate domain
+	automatically.
