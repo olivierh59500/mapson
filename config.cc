@@ -69,15 +69,16 @@ configuration::configuration()
 
     // Log the final settings for debugging purposes.
 
-    debug(("config_file = '%s'", config_file.c_str()));
-    debug(("spool_dir = '%s'", spool_dir.c_str()));
-    debug(("address_db = '%s'", address_db.c_str()));
-    debug(("request_for_confirmation_file = '%s'", request_for_confirmation_file.c_str()));
-    debug(("mta = '%s'", mta.c_str()));
-    debug(("strict_rfc_parser = '%s'", (strict_rfc_parser) ? "true" : "false"));
-    debug(("let_incorrect_mails_pass = '%s'", (let_incorrect_mails_pass) ? "true" : "false"));
-    debug(("runtime_error_rc = '%d'", runtime_error_rc));
-    debug(("syntax_error_rc = '%d'", syntax_error_rc));
+    debug(("My configuration:"));
+    debug(("    config_file = '%s'", config_file.c_str()));
+    debug(("    spool_dir = '%s'", spool_dir.c_str()));
+    debug(("    address_db = '%s'", address_db.c_str()));
+    debug(("    request_for_confirmation_file = '%s'", request_for_confirmation_file.c_str()));
+    debug(("    mta = '%s'", mta.c_str()));
+    debug(("    strict_rfc_parser = '%s'", (strict_rfc_parser) ? "true" : "false"));
+    debug(("    let_incorrect_mails_pass = '%s'", (let_incorrect_mails_pass) ? "true" : "false"));
+    debug(("    runtime_error_rc = '%d'", runtime_error_rc));
+    debug(("    syntax_error_rc = '%d'", syntax_error_rc));
     }
 
 // The destructor is pretty straightforward.
