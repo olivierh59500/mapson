@@ -10,6 +10,8 @@ o Support headers
 
 o Convert libmd5 to uint32_t and stdint.h.
 
+o Make libmd5 get along without __alignof__.
+
 o Add last-used timestamps to each address in the database.
 
 o Add headers to the mails mapSoN processes and tell the user what
@@ -21,12 +23,6 @@ o Add an option that tells mapSoN to create missing parent
   directories on the fly, if it wants to write to the spool
   directory or to the address database.
 
-o Make another template that does not use columns.
-
-o mapSoN should have options that tell it not to look for cookies
-  or to require a cookie in case the mail comes from procmail's
-  +argument feature.
-
 o Add an option that tells mapSoN to let the actual confirmation
   mail pass, too, in case someone writes comments into it.
 
@@ -36,16 +32,6 @@ o Extract the message-id before looking for a cookie so that we have
 o Add a way to match whole domains.
 
 o Implement my own setenv() because it is missing on Solaris.
-
-o The sample config config is installed as $prefix/etc/config-sample;
-  there's no way to recognize it belongs to mapson if there's no
-  specific prefix! That must not be. Also, mapson does not read the
-  global config file at all! Lot's of work to do!
-
-o The documentation of the config file doesn't say where mapson
-  expects the config file or anything!
-
-o Document statistics of how successful mapson is.
 
 o The result of jadetex will swallow "--" in <option> tags and turn it
   into a longer hyphen. This must not be.
