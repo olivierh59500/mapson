@@ -10,6 +10,9 @@
 %.html : %.sgml
 	sgmltools -b onehtml $<
 
+%.txt : %.sgml
+	sgmltools -b w3m $<
+
 %.dvi : %.tex
 	jadetex \\nonstopmode\\input $<; \
 	while grep -i 'Rerun' $*.log; do \
@@ -24,7 +27,7 @@
 
 .PHONY: all clean distclean realclean
 
-all:	mapson.html mapson.pdf man-page.txt
+all:	mapson.html mapson.pdf man-page.txt readme.txt
 
 man-page.html:	synopsis.inc description.inc cmdloptions.inc configfile.inc \
 		license.inc
@@ -32,25 +35,27 @@ man-page.html:	synopsis.inc description.inc cmdloptions.inc configfile.inc \
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
 mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc
 
+readme.txt:	readme.sgml building.inc ../VERSION
+
 man-page.txt:	man-page.html
 	lynx -width=80 -nolist -dump $< >$@
 
 defconfig.inc:	../config-sample Makefile
 	sed <$< >$@ -e 's/</\&lt;/g' \
-	            -e 's/>/\&gt;/g' \
-	            -e 's/&/\&amp;/g' \
-	            -e 's#-#<markup>-</markup>#g' \
-	            -e '/^#/d'       \
-	            -e '/^$$/d'
+		    -e 's/>/\&gt;/g' \
+		    -e 's/&/\&amp;/g' \
+		    -e 's#-#<markup>-</markup>#g' \
+		    -e '/^#/d'	     \
+		    -e '/^$$/d'
 
 defreqmail.inc:../reqmail.template-sample Makefile
 	sed <$< >$@ -e 's/</\&lt;/g' \
-	            -e 's/>/\&gt;/g' \
-	            -e 's/&/\&amp;/g' \
-	            -e 's#-#<markup>-</markup>#g' \
-	            -e 's#example.com#<replaceable>&</replaceable>#g' \
-	            -e 's#username#<replaceable>&</replaceable>#g'  \
-	            -e 's#Real Name#<replaceable>&</replaceable>#g'
+		    -e 's/>/\&gt;/g' \
+		    -e 's/&/\&amp;/g' \
+		    -e 's#-#<markup>-</markup>#g' \
+		    -e 's#example.com#<replaceable>&</replaceable>#g' \
+		    -e 's#username#<replaceable>&</replaceable>#g'  \
+		    -e 's#Real Name#<replaceable>&</replaceable>#g'
 
 clean distclean:
 	@rm -f *.aux *.dvi *.log *.toc
