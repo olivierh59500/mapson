@@ -22,20 +22,20 @@
 
     &description;
 
-  <para>This illustration will probably help not all and only add to the
+    <para>This illustration will probably help not all and only add to the
 confusion, but I made it, and now I have to include it here -- helpful or
 not!</para>
 
-  <mediaobject>
-    <imageobject>
-      <imagedata fileref="principle1.png" format="png" align="center">
-    </imageobject>
-  </mediaobject>
-  <mediaobject>
-    <imageobject>
-      <imagedata fileref="principle2.png" format="png" align="center">
-    </imageobject>
-  </mediaobject>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="principle1.png" format="png" align="center">
+      </imageobject>
+    </mediaobject>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="principle2.png" format="png" align="center">
+      </imageobject>
+    </mediaobject>
   </sect1>
 
   <sect1>
