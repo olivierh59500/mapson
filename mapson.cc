@@ -28,11 +28,14 @@ using namespace std;
 int main(int argc, char** argv)
 try
     {
-    debug(("mapSoN verion 0.0 (%s %s) starting up", __DATE__, __TIME__));
-
     // Create our configuration.
 
     config = new configuration(argc, argv);
+
+    // Log the fact we're here.
+
+    debug(("mapSoN verion 0.0 (%s %s) starting up", __DATE__, __TIME__));
+    config->dump();
 
     // If we have parameters left on the command line that were no
     // options, we go into "gather addresses"-mode.

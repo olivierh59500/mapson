@@ -9,12 +9,16 @@
 // ISO C++ headers.
 #include <string>
 
-class configuration
+// My own libraries.
+#include "libparse-config-file/parse-config-file.hh"
+
+class configuration : public AbstractConfig
     {
   public:
     // Construction and Destruction.
     explicit configuration(int, char**);
     ~configuration() throw();
+    void dump() const;
 
     // Paths.
     std::string config_file;
@@ -32,6 +36,9 @@ class configuration
     int runtime_error_rc;
     int syntax_error_rc;
 
+    // Logging.
+    bool debug;
+
   protected:
     friend int main(int, char**);
     int parameter_index;
@@ -39,6 +46,8 @@ class configuration
   private:
     configuration(const configuration&);
     configuration& operator= (const configuration&);
+    virtual void set_option(const std::string&, const std::string&);
+    virtual void unknown_line(const std::string&);
     };
 extern const configuration* config;
 
