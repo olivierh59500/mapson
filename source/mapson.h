@@ -16,6 +16,15 @@
 #  include <dmalloc.h>
 #endif
 
+/********** Defines and structures. **********/
+
+#ifndef __HAVE_DEFINED_BOOL__
+#define __HAVE_DEFINED_BOOL__ 1
+typedef int bool;
+#define FALSE (0==1)
+#define TRUE (1==1)
+#endif
+
 /********** Prototypes for mapSoN's routines **********/
 
 /* main.c */
