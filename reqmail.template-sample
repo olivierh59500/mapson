@@ -1,5 +1,5 @@
 From: simons+${MD5HASH}@cryp.to
-To: ${ENVELOPE}
+To: ${ENVELOPE:-${RETURN_PATH:-${SENDER:-${FROM[0]}}}}
 Subject: \[mapSoN\] Request for confirmation
 Precedence: junk
 Auto-Submitted: auto-generated
