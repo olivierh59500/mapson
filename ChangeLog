@@ -1,3 +1,13 @@
+2003-01-27  Peter Simons  <simons@computer.org>
+
+	* VERSION: Bumped to beta 3.
+
+	* Added the --dont-scan option to the command line. Specifying
+	this will tell mapSoN _not_ to scan the body of the incoming mail
+	for a cookie. This is useful in setups, where the cookie is
+	extracted via procmail's "+argument" mechanism, for instance, thus
+	it is passed to mapSoN via the --cookie flag anyway.
+
 2003-01-17  Peter Simons  <simons@computer.org>
 
 	* Bumped version to 2.3 beta 2.
