@@ -32,16 +32,30 @@ try
 
     if (argc > 1)
 	{
+	int rc = 0;
 	for (int i = 1; i < argc; ++i)
-	    process_ack(address_db, argv[i]);
-	return 0;
+	    {
+	    try { process_ack(address_db, argv[i]); }
+	    catch(const exception& e)
+		{
+		fprintf(stderr, "*** RUN-TIME ERROR: %s\n", e.what());
+		rc = 2;
+		}
+	    catch(...)
+		{
+		fprintf(stderr, "*** Caught unknown exception. Aborting.\n");
+		rc = 2;
+		}
+	    }
+
+	return rc;
 	}
 
     // OK, we have to decide whether to accept the mail or not. Read
     // the e-mail header coming on the standard input stream.
 
     string header;
-    char buffer[1024];
+    char buffer[8*1024];
     ssize_t rc;
     for (rc = read(STDIN_FILENO, buffer, sizeof(buffer));
 	 rc > 0;
