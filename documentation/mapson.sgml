@@ -29,26 +29,27 @@
 
     &description;
 
-  <para>This illustration will probably help not all and only add to the
+    <para>This illustration will probably help not all and only add to the
 confusion, but I made it, and now I have to include it here -- helpful or
 not!</para>
 
-  <mediaobject>
-    <imageobject>
-      <imagedata fileref="principle1.eps" format="eps" scale="40">
-    </imageobject>
-    <imageobject>
-      <imagedata fileref="principle1.png" format="png">
-    </imageobject>
-  </mediaobject>
-  <mediaobject>
-    <imageobject>
-      <imagedata fileref="principle2.eps" format="eps" scale="40">
-    </imageobject>
-    <imageobject>
-      <imagedata fileref="principle2.png" format="png">
-    </imageobject>
-  </mediaobject>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="principle1.eps" format="eps" scale="40">
+      </imageobject>
+      <imageobject>
+        <imagedata fileref="principle1.png" format="png">
+      </imageobject>
+    </mediaobject>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="principle2.eps" format="eps" scale="40">
+      </imageobject>
+      <imageobject>
+        <imagedata fileref="principle2.png" format="png">
+      </imageobject>
+    </mediaobject>
+  </sect1>
 
   <sect1>
     <title>How effective is &mapson;</title>
