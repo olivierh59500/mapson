@@ -33,7 +33,6 @@ assert_mapson_home_dir_exists(void)
     rc = stat(mapson_home_dir, &sb);
     if (rc == 0) {
 	free(mapson_home_dir);
-	printf("sb.st_mode is %d.\n", sb.st_mode);
 	if ((sb.st_mode & S_IFDIR) != 0)
 	  return;		/* everything is okay */
 	else {
