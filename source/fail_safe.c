@@ -12,6 +12,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <assert.h>
+#include <sys/types.h>
 #include <regex.h>
 
 #include <myexceptions.h>
