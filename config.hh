@@ -38,6 +38,8 @@ class configuration : public AbstractConfig
 
     // Logging.
     bool debug;
+    std::string message_id;
+    bool have_message_id;
 
   protected:
     friend int main(int, char**);

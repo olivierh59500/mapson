@@ -47,7 +47,8 @@ bool accept_confirmation(std::string& mail)
 
             // We found the mail; now deliver it.
 
-            info("Incoming e-mail contained cookie '%s'; delivering the corresponding spooled mail.", cookie.c_str());
+            info("Incoming e-mail '%s' contained cookie '%s'; delivering the corresponding spooled mail.",
+                 config->message_id.c_str(), cookie.c_str());
             mail.erase();
             char tmp[8*1024];
             ssize_t rc;
