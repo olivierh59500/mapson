@@ -80,14 +80,24 @@ main(int argc, char * argv[])
 	Mail = parse_mail(mail_buffer);
     }
     HANDLE(INVALID_ADDRESS_EXCEPTION) {
-	fprintf(stderr, "One or several addresses are syntactically incorrect.\n");
-	exit(1);
+	syslog(LOG_WARNING, "One or several addresses in the mail are syntactically incorrect.");
+	syslog(LOG_WARNING, "I'll leave it in a rescue file and exit.");
+	exit(0);
     }
     OTHERWISE {
 	PASSTHROUGH();
     }
 
-    printf("Message-Id: '%s'.\n", Mail->message_id);
+    /* Check whether the mail is complete. */
+
+    if (Mail->envelope == NULL ||
+	Mail->message_id == NULL ||
+	Mail->from == NULL || (Mail->from)[0] == NULL) {
+	syslog(LOG_WARNING, "The incoming mail is syntactically incorrect.");
+	syslog(LOG_WARNING, "I'll leave it in a rescue file and exit.");
+	exit(0);
+    }
+
 
     /* Let the rulset check the mail to decide what we'll do with it. */
 
