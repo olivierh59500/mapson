@@ -6,7 +6,6 @@ mapson == %mapson.c.sm +lib=(libexceptions/libexceptions.a) \
                        +lib=(liblists/liblists.a) \
 		       +(my_db_linklib.flags) \
 		       :exe
-
 %mapson.c.sm == <<
     address_db.c
     array.c
@@ -30,9 +29,8 @@ mapson == %mapson.c.sm +lib=(libexceptions/libexceptions.a) \
     spool_dir.c
 
 configure == configure.in :ac
-
-paths.h == /dev/zero +cmd=(./configure) +output_show :output/paths.h
-my_db.h == /dev/zero +cmd=(./configure) +output_show :output/my_db.h
+paths.h             == /dev/zero +cmd=(./configure) +output_show :output/paths.h
+my_db.h             == /dev/zero +cmd=(./configure) +output_show :output/my_db.h
 my_db_linklib.flags == /dev/zero +cmd=(./configure) +output_show :output/my_db_linklib.flags
 
 %clean ! == !<<
