@@ -130,4 +130,8 @@ char *loadfile(const char *filename);
 
 char * is_confirmation_mail(char * mail_buffer);
 
+/* get_user_name.c */
+
+char * get_user_name(void);
+
 #endif /* !defined(__MAPSON_H__) */

@@ -51,6 +51,7 @@ send_request_for_confirmation_mail(char * recipient, char * cookie)
     char *         mail_text;
     char *         cookie_buffer;
     char *         home_dir;
+    char *         username;
 
     /* Sanity checks. */
 
@@ -85,14 +86,24 @@ send_request_for_confirmation_mail(char * recipient, char * cookie)
 
     /* Send the mail back to the originator. */
 
-    buffer = fail_safe_sprintf("%s %s", SENDMAIL_PATH, recipient);
+    buffer = fail_safe_sprintf("%s '-f<>' %s", SENDMAIL_PATH, recipient);
     fh = popen(buffer, "w");
     if (fh == NULL) {
 	syslog(LOG_ERR, "Failed to start command '%s': %m", buffer);
 	free(buffer); free(mail_text); free(cookie_buffer);
 	THROW(IO_EXCEPTION);
     }
+    free(buffer);
 
+    TRY {
+	username = get_user_name();
+    }
+    OTHERWISE {
+        free(cookie_buffer); free(mail_text);
+        PASSTHROUGH();
+    }
+    fprintf(fh, "From: %s\n", username);
+    free(username);
     fprintf(fh, "To: %s\n", recipient);
     fprintf(fh, "Subject: [mapSoN] Request for Confirmation\n");
     fprintf(fh, "Precedence: junk\n");
@@ -103,7 +114,6 @@ send_request_for_confirmation_mail(char * recipient, char * cookie)
     /* Clean up and exit. */
 
     free(cookie_buffer);
-    free(buffer);
     free(mail_text);
     pclose(fh);
 }
