@@ -177,7 +177,7 @@ mail_addresses extract_sender_addresses(const string& mail)
         tmp += *i;
         }
     debug(("    From        = %s", tmp.c_str()));
-    tmp.clear();
+    tmp.erase();
     for (addrset_t::const_iterator i = addresses.reply_to.begin(); i != addresses.reply_to.end(); ++i)
         {
         if (!tmp.empty())
