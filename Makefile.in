@@ -66,6 +66,10 @@ distclean:: clean
 realclean:: distclean
 	@rm -f configure
 
+depend::
+	makedepend -Y -fMakefile.in '-s# Dependencies' `find . -name '*.c*' ` 2>/dev/null
+	@sed <Makefile.in >Makefile.in.bak -e 's/\.\///g'
+	@mv Makefile.in.bak Makefile.in
 
 # Dependencies
 
