@@ -85,7 +85,7 @@ void AddressDB::insert(const string& key)
 
     // Append the address to our buffer and then write it to disk
     // immediately. If any of these operations fail, the memory buffer
-    // and the disk-file are possibly in an undefined state.
+    // might be in an undefined state.
 
     string::size_type end_pos = data.size();
 
