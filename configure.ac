@@ -1,7 +1,7 @@
 dnl
 dnl configure.ac -- Process this file with autoconf to produce a configure script.
 dnl
-dnl AC_PREREQ(2.52)
+AC_PREREQ(2.52)
 AC_INIT(mapson.cc)
 
 dnl Get rid of the lousy '-g -O2' defaults.
@@ -37,5 +37,7 @@ dnl
 
 dnl Write results.
 dnl
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES(Makefile)
+AC_OUTPUT
+
 
