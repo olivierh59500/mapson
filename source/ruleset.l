@@ -33,15 +33,12 @@ static bool           rlst_donot;
 \n				{
     bool rc;
 
-    printf("%d: Pattern: '%s', Action: %d, Parameter '%s', NOT: %d\n",
-	   rlst_lineno, rlst_pattern, rlst_action, rlst_parameter, rlst_donot);
     if (rlst_pattern != NULL && rlst_action != -1) {
 	rc = fail_safe_pattern_match(rlst_mail->header, rlst_pattern);
 	if (rlst_donot == TRUE)
 	  rc = !rc;
 
 	if (rc == TRUE) {
-	    printf("*** Pattern matched ***\n");
 	    free(rlst_pattern);
 	    rlst_rc = rlst_action;
 	    return 0;
@@ -96,7 +93,6 @@ static bool           rlst_donot;
 <parameter>\"[ \t]*$		{ BEGIN(INITIAL); }
 
 <action,INITIAL>.		{
-				  printf("%d: Literal '%c'.\n", rlst_lineno, yytext[0]);
 				  syslog(LOG_ERR, "Unexpected syntax in rulset file, line %d.", rlst_lineno);
 				  return -1;
 				}
