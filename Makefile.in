@@ -105,6 +105,9 @@ install:	mapson reqmail.template-sample config-sample documentation/man-page.txt
 	@echo
 	@echo The user manual is installed in $(datadir).
 
+clean distclean realclean::
+	@(cd documentation && $(MAKE) $@)
+
 clean::
 	@find . -name '*.rpo' -exec rm -f {} \;
 	@find . -name '*.a'   -exec rm -f {} \;
@@ -133,7 +136,8 @@ changelog::
 	cat ChangeLog.new ChangeLog.old >ChangeLog
 	rm ChangeLog.old ChangeLog.new
 
-dist:	mapson documentation/man-page.txt VERSION
+dist:		mapson documentation/man-page.txt documentation/mapson.html \
+		documentation/mapson.pdf VERSION
 	@V=`cat VERSION`; \
 	cp -ra . /tmp/mapson-$$V; \
 	$(MAKE) >/dev/null -C /tmp/mapson-$$V distclean; \

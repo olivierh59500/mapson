@@ -51,8 +51,11 @@ defreqmail.inc:../reqmail.template-sample Makefile
 	            -e 's#username#<replaceable>&</replaceable>#g'  \
 	            -e 's#Real Name#<replaceable>&</replaceable>#g'
 
-clean distclean realclean:
+clean distclean:
 	@rm -f *.aux *.dvi *.log *.toc
-	@rm -f *.css *.fot *.html *.ps
-	@rm -f *.tex *.xml *.txt *.pdf
-	@rm -f defconfig.inc defreqmail.inc
+	@rm -f *.css *.fot *.ps *.xml
+	@rm -f *.tex defconfig.inc defreqmail.inc
+
+realclean:	clean
+	@rm -f *.txt *.pdf *.html
+
