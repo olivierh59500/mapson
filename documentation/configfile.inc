@@ -1,4 +1,24 @@
-  <para>The configuration file may contain the following directives:</para>
+  <para>At startup, &mapson; will try to read its configuration file at
+<filename>${HOME}/.mapson/config</filename> first of all. If that file does not
+exist, &mapson; falls back to the system-wide file
+<filename>/usr/local/etc/mapson.config</filename>. This means that if &mapson;
+has been installed well, you don't need a configuration file of your own. It
+also means, that you may <emphasis>have</emphasis> a configuration file of your
+own nonetheless.</para>
+
+  <para>The config file is read line by line. Empty lines are ignored, as are
+lines starting with the commend delimiter <quote><literal>#</literal></quote>.
+Anything else is supposed to start with one of the keywords listed below,
+followed by one or more whitespace characters, followed by the actual data
+part.</para>
+
+  <para>The data part may contain environment variables, which you can use to
+have one configuration file fit all of your users! See the sample configuration
+file installed at
+<filename>/usr/local/share/mapson/reqmail.template-sample</filename> for
+such an example.</para>
+
+<para>Valid keywords in the configuration file are:</para>
 
   <variablelist>
     <varlistentry>
@@ -165,7 +185,7 @@ environment variables, which are guaranteed to be defined. You can use them
 anywhere in the data part of a configuration directive, and you can use the
 usual manipulations on them.</para>
 
-  <para>Environment variables are looked-up case-sensitive, so
+  <para>Environment variables are looked-up case-sensitively, so
 <varname>$home</varname> is not the same thing as <varname>$HOME</varname>. This
 behavior is different in the request-for-confirmation template, where you can
 spell the variables upper- or lower-case as you wish. That's because the

@@ -112,7 +112,7 @@ will not allow users to execute arbitrary commands in the
 paths may vary from system to system, obviously.)</para>
     </sect2>
 
-    <sect2>
+    <sect2 id="via-procmail">
       <title>Using <application>procmail</application></title>
 
       <para>Most systems these days use <ulink
@@ -122,145 +122,160 @@ adding cryptic recipes in an entirely undocumented syntax to the file
 <filename>.procmailrc</filename> in your home directory:</para>
 
       <informalexample>
-        <screen># Have mapSoN accept anything that is a reply to a
+        <screen>ARGUMENT="$1"
+
+# Have mapSoN accept anything that is a reply to a
 # message of mine.
 #
 :0 w
-* ^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
-| <replaceable>/usr/local/bin/mapson</replaceable> --accept
-
-# Pipe anything that does not  come from a mailing
-# list, into mapson for approval.
-#
-:0 w
-* !^Precedence: (list|bulk|junk)
-* !^Auto-Submitted:
-| <replaceable>/usr/local/bin/mapson</replaceable></screen>
-      </informalexample>
-
-      <para>The first recipe will try to recognize mails that are a direct reply
-to a mail or a news posting of yours. Such mails will have the
-<literal>References</literal> or <literal>In-Reference-To</literal> headers set
-to the original <literal>Message-Id</literal>, and because
-<literal>Message-Id</literal>s contain your hostname, you can use that to make
-
-**TODO**
-&mapson; always accept those mails
-recipe to have those mails be delivered to you without having to pass
-&mapson;:</para>
-
-      <informalexample>
-        <screen># Have anything that is a reply to a message of mine
-# accepted by mapSoN.
-#
-:0 w
-* ^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
-| <replaceable>/usr/local/bin/mapson</replaceable> --accept</screen>
-      </informalexample>
-
-      <para>The <option>--accept</option> flag on the command line will tell
-&mapson; to accept those mails and to add the sender's address to the database,
-so that any new conversition with him will be accepted, too. Don't forget to
-replace the <quote>example.com</quote> with your actual domain name for this to
-work! Also, make sure that this recipe comes before<emphasis></emphasis> the
-other one!</para>
-
-      <para>One more thing that you will have to take care of is mails that are
-being sent to you via a mailing list. Since you subscribed to that list, you
-cannot possible expect people to confirm any postings that reach you via that
-list. So you must use <application>procmail</application> to pass those postings
-around &mapson; completely:</para>
-
-      <informalexample>
-        <screen># Mailing lists may always pass.
-:0 w
-* !^Precedence: (list|bulk|junk)
-* !^Auto-Submitted:
-$DEFAULT</screen>
-      </informalexample>
-
-<para>You can do it the other way round and modify the recipe we showed first to
-exclude those mails!</para>
-
-      <para>Because all this is probably confusing, here's the full recipe code
-at one glance:</para>
-
-
-      <sect3>
-        <title><application>Procmail</application>'s Argument Feature</title>
-
-      <para>Using <application>procmail</application>`s <quote>argument</quote>
-feature, you can make this work even better. The idea is that an address of the
-format <quote>user+parameter@example.com</quote> will still be delivered to the
-<quote>user</quote>, but the string <quote>parameter</quote> will be availabe in
-the <filename>.procmailrc</filename> config as an argument, which you can use to
-sort the mail into a different folder. Look at this:</para>
-
-      <informalexample>
-        <screen>ARGUMENT="$1"
-
-# An argument of 'pass' will always by-pass all other
-# rules to make sure that I have a reliably working address
-# no matter what happens here.
-#
-:0
-* ARGUMENT ?? pass
-$DEFAULT
+* ^(In-Reply-To|References|Message-Id):.*<replaceable>example.org</replaceable>
+| <replaceable>/usr/local/bin/</replaceable>mapson --accept
 
 # Confirmation mails go into mapSoN.
 #
 :0
-* ARGUMENT ?? [a-f0-9]...repeat 32 times...[a-f0-9]
-| <replaceable>/usr/local/bin/mapson</replaceable>
-:0 ec
+* ARGUMENT ?? [a-f0-9]<emphasis>&hellip;repeat 32 times&hellip;</emphasis>[a-f0-9]
+| <replaceable>/usr/local/bin/</replaceable>mapson --cookie $ARGUMENT
 
-# Anything else that has such an argument is probably coming
-# from a mailing list and should not go through mapSoN.
-#
-:0
-* ARGUMENT ?? ..*
-$DEFAULT
-
-# Pipe anything, that is not a reply or comes from a mailing
-# list, into mapson for approval.
+# Forward the mail into mapSoN for approval unless
+#   - it has an argument,
+#   - is a bounce,
+#   - comes from a mailing list, or
+#   - is an automatically generated mail.
 #
 :0 w
-* !^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
+* !ARGUMENT ?? ..*
+* !^FROM_DAEMON
 * !^Precedence: (list|bulk|junk)
 * !^Auto-Submitted:
-| <replaceable>/usr/local/bin/mapson</replaceable></screen>
+| <replaceable>/usr/local/bin</replaceable>/mapson</screen>
       </informalexample>
 
-      <para>In case you're wondering: The <literal>[0-9]</literal> string must
-indeed be repeated exactly 32 times, because a cookie consists of 32 characters
-in the range of <literal>a</literal> to <literal>f</literal> or
+      <para>Don't panic, I know this recipe looks like hell, and to be perfectly
+host, it took me hours to get it working the way I wanted it. But all you have
+to do is to copy it into the <filename>.procmailrc</filename> file in your
+home directory &hellip; Be sure, though, to customize the parts marked
+<replaceable>replaceable</replaceable> for your system -- in particular the path
+to the &mapson; binary and the domain name of your e-mail address.</para>
+
+      <para>In case you want to know what this thing does, though, read
+on!</para>
+
+      <para><application>procmail</application> has an incredibly useful feature
+that this recipe makes use of: The argument. If your address is, say,
+<literal>user@example.org</literal>, then you can receive e-mail under the
+address <literal>user+foo@example.org</literal>, too. You can append any string to
+your username by a plus sign as long as the result is still a valid e-mail
+address. <application>procmail</application> will still deliver these mails to
+<literal>user</literal>`s mailbox; the parameter is effectively ignored. But you
+can use that parameter to sort mail being sent to different addresses into
+different folders reliably!</para>
+
+      <para>If you subscribe to the mailing list <quote>cat-lovers</quote>, for
+example, you could subscribe the address
+<literal>user+cat-lovers@example.org</literal> instead of your ordinary address.
+That mail would still reach you, but with the recipe
+
+      <informalexample>
+        <screen>:0
+* ARGUMENT ?? cat-lovers
+/var/spool/mail/user2
+</screen>
+      </informalexample>
+
+you can easily sort the list's articles into a different folder!</para>
+
+      <para>In the recipe shown above, all mail that has such an argument will
+bypass &mapson;, and for a good reason: You don't want &mapson; to process mail
+that is delivered to you via a mailing list! It would be incredibly unpolite to
+request a confirmation from someone who posted to the mailing list and did not
+mail <emphasis>you</emphasis> at all -- at least not deliberately. To make
+matters worse, the request-for-confirmation mail would not even reach the
+poster, but would be sent to the mailing list administrator because most mailing
+lists re-write the envelope of the mails delivered via them to that
+address.</para>
+
+      <para>So, to avoid all that mess: Subscribe under a
+<literal>user+something</literal> address and you won't have any problems. Plus:
+You can sort mail from different lists into different folders easily, if you
+want that.</para>
+
+      <para>Furthermore, any mail that just looks remotely as if it's not coming
+from a human sender will bypass &mapson;, too. This means that you'll receive a
+spam mail from time to time, but this is essential to avoid infinite mail looks,
+for instance. You don't want &mapson; to send a request for confirmation in
+response to a bounce mail that has been created because a former request for
+confirmation could not be delivered, etc.</para>
+
+      <para>Another nice thing is that the first rule in the recipe will make
+&mapson; accept any mail that looks as if it is a reply to an article of yours.
+If someone is replying to an e-mail or a news posting of yours, his mail reader
+will (hopefully) add the <literal>In-Reply-To</literal> header pointing to the
+message id of your article. And since message ids contain the hostname of the
+site that created the article, the first rule will recognize this and let the
+mail pass and add his address to the database.</para>
+
+      <para>The second rule will ensure that confirmation mails are processed
+correctly. In order to take advantage of that, you will have to edit your
+request-for-confirmation template (see <xref linkend="reqmail-template">) so
+that the <literal>From:</literal> line looks like this:</para>
+
+      <informalexample>
+        <screen>From: <replaceable>user</replaceable>+${MD5HASH}@<replaceable>example.com</replaceable> (<replaceable>Real Name</replaceable>'s Anti-Spam-Tool)</screen>
+      </informalexample>
+
+      <para>In essence, this means that the person replying to the request will
+have the cookie put into <application>procmail</application>'s argument
+automatically! If you don't want to use this, just don't -- &mapson; will find
+the cookies in the mail headers or body, too, but this approach is very error
+resistent. You wouldn't belive how many people are too dumb to understand
+<quote>please reply and include that string in the mail: [&hellip;]</quote>.
+
+      <para>In case you're wondering: The string
+<quote><literal>[0-9]</literal></quote> in the recipe must indeed be repeated
+exactly <emphasis>32</emphasis> times, because a cookie consists of 32
+characters in the range of <literal>a</literal> to <literal>f</literal> or
 <literal>0</literal> to <literal>9</literal>. Some regular expression libraries
 allow to shortcut this expression as <literal>[a-f0-9]{32}</literal>, but
 apparently the one shipped with procmail is not one of them. At least on my
 machines, I was not able to make that work.</para>
 
-      <para>What this recipe does is to deliver any incoming mail that is
-addressed to <literal>user+pass</literal> to the mailbox without any further
-processing. I use this to make sure that mail aliased to me from
-<literal>postmaster</literal> or <literal>root</literal> doesn't get stuck
-somewhere. The next recipe pipes incoming confirmation mails into &mapson;. In
-the request-for-confirmation template, the sender address is configurable. So
-instead of using <literal>simons@example.org</literal> there, I put
-<literal>simons+<varname>${MD5HASH}</varname>@example.org</literal> into the
-From line, to make replies go to the special address. See <xref
-linkend="reqmail-template"> for further details about how to customize the
-request-for-confirmation template.</para>
+      <para>One more general advice: Obviously the &mapson;-related recipes must
+be at the end of your <filename>.procmailrc</filename> file. Once &mapson; ran,
+the mail is processed and any recipes following below won't be invoked unless
+you do some heavy procmail magic. You have been warned.</para>
+    </sect2>
 
-      <para>The next recipe will direct any other mail that has an argument
-around &mapson; before the last recipe finally invokes the program. Thus, if you
-want to avoid sending mailing list postings through &mapson; -- and you
-<emphasis>want to</emphasis> avoid that --, all you have to do is not to
-subscribe your normal address to the list but
-<literal>user+<replaceable>whatever</replaceable>@example.org</literal> and
-&mapson; won't see it. It doesn't matter what you chose for
-<replaceable>whatever</replaceable>, procmail will accept any string in this
-configuration.</para>
+    <sect2>
+      <title>Using <application>fetchmail</application></title>
 
+      <para>Not everybody gets his e-mail delivered via SMTP, thus, not
+everybody can install &mapson; on the machine that actually accepts the incoming
+mail. If you use POP3 or IMAP for example, your mail will have been accepted by
+your mail server already and you just fetch it from there.</para>
+
+      <para>Luckily, you can still use &mapson;, but you'll have to use a tool
+like <ulink
+url="http://www.tuxedo.org/~esr/fetchmail/"><application>fetchmail</application></ulink>.
+<application>fetchmail</application> will fetch the mails lying on your mail
+server via POP3, IMAP, or whatever and then invoke sendmail locally to actually
+deliver the mail to your mailbox. Hence, you can use the installation desribed
+in <xref linkend="via-procmail">, too.</para>
+
+      <para>If you don't want to bother setting up sendmail -- and I could
+understand that --, tell <application>fetchmail</application> to call
+<application>procmail</application> as the delivery agent and you're fine. Use
+the following entry in your <filename>.fetchmailrc</filename> file:</para>
+
+      <informalexample>
+        <screen>poll <replaceable>mailserver.example.org</replaceable> mda "<replaceable>/usr/local/bin/</replaceable>procmail -d <replaceable>username</replaceable>"</screen>
+      </informalexample>
+
+      <para>Unfortunately, you cannot use <application>procmail</application>'s
+argument feature in this setup, unless you can talk your e-mail provider into
+using <application>procmail</application> himself. If he does not, the
+<literal>user+foo</literal> username will yield an <quote>unknown user</quote>
+on his mail server otherwise.</para>
     </sect2>
   </sect1>
 
@@ -281,7 +296,7 @@ what the respective option does:</para>
     &cmdloptions;
   </sect1>
 
-  <sect1>
+  <sect1 id="config-file">
     <title>The &mapson; Configuration File</title>
     &configfile;
   </sect1>
@@ -289,15 +304,27 @@ what the respective option does:</para>
   <sect1 id="reqmail-template">
     <title>The Request-for-Confirmation File</title>
 
-    <para>The request-for-confirmation mail is created by loading the configured
-template file and exanding the variables contained in it. The result is then
-piped into the command, you have configured as <varname>MTA</varname>. Please
-note that &mapson; expects the file to be a valid RFC822 message! That means
-that it contains a set of header lines and a mail body, the two parts being
-separated by a blank line.</para>
+    <para>When &mapson; issues a request for confirmation, it will try to load
+the template file containing the text to be used for this purpose. Unless
+configured otherwise in the configuration file (see <xref
+linkend="config-file">, the first path to look is
+<filename>${HOME}/.mapson/reqmail.template</filename>;
+<varname>${HOME}</varname> meaning the home directory of the user under which's
+id &mapson; is running under.</para>
 
-    <para>Here is a short example of a request-for-confirmation template you
-might use:</para>
+    <para>If that file does not exist, &mapson; will fall back to the
+system-wide file at
+<filename>/usr/local/share/mapson/reqmail.template</filename>. If this file
+doesn't exist either, &mapson; will abort with an error.</para>
+
+    <para>The request-for-configuration template file is supposed to contain a
+complete RFC822 message, including headers and everything. The actual
+request-for-confirmation mail is created by loading the template and expanding
+the variables contained in it. The result is then piped into the command, you
+have configured to use to access the Mail Transport Agent.</para>
+
+    <para>Here is an example of a request-for-confirmation template you might
+use:</para>
 
     <informalexample>
       <screen>From: <replaceable>username@example.com</replaceable> (<replaceable>Real Name</replaceable>'s Anti<markup>-</markup>Spam<markup>-</markup>Tool)
@@ -435,6 +462,28 @@ entry.</para>
         </listitem>
       </varlistentry>
     </variablelist>
+
+    <para>In addition to those, you can access any environment variable
+available at run-time. The template file included in this distribution, for
+example, will use <varname>${USER}</varname> in order to make the template file
+independent of the user who's actually running &mapson;. Don't be to daring,
+though, not every environment variable you can see in your shell will be set
+when <application>sendmail</application>, <application>procmail</application>,
+or whoever calls &mapson;! The only environment variables that are guaranteed to
+be available are those list in <xref linkend="config-file">.</para>
+
+    <para>One more thing: The variables listed explicitely in this section can
+be access case-insensitively. <varname>${bOdY}</varname> is the same as
+<varname>${boDY}</varname>, because these are variables provided by &mapson;
+internally. But environment variables like <varname>${USER}</varname> must be
+accessed in upper-case!</para>
+
+  </sect1>
+
+  <sect1>
+    <title>Variable-Expansion Magic</title>
+
+    <para>to be written</para>
   </sect1>
 
   <sect1>
