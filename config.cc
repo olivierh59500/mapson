@@ -3,6 +3,9 @@
  * All rights reserved.
  */
 
+// ISO C++ headers
+#include <memory>
+
 // POSIX.1 system headers.
 #include <sys/types.h>
 #include <sys/stat.h>
