@@ -124,6 +124,7 @@ main(int argc, char * argv[])
 	      break;
 	  case RLST_RFC:
 	      printf("Send request for confirmation.\n");
+	      store_mail_in_spool(mail_buffer, Mail->message_id);
 	      break;
 	  case RLST_SAVETO:
 	      assert(p != NULL);
