@@ -125,4 +125,8 @@ void store_mail_in_spool(char *mail_buffer, char *id);
 
 char *loadfile(const char *filename);
 
+/* is_confirmation.c */
+
+char * is_confirmation_mail(char * mail_buffer);
+
 #endif /* !defined(__MAPSON_H__) */
