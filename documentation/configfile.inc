@@ -193,10 +193,6 @@ variables there are not coming from the environmnet, but are &mapson;'s internal
 variables. So be sure not to confuse that, because an undefined variable in this
 file will cause &mapson; to abort with an error.</para>
 
-  <para>&mapson; will not overwrite already existing variables, though! If your
-system defines, for example, the <varname>$HOME</varname> variable, then you'll
-get the value from the system's variable.</para>
-
   <para>Here is the complete list:</para>
 
   <variablelist>
