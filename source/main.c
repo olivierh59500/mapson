@@ -106,6 +106,8 @@ main(int argc, char * argv[])
 	      }
 	      if ((Mail->from)[i] == NULL) {
 		  printf("Sender is unknown. Will require confirmation.\n");
+		  store_mail_in_spool(mail_buffer, Mail->message_id);
+		  send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
 	      }
 	      break;
 	  case RLST_PASS:
@@ -125,6 +127,7 @@ main(int argc, char * argv[])
 	  case RLST_RFC:
 	      printf("Send request for confirmation.\n");
 	      store_mail_in_spool(mail_buffer, Mail->message_id);
+	      send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
 	      break;
 	  case RLST_SAVETO:
 	      assert(p != NULL);
