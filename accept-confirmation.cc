@@ -14,7 +14,6 @@
 
 // My own libraries.
 #include "system-error/system-error.hh"
-#include "RegExp/RegExp.hh"
 #include "log.hh"
 #include "config.hh"
 #include "fd-sentry.hh"
@@ -23,49 +22,65 @@
 
 using namespace std;
 
-bool accept_confirmation(std::string& mail)
+inline string::size_type find_cookie(const string& buffer, string::size_type pos)
     {
-    // Find all strings in the mail that match the pattern and check,
+    for(size_t hits_in_a_row = 0; pos < buffer.size(); ++pos)
+        {
+        if ((buffer[pos] >= 'a' && buffer[pos] <= 'f')
+            || (buffer[pos] >= 'A' && buffer[pos] <= 'F')
+            || (buffer[pos] >= '0' && buffer[pos] <= '9'))
+            ++hits_in_a_row;
+        else
+            hits_in_a_row = 0;
+        if (hits_in_a_row == 32)
+            return pos - 31;
+        }
+    return string::npos;
+    }
+
+bool accept_confirmation(string& mail)
+    {
+    // Find all strings in the mail that could be cookie and check,
     // whether a mail has been spooled under that name. If, deliver
     // that mail and return.
 
-    const RegExp cookie_pattern("[a-f0-9]{32}", REG_EXTENDED | REG_ICASE);
-    regmatch_t pmatch[2];
-
-    string::size_type pos = 0;
-    while(regexec(cookie_pattern, mail.c_str() + pos, sizeof(pmatch) / sizeof(regmatch_t), pmatch, 0) == 0)
+    for (string::size_type i = 0; ; ++i)
         {
-        string cookie = mail.substr(pos + pmatch[0].rm_so, pmatch[0].rm_eo - pmatch[0].rm_so);
-        debug(("Found potential cookie '%s' at mail offset %u to offset %u", cookie.c_str(),
-               pmatch[0].rm_so, pmatch[0].rm_eo));
-
-        string filename = config->spool_dir + "/" + cookie;
-        int fd = open(filename.c_str(), O_RDONLY, 0);
-        if (fd >= 0)
+        debug(("Current search position is %u.", i));
+        i = find_cookie(mail, i);
+        if (i != string::npos)
             {
-            fd_sentry s(fd);
+            string cookie = mail.substr(i, 32);
+            debug(("Found potential cookie '%s' at mail offset %u", cookie.c_str(), i));
 
-            // We found the mail; now deliver it.
-
-            info("Incoming e-mail '%s' contained cookie '%s'; delivering the corresponding spooled mail.",
-                 config->message_id.c_str(), cookie.c_str());
-            mail.erase();
-            char tmp[8*1024];
-            ssize_t rc;
-            for (rc = read(fd, tmp, sizeof(tmp));
-                 rc > 0;
-                 rc = read(fd, tmp, sizeof(tmp)))
+            string filename = config->spool_dir + "/" + cookie;
+            int fd = open(filename.c_str(), O_RDONLY, 0);
+            if (fd >= 0)
                 {
-                mail.append(tmp, rc);
+                fd_sentry s(fd);
+
+                // We found the mail; now deliver it.
+
+                info("Incoming e-mail '%s' contained cookie '%s'; delivering the corresponding spooled mail.",
+                     config->message_id.c_str(), cookie.c_str());
+                mail.erase();
+                char tmp[8*1024];
+                ssize_t rc;
+                for (rc = read(fd, tmp, sizeof(tmp));
+                     rc > 0;
+                     rc = read(fd, tmp, sizeof(tmp)))
+                    {
+                    mail.append(tmp, rc);
+                    }
+                if (rc < 0)
+                    throw system_error(string("Failed to read mail file '") + filename + "'");
+                deliver(mail);
+                unlink(filename.c_str());
+                return true;
                 }
-            if (rc < 0)
-                throw system_error(string("Failed to read mail file '") + filename + "'");
-            deliver(mail);
-            unlink(filename.c_str());
-            return true;
             }
         else
-            pos += pmatch[0].rm_so + 1;
+            break;
         }
 
     debug(("E-mail does not contain a valid cookie; continue processing."));
