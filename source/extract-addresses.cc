@@ -5,6 +5,7 @@
 
 // ISO C++ headers.
 #include <set>
+#include <cctype>
 
 // My own libraries.
 #include "librfc822/rfc822.hh"
@@ -42,7 +43,10 @@ void extract_sender_addresses(const string& mail, addrset_t& addrset)
 	explicit my_committer(addrset_t& addrset) : myset(addrset) { }
 	void operator() (const rfc822address& addr)
 	    {
-	    myset.insert(addr.address);
+	    string tmp = addr.address;
+	    for (string::size_type i = 0; i < tmp.size(); ++i)
+		tmp[i] = tolower(tmp[i]);
+	    myset.insert(tmp);
 	    }
       private:
 	addrset_t& myset;
