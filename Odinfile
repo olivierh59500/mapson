@@ -4,6 +4,9 @@ mapson == %mapson.cc.sm +cxx_flags='-Wall -ansi -pedantic' \
 			+optimize=1 \
 			+define='DEBUG' \
 			+lib=(librfc822.a) \
+			+lib=(libparse-config-file.a) \
+			+lib=(libvarexp.a) \
+			+lib=(libmd5.a) \
 			:exe
 
 %mapson.cc.sm == <<
@@ -18,5 +21,11 @@ mapson == %mapson.cc.sm +cxx_flags='-Wall -ansi -pedantic' \
 
 librfc822.a == librfc822/%librfc822.a.sm :a
 
+libparse-config-file.a == libparse-config-file/%libparse-config-file.a.sm :a
+
+libvarexp.a == libvarexp/%libvarexp.a.sm :a
+
+libmd5.a == libmd5/%libmd5.a.sm :a
+
 %clean ! == !<<
-    rm -f librfc822.a mapson
+    rm -f librfc822.a libparse-config-file.a libvarexp libmd5.a mapson
