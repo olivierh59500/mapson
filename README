@@ -7,12 +7,6 @@ Interpreted header fields in the incoming mail:
    "Return-Path:"       route-addr
 
 
-Header fields I plan to interpret in strict-parser mode:
-
-   "Message-Id:"        "<" addr-spec ">"
-   "References:"        *(phrase / msg-id)
-   "In-Reply-To:"       *(phrase / msg-id)
-
 Command line arguments:
 
    -d                   Enable debugging messages.
@@ -39,3 +33,20 @@ Variables supported in request-for-confirmation template file:
     body[]
         Each entry in this array contains the corresponding text line
         of the mail body -- continuation does not occur here.
+
+
+Things to do:
+
+    o Re-write address_db to be reusable and to be more efficient.
+
+    o Support headers
+
+       "Message-Id:"        "<" addr-spec ">"
+       "References:"        *(phrase / msg-id)
+       "In-Reply-To:"       *(phrase / msg-id)
+
+      in strict-parser mode.
+
+    o Don't log with syslog(3); write to a file instead.
+
+    o Include message id in log messages.
