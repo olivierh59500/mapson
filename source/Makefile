@@ -7,18 +7,25 @@
 .include "../include/mapson.mk"
 
 SRCS	= main.c mail_rescue.c fail_safe.c array.c parse_mail.c confirm.c \
-	  home_dir.c address_db.c
+	  home_dir.c address_db.c ruleset.o
 OBJS	= $(SRCS:.c=.o)
 LIBS   += -lconfigfile -lrfc822 -lmpools -llists -lexceptions
 
 all:	$(LIBS) mapson
 
-clean:
-	@echo "====> Cleaning up"
-	rm -f mapson *.o *.core
-
 mapson:		$(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o mapson $(LIBS)
+
+ruleset.c:	ruleset.y
+	$(YACC) -d -p rlst ruleset.y
+	mv y.tab.c ruleset.c
+	mv y.tab.h ruleset_scan.h
+
+ruleset_scan.c:	ruleset_scan.l ruleset.c
+	$(LEX) -Prlst ruleset_scan.l
+	mv lex.rlst.c ruleset_scan.c
+
+ruleset.o:	ruleset.c ruleset_scan.c ruleset_scan.h
 
 $(LIBS):
 	@(cd ../lib;$(MAKE))
@@ -26,6 +33,11 @@ $(LIBS):
 depend:
 	makedepend -Y /usr/include $(SRCS)
 	@rm -f Makefile.bak
+
+clean:
+	@echo "====> Cleaning up"
+	rm -f mapson *.o *.core
+	rm -f ruleset.c ruleset_scan.c ruleset_scan.h
 
 
 #
