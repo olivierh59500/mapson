@@ -51,6 +51,7 @@ void *fail_safe_calloc(size_t nmemb, size_t size);
 #endif
 char *fail_safe_sprintf(const char *fmt, ...  );
 void fail_safe_fwrite(void *buffer, size_t size, size_t nmemb, FILE *stream);
+bool fail_safe_pattern_match(const char * buffer, const char * pattern);
 
 /* array.c */
 
