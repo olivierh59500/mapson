@@ -98,9 +98,11 @@ try
         throw runtime_error("Couldn't extract any addresses from the incoming mail.");
 
     // Check whether any of the addresses we found is already in the
-    // database.
+    // database. we have to do this even if we already know we're
+    // accepting the mail because we we need to filter the addresses
+    // out that are already in the database.
 
-    bool had_a_hit = was_confirmation;
+    bool had_a_hit = (was_confirmation || config->accept);
     for (addrset_t::const_iterator i = all_addresses.begin(); i != all_addresses.end(); )
         {
 	if (address_db.find(*i))

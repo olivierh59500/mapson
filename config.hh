@@ -45,6 +45,9 @@ class configuration : public AbstractConfig
     std::string message_id;
     bool have_message_id;
 
+    // Run-time flags.
+    bool accept;
+
   protected:
     friend int main(int, char**);
     int parameter_index;
