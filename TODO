@@ -8,20 +8,12 @@ o Support headers
 
   in strict-parser mode.
 
-o Don't log with syslog(3); write to a file instead.
-
 o Convert libmd5 to uint32_t and stdint.h.
 
 o Add last-used timestamps to each address in the database.
 
 o Add headers to the mails mapSoN processes and tell the user what
   went on.
-
-o Read the user's config file and fall back to the global one, if
-  the user doesn't have one.
-
-o Try to create the all directories in the user's home
-  automatically.
 
 o Make the gather-addresses mode handle the mailbox format.
 
@@ -31,12 +23,12 @@ o Add an option that tells mapSoN to create missing parent
 
 o Make another template that does not use columns.
 
-o Document the fact that the sample template file requires
-  procmail.
-
 o mapSoN should have options that tell it not to look for cookies
   or to require a cookie in case the mail comes from procmail's
   +argument feature.
 
 o Add an option that tells mapSoN to let the actual confirmation
   mail pass, too, in case someone writes comments into it.
+
+o Extract the message-id before looking for a cookie so that we have
+  it when the success message is logged.
