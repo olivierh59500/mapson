@@ -1,0 +1,29 @@
+1997-11-08  Peter Simons  <simons@rhein.de>
+
+	* Released mapSoN 1.0 beta 2.
+
+	* src/main.c:
+	The test whether an incoming mail is a request for confirmation or
+	a reply to an "rfcmail" of ours is now hardcoded into mapSoN and
+	can be removed from the ruleset.
+
+	* src/confirm.c:
+	The "request for confirmation mails" are now sent with "<>" as
+	envelope to avoid bounces coming back to us. Not that mapson couldn't
+	handle the bounces, it's just that we don't need/want them.
+
+	* src/confirm.c:
+	Added the special header "X-mapSoN: requesting confirmation" to
+ 	outgoing "RFCmails",
+
+	* src/is_confirmation.c:
+	The search for a mapson-cookie is now carried out case-insensi-
+ 	tively.
+
+1997-11-02  Peter Simons  <simons@rhein.de>
+
+	* Released mapSoN 1.0 beta 1.
+
+1997-10-06  Peter Simons  <simons@rhein.de>
+
+	* Genesis. The mapSoN project begun.
