@@ -9,6 +9,6 @@
 // ISO C++ headers.
 #include <string>
 
-bool accept_confirmation(std::string& mail);
+bool accept_confirmation(std::string& mail, const std::string& cmdline_cookie);
 
 #endif
