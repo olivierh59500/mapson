@@ -34,3 +34,5 @@ o The result of jadetex will swallow "--" in <option> tags and turn it
   into a longer hyphen. This must not be.
 
 o Add --init parameter to initialize the repository.
+
+o Provide a "don't scan for cookies"-switch!
