@@ -17,8 +17,8 @@ CC		= @CC@
 CXX		= @CXX@
 AR		= ar
 RANLIB		= @RANLIB@
-MKDIR		= ./.shtool mkdir
-INSTALL		= ./.shtool install
+MKDIR		= .shtool mkdir
+INSTALL		= .shtool install
 
 OPTIMFLAGS	=
 WARNFLAGS	=
@@ -196,3 +196,5 @@ request-confirmation.o: log.hh config.hh
 request-confirmation.o: libparse-config-file/parse-config-file.hh
 request-confirmation.o: extract-addresses.hh fd-sentry.hh multi-open.hh
 request-confirmation.o: request-confirmation.hh
+libgetopt/getopt.o: libgetopt/getopt.h
+libgetopt/getopt1.o: libgetopt/getopt.h
