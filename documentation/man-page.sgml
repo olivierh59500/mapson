@@ -7,10 +7,10 @@ End:
 -->
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
 <!ENTITY mapson "<application>mapSoN</application>">
-<!ENTITY synopsis SYSTEM "synopsis.sgml">
-<!ENTITY description SYSTEM "description.sgml">
-<!ENTITY cmdloptions SYSTEM "cmdloptions.sgml">
-<!ENTITY license SYSTEM "license.sgml">
+<!ENTITY synopsis SYSTEM "synopsis.inc">
+<!ENTITY description SYSTEM "description.inc">
+<!ENTITY cmdloptions SYSTEM "cmdloptions.inc">
+<!ENTITY license SYSTEM "license.inc">
 ]>
 
 <refentry id="mapson" lang="en" revision="$Revision$">
