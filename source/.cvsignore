@@ -1,1 +1,3 @@
-mapson configure paths.h
+mapson
+configure paths.h my_db.h my_db_linklib.flags
+
