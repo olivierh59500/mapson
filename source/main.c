@@ -73,7 +73,6 @@ main(int argc, char * argv[])
     fclose(fh);
     mail_buffer[mail_size] = '\0';
 
-
     /* Parse the mail. */
 
     TRY {
@@ -86,22 +85,6 @@ main(int argc, char * argv[])
     OTHERWISE {
 	PASSTHROUGH();
     }
-#if 0
-    printf("DEBUG: Envelope is '%s'.\n", Mail->envelope);
-    for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-	printf("DEBUG: From[%d]: is '%s'.\n", i, (Mail->from)[i]);
-    }
-    for (i = 0; Mail->to && (Mail->to)[i] != NULL; i++) {
-	printf("DEBUG: To[%d]: is '%s'.\n", i, (Mail->to)[i]);
-    }
-    for (i = 0; Mail->cc && (Mail->cc)[i] != NULL; i++) {
-	printf("DEBUG: Cc[%d]: is '%s'.\n", i, (Mail->cc)[i]);
-    }
-    for (i = 0; Mail->reply_to && (Mail->reply_to)[i] != NULL; i++) {
-	printf("DEBUG: Reply_To[%d]: is '%s'.\n", i, (Mail->reply_to)[i]);
-    }
-#endif
-
 
     /* Let the rulset check the mail to decide what we'll do with it. */
 
@@ -111,10 +94,22 @@ main(int argc, char * argv[])
 	rc = check_ruleset_file(Mail, &p);
 	switch(rc) {
 	  case RLST_CONTINUE:
-	      printf("No rule matched.\n");
+	      for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
+		  printf("DEBUG: Checking '%s' in accept-database.\n", (Mail->from)[i]);
+		  if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
+		      printf("Sender is known, passing mail through.\n");
+		      break;
+		  }
+	      }
+	      if ((Mail->from)[i] == NULL) {
+		  printf("Sender is unknown. Will require confirmation.\n");
+	      }
 	      break;
 	  case RLST_PASS:
-	      printf("Mail passes.\n");
+	      for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
+		  printf("DEBUG: Adding '%s' to accept-database.\n", (Mail->from)[i]);
+		  add_address_to_database((Mail->from)[i]);
+	      }
 	      break;
 	  case RLST_DROP:
 	      printf("Mail will be dropped.\n");
@@ -123,7 +118,12 @@ main(int argc, char * argv[])
 	      printf("Send request for confirmation.\n");
 	      break;
 	  case RLST_SAVETO:
+	      assert(p != NULL);
+	      if (!p) {
+		  THROW(UNKNOWN_FATAL_EXCEPTION);
+	      }
 	      printf("Write mail to file '%s'.\n", p);
+	      save_to(mail_buffer, p);
 	      break;
 	  default:
 	      assert(0==1);
