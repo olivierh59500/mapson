@@ -22,13 +22,22 @@ AC_C_BIGENDIAN
 if test "x$ac_cv_c_bigendian" = "xyes"; then
     CPPFLAGS="$CPPFLAGS -DBYTE_ORDER=BIG_ENDIAN"
 else
-    echo little endian
     CPPFLAGS="$CPPFLAGS -DBYTE_ORDER=LITTLE_ENDIAN"
 fi
 
+dnl Make sure u_int32_t is defined.
+dnl
+AC_CHECK_TYPE(u_int32_t, [],
+    [
+    AC_CHECK_TYPE(uint32_t, [CPPFLAGS="$CPPFLAGS -Du_int32_t=uint32_t"],
+        [
+        AC_MSG_ERROR([Can't find an appropriate type for u_int32_t.])
+        ], [#include <sys/types.h>])
+    ], [#include <sys/types.h>])
+
 dnl Do we have large file system support?
 dnl
-AC_SYS_LARGEFILE
+dnl broken on Solaris: AC_SYS_LARGEFILE
 
 dnl If the system misses the getopt.h include or the getopt_long()
 dnl function, we use the version included in the distribution.
