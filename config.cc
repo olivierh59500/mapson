@@ -47,7 +47,7 @@ namespace
             {
             const char* p = getenv(name.c_str());
             if (p == NULL)
-                data.erase();
+                throw varexp::undefined_variable();
             else
                 data = p;
             }
@@ -81,6 +81,17 @@ configuration::configuration(int argc, char** argv)
     debug = false;
     message_id = "no-message-id";
     have_message_id = false;
+
+    // Set the environment variables supported in the config file.
+
+    if (setenv("MAILBOXDIR", MAILBOXDIR, 0) != 0
+        || setenv("DATADIR", DATADIR, 0) != 0
+        || setenv("MTA", MTA, 0) != 0
+        || setenv("HOME", sentry.pwd->pw_dir, 0) != 0
+        || setenv("USER", sentry.pwd->pw_name, 0) != 0)
+        {
+        throw bad_alloc();
+        }
 
     // Parse the command line into temporary variables except for the
     // location of the config file.
@@ -174,20 +185,20 @@ inline unsigned int get_rc(const string& value)
 
 void configuration::set_option(const string& keyword, const string& _data)
     {
-    // Expand environment variables in the data part.
-
-    string data;
-    env_lookup lookup;
-    varexp::config_t myconfig;
-    myconfig.startindex = myconfig.endindex = '\0';
-    varexp::unescape(_data, data, false);
-    varexp::expand(data, data, lookup);
-    varexp::unescape(data, data, true);
-
-    // Assign the value to our class.
-
     try
         {
+        // Expand environment variables in the data part.
+
+        string data;
+        env_lookup lookup;
+        varexp::config_t myconfig;
+        myconfig.startindex = myconfig.endindex = '\0';
+        varexp::unescape(_data, data, false);
+        varexp::expand(data, data, lookup);
+        varexp::unescape(data, data, true);
+
+        // Assign the value to our class.
+
         if (strcasecmp("Debug", keyword.c_str()) == 0)
             {
             debug = get_bool(data);
@@ -231,6 +242,11 @@ void configuration::set_option(const string& keyword, const string& _data)
         else
             throw runtime_error(string("The Config file uses the unknown keyword '")
                                 + keyword + "'; ignoring line.");
+        }
+    catch(const varexp::error& e)
+        {
+        error("Undefined variable in config option '%s %s'.", keyword.c_str(), _data.c_str());
+        throw runtime_error("Cannot parse the config file.");
         }
     catch(const no_bool_error&)
         {
