@@ -72,6 +72,19 @@ messages compiled in or not.</para>
 override them at run-time in the configuration file &mapson; reads at
 startup.</para>
 
+  <para>If your using a fairly recent gcc version to compile this, you might
+want to try</para>
+
+  <informalexample>
+    <screen>CXXFLAGS=-frepo ./configure</screen>
+  </informalexample>
+
+  <para>to configure the build. This will result in a about 30% smaller binary
+because unused template instances are optimized out.</para>
+
+  <para>On some platforms, largefile support doesn't work yet. If you're getting
+compiler errors, give the configure script the option
+<userinput>--disable-largefile</userinput> and try again.</para>
 
 <!--
 Local Variables:
