@@ -36,8 +36,8 @@ man-page.html:	configfile.inc license.inc
 
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
 mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc description.inc
-mapson.html:		principle1.png principle2.png
-mapson.html:		principle1.eps principle2.eps
+mapson.html           :	principle1.png principle2.png
+mapson.tex	      :	principle1.eps principle2.eps
 
 readme.html:	readme.sgml building.inc ../VERSION
 
