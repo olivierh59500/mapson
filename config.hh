@@ -15,6 +15,9 @@
 class configuration : public AbstractConfig
     {
   public:
+    // Exit with no error when displaying version or help.
+    struct no_error { };
+
     // Construction and Destruction.
     explicit configuration(int, char**);
     ~configuration() throw();

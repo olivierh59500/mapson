@@ -148,6 +148,10 @@ try
 
     return 0;
     }
+catch(const configuration::no_error&)
+    {
+    return 0;
+    }
 catch(const rfc822_syntax_error& e)
     {
     error("Syntax error in mail '%s': %s",
