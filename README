@@ -38,6 +38,9 @@ Variables supported in request-for-confirmation template file:
         Each entry in this array contains the corresponding text line
         of the mail body -- continuation does not occur here.
 
+    Please note that any of headerlines[], header[], and body[]
+    contain the trailing linefeed ('\n') of the returned line. This
+    may skew your formatting if you're not careful.
 
 Things to do:
 
