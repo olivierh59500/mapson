@@ -64,7 +64,7 @@ config.o:	config.cc
 	$(CXX) -DMAILBOXDIR=\"$(mailboxdir)\" -DMTA=\"$(mta)\" -DDATADIR=\"$(datadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" $(CPPFLAGS) $(DEFS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
 
 main.o.o:	version.h
-config.o:	Makefile version.html
+config.o:	Makefile version.h
 
 version.h:	VERSION
 	@echo  >$@ '/* Generated automatically; do not edit! */'
