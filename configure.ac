@@ -20,10 +20,10 @@ dnl Find endianess of the system.
 dnl
 AC_C_BIGENDIAN
 if test "x$ac_cv_c_bigendian" = "xyes"; then
-    DEFS="$DEFS -DBYTE_ORDER=BIG_ENDIAN"
+    CPPFLAGS="$CPPFLAGS -DBYTE_ORDER=BIG_ENDIAN"
 else
     echo little endian
-    DEFS="$DEFS -DBYTE_ORDER=LITTLE_ENDIAN"
+    CPPFLAGS="$CPPFLAGS -DBYTE_ORDER=LITTLE_ENDIAN"
 fi
 
 dnl Do we have large file system support?
