@@ -1,16 +1,16 @@
 #
 # Build the mapSoN documentation
 #
-DOCBOOKBASE	= /usr/local/sgml/dsssl/docbook
+DSSLBASE	= /usr/share/sgml/docbook/dsssl-stylesheets-1.64
 
 .SUFFIXES:
 .SUFFIXES: .sgml .tex .txt .dvi .ps .pdf .html
 
 .sgml.tex:
-	openjade -t tex -d peti.dsl#print -D $(DOCBOOKBASE)/print $<
+	openjade -t tex -d peti.dsl#print -D $(DSSLBASE)/print $<
 
 .sgml.html:
-	openjade -t sgml -d peti.dsl#html -D $(DOCBOOKBASE)/html $< >$@
+	openjade -t sgml -d peti.dsl#html -D $(DSSLBASE)/html $< >$@
 
 .html.txt:
 	w3m -T text/html -dump $< >$@
@@ -28,10 +28,11 @@ DOCBOOKBASE	= /usr/local/sgml/dsssl/docbook
 
 .PHONY: all clean distclean realclean publish
 
-all:	mapson.html mapson.pdf man-page.txt readme.txt
+all:	mapson.html mapson.pdf mapson.1 readme.txt
 
-man-page.html:	synopsis.inc description.inc cmdloptions.inc
-man-page.html:	configfile.inc license.inc
+mapson.1:	synopsis.inc description.inc cmdloptions.inc configfile.inc \
+		license.inc man-page.sgml
+	docbook2man man-page.sgml
 
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
 mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc description.inc
@@ -47,9 +48,6 @@ mapson.tex	      :	principle1.eps principle2.eps
 readme.html:	readme.sgml building.inc ../VERSION
 
 index.html:	description.inc effectiveness.inc ../VERSION
-
-man-page.txt:	man-page.html
-	lynx -width=78 -nolist -dump $< >$@
 
 defconfig.inc:	../config-sample
 	sed <$< >$@ -e 's/&/\&amp;/g' \
@@ -79,7 +77,9 @@ clean distclean:
 	@rm -f *.aux *.dvi *.log *.toc
 	@rm -f *.fot *.ps *.xml
 	@rm -f *.tex defconfig.inc defreqmail.inc
+	@rm -f manpage.links manpage.refs
+
 
 realclean:	clean
 	@rm -f *.txt *.pdf *.html
-
+	@rm -f mapson.1
