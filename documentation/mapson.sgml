@@ -190,7 +190,7 @@ example, you could subscribe the address
 That mail would still reach you, but with the recipe</para>
 
       <informalexample>
-        <screen>:0
+        <screen>:0:
 * ARGUMENT ?? cat-lovers
 /var/spool/mail/user2
 </screen>
