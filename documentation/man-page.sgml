@@ -12,7 +12,7 @@ End:
 <!ENTITY license SYSTEM "license.inc">
 ]>
 
-<refentry id="mapson" lang="en" revision="$Revision$">
+<refentry lang="en">
   <refmeta>
     <refentrytitle>mapSoN</refentrytitle>
     <manvolnum>1</manvolnum>
