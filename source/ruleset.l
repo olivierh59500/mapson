@@ -18,7 +18,7 @@
 #include "paths.h"
 #include "mapson.h"
 
-static int            yylineno;
+int                   yylineno;
 static struct Mail *  rlst_mail;
 static int            rlst_rc;
 static char *         rlst_pattern;
