@@ -181,7 +181,7 @@ different folders reliably!</para>
       <para>If you subscribe to the mailing list <quote>cat-lovers</quote>, for
 example, you could subscribe the address
 <literal>user+cat-lovers@example.org</literal> instead of your ordinary address.
-That mail would still reach you, but with the recipe
+That mail would still reach you, but with the recipe</para>
 
       <informalexample>
         <screen>:0
@@ -190,7 +190,8 @@ That mail would still reach you, but with the recipe
 </screen>
       </informalexample>
 
-you can easily sort the list's articles into a different folder!</para>
+      <para>you can easily sort the list's articles into a different
+folder!</para>
 
       <para>In the recipe shown above, all mail that has such an argument will
 bypass &mapson;, and for a good reason: You don't want &mapson; to process mail
