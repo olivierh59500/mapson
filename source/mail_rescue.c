@@ -16,7 +16,8 @@
 #include <fcntl.h>
 #include <syslog.h>
 
-#include <text.h>
+#include <myexceptions.h>
+#include "proto.h"
 
 /* Return the path of the current user's home directory. */
 
@@ -27,15 +28,14 @@ get_home_directory(void)
     struct passwd *    pwd;
 
     pwd = getpwuid(getuid());
-    if (pwd == NULL)
-      return NULL;
-
-    home_dir = strdup(pwd->pw_dir);
-
+    if (pwd == NULL) {
+	THROW(UNKNOWN_FATAL_EXCEPTION);
+    }
+    home_dir = fail_safe_strdup(pwd->pw_dir);
     endpwent();
-
     return home_dir;
 }
+
 
 /* Determine the filename for the rescue file. */
 
@@ -48,24 +48,18 @@ get_mail_rescue_filename(void)
     int      fd;
 
     home_directory = get_home_directory();
-    if (home_directory == NULL)
-      return NULL;
 
     for (counter = 0; ; counter++) {
-	filename = text_easy_sprintf("%s/mapson_rescue_%04d",
-				   home_directory, counter);
-	if (filename == NULL)
-	  return NULL;
-	fprintf(stderr, "DEBUG: Trying rescue file '%s'.\n", filename);
+	filename = fail_safe_sprintf("%s/mapson_rescue_%04d", home_directory, counter);
 
 	fd = open(filename, O_WRONLY | O_CREAT | O_EXCL, 0600);
 	if (fd == -1) {
 	    if (errno == EEXIST)
 	      continue;
 	    else {
-		free(filename);
 		syslog(LOG_ERR, "Tried to open file '%s': %m", filename);
-		return NULL;
+		free(filename);
+		THROW(IO_EXCEPTION);
 	    }
 	    free(filename);
 	}
