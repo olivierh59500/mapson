@@ -24,27 +24,7 @@ mapson == %mapson.c.sm +lib=(libexceptions/libexceptions.a) \
     main.c
     md5.c
     parse_mail.c
-    ruleset.l :c +(%ruleset.l.flags)
+    ruleset.l +lex_prefix='rlst_' :c
     save_to.c
     spool.c
     spool_dir.c
-
-%ruleset.l.flags ==<<
-    +define='yy_create_buffer=rlst_create_buffer'
-    +define='yy_delete_buffer=rlst_delete_buffer'
-    +define='yy_flex_debug=rlst_flex_debug'
-    +define='yy_init_buffer=rlst_init_buffer'
-    +define='yy_flush_buffer=rlst_flush_buffer'
-    +define='yy_load_buffer_state=rlst_load_buffer_state'
-    +define='yy_switch_to_buffer=rlst_switch_to_buffer'
-    +define='yyin=rlst_in'
-    +define='yyleng=rlst_leng'
-    +define='yylex=rlst_lex'
-    +define='yylineno=rlst_lineno'
-    +define='yyout=rlst_out'
-    +define='yyrestart=rlst_restart'
-    +define='yytext=rlst_text'
-    +define='yywrap=rlst_wrap'
-    +define='yy_scan_buffer=rlst_scan_buffer'
-    +define='yy_scan_string=rlst_scan_string'
-    +define='yy_scan_bytes=rlst_scan_bytes'
