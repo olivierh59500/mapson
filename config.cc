@@ -120,7 +120,7 @@ configuration::configuration(int argc, char** argv)
                 cmdline_debug = true;
                 break;
             default:
-                error("Usage: %s [-d] [-c config-file] [mail ...]\n", argv[0]);
+                error("Usage: %s [-d | --debug] [-c config | --config-file config] [mail...]", argv[0]);
                 throw runtime_error("Incorrect command line syntax.");
             }
         }
