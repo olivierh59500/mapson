@@ -9,6 +9,7 @@ mapson == %mapson.cc.sm +cxx_flags='-Wall -pedantic' \
     mapson.cc
     extract-addresses.cc
     address-db.cc
+    home-dir.cc
 
 librfc822.a     == librfc822/%librfc822.a.sm :a
 

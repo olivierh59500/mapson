@@ -15,6 +15,7 @@
 #include "system-error.hh"
 #include "extract-addresses.hh"
 #include "address-db.hh"
+#include "home-dir.hh"
 
 using namespace std;
 
@@ -22,6 +23,10 @@ int
 main(int argc, char * argv[])
 try
     {
+    // Initialize our environment.
+
+    AddressDB address_db(assert_mapson_home_dir_exists() + "/address.db");
+
     // Read the e-mail coming on the standard input stream.
 
     string body;
@@ -49,10 +54,8 @@ try
     addrset_t addresses;
     extract_sender_addresses(header, addresses);
 
-    // Open the address database and find out whether any of the found
-    // address is known already.
+    // Find out whether any of the found address is known already.
 
-    AddressDB address_db("/home/simons/.mapson-address-db");
     addrset_t::const_iterator i;
     bool had_a_hit = false;
     for (i = addresses.begin(); i != addresses.end(); )
