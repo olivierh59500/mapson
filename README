@@ -65,3 +65,6 @@ Things to do:
 
     o Add headers to the mails mapSoN processes and tell the user what
       went on.
+
+    o Read the user's config file and fall back to the global one, if
+      the user doesn't have one.
