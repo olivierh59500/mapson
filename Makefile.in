@@ -81,8 +81,8 @@ README:
 	@(cd documentation && $(MAKE) readme.txt)
 	cp documentation/readme.txt $@
 
-documentation/man-page.txt:
-	@(cd documentation && $(MAKE) man-page.txt)
+documentation/mapson.1:
+	@(cd documentation && $(MAKE) mapson.1)
 
 documentation/mapson.html:
 	@(cd documentation && $(MAKE) mapson.html)
@@ -90,7 +90,7 @@ documentation/mapson.html:
 documentation/mapson.pdf:
 	@(cd documentation && $(MAKE) mapson.pdf)
 
-install:	mapson reqmail.template-sample config-sample documentation/man-page.txt \
+install:	mapson reqmail.template-sample config-sample documentation/mapson.1 \
 		documentation/mapson.html documentation/mapson.pdf
 	@$(MKDIR) -p $(DESTDIR)$(bindir)
 	@$(INSTALL) -c -m 555 mapson $(DESTDIR)$(bindir)/
@@ -99,7 +99,7 @@ install:	mapson reqmail.template-sample config-sample documentation/man-page.txt
 	@$(MKDIR) -p $(DESTDIR)$(sysconfdir)
 	@$(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/mapson.config-sample
 	@$(MKDIR) -p $(DESTDIR)$(mandir)/man1
-	@$(INSTALL) -c -m 644 documentation/man-page.txt $(DESTDIR)$(mandir)/man1/mapson.1
+	@$(INSTALL) -c -m 644 documentation/mapson.1 $(DESTDIR)$(mandir)/man1/mapson.1
 	@$(INSTALL) -c -m 644 documentation/mapson.html $(DESTDIR)$(datadir)/
 	@$(INSTALL) -c -m 644 documentation/peti.css $(DESTDIR)$(datadir)/
 	@$(INSTALL) -c -m 644 documentation/mapson.pdf $(DESTDIR)$(datadir)/
@@ -144,7 +144,7 @@ changelog::
 	cat ChangeLog.new ChangeLog.old >ChangeLog
 	rm ChangeLog.old ChangeLog.new
 
-dist:		mapson documentation/man-page.txt documentation/mapson.html \
+dist:		mapson documentation/mapson.1 documentation/mapson.html \
 		documentation/mapson.pdf VERSION README
 	@V=`cat VERSION`; \
 	cp -ra . /tmp/mapson-$$V; \
