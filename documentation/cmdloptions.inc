@@ -1,8 +1,16 @@
   <variablelist>
     <varlistentry>
       <term><option>-h</option></term>
+      <term><option>--help</option></term>
       <listitem>
         <para>Show &mapson; usage information.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--version</option></term>
+      <listitem>
+        <para>Show &mapson;'s version string.</para>
       </listitem>
     </varlistentry>
 

@@ -5,16 +5,16 @@ terms of the GNU General Public License. For further details, refer to the file
 url="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</ulink>
 in case that file is missing.</para>
 
-  <para>&mapson; uses the "Variable Expression Library", which is included in
-the distribution for comfort. This library is <emphasis>not</emphasis> part of
-the &mapson; package and is licensed under the terms described in the file
-<filename>libvarexp/LICENSE</filename>. Should that file be missing in your
-distribution, contact me for a copy.</para>
+  <para>&mapson; uses the <quote>Variable Expression Library</quote>, which is
+included in the distribution for comfort. This library is
+<emphasis>not</emphasis> part of the &mapson; package and is licensed under the
+terms described in the file <filename>libvarexp/LICENSE</filename>. Should that
+file be missing in your distribution, contact me for a copy.</para>
 
   <para>The <abbrev>MD5</abbrev> library included in this distribution has been
-taken from the "GNU C Library" and is licenced under the terms of the GNU
-Library General Public License. The licence file can be found in the file
-<filename>libmd5/COPYING.LIB</filename>.</para>
+taken from the <quote>GNU C Library</quote> and is licenced under the terms of
+the GNU Library General Public License. The licence file can be found in the
+file <filename>libmd5/COPYING.LIB</filename>.</para>
 
   <para>The <function>getopt()</function> and <function>getopt_long()</function>
 implementation used my &mapson; in case the routine are not available in the

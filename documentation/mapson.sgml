@@ -57,91 +57,89 @@ not!</para>
   <sect1>
     <title>How to Activate &mapson;</title>
 
-    <para>Before you can activate &mapson; you have to make sure that
-all required directories exist and that all required files can be
-created. &mapson; will try to create the address database file, for
-instance, but the default setting is that this database is located at
-<filename>$HOME/.mapon/address-db</filename>, and &mapson;
-<emphasis>will not</emphasis> create the
+    <para>Before you can activate &mapson; you have to make sure that all
+required directories exist and that all required files can be created. &mapson;
+will try to create the address database file, for instance, but the default
+setting is that this database is located at
+<filename>$HOME/.mapon/address-db</filename>, and &mapson; <emphasis>will
+not</emphasis> create the <filename>$HOME/.mapson</filename> directory.</para>
+
+    <para>The same applies to the mail spool directory, where &mapson; stores
+those mails that need a confirmation before they are delivered. The default
+location is <filename>$HOME/.mapson/spool</filename>, and &mapson will create
+the spool directory itself, but it won't create the
 <filename>$HOME/.mapson</filename> directory.</para>
 
-    <para>The same applies to the mail spool directory, where &mapson;
-stores those mails that need a confirmation before they are delivered.
-The default location is <filename>$HOME/.mapson/spool</filename>, and
-&mapson will create the spool directory itself, but it won't create
-the <filename>$HOME/.mapson</filename> directory.</para>
-
     <para>The cut a long story short: Create the directory
-<filename>.mapson</filename> in your home directory before you try to
-use &mapson;. If you changed the configuration, though, the locations
-may vary.</para>
+<filename>.mapson</filename> in your home directory before you try to use
+&mapson;. If you changed the configuration, though, the locations may
+vary.</para>
 
-    <para>Once that's out of the way, you need to create a template
-file that &mapson; will use to generate the request-for-confirmation
-mail. The installation process has created you a sample file for this
-purpose to
-<filename>/usr/local/share/mapson/reqmail.template-sample</filename>,
-so thats probably a good starting point.</para>
+    <para>Once that's out of the way, you need to create a template file that
+&mapson; will use to generate the request-for-confirmation mail. The
+installation process has created you a sample file for this purpose to
+<filename>/usr/local/share/mapson/reqmail.template-sample</filename>, so thats
+probably a good starting point.</para>
 
-    <para>Then, all that's left to do is to hook mapson into your mail
-system so that incoming e-mails are no longer delivered to your
-mailbox directly but are piped into &mapson;. How you can do this
-depends on the setup you have. The following sections will give you
-detailed instructions for the different scenarios.</para>
+    <para>Then, all that's left to do is to hook mapson into your mail system so
+that incoming e-mails are no longer delivered to your mailbox directly but are
+piped into &mapson;. How you can do this depends on the setup you have. The
+following sections will give you detailed instructions for the different
+scenarios.</para>
 
     <sect2>
       <title>Via <filename>.forward</filename></title>
 
-      <para>If you're using a plain
-<application>sendmail</application> installation, and don't have any
-fancy local mailers like <application>procmail</application>
-installed, you can activate &mapson; by writing an appropriate
-pipe-command to the file <filename>.forward</filename> in your home
-directory:</para>
+      <para>Please note that it is possible to run &mapson; without
+<application>procmail</application> or a similar tool that can sort incoming
+mail into different folders, but it is <emphasis>not</emphasis> recommended. If
+you do not have <application>procmail</application> installed, consider getting
+it, because you will lose a lot of functionality that is very useful.</para>
+
+      <para>Anyway, if you're using a plain <application>sendmail</application>
+installation, and don't have any fancy local mailers like
+<application>procmail</application> installed, you can activate &mapson; by
+writing an appropriate pipe-command to the file <filename>.forward</filename> in
+your home directory:</para>
 
       <blockquote>
         <programlisting>"|exec <replaceable>/usr/local/bin/mapson</replaceable>"</programlisting>
       </blockquote>
 
       <para>Apparently, on some systems the home directory must grant
-execute-permission to "other" for the <acronym>MTA</acronym> to
-evaluate that file. So if you created the
-<filename>.forward</filename> file as shown above and still there's no
-sign of any &mapson; activity, execute <userinput>chmod 711
+execute-permission to "other" for the <acronym>MTA</acronym> to evaluate that
+file. So if you created the <filename>.forward</filename> file as shown above
+and still there's no sign of any &mapson; activity, execute <userinput>chmod 711
 $HOME</userinput> and try again.</para>
 
       <para>Another potential obstacle is that some
-<application>sendmail</application> installation use the restricted
-shell (<acronym>smrsh</acronym>) for the execution of the local
-mailer. This shell will not allow users to execute arbitrary commands
-in the <filename>.forward</filename> file. If your system uses the
-smrsh, you must create a link from
-<filename>/usr/local/bin/mapson</filename> to
-<filename>/usr/adm/sm.bin/mapson</filename> in order to enable
-&mapson;. (The paths may vary from system to system,
-obviously.)</para>
+<application>sendmail</application> installation use the restricted shell
+(<acronym>smrsh</acronym>) for the execution of the local mailer. This shell
+will not allow users to execute arbitrary commands in the
+<filename>.forward</filename> file. If your system uses the smrsh, you must
+create a link from <filename>/usr/local/bin/mapson</filename> to
+<filename>/usr/adm/sm.bin/mapson</filename> in order to enable &mapson;. (The
+paths may vary from system to system, obviously.)</para>
     </sect2>
 
     <sect2>
       <title>Via <filename>.procmailrc</filename></title>
 
-      <para>Most systems these days use
-<application>procmail</application> to deliver local mail. That means,
-that you can configure your local mailer by adding cryptic recipts in
-an entirely undocumented syntax to the file
+      <para>Most systems these days use <application>procmail</application> to
+deliver local mail. That means, that you can configure your local mailer by
+adding cryptic recipes in an entirely undocumented syntax to the file
 <filename>.procmailrc</filename> in your home directory.</para>
 
-      <para>The good thing about <application>procmail</application>
-is that it gives you way more control over which e-mail is going
-where. For example, you don't want to pipe mail through &mapson; that
-has been delivered to you via a mailing list: It would be really gross
-to request confirmation for a mail from someone who doesn't even know
-you and hasn't even mailed you -- all he did was to post on a mailing
-list.</para>
+      <para>The good thing about <application>procmail</application> is that it
+gives you way more control over which e-mail is going where. For example, you
+don't want to pipe mail through &mapson; that has been delivered to you via a
+mailing list: It would be really gross to request confirmation for a mail from
+someone who doesn't even know you and hasn't even mailed you -- all he did was
+to post on a mailing list.</para>
 
-      <para>Unfortunately, recognizing mail that came from a mailing
-list is not an easy thing to do, but the following
-<application>procmail</application> recipt should work pretty good:</para>
+      <para>Unfortunately, recognizing mail that came from a mailing list is not
+an easy thing to do, but the following <application>procmail</application>
+recipe should work pretty good:</para>
 
       <blockquote>
         <programlisting># Pipe anything, that is not a reply or comes from a mailing
@@ -154,54 +152,93 @@ list is not an easy thing to do, but the following
 | <replaceable>/usr/local/mapson/bin/mapson</replaceable></programlisting>
       </blockquote>
 
-      <para>Using <application>procmail</application>`s "argument"
-feature, you can make this work even better, but that is still marked
-TODO in this manual &hellip; Here are the recipts, nonetheless, in
-case you think you know what you're doing.</para>
+      <para>Using <application>procmail</application>`s <quote>argument</quote>
+feature, you can make this work even better. The idea is that an address of the
+format <quote>user+parameter@example.com</quote> will still be delivered to the
+<quote>user</quote>, but the string <quote>parameter</quote> will be availabe in
+the <filename>.procmailrc</filename> config as an argument, which you can use to
+sort the mail into a different folder. Look at this:</para>
 
-        <blockquote>
-          <programlisting>ARGUMENT="$1"
+      <blockquote>
+        <programlisting>ARGUMENT="$1"
 
-# An argument of 'failsafe' will always by-pass all other
+# An argument of 'pass' will always by-pass all other
 # rules to make sure that I have a reliably working address
 # no matter what happens here.
 #
 :0
-* ARGUMENT ?? failsafe
+* ARGUMENT ?? pass
 $DEFAULT
 
 # Confirmation mails go into mapSoN.
-# Note: Not all systems support that regular expression syntax!
 #
 :0
-* ARGUMENT ?? [a-f0-9]{32}
+* ARGUMENT ?? [a-f0-9]...repeat 32 times...[a-f0-9]
 | <replaceable>/usr/local/mapson/bin/mapson</replaceable>
 :0 ec
 
-# Anything that has such an argument is probably coming from
-# a mailing list and should not go through mapSoN.
+# Anything else that has such an argument is probably coming
+# from a mailing list and should not go through mapSoN.
 #
 :0
 * ARGUMENT ?? ..*
-$DEFAULT</programlisting>
+$DEFAULT
+
+# Pipe anything, that is not a reply or comes from a mailing
+# list, into mapson for approval.
+#
+:0 w
+* !^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
+* !^Precedence: (list|bulk|junk)
+* !^Auto-Submitted:
+| <replaceable>/usr/local/mapson/bin/mapson</replaceable></programlisting>
       </blockquote>
+
+      <para>In case you're wondering: The <literal>[0-9]</literal> string must
+indeed be repeated exactly 32 times, because a cookie consists of 32 characters
+in the range of <literal>a</literal> to <literal>f</literal> or
+<literal>0</literal> to <literal>9</literal>. Some regular expression libraries
+allow to shortcut this expression as <literal>[a-f0-9]{32}</literal>, but
+apparently the one shipped with procmail is not one of them. At least on my
+machines, I was not able to make that work.</para>
+
+      <para>What this recipe does is to deliver any incoming mail that is
+addressed to <literal>user+pass</literal> to the mailbox without any further
+processing. I use this to make sure that mail aliased to me from
+<literal>postmaster</literal> or <literal>root</literal> doesn't get stuck
+somewhere. The next recipe pipes incoming confirmation mails into &mapson;. In
+the request-for-confirmation template, the sender address is configurable. So
+instead of using <literal>simons@example.org</literal> there, I put
+<literal>simons+<varname>${MD5HASH}</varname>@example.org</literal> into the
+From line, to make replies go to the special address. See <xref
+linkend="reqmail-template"> for further details about how to customize the
+request-for-confirmation template.</para>
+
+      <para>The next recipe will direct any other mail that has an argument
+around &mapson; before the last recipe finally invokes the program. Thus, if you
+want to avoid sending mailing list postings through &mapson; -- and you
+<emphasis>want to</emphasis> avoid that --, all you have to do is not to
+subscribe your normal address to the list but
+<literal>user+<replaceable>whatever</replaceable>@example.org</literal> and
+&mapson; won't see it. It doesn't matter what you chose for
+<replaceable>whatever</replaceable>, procmail will accept any string in this
+configuration.</para>
     </sect2>
   </sect1>
 
   <sect1>
     <title>Command Line Syntax</title>
 
-    <para>&mapson understans several optional parameters on the
-command line, which allow you to override the compiled-in default or
-the settings in the config file. The standard Unix synopsis line
-is:</para>
+    <para>&mapson understans several optional parameters on the command line,
+which allow you to override the compiled-in default or the settings in the
+config file. The standard Unix synopsis line is:</para>
 
     <blockquote>
       &synopsis;
     </blockquote>
 
-    <para>Here is a list of all options together with a short
-description of what the respective option does:</para>
+    <para>Here is a list of all options together with a short description of
+what the respective option does:</para>
 
     &cmdloptions;
   </sect1>
@@ -211,63 +248,118 @@ description of what the respective option does:</para>
     &configfile;
   </sect1>
 
-  <sect1>
+  <sect1 id="reqmail-template">
     <title>The Request-for-Confirmation File</title>
 
     <para>The request-for-confirmation mail is created by loading the configured
 template file and exanding the variables contained in it. The result is then
-piped into the command, you have configured as <varname>MTA</varname>.</para>
+piped into the command, you have configured as <varname>MTA</varname>. Please
+note that &mapson; expects the file to be a valid RFC822 message! That means
+that it contains a set of header lines and a mail body, the two parts being
+separated by a blank line.</para>
 
-    <para>The following variables are provided in the request-for-confirmation
-mail template file:</para>
+    <para>Here is a short example of a request-for-confirmation template you
+might use:</para>
+
+    <informalexample>
+      <screen>From: <replaceable>username@example.com</replaceable> (<replaceable>Real Name</replaceable>'s Anti<markup>-</markup>Spam<markup>-</markup>Tool)
+To: ${ENVELOPE:<markup>-</markup>${RETURN_PATH:<markup>-</markup>${SENDER}}}
+Subject: please confirm [${MD5HASH}]
+Precedence: junk
+Auto<markup>-</markup>Submitted: auto<markup>-</markup>generated
+References: $MESSAGEID
+In<markup>-</markup>Reply<markup>-</markup>To: $MESSAGEID
+
+This is an automated request for confirmation in order to make
+sure that the message quote below was actually sent by you. You
+don't wanna know the details, trust me. Just press &lt;reply&gt;
+and send me a mail back without changing that cookie in the subject
+line, that's it. You will never have to do that again -- sorry for
+the inconvenience!
+
+Your mail was:
+
+[ | ${HEADER[#]}] |
+[${BODY[#]:+ | }${BODY[#]}]{0,5} | \[...\]</screen>
+    </informalexample>
+
+    <para>&mapson; will replace the variables you see in this example by the
+actual values from the incoming mail and deliver the confirmation request. Don't
+panic, there's a pretty good template included in the distribution (see <xref
+linkend="deftmpl">) that you can use, you don't have to worry about the variable
+stuff too much if you don't want to. For those who want to &hellip; Here is the
+complete list of variables provided by &mapson; for this file:</para>
 
     <variablelist>
       <varlistentry>
-        <term><varname>$md5hash</varname></term>
+        <term><varname>$MD5HASH</varname></term>
         <listitem>
-          <para></para>
+          <para>&mapson; will calculate an MD5 checksum of the received mail and
+make that result available in this variable. This string will also be used as
+the filename of the mail in the spool directory, by the way. Your
+request-for-confirmation template <emphasis>must</emphasis> contain this string
+somewhere, or &mapson; won't be able to process the confirmation when it
+arrives.</para>
+
+          <para>A good idea is to place the cookie in the Subject of the mail,
+because users are less likely to erase it there by accident. (Friendly euphemism
+for <quote>stupidity</quote>.)</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>$envelope</varname></term>
+        <term><varname>$ENVELOPE</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the envelope of the incoming mail. The
+<quote>envelope</quote> is the address that was given as the sender during the
+SMTP dialog when the mail is transported. It's usually the only address that's
+not entirely trivial to fake or mess up, so you should use this one whenever
+possible to send the request for confirmation to.</para>
+
+          <para>Unfortunately, the envelope is not available in the standard
+RFC822 message format, but under Unix, it is customary to include it in the very
+first <quote>From&blank;</quote> line. At least
+<application>sendmail</application> does that.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>$sender</varname></term>
+        <term><varname>$SENDER</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable will expand to the address stated in the message's
+<quote>Sender:</quote> header.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>$return_path</varname></term>
+        <term><varname>$RETURN_PATH</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable will expand to the address stated in the message's
+<quote>Return-Path:</quote> header.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>$header</varname></term>
+        <term><varname>$HEADER</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the complete headers of the incoming
+mail.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>$body</varname></term>
+        <term><varname>$BODY</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the complete body of the incoming mail.
+Be careful, this may be long!</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>$messageid</varname></term>
+        <term><varname>$MESSAGEID</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the contents of the incoming mail's
+<quote>Message-Id:</quote> header.</para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -276,27 +368,32 @@ mail template file:</para>
 
     <variablelist>
       <varlistentry>
-        <term><varname>$headerlines[]</varname></term>
+        <term><varname>$HEADERLINES[]</varname></term>
         <listitem>
-          <para></para>
+          <para>This array contains one text line of the message's header per
+entry.</para>
         </listitem>
       </varlistentry>
     </variablelist>
 
     <variablelist>
       <varlistentry>
-        <term><varname>$header[]</varname></term>
+        <term><varname>$HEADER[]</varname></term>
         <listitem>
-          <para></para>
+          <para>This array contains one of the message's header lines per entry.
+A <quote>header line</quote> in this context means actually several text lines,
+because RFC822 headers may span over multiple lines if the next line starts with
+whitespace.</para>
         </listitem>
       </varlistentry>
     </variablelist>
 
     <variablelist>
       <varlistentry>
-        <term><varname>$body[]</varname></term>
+        <term><varname>$BODY[]</varname></term>
         <listitem>
-          <para></para>
+          <para>This array contains one text line of the message's body per
+entry.</para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -305,7 +402,7 @@ mail template file:</para>
   <sect1>
     <title>Expiring the Mail Spool</title>
 
-    <para>
+    <para>to be written</para>
   </sect1>
 
   <sect1>
@@ -366,8 +463,8 @@ request-for-confirmation mail.</para>
     <para>There's a chance that &mapson; isn't working the way you expect it --
 especially in the current unfinished state of the program. Here's a short
 description of how you can probably figure what's going wrong. The magic word is
-"log file". &mapson; logs pretty much everything it does to a file, which is per
-default located at <filename>$HOME/.mapson/log</filename>.</para>
+<quote>log file</quote>. &mapson; logs pretty much everything it does to a file,
+which is per default located at <filename>$HOME/.mapson/log</filename>.</para>
 
     <para>A typical set of messages found there may look like this:</para>
 
@@ -375,11 +472,11 @@ default located at <filename>$HOME/.mapson/log</filename>.</para>
       <screen>debug: mapSoN verion 2.0-beta-2 starting up
 debug: My configuration:
 debug:     Mailbox            = '/var/spool/mail/'
-debug:     ConfigFile         = 'config-sample'
-debug:     SpoolDir           = '/.mapson/spool'
-debug:     AddressDB          = '/.mapson/address-db'
-debug:     ReqConfirmTemplate = '/.mapson/reqmail.template: \
-    /usr/local/mapson/share/mapson/reqmail.template'
+debug:     ConfigFile         = '/home/<replaceable>user</replaceable>/.mapson/config'
+debug:     SpoolDir           = '/home/<replaceable>user</replaceable>/.mapson/spool'
+debug:     AddressDB          = '/home/<replaceable>user</replaceable>/.mapson/address-db'
+debug:     ReqConfirmTemplate = '/home/<replaceable>user</replaceable>/.mapson/reqmail.template: \
+    /usr/local/share/mapson/reqmail.template'
 debug:     MTA                = '/usr/sbin/sendmail '-f&lt;&gt;' -i -t'
 debug:     StrictRFCParser    = 'false'
 debug:     PassIncorrectMails = 'true'
@@ -387,8 +484,8 @@ debug:     RuntimeErrorRC     = '75'
 debug:     SyntaxErrorRC      = '65'
 debug:     Debug              = 'true'
 error: Runtime error while processing mail 'no-message-id': \
-    Can't open address db '/.mapson/address-db' for reading: No such \
-    file or directory</screen>
+    Can't open address db '/home/<replaceable>user</replaceable>/.mapson/address-db' \
+    for reading: No such file or directory</screen>
     </informalexample>
 
     <para>Please note that the backslashes in this example are not actually
@@ -396,8 +493,8 @@ there, they just denote added line breaks for the layout. In the real file,
 these split lines are just one one long line.</para>
 
     <para>If you find that your copy of &mapson; does not log the proceedings in
-this amount of detail, set the <userinput>Debug</userinput> directive in the
-configuration file to <userinput>yes</userinput> or add the
+this amount of detail, set the <varname>Debug</varname> directive in the
+configuration file to <parameter>yes</parameter> or add the
 <parameter>-d</parameter> parameter to the command line when calling
 &mapson;.</para>
 
@@ -429,50 +526,36 @@ LOGFILE=$HOME/procmail.log</screen>
         <para>to your <filename>.procmailrc</filename> file. Then look at
 <application>procmail</application>'s log file.</para>
       </listitem>
-
-      <listitem>
-        <para>In case you're using <application>procmail</application> and you
-have used the example snippets from this manual to activate &mapson;, there's a
-good chance that your system's regular expression library cannot deal with the
-expression that's used to direct confirmation mails into &mapson;. As far as I
-know, even the latest <application>GNU libc</application> does not support the
-repetition of a match in the term <userinput>[a-f0-9]{32}</userinput>. So if you
-find that &mapson; does not receive the confirmation mails, try to replace the
-line</para>
-
-        <informalexample>
-          <screen>* ARGUMENT ?? [a-f0-9]{32}</screen>
-        </informalexample>
-
-        <para>in your <filename>.procmailrc</filename> file by the explicit variant</para>
-
-        <informalexample>
-          <screen>* ARGUMENT ?? [a-f0-9][a-f0-9][a-f0-9]<replaceable>&hellip;</replaceable>[a-f0-9][a-f0-9]</screen>
-        </informalexample>
-
-        <para>where the number of <userinput>[a-f0-9]</userinput> terms is
-exactly 32. Yes, I know this sucks big time, but that's the way it is. I will
-resist the temptation to get into a big ranting about the fact that there's a
-perfectly good regular expression engine available as free software for years,
-but the GNU people won't use it because it is released under the BSD license.
-For once, I won't go into that. :-)</para>
-      </listitem>
     </itemizedlist>
   </sect1>
 
   <appendix>
-    <title>License</title>
-    &license;
-  </appendix>
-
-  <appendix>
     <title>The Default Configuration</title>
+
+    <para>The following configuration file shows the defaults compiled into
+&mapson;, so if your config file looks like this, you can as well erase it
+completely. The install process will install a sample configuration like this on
+your machine as <filename>${sysconfdir}/config-sample</filename>. If you didn't
+mess with the paths during the build, <varname>${sysconfdir}</varname> will be
+<filename>/usr/local/share/mapson</filename>.</para>
+
     <programlisting>&defconfig;</programlisting>
   </appendix>
 
-  <appendix>
+  <appendix id="deftmpl">
     <title>A Request-for-Confirmation Template Example</title>
+
+    <para>The following file will be installed on your machine as
+<filename>${datadir}/reqmail.template-sample</filename>. If you didn't mess with
+the paths during the build, <varname>${datadir}</varname> will be
+<filename>/usr/local/share/mapson</filename>.</para>
+
     <programlisting>&defreqmail;</programlisting>
+  </appendix>
+
+  <appendix>
+    <title>License</title>
+    &license;
   </appendix>
 
 </article>
