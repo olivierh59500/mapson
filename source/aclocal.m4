@@ -21,21 +21,23 @@ AC_MSG_RESULT($SRCDIR)
 AC_SUBST(SRCDIR)
 ])
 
-
-dnl Test whether out gcc version understands -pipe. This is a really
-dnl smart macro, except for the fact it doesn't work. The bloody gcc
-dnl doesn't abort with an error, if you call it with a wrong option,
-dnl so the test can't determine what happened. *sigh*
+dnl This macro will define an user-specified option of the name
+dnl "--with-dmalloc". If this is set to "yes" in some way, then the
+dnl macro will add the appropriate defines to LIBS, CPPFLAGS and
+dnl LDFLAGS so that the dmalloc library is compiled to the binary.
 dnl
-
-dnl AC_DEFUN(PETI_PROG_GCC_PIPE, [
-dnl if test "$ac_cv_prog_gcc" = "yes"; then
-dnl     AC_MSG_CHECKING(whether gcc accepts -pipe)
-dnl     OLDCC="$CC"
-dnl     CC="$CC -wwwwwwwipe"
-dnl     AC_TRY_COMPILE(,int main(int argc, char ** argv) { return 0; },
-dnl 	AC_MSG_RESULT(yes),
-dnl 	AC_MSG_RESULT(no)
-dnl 	CC="$OLDCC")
-dnl fi
-dnl ])
+AC_DEFUN(PETI_WITH_DMALLOC, [
+AC_MSG_CHECKING(whether to dmalloc library)
+AC_ARG_WITH(dmalloc,
+[  --with-dmalloc[=ARG]     Compile with dmalloc library],
+if test "$withval" = "" -o "$withval" = "yes"; then
+    ac_cv_dmalloc="/usr/local"
+else
+    ac_cv_dmalloc="$withval"
+fi
+AC_MSG_RESULT(yes)
+CPPFLAGS="$CPPFLAGS -DDEBUG_DMALLOC -DDMALLOC_FUNC_CHECK -I$ac_cv_dmalloc/include"
+LDFLAGS="$LDFLAGS -L$ac_cv_dmalloc/lib"
+LIBS="$LIBS -ldmalloc"
+,)
+])
