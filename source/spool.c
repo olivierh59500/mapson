@@ -33,3 +33,29 @@ store_mail_in_spool(char * mail_buffer, char * id)
     save_to(mail_buffer, filename);
     free(filename);
 }
+
+
+char *
+get_mail_from_spool(char * id)
+{
+    char *  home_dir;
+    char *  filename;
+    char *  mail_buffer;
+
+    home_dir = get_home_directory();
+    filename = fail_safe_sprintf("%s/%s/%s", home_dir,
+				 MAPSON_SPOOL_DIR_PATH, id);
+    free(home_dir);
+
+    TRY {
+	mail_buffer = loadfile(filename);
+    }
+    OTHERWISE {
+	free(filename);
+	PASSTHROUGH();
+    }
+    remove(filename);
+    free(filename);
+
+    return mail_buffer;
+}

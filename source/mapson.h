@@ -120,6 +120,7 @@ char *get_mailbox_path(void  );
 /* spool.c */
 
 void store_mail_in_spool(char *mail_buffer, char *id);
+char * get_mail_from_spool(char * id);
 
 /* loadfile.c */
 
