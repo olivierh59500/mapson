@@ -16,6 +16,7 @@
 #include "system-error/system-error.hh"
 #include "address-db.hh"
 #include "config.hh"
+#include "fd-sentry.hh"
 #include "extract-addresses.hh"
 #include "gather-addresses.hh"
 
@@ -56,6 +57,7 @@ void gather_addresses(int argc, char** argv)
             fd = open(argv[i], O_RDONLY, 0);
             if (fd < 0)
                 throw system_error("Can't open file for reading");
+            fd_sentry sentry(fd);
             string mail;
             for (rc = read(fd, buffer, sizeof(buffer));
                  rc > 0;
@@ -133,10 +135,5 @@ void gather_addresses(int argc, char** argv)
             {
             printf("    %s\n", e.what());
             }
-
-        // Close the file.
-
-        if (fd > 0)
-            close(fd);
         }
     }

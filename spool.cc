@@ -14,19 +14,10 @@
 #include "system-error/system-error.hh"
 #include "log.hh"
 #include "config.hh"
+#include "fd-sentry.hh"
 #include "spool.hh"
 
 using namespace std;
-
-namespace
-    {
-    struct fd_sentry
-        {
-        explicit fd_sentry(int arg) throw() : fd(arg) { }
-        ~fd_sentry() throw() { close(fd); }
-        int fd;
-        };
-    }
 
 string spool(const string& mail)
     {
