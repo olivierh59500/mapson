@@ -29,7 +29,8 @@ o Add an option that tells mapSoN to let the actual confirmation
 o Extract the message-id before looking for a cookie so that we have
   it when the success message is logged.
 
-o Add a way to match whole domains.
+o Add a way to match whole domains, probably even including patters,
+  negation, etc.
 
 o Implement my own setenv() because it is missing on Solaris.
 
