@@ -6,7 +6,7 @@
 
 @titlepage
 @title The mapSoN User Manual
-@author Peter Simons <simons@@rhein.de>
+@author Peter Simons <peter.simons@@gmd.de>
 @end titlepage
 
 @c --------------------------------- node -------------------------------------
@@ -21,6 +21,7 @@ This manual describes the version 1.0 of the mapSoN utility.
 * Introduction::        What does mapSoN do?
 * Installation::        Install mapSoN as user.
 * Configuration::       Configuring mapSoN for your wishes.
+* Copyright::           mapSoN is not in the public domain.
 @end menu
 
 @c --------------------------------- node -------------------------------------
@@ -32,10 +33,10 @@ Unfortunately, the times when you could read your mail without any
 filtering mechanisms seems to be over. Over the years, the number of
 unsolicted commercial e-mails I receive per day has increased
 dramatically. Today the average for me personally is something like
-15(!) spam mails per day. What means, that I can hardly afford not to
-read my mail for several consequetive days, or I'll have to wade through
-a hundred of them, trying to find any real mail that someone might have
-sent me.
+@emph{15} spam mails per day. What means, that I can hardly afford not
+to read my mail for several consequetive days, or I'll have to wade
+through a hundred of them, trying to find any real mail that someone
+might have sent me.
 
 So I decided that the time was ripe to change that. Unfortunately, the
 filter mechanisms in existance today are not too sophisticated. Most
@@ -75,32 +76,36 @@ spool it in your home directory. Then it will send a short notice to the
 address the mail comes from, which may look like this:
 
 @example
-     From: Peter Simons <simons@@petidomo.com>
-     To: never_mailed@@me.before
-     Subject: [mapSoN] Request for Confirmation
+From: Peter Simons <peter.simons@@gmd.de>
+To: never_mailed@@me.before
+Subject: [mapSoN] Request for Confirmation
 
-     Hi,
+Hi,
 
-     a few seconds ago I have received your electronic mail. I notice
-     that this is the first time you're trying to contact me via
-     e-mail, and I have a little procedure set up that protects me from
-     unwanted junk mail. This is why the mapSoN tool has delayed the
-     delivery until it receives a confirmation from you, by which you
-     certify that you're NOT sending me any unsolicted commercial
-     stuff.
+a few seconds ago I have received your electronic mail. I notice that
+this is the first time you're trying to contact me via e-mail, and I
+have a little procedure set up that protects me from unwanted junk
+mail. This is why the mapSoN tool has delayed the delivery until it
+receives a confirmation from you, by which you certify that you're NOT
+sending me any unsolicted commercial stuff.
 
-     To confirm this, simply reply to this automatic e-mail and make
-     sure you include the following line in your reply:
+To confirm this, simply reply to this automatic e-mail and make sure
+you include the following line in your reply:
 
-     mapSoN-Confirm-Cookie: <some_weird_cryptographic_cookie>
+mapSoN-Confirm-Cookie: <some_weird_cryptographic_cookie>
 
-     You may quote the line, if that's more comfortable for you, the
-     mapSoN tool will recognize the confirmation anyway.
+Please include the *full* line and do not edit it, or my tool won't
+recognize your confirmation. It is probably best to quote this whole
+mail and to send it back.
 
-     I am sorry for the extra effort, but unfortunately the amount of
-     junk mail I receive has made this preparative necessary. My tool
-     keeps track of who has sent me e-mail before and you won't see
-     this notice again.
+I am sorry for the extra effort, but unfortunately the amount of junk
+mail I receive has made this preparative necessary. My tool keeps
+track of who has sent me e-mail before and you won't see this notice
+again.
+
+Please note that the mail is processed by an automatic tool. You may
+well add personal comments in the reply, it's just that I won't see
+them. :-)
 @end example
 
 You can customize the mail text according to your wishes, preferred
@@ -117,9 +122,9 @@ delete the spooled mails, or send them to a special folder, or whatever
 you prefer.
 
 The mechanism is simple but efficient: Somebody who replies to an e-mail
-or an USENET posting of your, will have his e-mail delivered to you
+or an USENET posting of yours, will have his e-mail delivered to you
 immediately. Somebody who knows you already and has exchanged e-mail
-with you before, will also not notice any delays.
+with you before, won't either notice any delays.
 
 Somebody who sends you an e-mail for the first time, will have the
 slight inconvenience of having to reply the request for confirmation
@@ -182,7 +187,7 @@ this part of the documentation.
 @section Creating the required configuration files
 
 Per default, mapSoN expects two configuration files:
-@file{$HOME/.mapson/.ruleset} and @file{$HOME/.mapson/rfcmail}. The
+@file{$HOME/.mapson/ruleset} and @file{$HOME/.mapson/rfcmail}. The
 ruleset file will be discussed in great detail in the next chapter so
 we'll concentrate on the @file{rfcmail} file for the moment.
 
@@ -209,8 +214,8 @@ your own.
 @file{rfctext} contains a normal text except for one thing: The string
 ``%s'' @emph{must} occur inside the file exactly one time. When mapSoN
 send the ``request for confirmation'' mail to the unknown sender, it
-will replace the ``%s'' with cryptographic cookie, it uses to identify
-which incoming confirmation corresponds to which delayed e-mail.
+will replace the ``%s'' with a cookie, it uses to identify which
+incoming confirmation corresponds to which delayed e-mail.
 
 A short example of a valid @file{rfctext} file would be:
 
@@ -235,9 +240,9 @@ Last but not least, you should create a @file{$HOME/.mapson/ruleset}
 file, which should contain at least the following entries:
 
 @example
-"From +[^@@]*(-)?owner(-)?[^@@]*@@|mailer-daemon@@"         quickpass
-"^From +[^@@ ]+ "                                        quickpass
-"Subject: \[mapSoN\] Request for Confirmation"          quickpass
+"^From +[^@@]*(-)?owner(-)?[^@@]*@@"                   quickpass
+"^From +(postmaster|mailer-daemon@@)"                quickpass
+"^From +[^@@ ]+ "                                    quickpass
 @end example
 
 The meaning of those lines will be explained in the next chapter. For
@@ -246,7 +251,7 @@ Running mapSoN without those rulesets installed is a really, really bad
 idea --- trust me.
 
 @c --------------------------------- node -------------------------------------
-@node Configuration,  , Installation, Top
+@node Configuration, Copyright, Installation, Top
 @chapter Customizing mapSoN
 
 Next to the @file{rfcmail} file, mapSoN's behavior can be customized
@@ -259,19 +264,23 @@ the @code{re_format(7)} or @code{regex(3)} manual files.
 
 @section The ruleset file
 
-You can specify one rule per line. The pattern must start at the first
-column of the line and is separated from the command by one or more
-white space characters --- blanks or tabs, that is. Every line that
-starts with a ``#''- or a blank-character is treated as comment by
-mapSoN when parsing the file. If the regular expression string contains
-blanks, you have to quote the pattern in quotation marks. Quotation
-marks that are part of the pattern itself have to be escaped with the
-backslash: ``\''.
+The ruleset-file is located at @file{$HOME/.mapson/ruleset} and contains
+one rule per line. The pattern must start at the first column of the
+line and is separated from the command by one or more white space
+characters --- blanks or tabs, that is. Every line that starts with a
+``#''- or a blank-character is treated as comment by mapSoN when parsing
+the file. If the regular expression string contains blanks, you have to
+quote the pattern in quotation marks. Quotation marks that are part of
+the pattern itself have to be escaped with the backslash: ``\''.
+
+Please note that mapSoN will concatenate ``continuation lines'' into one
+single line for the pattern matching process. This makes it a lot easier
+for you to write correct patterns.
 
 If the pattern is precended by a bang (``!'') character, the outcome of
 the match will be reversed.
 
-Recognized command are as follows:
+The following command are recognized:
 
 @itemize @bullet
 
@@ -314,7 +323,7 @@ more for internal purposes.
 
 @end itemize
 
-@subsection An example-ruleset
+@section An example-ruleset
 
 I am aware that it is virtually impossible to understand what I am
 talking about simply by reading the description above. But if you take a
@@ -333,7 +342,8 @@ This is just a comment.
 # QUICKPASS all mail that looks like a bounce message or a mail coming
 # from a mailing list.
 #
-"^From +[^@@]*(-)?owner(-)?[^@@]*@@|mailer-daemon@@"    quickpass
+"^From +[^@@]*(-)?owner(-)?[^@@]*@@"                   quickpass
+"^From +(postmaster|mailer-daemon@@)"                quickpass
 @end example
 
 The regular expression matches all envelopes where the username of the
@@ -342,6 +352,12 @@ typical sign of a mailing list. Since you should never send a ``request
 for confirmation mail'' to a mailing list owner (he'd be flooded with
 rfcmails, if everybody did), this rule will let those mails pass. It
 won't add the address to the ``accept'' database, though.
+
+The second rule will match notifications of bounced mail and deliver
+them to your mail box in any case. If you did otherwise, you'd probably
+miss the bounce notifications altogether as there isn't an envelope in
+these mails usually and hence, mapSoN won't be able to deliver any
+``request for confirmation''.
 
 @example
 # QUICKPASS all local mail.
@@ -353,36 +369,110 @@ This rule matches all mails which's envelope does not contain the at
 (``@@'') character. This is true for all mail that has been sent
 locally, by another user of your system. Arguably, the risk of receiving
 spam from other users of your machine is relatively small. And even if
-someone did this trick, you'll usually rather know it happened.
+someone did this trick, you'll usually rather like to know it happened.
 
 @example
-# QUICKPASS all requests for confirmation.
+# PASS all mail from domains I trust.
 #
-"^Subject: \[mapSoN\] Request for Confirmation"     quickpass
+"^From .*(my.company.com|my.friends.org)"           pass
 @end example
 
-``Request for confirmation'' mails, created by another mapSoN should
-always be delivered to your mailbox --- unless you have some special
-auto-confirmation magic installed.
-
-@example
-# DROP all mail except from senders in these two domain.
-#
-"!^From .*(rhein.de|foo.bar)"                       drop
-@end example
-
-This rule is pretty useless, but it demonstrates the usage of the NOT
-operator. It will silently drop all incoming mails from all senders
-except those in the ``rhein.de'' or ``foo.bar'' domain.
-
-@section Things you @emph{don't} want to block
+You will usually not want to send ``request for confirmation''-mails to
+your colleagues at work back. Neither would you want to reject an e-mail
+from your boss, your professor or from certain users. Using this rule
+you can let their mail pass directly.
 
 @example
 # PASS all replies to mails or postings of mine.
 #
-"^In-Reply-To:.*@@petium.rhein.de"                   pass
-"^References:.*@@petium.rhein.de"                    pass
+"^In-Reply-To:.*@@peti.gmd.de"                       pass
+"^References:.*@@peti.gmd.de"                        pass
 @end example
 
+Replies of any kind will usually have an @code{In-Reply-To} or
+@code{References:} header, which states which article this is a reply
+to. This is a neat thing to use to let replies to your own articles pass
+immediately. An @code{In-Reply-To:} header does always contain the
+message id of the original article and in 99% of all cases this message
+id will contain the name of your machine. Hence it is a good thing to
+use to recognize replies and let them pass.
+
+@node Copyright,  , Configuration, Top
+@appendix mapSoN Copyright
+
+The mapSoN software both binary and source (hereafter ``Software''), is
+intellectual property owned jointly by Peter Simons and German National
+Research Center for Information Technology (hereafter ``GMD'') and is
+copyrighted by GMD in all countries in the world, and ownership remains
+with the GMD.
+
+The GMD grants you (hereafter ``Licensee'') a license to use the Software
+for academic, research and internal business purposes only, without a
+fee. Only for these purposes, Licensee may distribute the binary and
+source code (if released) to third parties provided that the copyright
+notice and this statement appears on all copies and that no charge is
+associated with such copies.
+
+Licensee may make derivative works. However, if Licensee distributes any
+derivative work based on or derived from the Software, then Licensee
+will
+
+@enumerate
+
+@item
+notify GMD regarding its distribution of the derivative work, and
+
+@item
+clearly notify users that such derivative work is a modified version and
+not the original mapSoN distributed by the GMD.
+
+@end enumerate
+
+Any Licensee wishing to make commercial use of the Software should
+contact the GMD, to negotiate an appropriate license for such commercial
+use. Commercial use includes
+
+@enumerate
+
+@item
+integration of all or part of the source code into a product for sale or
+license by or on behalf of Licensee to third parties;
+
+@item
+any distribution of the binary code or source code to third parties that
+need it to utilize a commercial product sold or licensed by or on behalf
+of Licensee;
+
+@item
+any distribution of the binary code or source code to third parties for
+a licence fee;
+
+@item
+any distribution of the binary code or source code through such formats
+as diskette or CD-ROM.
+
+@end enumerate
+
+The Licensee acknowledges and agrees that the software is delivered 'as
+is' without warranty and without any support services. GMD makes no
+warranties, either expressed or implied, as to the software and its
+derivatives.
+
+It is understood by the Licensee that GMD shall not be liable for any
+loss or damage that may arise, including any indirect special or
+consequential loss or damage in connection with or arising from the
+performance or use of the software, including fitness for any particular
+purpose.
+
+By using or copying this Software, Licensee agrees to abide by the
+copyright law and all other applicable laws of Germany including, but
+not limited to, export control laws, and the terms of this license. GMD
+shall have the right to terminate this license immediately by written
+notice upon Licensee's breach of, or non-compliance with, any of its
+terms. Licensee may be held legally responsible for any copyright
+infringement that is caused or encouraged by Licensee's failure to abide
+by the terms of this license.
+
 @contents
+
 @bye
