@@ -128,7 +128,7 @@ depend::
 	@mv Makefile.in.bak Makefile.in
 
 tag::
-	cvs tag -c mapson-`sed <VERSION -e 's/\./-/g'`
+	echo cvs tag -c mapson-`sed <VERSION -e 's#\.#-#g'`
 
 changelog::
 	rcs2log -u "peti	Peter Simons	simons@computer.org" >ChangeLog.new
