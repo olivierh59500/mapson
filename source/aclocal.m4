@@ -39,5 +39,5 @@ AC_MSG_RESULT(yes)
 CPPFLAGS="$CPPFLAGS -DDEBUG_DMALLOC -DDMALLOC_FUNC_CHECK -I$ac_cv_dmalloc/include"
 LDFLAGS="$LDFLAGS -L$ac_cv_dmalloc/lib"
 LIBS="$LIBS -ldmalloc"
-,)
+,AC_MSG_RESULT(no))
 ])
