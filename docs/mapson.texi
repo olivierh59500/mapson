@@ -11,10 +11,378 @@
 
 @c --------------------------------- node -------------------------------------
 
-@node Top,  , (dir), (dir)
-@chapter Introduction to the mapSoN tool
+@node Top, Introduction, (dir), (dir)
+
+@ifinfo
+This manual describes the version 1.0 of the mapSoN utility.
+@end ifinfo
+
+@menu
+* Introduction::        What does mapSoN do?
+* Installation::        Install mapSoN as user.
+* Configuration::       Configuring mapSoN for your wishes.
+@end menu
 
 @c --------------------------------- node -------------------------------------
+
+@node Introduction, Installation, Top, Top
+@chapter Introduction to the mapSoN tool
+
+Unfortunately, the times when you could read your mail without any
+filtering mechanisms seems to be over. Over the years, the number of
+unsolicted commercial e-mails I receive per day has increased
+dramatically. Today the average for me personally is something like
+15(!) spam mails per day. What means, that I can hardly afford not to
+read my mail for several consequetive days, or I'll have to wade through
+a hundred of them, trying to find any real mail that someone might have
+sent me.
+
+So I decided that the time was ripe to change that. Unfortunately, the
+filter mechanisms in existance today are not too sophisticated. Most
+spam filtering tools I've seen so far are based on procmail, or a
+similar tool, and use a list of keywords or addresses to drop unwanted
+junk mail. While this might be nice to filter mail from known spam
+domains like "cyberpromo.com", or "bulkmail.com", it won't catch most of
+the spam one receives, because the addresses are faked, the headers are
+manipulated and the contents of the mail itself is not predictable.
+
+That's why I wrote mapSoN, which combines the keyword-filtering
+mechanism with an, in my humble opinion, pretty good algorithm to keep
+unwanted mail out of your folder.
+
+@section How does mapSoN recognize ``spam''?
+
+mapSoN must be installed as filter program for your incoming mail,
+usually by adding an appropriate entry to your $HOME/.forward file. This
+means that mapSoN will get all your incoming mail and it will decide
+whether or not to actually deliver it to your mailbox.
+
+To do that, it uses three criteria. First of all, an user defined
+ruleset is checked against the mail. If any keywords or patterns match,
+the mail will be dealt with according to your wishes. This is useful to
+drop some sender's mail completely, or to sort mail into different mail
+folders.
+
+If no rule matches the mail, mapSoN will check whether the mail is a
+reply to an e-mail you sent, or whether it is a reply to a USENET
+posting of yours. If it is, the mail will always be delivered.
+
+If no signs of a reply-mail can be found, mapSoN will check whether the
+sender stated in the From: header has sent you mail before. If he has,
+the mail will pass. If this is the first time you receive an e-mail from
+this address, though, mapSoN will delay the delivery of the mail and
+spool it in your home directory. Then it will send a short notice to the
+address the mail comes from, which may look like this:
+
+@example
+     From: Peter Simons <simons@@petidomo.com>
+     To: never_mailed@@me.before
+     Subject: [mapSoN] Request for Confirmation
+
+     Hi,
+
+     a few seconds ago I have received your electronic mail. I notice
+     that this is the first time you're trying to contact me via
+     e-mail, and I have a little procedure set up that protects me from
+     unwanted junk mail. This is why the mapSoN tool has delayed the
+     delivery until it receives a confirmation from you, by which you
+     certify that you're NOT sending me any unsolicted commercial
+     stuff.
+
+     To confirm this, simply reply to this automatic e-mail and make
+     sure you include the following line in your reply:
+
+     mapSoN-Confirm-Cookie: <some_weird_cryptographic_cookie>
+
+     You may quote the line, if that's more comfortable for you, the
+     mapSoN tool will recognize the confirmation anyway.
+
+     I am sorry for the extra effort, but unfortunately the amount of
+     junk mail I receive has made this preparative necessary. My tool
+     keeps track of who has sent me e-mail before and you won't see
+     this notice again.
+@end example
+
+You can customize the mail text according to your wishes, preferred
+language or personal taste of spelling, this is just the default text.
+
+The person who tried to contact you will then reply to this "request for
+confirmation", citing the cookie stated in the mail. When your mapSoN
+receives this confirmation mail, it will deliver the spooled mail into
+your folder. Furthermore, the address will be added to the database, so
+that mail from this person will pass directly in future.
+
+If no confirmation mail arrives within a certain time, mapSoN can either
+delete the spooled mails, or send them to a special folder, or whatever
+you prefer.
+
+The mechanism is simple but efficient: Somebody who replies to an e-mail
+or an USENET posting of your, will have his e-mail delivered to you
+immediately. Somebody who knows you already and has exchanged e-mail
+with you before, will also not notice any delays.
+
+Somebody who sends you an e-mail for the first time, will have the
+slight inconvenience of having to reply the request for confirmation
+once, what can be automated, by the way, using procmail or a similar
+filter. Spammers won't be able to confirm the request mail, though,
+because they almost always use a faked, non-existant address, so the
+request for confirmation won't reach them.
+
+That's how it works.
+
+@c --------------------------------- node -------------------------------------
+@node Installation, Configuration, Introduction, Top
+@chapter Installation
+
+This chapter does not discuss, how the mapSoN binary can be compiled and
+installed. This is described in the @file{INSTALL} document, which is
+included in the distribution. Instead I want to show the various
+possibilities to set mapSoN up in the user level.
+
+@section Using mapSoN via .forward
+
+The easiest, and probably best way to install mapSoN as your mail filter
+is using the mail-forwarding mechanism provided under virtually any Unix
+system. All you have to do is to create a file named @file{.forward} in
+your home directory, which should contain a line like this:
+
+@example
+"|/usr/local/bin/mapson"
+@end example
+
+Of course you will have to use the correct path to call mapSoN. If you
+don't know where the mapSoN binary is, try executing @code{which
+mapson}. If that doesn't help, you will have to ask your system
+administrator for assistance.
+
+
+@section Using mapSoN via procmail
+
+If you're using procmail, the setup is slightly different. Just keep the
+@file{.forward} file (or whatever mechanism your site uses to call
+procmail) as it is and add the following line at the end of your
+@file{.procmailrc} file:
+
+@example
+#
+# Feed mail into mapson for processing
+#
+:0
+| /usr/local/bin/mapson
+@end example
+
+The correct location of this command in your @file{.procmailrc} file may
+vary, depending on your configuration. For most people, simply putting
+it at the end of the file will get the job done. If your procmail
+configuration is that complicated, that you'd need some different
+location, you're probably a Unix wizard anyway and have already skipped
+this part of the documentation.
+
+
+@section Creating the required configuration files
+
+Per default, mapSoN expects two configuration files:
+@file{$HOME/.mapson/.ruleset} and @file{$HOME/.mapson/rfcmail}. The
+ruleset file will be discussed in great detail in the next chapter so
+we'll concentrate on the @file{rfcmail} file for the moment.
+
+First of all, create the directory @file{.mapson} in your home
+directory. You can do so my executing the following commands:
+
+@example
+$ mkdir ~/.mapson
+$ chmod 700 ~/.mapson
+@end example
+
+Setting the permissions as shown above is not necessary, but it is
+highly recommended to do so as the @file{.mapson} directory will contain
+your e-mail --- at least temporarily and you don't want other people to
+be able to access it.
+
+Once you're done, create the file @file{$HOME/.mapson/rfctext}. This
+file contains the text of the mail that is sent to unknown senders,
+which need to confirm their mail in order to have it delivered to your
+mailbox. If @file{rfctext} does not exist, mapSoN will use an internal
+default text, but it is usually a good idea to supply a mail text of
+your own.
+
+@file{rfctext} contains a normal text except for one thing: The string
+``%s'' @emph{must} occur inside the file exactly one time. When mapSoN
+send the ``request for confirmation'' mail to the unknown sender, it
+will replace the ``%s'' with cryptographic cookie, it uses to identify
+which incoming confirmation corresponds to which delayed e-mail.
+
+A short example of a valid @file{rfctext} file would be:
+
+@example
+Hi, you have to confirm your mail, I am afraid. Please reply to this
+mail again and quote the following line:
+
+%s
+
+in your reply.
+@end example
+
+Please note that the file contains only the body of the ``request for
+confirmation'' mail. The @code{Subject:} line will contain the fixed
+text ``[mapSoN] Request for Confirmation''. If you want to change that,
+you'll have to do so at compile time, but changing the contents of the
+subject line is not recommended, as some people might rely on this
+string to reply ``request for confirmation'' mail automatically, or to
+sort them into different folders, etc@dots{}
+
+Last but not least, you should create a @file{$HOME/.mapson/ruleset}
+file, which should contain at least the following entries:
+
+@example
+"From +[^@@]*(-)?owner(-)?[^@@]*@@|mailer-daemon@@"         quickpass
+"^From +[^@@ ]+ "                                        quickpass
+"Subject: \[mapSoN\] Request for Confirmation"          quickpass
+@end example
+
+The meaning of those lines will be explained in the next chapter. For
+the moment you can simply copy them into the file using cut and paste.
+Running mapSoN without those rulesets installed is a really, really bad
+idea --- trust me.
+
+@c --------------------------------- node -------------------------------------
+@node Configuration,  , Installation, Top
+@chapter Customizing mapSoN
+
+Next to the @file{rfcmail} file, mapSoN's behavior can be customized
+using the so called ``ruleset''. The ruleset, simply speaking, tells
+mapSoN what to do with the incoming mail. Each rule consists of two
+parts, a regular expression and a command, which will be executed when
+the pattern matches the mail mapSoN is processing. If you are not
+familiar with the regular expression syntax, you should have a look at
+the @code{re_format(7)} or @code{regex(3)} manual files.
+
+@section The ruleset file
+
+You can specify one rule per line. The pattern must start at the first
+column of the line and is separated from the command by one or more
+white space characters --- blanks or tabs, that is. Every line that
+starts with a ``#''- or a blank-character is treated as comment by
+mapSoN when parsing the file. If the regular expression string contains
+blanks, you have to quote the pattern in quotation marks. Quotation
+marks that are part of the pattern itself have to be escaped with the
+backslash: ``\''.
+
+If the pattern is precended by a bang (``!'') character, the outcome of
+the match will be reversed.
+
+Recognized command are as follows:
+
+@itemize @bullet
+
+@item pass
+
+The @code{PASS} command tells mapSoN to let the mail pass without any
+further tests. The address(es) stated in the @code{From:} header line
+will be added to the database of ``accept'' addresses and the next time
+a mail from this address arrives, it will be delivered to your mail box
+in any case.
+
+@item quickpass
+
+@code{QUICKPASS} let's the currently processed e-mail pass, like
+@code{PASS} does. But in contrast to @code{PASS}, it will not add the
+address(es) to the ``accept'' database.
+
+@item drop
+
+This command discards the mail without further action.
+
+@item rfc
+
+@code{RFC} stands for ``request for confirmation'', what means that the
+originator of the mail will be required to acknowledge a ``request for
+confirmation'' mail, before his original message is delivered to you.
+
+@item saveto ``filename''
+
+The @code{SAVETO} command will tell mapSoN to store the mail into the
+file as specified via the @file{filename} parameter. Please note that
+the @file{filename}-parameter @emph{must} be specified in quotes, or
+mapSoN will report a parse error.
+
+@item continue
+
+@code{CONTINUE} tells mapSoN to do nothing and to go on testing the next
+rule of the ruleset. @code{CONTINUE} will usually not be used. It exists
+more for internal purposes.
+
+@end itemize
+
+@subsection An example-ruleset
+
+I am aware that it is virtually impossible to understand what I am
+talking about simply by reading the description above. But if you take a
+look at the following, commented, example, things will become a lot
+clearer.
+
+@example
+#
+# mapSoN ruleset file
+#
+@end example
+
+This is just a comment.
+
+@example
+# QUICKPASS all mail that looks like a bounce message or a mail coming
+# from a mailing list.
+#
+"^From +[^@@]*(-)?owner(-)?[^@@]*@@|mailer-daemon@@"    quickpass
+@end example
+
+The regular expression matches all envelopes where the username of the
+address starts with ``owner-'' or ends with ``-owner''. This is a
+typical sign of a mailing list. Since you should never send a ``request
+for confirmation mail'' to a mailing list owner (he'd be flooded with
+rfcmails, if everybody did), this rule will let those mails pass. It
+won't add the address to the ``accept'' database, though.
+
+@example
+# QUICKPASS all local mail.
+#
+"^From +[^@@ ]+ "                                    quickpass
+@end example
+
+This rule matches all mails which's envelope does not contain the at
+(``@@'') character. This is true for all mail that has been sent
+locally, by another user of your system. Arguably, the risk of receiving
+spam from other users of your machine is relatively small. And even if
+someone did this trick, you'll usually rather know it happened.
+
+@example
+# QUICKPASS all requests for confirmation.
+#
+"^Subject: \[mapSoN\] Request for Confirmation"     quickpass
+@end example
+
+``Request for confirmation'' mails, created by another mapSoN should
+always be delivered to your mailbox --- unless you have some special
+auto-confirmation magic installed.
+
+@example
+# DROP all mail except from senders in these two domain.
+#
+"!^From .*(rhein.de|foo.bar)"                       drop
+@end example
+
+This rule is pretty useless, but it demonstrates the usage of the NOT
+operator. It will silently drop all incoming mails from all senders
+except those in the ``rhein.de'' or ``foo.bar'' domain.
+
+@section Things you @emph{don't} want to block
+
+@example
+# PASS all replies to mails or postings of mine.
+#
+"^In-Reply-To:.*@@petium.rhein.de"                   pass
+"^References:.*@@petium.rhein.de"                    pass
+@end example
 
 @contents
 @bye
