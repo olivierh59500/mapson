@@ -37,7 +37,6 @@ in various setups.</para>
 
   <sect1>
     <title>Command Line Syntax</title>
-
     &synopsis;
     &cmdloptions;
   </sect1>
