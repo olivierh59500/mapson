@@ -13,7 +13,6 @@ dnl Figure out which development environment we're using.
 dnl
 AC_PROG_CC
 AC_PROG_CXX
-AC_PROG_CPP
 AC_PROG_RANLIB
 
 dnl Make sure u_int32_t is defined.
