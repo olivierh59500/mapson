@@ -16,14 +16,9 @@ all:	$(LIBS) mapson
 mapson:		$(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o mapson $(LIBS)
 
-ruleset.c:	ruleset.y
-	$(YACC) -d -p rlst ruleset.y
-	mv y.tab.c ruleset.c
-	mv y.tab.h ruleset_scan.h
-
-ruleset_scan.c:	ruleset_scan.l ruleset.c
-	$(LEX) -Prlst ruleset_scan.l
-	mv lex.rlst.c ruleset_scan.c
+ruleset.c:	ruleset.l
+	$(LEX) -Prlst ruleset.l
+	mv lex.rlst.c ruleset.c
 
 $(LIBS):
 	@(cd ../lib;$(MAKE))
@@ -37,7 +32,7 @@ clean:
 	rm -f mapson *.o *.core
 
 realclean:	clean
-	rm -f ruleset.c ruleset_scan.c ruleset_scan.h
+	rm -f ruleset.c
 
 
 #
@@ -53,4 +48,3 @@ parse_mail.o: mapson.h
 confirm.o: mapson.h
 home_dir.o: mapson.h
 address_db.o: mapson.h
-ruleset.o: mapson.h ruleset_scan.c ruleset_scan.h

@@ -12,6 +12,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <assert.h>
+#include <regex.h>
 
 #include <myexceptions.h>
 #include "mapson.h"
@@ -140,4 +141,37 @@ fail_safe_fwrite(void * buffer, size_t size, size_t nmemb, FILE * stream)
     if (rc < nmemb) {
 	THROW(IO_EXCEPTION);
     }
+}
+
+bool
+fail_safe_pattern_match(const char * buffer,
+			const char * pattern)
+{
+    regex_t   preg;
+    int       rc;
+
+    /* Sanity checks. */
+
+    assert(buffer != NULL);
+    assert(pattern != NULL);
+    if (!buffer || !pattern) {
+	THROW(UNKNOWN_FATAL_EXCEPTION);
+    }
+
+    /* Compile the regular expression. */
+
+    rc = regcomp(&preg, pattern, REG_EXTENDED | REG_ICASE | REG_NOSUB | REG_NEWLINE);
+    if (rc != 0) {
+	THROW(REGEX_EXCEPTION);
+    }
+
+    /* Match it. */
+
+    rc = regexec(&preg, buffer, 0, NULL, 0);
+    regfree(&preg);
+
+    if (rc == 0)
+      return TRUE;
+    else
+      return FALSE;
 }
