@@ -33,7 +33,7 @@ void extract_sender_addresses(const string& header, addrset_t& addrset)
     class my_committer : public rfc822parser::address_committer
 	{
       public:
-	my_committer(addrset_t& addrset) : myset(addrset) { }
+	explicit my_committer(addrset_t& addrset) : myset(addrset) { }
 	void operator() (const rfc822address& addr)
 	    {
 	    myset.insert(addr.address);
