@@ -17,8 +17,8 @@
 #include <myexceptions.h>
 #include "mapson.h"
 
-#define SENDMAIL_PATH "/usr/sbin/sendmail"
-
+#define SENDMAIL_PATH  "/usr/sbin/sendmail"
+#define MIME_SEPARATOR "mapSoN_generated_part_separator"
 void
 forward_mail(const char * mail, char * recipient)
 {
@@ -49,6 +49,18 @@ forward_mail(const char * mail, char * recipient)
 	fprintf(fh, "To: %s\n", recipient);
 	fprintf(fh, "Subject: [mapSoN] Please re-send your mail\n");
 	fprintf(fh, "Precedence: junk\n");
+	fprintf(fh, "Mime-Version: 1.0\n");
+	fprintf(fh, "Content-Type: multipart/mixed;\n");
+	fprintf(fh, "        boundary=\"%s\"\n", MIME_SEPARATOR);
+	fprintf(fh, "Content-Transfer-Encoding: 7bit\n");
+	fprintf(fh, "\n");
+	fprintf(fh, "--%s\n", MIME_SEPARATOR);
+	fprintf(fh, "Content-Type: text/plain; charset=US-ASCII\n");
+	fprintf(fh, "\n");
+	fprintf(fh, "bla\n");
+	fprintf(fh, "\n");
+	fprintf(fh, "--%s\n", MIME_SEPARATOR);
+	fprintf(fh, "Content-Type: message/rfc822\n");
 	fprintf(fh, "\n");
 	fprintf(fh, "%s\n", mail);
     }
