@@ -82,20 +82,28 @@ documentation/man-page.txt:
 documentation/mapson.html:
 	@(cd documentation && $(MAKE) mapson.html)
 
-install:	mapson reqmail.template-sample config-sample documentation/man-page.txt
+documentation/mapson.pdf:
+	@(cd documentation && $(MAKE) mapson.pdf)
+
+install:	mapson reqmail.template-sample config-sample documentation/man-page.txt \
+		documentation/mapson.html documentation/mapson.pdf
 	$(MKDIR) -p $(DESTDIR)$(bindir)
-	$(INSTALL) -c -m 555 mapson $(DESTDIR)$(bindir)/mapson
+	$(INSTALL) -c -m 555 mapson $(DESTDIR)$(bindir)/
 	$(MKDIR) -p $(DESTDIR)$(datadir)
-	$(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)$(datadir)/reqmail.template-sample
+	$(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)$(datadir)/
 	$(MKDIR) -p $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/config-sample
 	$(MKDIR) -p $(DESTDIR)$(mandir)/man1
 	$(INSTALL) -c -m 644 documentation/man-page.txt $(DESTDIR)$(mandir)/man1/mapson.1
+	$(INSTALL) -c -m 644 documentation/mapson.html $(DESTDIR)$(datadir)/
+	$(INSTALL) -c -m 644 documentation/mapson.pdf $(DESTDIR)$(datadir)/
 	@echo
 	@echo mapSoN is installed now. You might want to rename and to
 	@echo edit the following files:
 	@echo ' - $(DESTDIR)$(datadir)/reqmail.template-sample'
 	@echo ' - $(DESTDIR)$(sysconfdir)/config-sample'
+	@echo
+	@echo The user manual is installed in $(datadir).
 
 clean::
 	@find . -name '*.rpo' -exec rm -f {} \;
