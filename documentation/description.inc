@@ -1,36 +1,34 @@
-  <para>The amount of unsolicited commercial e-mail ("spam") circulating in the
-Internet today has become unbearable for most people. Many approaches have been
-proposed to stop this junk from filling up your mailboxes, such as the <ulink
-url="http://mail-abuse.org/rbl+/">Real-time blackhole list</ulink>, <ulink
-url="http://www.iks-jena.de/mitarb/lutz/usenet/teergrube.en.html">Teergruben</ulink>,
-or <application>procmail</application>-based <ulink
-url="http://junkfilter.zer0.org/">anti-spam recipts</ulink>.</para>
+  <para>&mapson; is a spam filter that uses a pretty unique approach to keep
+unsolicited commercial e-mail out of your mailbox. Rather than using a set of
+configured "bad words", a list of "know spammers", or complicated scoring
+mechanisms to determine what is spam and what is not, it relies on "known
+senders" -- or rather "unknown senders".</para>
 
-  <para>&mapson; is another anti-spam system, but it uses an approach entirely
-different than those systems named before. Instead of trying to recognize spam
-by the <acronym>IP</acronym> address of the <acronym>SMTP</acronym> dialag's
-peer or by certain patters in the mail's body, &mapson; uses the sender's e-mail
-address to decide whether the e-mail is delivered to your mailbox or not: Any
-e-mail that comes from a "known" address may pass, any e-mail that comes from an
-e-mail address seen for the first time needs special confirmation, before it may
-pass.</para>
+  <para>Every time you receive an e-mail, &mapson; will look-up the sender's
+e-mail address in a small database file and check whether that address is in
+there. If it is, the mail is delivered to your mailbox, but if it is not, the
+e-mail will be stored in a spool directory in your home, using a cryptographic
+cookie as the filename. Then &mapson; will send a so called <firstterm>request
+for confirmation</firstterm> to the sender's address, asking him to please
+confirm his addresses validity by replying and sending the cryptograpic cookie
+back. When &mapson; receives a mail with such a cookie in it, it will move the
+corresponding mail from the spool directory to your mailbox and add the sender's
+address in the mail to the database.</para>
 
-  <para>"Special confirmation" means that &mapson; will generate an
-<acronym>MD5</acronym> checksum of the to-be-confirmed mail and stores the mail
-in a temporary spool directory. Then it sends an <firstterm>request for
-confirmation</firstterm> to the address from which the mail was coming from. In
-this request, it will include the <acronym>MD5</acronym> checksum and ask the
-recipient to reply back and to quote that <acronym>MD5</acronym> hash. Once
-&mapson; sees that <acronym>MD5</acronym> hash again, it considers that a
-confirmation of the original mail, delivers the deferred mail from the spool to
-your mailbox, and adds the sender's address to the database of known addresses,
-so that the next time he tries to contact you, his mail will pass through
-&mapson; immediately..</para>
+  <para>This approach is based on the fact that spammers usually fake the sender
+address of the spam mail. (In fact, they <emphasis>have to</emphasis>, because
+sending unsolicited advertisement via e-mail is illegal in most countries.) But
+because their sender address is invalid, they will never see the request for
+confirmation, they will never reply, and their spam will sit in that spool file
+until hell freezes over or an apropriate cron job deletes it. Using this
+heuristic, &mapson; catches way above 95% of all spam mail I receive.</para>
 
-  <para>This heuristic catches almost any spam mail, because spammers have to
-fake their sender addresses in order to avoid being held responsible for their
-abuse. Hence, their address will most likely not be in the database of known
-addresses, nor will they ever receive the request for confirmation mail!</para>
+  <para>In order to avoid annoying more "real" people, who are trying to contact
+you, than necessary, you can import the addresses from your mail archive into
+the &mapson; database. Furthermore, you can set &mapson; up in a way that will
+let any mail pass automatically, that is a reply to a mail or a news posting of
+yours: If you sent someone an e-mail and he replies back, &mapson; won't bother
+him. It would be pretty inpolite, if it did.</para>
 
 <!--
 Local Variables:
