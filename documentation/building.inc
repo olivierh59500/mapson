@@ -12,7 +12,7 @@ class="username">root</systemitem> password ready if you're going for a
 system-wide installation.</para>
 
   <para>Be adviced that &mapson; needs a fairly recent C++ compiler because it
-make full use of the new ISO C++ language features. If you're using the <ulink
+makes full use of the new ISO C++ language features. If you're using the <ulink
 url="http://gcc.gnu.org/">GNU C Compiler</ulink> version 2.95 or later, you
 won't have any problems. But other compilers are known not to be ISO C++
 compatible. If you're having trouble, send me an e-mail and I'll see what I can
@@ -74,14 +74,14 @@ override them at run-time in the configuration file &mapson; reads at
 startup.</para>
 
   <para>If your using a fairly recent gcc version to compile this, you might
-want to try</para>
+want to try
 
   <informalexample>
     <screen>CXXFLAGS=-frepo LDFLAGS=-frepo ./configure</screen>
   </informalexample>
 
-  <para>to configure the build. This will result in a about 30% smaller binary
-because unused template instances are optimized out.</para>
+to configure the build. This will result in an about 30% smaller binary because
+unused template instances are optimized out.</para>
 
   <para>On some platforms, largefile support doesn't work yet. If you're getting
 compiler errors, give the configure script the option
