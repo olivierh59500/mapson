@@ -103,53 +103,54 @@ main(int argc, char * argv[])
     }
 
 
+    /* Check whether the mail is a comfirmation of an rfcmail. */
+
+    p = is_confirmation_mail(mail_buffer);
+    if (p != NULL) {
+	syslog(LOG_INFO, "Received confirmation for '%s'.", p);
+	free_mail(Mail);
+	free(mail_buffer);
+	TRY {
+	    mail_buffer = get_mail_from_spool(p);
+	}
+	HANDLE(IO_EXCEPTION) {
+	    syslog(LOG_ERR, "Mail '%s' is not there.", p);
+	    PASSTHROUGH();
+	}
+	OTHERWISE {
+	    PASSTHROUGH();
+	}
+	Mail = parse_mail(mail_buffer);
+	for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
+	    syslog(LOG_INFO, "Adding '%s' to accept-database.", (Mail->from)[i]);
+	    add_address_to_database((Mail->from)[i]);
+	}
+	save_to(mail_buffer, get_mailbox_path());
+	free(p);
+	goto terminate;
+    }
+
+
     /* Let the rulset check the mail to decide what we'll do with it. */
 
     rc = check_ruleset_file(Mail, &p);
     switch(rc) {
       case RLST_CONTINUE:
-	  syslog(LOG_DEBUG, "No rule in ruleset matched.");
-	  p = is_confirmation_mail(mail_buffer);
-	  if (p != NULL) {
-	      syslog(LOG_INFO, "Received confirmation for '%s'.", p);
-	      free_mail(Mail);
-	      free(mail_buffer);
-	      TRY {
-		  mail_buffer = get_mail_from_spool(p);
+	  syslog(LOG_DEBUG, "No rule in ruleset matched '%s'.", Mail->message_id);
+	  for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
+	      if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
+		  syslog(LOG_INFO, "Sender '%s' is known. Delivering mail '%s'.",
+			 (Mail->from)[i], Mail->message_id);
+		  save_to(mail_buffer, get_mailbox_path());
+		  break;
 	      }
-	      HANDLE(IO_EXCEPTION) {
-		  syslog(LOG_ERR, "Mail '%s' is not there.", p);
-		  PASSTHROUGH();
-	      }
-	      OTHERWISE {
-		  PASSTHROUGH();
-	      }
-	      Mail = parse_mail(mail_buffer);
-	      for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-		  syslog(LOG_INFO, "Adding '%s' to accept-database.", (Mail->from)[i]);
-		  add_address_to_database((Mail->from)[i]);
-	      }
-	      save_to(mail_buffer, get_mailbox_path());
-	      free(p);
 	  }
-	  else {
-	      syslog(LOG_DEBUG, "Mail '%s' is no confirmation.",
-		     Mail->message_id);
-	      for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-		  if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
-		      syslog(LOG_INFO, "Sender '%s' is known. Delivering mail '%s'.",
-			     (Mail->from)[i], Mail->message_id);
-		      save_to(mail_buffer, get_mailbox_path());
-		      break;
-		  }
-	      }
 
-	      if ((Mail->from)[i] == NULL) {
-		  syslog(LOG_INFO, "Sender '%s' is unknown. Requesting confirmation for '%s'.",
-			 Mail->envelope, Mail->message_id);
-		  store_mail_in_spool(mail_buffer, Mail->message_id);
-		  send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
-	      }
+	  if ((Mail->from)[i] == NULL) {
+	      syslog(LOG_INFO, "Sender '%s' is unknown. Requesting confirmation for '%s'.",
+		     Mail->envelope, Mail->message_id);
+	      store_mail_in_spool(mail_buffer, Mail->message_id);
+	      send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
 	  }
 	  break;
       case RLST_PASS:
@@ -192,6 +193,7 @@ main(int argc, char * argv[])
 
 
     /* Terminating gracefully. */
+terminate:
 
 #ifdef DEBUG_DMALLOC
     /*
