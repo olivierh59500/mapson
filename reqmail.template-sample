@@ -1,4 +1,4 @@
-From: username+${MD5HASH}@hostname.domain (Real Name's Anti-Spam-Tool)
+From: username+${MD5HASH}@example.com (Real Name's Anti-Spam-Tool)
 To: ${ENVELOPE:-${RETURN_PATH:-${SENDER}}}
 Subject: please confirm / bitte bestaetigen
 Precedence: junk
