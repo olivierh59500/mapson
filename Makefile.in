@@ -117,6 +117,12 @@ depend::
 tag::
 	cvs tag -c mapson-`sed <VERSION -e 's/\./-/g'`
 
+changelog::
+	rcs2log -u "peti	Peter Simons	simons@computer.org" >ChangeLog.new
+	mv ChangeLog ChangeLog.old
+	cat ChangeLog.new ChangeLog.old >ChangeLog
+	rm ChangeLog.old ChangeLog.new
+
 dist:	mapson documentation/mapson.txt VERSION
 	@V=`cat VERSION`; \
 	cp -ra . /tmp/mapson-$$V; \
