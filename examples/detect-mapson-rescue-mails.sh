@@ -47,7 +47,9 @@ for file in $RESCUE_FILES; do
     echo >>$TMPFILE ""
     echo >>$TMPFILE "=============== $file ==============="
     echo >>$TMPFILE ""
-    sed -e 's/^From />From /g' <$file >>$TMPFILE
+    sed -e 's/^From />From /g' \
+	-e 's/mapSoN-Confirm-Cookie/Escaped-Mapson-Cookie/g' \
+	<$file >>$TMPFILE
     echo >>$TMPFILE ""
     DELETE_ME="$DELETE_ME $file"
 done
