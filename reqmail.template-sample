@@ -1,39 +1,27 @@
-From: username+${MD5HASH}@example.com (Real Name's Anti-Spam-Tool)
+From: username@example.com (Real Name's Anti-Spam-Tool)
 To: ${ENVELOPE:-${RETURN_PATH:-${SENDER}}}
-Subject: please confirm / bitte bestaetigen
+Subject: please confirm [${MD5HASH}]
 Precedence: junk
 Auto-Submitted: auto-generated
 References: $MESSAGEID
 In-Reply-To: $MESSAGEID
 
-            English                                  Deutsch
+Because I receive several dozen spam mails each day, I installed a
+small tool that will defer incoming e-mail if it comes from an address
+unknown to me. This is the case with the mail you sent me, I'm afraid.
 
-Because I receive several dozen spam    Da ich am Tag dutzende Spam-Mails
-mails each day, I installed a small     erhalte, habe ich ein Programm
-tool that will defer incoming e-mail    installiert, das jede eingehende
-if it comes from an address unknown     E-Mail abweist, wenn diese von einer
-to me. This is the case with the mail   mir unbekannten Absendeadresse
-you sent me, I'm afraid.                kommt. Leider ist dies bei Ihrer
-                                        E-Mail der Fall.
-Before your mail will be delivered to
-my mailbox, I need a confirmation,      Bevor ich die E-Mail tatsaechlich
-that your sender address is a valid     zugestellt bekomme, brauche ich eine
-e-mail address. You can confirm this    Bestaetigung, dass die Absendeadresse
-simply by replying to this e-mail --    "echt" ist. Sie koennen dies einfach
-the contents of the reply doesn't       dadurch bestaetigen, dass Sie auf
-matter. Once my tool sees your reply,   diese Mail antworten. Der Inhalt der
-it will deliver the original mail to    Antwort spielt dabei keine Rolle, es
-my mailbox and I'll answer it as soon   geht nur darum, dass das Programm
-as possible.                            sieht, dass Ihre Adresse nicht
-                                        gefaelscht war.
-I am sorry that this is somewhat
-annoying for you, but the amount of     Ich bedauere, dass ich Ihnen damit
-unsolicited commercial advertisement    Umstaende bereiten muss, aber die
-sent through the Internet these days    Menge an unerwuenschter Werbung, die
-is to much for me to bear.              derzeit durch das Internet geistert,
-                                        war einfach zuviel.
+Before your mail will be delivered to my mailbox, I need a
+confirmation, that your sender address is a valid e-mail address. You
+can confirm this simply by replying to this e-mail. Be sure not to
+erase the cookie found in the Subject: line whon doing so! Once my
+tool sees your reply, it will deliver the original mail to my mailbox
+and I'll answer it as soon as possible.
 
-Your e-mail was:                        Ihre E-Mail war:
+I am sorry that this is somewhat annoying for you, but the amount of
+unsolicited commercial advertisement sent through the Internet these
+days is to much for me to bear.
+
+Your e-mail was:
 
 [   | ${HEADER[#]}]   |
 [${BODY[#]:+   | }${BODY[#]}]{0,5}   | \[...\]
