@@ -13,8 +13,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#include <rfc822.h>
-#include <myexceptions.h>
+#include "librfc822/rfc822.h"
+#include "myexceptions.h"
 #include "mapson.h"
 
 #define is_keyword(string) !strncasecmp(p, (string), strlen(string))
