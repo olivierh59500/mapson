@@ -1,4 +1,0 @@
-*.txt *.html *.ps *.pdf *.aux *.log *.tex
-defconfig.inc defreqmail.inc
-manpage.links manpage.refs
-mapson.1
