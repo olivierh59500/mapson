@@ -105,12 +105,13 @@ open_address_database(void)
 void
 add_address_to_database(char * address)
 {
-    DBT *    key;
+    DBT *    key,
+	*    data;
     int      rc;
 
     open_address_database();
-    key = init_dbt(address);
-    rc = dbput(db, key, NULL, R_NOOVERWRITE);
+    data = key = init_dbt(address);
+    rc = dbput(db, key, data, R_NOOVERWRITE);
     free_dbt(key);
     if (rc == -1) {
 	syslog(LOG_ERR, "Inserting address '%s' to the database failed: %m",
@@ -123,13 +124,16 @@ add_address_to_database(char * address)
 bool
 does_address_exist_in_database(char * address)
 {
-    DBT *    key;
+    DBT *    key,
+	*    data;
     int      rc;
 
     open_address_database();
     key = init_dbt(address);
-    rc = dbget(db, key, NULL, 0);
+    data = fail_safe_malloc(sizeof(DBT));
+    rc = dbget(db, key, data, 0);
     free_dbt(key);
+    free(data);
     if (rc == -1) {
 	syslog(LOG_ERR, "Finding address '%s' in the database failed: %m",
 	       address);
