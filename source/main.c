@@ -114,9 +114,9 @@ main(int argc, char * argv[])
 
     /* Check whether the mail is a request for confirmation. */
 
-    if ((fail_safe_pattern_match(mail_buffer,
+    if ((fail_safe_pattern_match(Mail->header,
              "^Subject: \\[mapSoN\\] Request for Confirmation") == TRUE) ||
-	(fail_safe_pattern_match(mail_buffer,
+	(fail_safe_pattern_match(Mail->header,
 	     "^X-mapSoN: requesting confirmation") == TRUE)) {
 
 	/* Mail is an incoming request for confirmation. */
