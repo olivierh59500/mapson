@@ -57,8 +57,6 @@ Things to do:
 
     o Don't log with syslog(3); write to a file instead.
 
-    o Include message id in log messages.
-
     o Convert libmd5 to uint32_t and stdint.h.
 
     o Add last-used timestamps to each address in the database.
