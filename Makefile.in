@@ -34,7 +34,7 @@ LIBS		= libmd5/md5.o libparse-config-file/parse-config-file.o \
 		  libvarexp/padding.o libvarexp/search-and-replace.o \
 		  libvarexp/text.o libvarexp/transpose.o \
 		  libvarexp/variable.o libvarexp/error.o \
-		  libvarexp/parser.o
+		  libvarexp/parser.o @LIBOBJS@
 
 .SUFFIXES:
 .SUFFIXES:	.c .cc .o
