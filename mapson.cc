@@ -22,6 +22,7 @@
 #include "deliver.hh"
 #include "request-confirmation.hh"
 #include "gather-addresses.hh"
+#include "accept-confirmation.hh"
 
 using namespace std;
 
@@ -65,6 +66,13 @@ try
 	}
     if (rc < 0)
 	throw system_error("Failed to read mail from standard input");
+
+    // Check whether the mail contains a valid cookie. If it does, it
+    // is an incoming confirmation and should not be processed any
+    // further.
+
+    if (accept_confirmation(mail))
+        return 0;
 
     // Extract the sender addresses from the mail and copy them into
     // an addrset_t for easier handling in the code that follows. This
