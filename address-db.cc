@@ -3,9 +3,6 @@
  * All rights reserved.
  */
 
-// ISO C++ headers.
-#include <cerrno>
-
 // POSIX.1 system headers.
 #include <sys/types.h>
 #include <sys/stat.h>
