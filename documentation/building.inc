@@ -1,4 +1,4 @@
-  <para>Compiling the software should be pretty straight forward; all you'll
+  <para>Compiling the software should be pretty straight-forward; all you'll
 have to do is the usual routine:</para>
 
   <screen>
