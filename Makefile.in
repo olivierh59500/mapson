@@ -67,15 +67,15 @@ main.o.o:	version.h
 config.o:	Makefile version.h
 
 version.h:	VERSION
-	@echo  >$@ '/* Generated automatically; do not edit! */'
-	@echo >>$@ ''
-	@echo >>$@ '#ifndef VERSION_H'
-	@echo >>$@ '#define VERSION_H'
-	@echo >>$@ ''
-	@sed <$< >>$@ -e 's/^/#define VERSION "/' -e 's/$$/"/'
-	@echo >>$@ ''
-	@echo >>$@ '#endif'
-	@echo Built version.h file.
+	echo  >$@ '/* Generated automatically; do not edit! */'
+	echo >>$@ ''
+	echo >>$@ '#ifndef VERSION_H'
+	echo >>$@ '#define VERSION_H'
+	echo >>$@ ''
+	sed <VERSION >>$@ -e 's/^/#define VERSION "/' -e 's/$$/"/'
+	echo >>$@ ''
+	echo >>$@ '#endif'
+	echo Built version.h file.
 
 README:
 	@(cd documentation && $(MAKE) readme.txt)
