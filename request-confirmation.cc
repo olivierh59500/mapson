@@ -136,7 +136,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
     // Read request-for-confirmation mail template into buffer.
 
     const string& filename = config->request_for_confirmation_file;
-    int fd = open(filename.c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    int fd = open(filename.c_str(), O_RDWR , S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't open address db '") + filename + "' for reading");
     fd_sentry sentry(fd);
@@ -155,7 +155,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
     ssize_t rc;
     for (rc = read(fd, buffer, sizeof(buffer)); rc > 0; rc = read(fd, buffer, sizeof(buffer)))
 	mail_template.append(buffer, rc);
-    if (rc < 0)
+    //if (rc < 0)
 	throw system_error(string("Failed to read request-for-confirmation template '") + filename + "' into memory");
 
     // Expand variables in the template.
@@ -171,8 +171,8 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
         throw system_error(string("Can't start MTA '") + config->mta + "'");
     if (fwrite(mail_template.data(), mail_template.size(), 1, fh) != 1)
         {
-        fclose(fh);
-        throw system_error(string("Failed writing to the address db '") + filename + "'");
+        pclose(fh);
+        throw system_error(string("Failed to pipe to MTA process '") + config->mta + "'");
         }
-    fclose(fh);
+    pclose(fh);
     }
