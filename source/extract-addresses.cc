@@ -51,7 +51,6 @@ void extract_sender_addresses(const string& header, addrset_t& addrset)
 	next = find_next_header_line(header, current);
 	std::string line = header.substr(current, next - current);
 	if (strncasecmp("From:", line.c_str(), sizeof("From:") - 1) == 0
-	    || strncasecmp("From:", line.c_str(), sizeof("From:") - 1) == 0
 	    || strncasecmp("Reply-To:", line.c_str(), sizeof("Reply-To:") - 1) == 0
 	    || strncasecmp("Sender:", line.c_str(), sizeof("Sender:") - 1) == 0
 	    || strncasecmp("Return-Path:", line.c_str(), sizeof("Return-Path:") - 1) == 0)
