@@ -124,6 +124,22 @@ parse_mail(char * buffer)
 	    q[-1] = '\0';
 	    mail_struct->message_id = fail_safe_strdup(tmp+1);
 	    q[-1] = backup;
+	    {
+		char * p,
+		     * q;
+
+		/* Remove facing and trailing blanks. */
+		q = p = mail_struct->message_id;
+		while(isspace(*p))
+		  p++;
+		while (*q++ = *p++)
+		  ;
+		q -= 2;
+		while (isspace(*q)) {
+		    *q = '\0';
+		    q--;
+		}
+	    }
 	}
     }
 
