@@ -27,11 +27,18 @@ char *get_mail_rescue_filename(void);
 
 /* fail_safe.c */
 
+#ifdef DEBUG_DMALLOC
+#define fail_safe_malloc(size)         malloc(size)
+#define fail_safe_strdup(string)       strdup(string)
+#define fail_safe_realloc(ptr,size)    realloc(ptr,size)
+#define fail_safe_calloc(nmemb,size)   calloc(nmemb,size)
+#else
 void *fail_safe_malloc(size_t size);
 char *fail_safe_strdup(char *string);
-char *fail_safe_sprintf(const char *fmt, ...  );
 void *fail_safe_realloc(void * ptr, size_t size);
 void *fail_safe_calloc(size_t nmemb, size_t size);
+#endif
+char *fail_safe_sprintf(const char *fmt, ...  );
 void fail_safe_fwrite(void *buffer, size_t size, size_t nmemb, FILE *stream);
 
 /* array.c */
@@ -60,5 +67,6 @@ struct Mail {
 };
 
 struct Mail * parse_mail(char * buffer);
+void          free_mail(struct Mail * mail_struct);
 
 #endif /* !defined(__MAPSON_H__) */

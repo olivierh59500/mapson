@@ -16,6 +16,7 @@
 #include <myexceptions.h>
 #include "mapson.h"
 
+#ifndef DEBUG_DMALLOC
 void *
 fail_safe_malloc(size_t size)
 {
@@ -67,6 +68,8 @@ fail_safe_strdup(char * string)
 
     return buf;
 }
+#endif /* !defined(DEBUG_DMALLOC) */
+
 
 char *
 fail_safe_sprintf(const char * fmt, ...)
