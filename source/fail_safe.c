@@ -15,7 +15,7 @@
 #include <sys/types.h>
 #include <regex.h>
 
-#include <myexceptions.h>
+#include "myexceptions.h"
 #include "mapson.h"
 
 #ifndef DEBUG_DMALLOC

@@ -15,7 +15,7 @@
 #include <errno.h>
 
 #include "myexceptions.h"
-#include "paths.h"
+#include "config/paths.h"
 #include "mapson.h"
 
 int                   rlst_lineno;

@@ -1,10 +1,12 @@
 # Build mapSoN.
 
-mapson == %mapson.c.sm +lib=(libexceptions.a) \
+mapson == %mapson.c.sm +(config/cc.flags) \
+		       +(config/cc_flags.flags) \
+		       +lib=(libexceptions.a) \
                        +lib=(librfc822.a) \
                        +lib=(libmpools.a) \
                        +lib=(liblists.a) \
-		       +(my_db_linklib.flags) \
+		       +(config/db_linklib.flags) \
 		       :exe
 %mapson.c.sm == <<
     address_db.c
@@ -28,17 +30,10 @@ mapson == %mapson.c.sm +lib=(libexceptions.a) \
     spool.c
     spool_dir.c
 
-liblists.a      == liblists/%liblists.a.sm +cc='cc' :a
-libmpools.a     == libmpools/%libmpools.a.sm +cc='cc' :a
-librfc822.a     == librfc822/%librfc822.a.sm +cc='cc' :a
-libexceptions.a == libexceptions/%libexceptions.a.sm +cc='cc' :a
-
-configure           == configure.in :ac
-paths.h             == /dev/zero +cmd=(./configure) +output_show :output/paths.h
-my_db.h             == /dev/zero +cmd=(./configure) +output_show :output/my_db.h
-my_db_linklib.flags == /dev/zero +cmd=(./configure) +output_show :output/my_db_linklib.flags
+liblists.a      == liblists/%liblists.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
+libmpools.a     == libmpools/%libmpools.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
+librfc822.a     == librfc822/%librfc822.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
+libexceptions.a == libexceptions/%libexceptions.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
 
 %clean ! == !<<
-    rm -f paths.h configure mapson config.log config.status
-    rm -f my_db.h my_db_linklib.flags
     rm -f libexceptions.a liblists.a libmpools.a librfc822.a

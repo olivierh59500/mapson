@@ -12,8 +12,8 @@
 #include <pwd.h>
 #include <assert.h>
 
-#include <myexceptions.h>
-#include <paths.h>
+#include "myexceptions.h"
+#include "config/paths.h"
 #include "mapson.h"
 
 char *

@@ -15,7 +15,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <myexceptions.h>
+#include "myexceptions.h"
 #include "mapson.h"
 
 char *

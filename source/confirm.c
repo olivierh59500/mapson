@@ -14,8 +14,8 @@
 #include <assert.h>
 #include <errno.h>
 
-#include <myexceptions.h>
-#include <paths.h>
+#include "myexceptions.h"
+#include "config/paths.h"
 #include "mapson.h"
 
 static char default_mail_text[] = \

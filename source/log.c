@@ -15,8 +15,8 @@
 #include <errno.h>
 #include <string.h>
 
-#include <myexceptions.h>
-#include <paths.h>
+#include "myexceptions.h"
+#include "config/paths.h"
 #include "mapson.h"
 
 static FILE * logfile = NULL;

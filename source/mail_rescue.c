@@ -16,8 +16,8 @@
 #include <sys/types.h>
 #include <errno.h>
 
-#include <myexceptions.h>
-#include <paths.h>
+#include "myexceptions.h"
+#include "config/paths.h"
 #include "mapson.h"
 
 /* Return the path of the current user's home directory. */

@@ -14,8 +14,8 @@
 #include <sys/types.h>
 #include <errno.h>
 
-#include <myexceptions.h>
-#include <paths.h>
+#include "myexceptions.h"
+#include "config/paths.h"
 #include "mapson.h"
 
 char *

@@ -13,7 +13,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include <myexceptions.h>
+#include "myexceptions.h"
 #include "mapson.h"
 #include "version.h"
 

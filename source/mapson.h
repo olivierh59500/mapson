@@ -12,10 +12,6 @@
 
 #include <stdio.h>
 
-#ifdef DEBUG_DMALLOC
-#  include <dmalloc.h>
-#endif
-
 /********** Defines and structures. **********/
 
 #ifndef __HAVE_DEFINED_BOOL__

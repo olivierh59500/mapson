@@ -11,7 +11,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include <myexceptions.h>
+#include "myexceptions.h"
 #include "mapson.h"
 
 /* Escape lines starting with "From " in the body of a mail buffer. */

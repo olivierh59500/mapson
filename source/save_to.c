@@ -15,7 +15,7 @@
 #include <assert.h>
 #include <errno.h>
 
-#include <myexceptions.h>
+#include "myexceptions.h"
 #include "mapson.h"
 
 void
