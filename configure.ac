@@ -48,7 +48,7 @@ AC_ARG_WITH(mailboxdir, [  --with-mailboxdir=DIR   location of the user mailboxe
     if test "$withval" = "no" -o "$withval" = "yes"; then
         AC_MSG_ERROR([The --with-mailboxdir option expects a path as parameter!])
     fi
-    AC_MSG_CHECKING(for the location of the user mailboxes);
+    AC_MSG_CHECKING(for the location of the user mailboxes)
     mailboxdir=$withval
     AC_MSG_RESULT($mailboxdir)
     if test ! -d $mailboxdir; then
@@ -68,7 +68,7 @@ AC_ARG_WITH(mta, [  --with-mta=PATH         location of the mail transport agent
     if test "$withval" = "no" -o "$withval" = "yes"; then
         AC_MSG_ERROR([The --with-mta option expects a path as parameter!])
     fi
-    AC_MSG_CHECKING(for the location of the mail transport agent);
+    AC_MSG_CHECKING(for the location of the mail transport agent)
     mta=$withval
     AC_MSG_RESULT($mta)
     if test ! -f $mta; then
@@ -84,6 +84,23 @@ AC_ARG_WITH(mta, [  --with-mta=PATH         location of the mail transport agent
     fi
     ])
 
+
+dnl Enable/disable debugging.
+dnl
+AC_MSG_CHECKING(whether to include debugging capabilities)
+AC_ARG_WITH(debug, [  --with-debug            Support debugging? (default: yes)],
+    [
+    if test "$withval" = "no"; then
+       AC_MSG_RESULT(no)
+    elif test "$withval" = "yes"; then
+       CPPFLAGS="$CPPFLAGS -DDEBUG"
+       AC_MSG_RESULT(yes)
+    fi
+    ],
+    [
+    CPPFLAGS="$CPPFLAGS -DDEBUG"
+    AC_MSG_RESULT(yes)
+    ])
 
 
 dnl Write results.
