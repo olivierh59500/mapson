@@ -16,15 +16,6 @@ AC_PROG_CXX
 AC_PROG_CPP
 AC_PROG_RANLIB
 
-dnl Find endianess of the system.
-dnl
-AC_C_BIGENDIAN
-if test "x$ac_cv_c_bigendian" = "xyes"; then
-    CPPFLAGS="$CPPFLAGS -DBYTE_ORDER=BIG_ENDIAN"
-else
-    CPPFLAGS="$CPPFLAGS -DBYTE_ORDER=LITTLE_ENDIAN"
-fi
-
 dnl Make sure u_int32_t is defined.
 dnl
 AC_CHECK_TYPE(u_int32_t, [],
@@ -37,7 +28,7 @@ AC_CHECK_TYPE(u_int32_t, [],
 
 dnl Do we have large file system support?
 dnl
-dnl broken on Solaris: AC_SYS_LARGEFILE
+AC_SYS_LARGEFILE
 
 dnl If the system misses the getopt.h include or the getopt_long()
 dnl function, we use the version included in the distribution.
