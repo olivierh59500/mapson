@@ -38,7 +38,7 @@ void process_ack(AddressDB& address_db, const char* filename)
 	throw system_error(string("Can't open file '") + filename + "'");
 
     string mail;
-    char buffer[1024];
+    char buffer[8*1024];
     ssize_t rc;
     for (rc = read(fd, buffer, sizeof(buffer)); rc > 0; rc = read(fd, buffer, sizeof(buffer)))
 	mail.append(buffer, rc);
