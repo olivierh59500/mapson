@@ -1,0 +1,58 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+
+<refentry id="mapson" lang="en" revision="$Revision$">
+  <refmeta>
+    <refentrytitle>mapSoN</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>mapson</refname>
+    <refpurpose>An automatic spam filter</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+
+    <cmdsynopsis>
+      <command>mapson</command>
+      <arg choice="opt">-d</arg>
+      <arg choice="opt">-c <replaceable>config-file</replaceable></arg>
+      <arg choice="opt" rep="repeat"><replaceable>mail</replaceable></arg>
+    </cmdsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1>
+    <title>Description</title>
+
+    <highlights>
+      <segmentedlist>
+        <segtitle>test1</segtitle>
+        <segtitle>test2</segtitle>
+        <seglistitem>
+          <seg>seg1</seg>
+          <seg>seg2</seg>
+        </seglistitem>
+      </segmentedlist>
+    </highlights>
+
+    <para><command>mapSoN</command> rules.</para>
+
+  </refsect1>
+
+  <refsect1>
+    <title>Options</title>
+
+    <variablelist>
+      <varlistentry>
+        <term><option>-d</option></term>
+        <listitem>
+          <para>Turn on debugging</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+
+  </refsect1>
+
+</refentry>
