@@ -1,6 +1,6 @@
 From: simons+${MD5HASH}@cryp.to (Peter Simons)
 To: ${ENVELOPE:-${RETURN_PATH:-${SENDER:-${FROM[0]}}}}
-Subject: \[mapSoN\] Request for Confirmation
+Subject: please confirm / bitte bestaetigen
 Precedence: junk
 Auto-Submitted: auto-generated
 References: $MESSAGEID
