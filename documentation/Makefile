@@ -41,9 +41,9 @@ man-page.txt:	man-page.html
 	lynx -width=80 -nolist -dump $< >$@
 
 defconfig.inc:	../config-sample Makefile
-	sed <$< >$@ -e 's/</\&lt;/g' \
+	sed <$< >$@ -e 's/&/\&amp;/g' \
+		    -e 's/</\&lt;/g' \
 		    -e 's/>/\&gt;/g' \
-		    -e 's/&/\&amp;/g' \
 		    -e 's#-#<markup>-</markup>#g' \
 		    -e '/^#/d'	     \
 		    -e '/^$$/d'
@@ -53,8 +53,7 @@ defreqmail.inc:../reqmail.template-sample Makefile
 		    -e 's/>/\&gt;/g' \
 		    -e 's/&/\&amp;/g' \
 		    -e 's#-#<markup>-</markup>#g' \
-		    -e 's#example.com#<replaceable>&</replaceable>#g' \
-		    -e 's#username#<replaceable>&</replaceable>#g'  \
+		    -e 's#username@example.com#<replaceable>&</replaceable>#g' \
 		    -e 's#Real Name#<replaceable>&</replaceable>#g'
 
 clean distclean:

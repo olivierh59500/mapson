@@ -149,6 +149,14 @@ though, so unless you exclicitely disabled it, debugging will be
 available.</para>
       </listitem>
     </varlistentry>
+
+    <varlistentry>
+      <term><literal>LogFile</literal> <parameter>file</parameter></term>
+      <listitem>
+        <para>This directive sets the complete path of the file &mapson; uses to
+log its actions.</para>
+      </listitem>
+    </varlistentry>
   </variablelist>
 
   <para>In order to make the contents of the configuration file as independent

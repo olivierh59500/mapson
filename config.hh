@@ -22,6 +22,7 @@ class configuration : public AbstractConfig
 
     // Paths.
     std::string config_file;
+    std::string log_file;
     std::string spool_dir;
     std::string address_db;
     std::string request_for_confirmation_file;
