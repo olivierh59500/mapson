@@ -138,7 +138,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
     const string& filename = config->request_for_confirmation_file;
     int fd = open(filename.c_str(), O_RDWR , S_IRUSR | S_IWUSR);
     if (fd < 0)
-	throw system_error(string("Can't open address db '") + filename + "' for reading");
+	throw system_error(string("Can't request-mail template file '") + filename + "' for reading");
     fd_sentry sentry(fd);
 
     // Read the file into memory.
@@ -148,7 +148,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
     for (rc = read(fd, buffer, sizeof(buffer)); rc > 0; rc = read(fd, buffer, sizeof(buffer)))
 	mail_template.append(buffer, rc);
     //if (rc < 0)
-	throw system_error(string("Failed to read request-for-confirmation template '") + filename + "' into memory");
+	throw system_error(string("Failed to read request-mail template file '") + filename + "' into memory");
 
     // Expand variables in the template.
 
