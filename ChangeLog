@@ -1,3 +1,10 @@
+2002-06-26  Peter Simons  <simons@computer.org>
+
+	* Released 2.1.
+
+	* Build the documentation with the latest set of SGML tools, what
+	results in a much nicer output.
+
 2002-05-03  Peter Simons  <simons@computer.org>
 
 	* Released 2.0.
