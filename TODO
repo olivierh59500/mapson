@@ -45,10 +45,6 @@ o The sample config config is installed as $prefix/etc/config-sample;
 o The documentation of the config file doesn't say where mapson
   expects the config file or anything!
 
-o Add switch that tells mapson to accept the incoming mail in any case
-  so that you can redirect user+trust to that address and add the
-  senders to the database.
-
 o Document statistics of how successful mapson is.
 
 o The result of jadetex will swallow "--" in <option> tags and turn it
