@@ -35,18 +35,18 @@ not!</para>
 
     <mediaobject>
       <imageobject>
-        <imagedata fileref="principle1.eps" format="eps" scale="40">
+        <imagedata fileref="principle1.eps" format="EPS" scale="40">
       </imageobject>
       <imageobject>
-        <imagedata fileref="principle1.png" format="png">
+        <imagedata fileref="principle1.png" format="PNG">
       </imageobject>
     </mediaobject>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="principle2.eps" format="eps" scale="40">
+        <imagedata fileref="principle2.eps" format="EPS" scale="40">
       </imageobject>
       <imageobject>
-        <imagedata fileref="principle2.png" format="png">
+        <imagedata fileref="principle2.png" format="PNG">
       </imageobject>
     </mediaobject>
   </sect1>
@@ -237,7 +237,8 @@ have the cookie put into <application>procmail</application>'s argument
 automatically! If you don't want to use this, just don't -- &mapson; will find
 the cookies in the mail headers or body, too, but this approach is very error
 resistent. You wouldn't belive how many people are too dumb to understand
-<quote>please reply and include that string in the mail: [&hellip;]</quote>.
+<quote>please reply and include that string in the mail:
+[&hellip;]</quote>.</para>
 
       <para>In case you're wondering: The string
 <quote><literal>[0-9]</literal></quote> in the recipe must indeed be repeated
@@ -315,7 +316,7 @@ what the respective option does:</para>
     <para>When &mapson; issues a request for confirmation, it will try to load
 the template file containing the text to be used for this purpose. Unless
 configured otherwise in the configuration file (see <xref
-linkend="config-file">, the first path to look is
+linkend="config-file">), the first path to look is
 <filename>${HOME}/.mapson/reqmail.template</filename>;
 <varname>${HOME}</varname> meaning the home directory of the user under which's
 id &mapson; is running under.</para>

@@ -21,7 +21,7 @@ implementation used my &mapson; in case the routine are not available in the
 system libraries come from the GNU C Library, too, and are licensed under the
 terms of the GNU Lesser General Public License, what is effectively just a newer
 version of the library-licence version. A copy of the license can be found in
-<filename>libgetopt/COPYING</filename>.
+<filename>libgetopt/COPYING</filename>.</para>
 
 <!--
 Local Variables:
