@@ -111,7 +111,8 @@ main(int argc, char * argv[])
 
 	/* Mail is an incoming request for confirmation. */
 
-	syslog(LOG_INFO, "Received request for confirmation.");
+	p = is_confirmation_mail(mail_buffer);
+	syslog(LOG_INFO, "Received request for confirmation for mail '%s'.", p);
 	save_to(mail_buffer, get_mailbox_path());
 	goto terminate;
     }
