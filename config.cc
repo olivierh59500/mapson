@@ -149,14 +149,14 @@ configuration::configuration(int argc, char** argv)
                 printf("mapSoN version %s\n", VERSION);
                 throw no_error();
             case 'h':
-                fprintf(stderr, "Usage: mapson  [ -h | --help ] [ --version ] [ -d | --debug ] [ -a | --accept ]\n"  \
-                                "               [ --cookie cookie ] [ -c config | --config-file config ]\n"          \
-                                "               [  --dont-scan ] [ mail ... ]\n");
+                fprintf(stderr, "Usage: mapson [ -h | --help ] [ --version ] [ -d | --debug ] [ -a | --accept ]\n"  \
+                                "              [ --cookie cookie ] [ -c config | --config-file config ]\n"          \
+                                "              [  --dont-scan ] [ mail ... ]\n");
                 throw no_error();
             default:
-                fprintf(stderr, "Usage: mapson  [ -h | --help ] [ --version ] [ -d | --debug ] [ -a | --accept ]\n"  \
-                                "               [ --cookie cookie ] [ -c config | --config-file config ]\n"          \
-                                "               [  --dont-scan ] [ mail ... ]\n");
+                fprintf(stderr, "Usage: mapson [ -h | --help ] [ --version ] [ -d | --debug ] [ -a | --accept ]\n"  \
+                                "              [ --cookie cookie ] [ -c config | --config-file config ]\n"          \
+                                "              [  --dont-scan ] [ mail ... ]\n");
                 throw runtime_error("Incorrect command line syntax.");
             }
         }
