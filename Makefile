@@ -22,7 +22,7 @@ doc::
 
 clean:
 	@echo "====> Cleaning up"
-	@for n in $(SUBDIRS);do (cd $$n;$(MAKE) clean);done
+	@for n in $(SUBDIRS) doc;do (cd $$n;$(MAKE) clean);done
 
 distclean:	clean
 	rm -f config.log config.cache config.log config.status include/mapson.mk
