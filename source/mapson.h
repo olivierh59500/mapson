@@ -117,4 +117,8 @@ void assert_mapson_spool_dir_exists(void  );
 
 char *get_mailbox_path(void  );
 
+/* spool.c */
+
+void store_mail_in_spool(char *mail_buffer, char *id);
+
 #endif /* !defined(__MAPSON_H__) */
