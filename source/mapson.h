@@ -10,6 +10,10 @@
 #ifndef __MAPSON_H__
 #define __MAPSON_H__
 
+#ifdef DEBUG_DMALLOC
+#  include <dmalloc.h>
+#endif
+
 /********** Prototypes for mapSoN's routines **********/
 
 /* main.c */
@@ -42,5 +46,18 @@ array_t build_array(void  );
 void append_to_array(array_t state, char *string);
 char **get_array(array_t state);
 void free_array(char **array);
+
+/* parse_mail.c */
+
+struct Mail {
+    char *      header;		/* continuation lines are gone here */
+    char *      envelope;
+    char **     from;
+    char **     reply_to;
+    char **     to;
+    char **     cc;
+};
+
+struct Mail * parse_mail(char * buffer);
 
 #endif /* !defined(__MAPSON_H__) */

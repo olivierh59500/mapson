@@ -19,19 +19,19 @@
 int
 main(int argc, char * argv[])
 {
+    struct Mail *  Mail;
     FILE *         fh;
     char *         mail_rescue_filename,
          *         mail_buffer;
     unsigned int   mail_size;
     char           buffer[4096];
-    int            rc;
+    int            rc, i;
 
 
     /* First of all initialize our environment. */
 
     openlog("mapson", LOG_CONS | LOG_PERROR | LOG_PID, LOG_MAIL);
     mail_rescue_filename = get_mail_rescue_filename();
-    fprintf(stderr, "DEBUG: mail rescue file is '%s'.\n", mail_rescue_filename);
 
 
     /* Copy the mail into the rescue file. */
@@ -53,7 +53,6 @@ main(int argc, char * argv[])
 	    THROW(IO_EXCEPTION);
 	}
     }
-    fprintf(stderr, "DEBUG: Mail is %d byte long.\n", mail_size);
 
 
     /* Now read the mail into the buffer. */
@@ -72,7 +71,24 @@ main(int argc, char * argv[])
     }
     fclose(fh);
     mail_buffer[mail_size] = '\0';
-    fprintf(stderr, "DEBUG: Mail text follows:\n%s\n", mail_buffer);
+
+
+    /* Parse the mail. */
+
+    TRY {
+	Mail = parse_mail(mail_buffer);
+    }
+    HANDLE(INVALID_ADDRESS_EXCEPTION) {
+	fprintf(stderr, "One or several addresses are syntactically incorrect.\n");
+	exit(1);
+    }
+    OTHERWISE {
+	PASSTHROUGH();
+    }
+    printf("DEBUG: Envelope is '%s'.\n", Mail->envelope);
+    for (i = 0; (Mail->from)[i] != NULL; i++) {
+	printf("DEBUG: From[%d]: is '%s'.\n", i, (Mail->from)[i]);
+    }
 
 
     /* Terminating gracefully. */

@@ -50,7 +50,7 @@ append_to_array(array_t state, char * string)
 
     /* Store a copy of the string. */
 
-    (state->array)[state->array_pos++] = fail_safe_strdup(string);
+    (state->array)[state->array_pos++] = string;
     (state->array)[state->array_pos]   = NULL;
 }
 

@@ -6,11 +6,13 @@
 
 .include "../include/mapson.mk"
 
-SRCS	= main.c mail_rescue.c fail_safe.c array.c
+SRCS	= main.c mail_rescue.c fail_safe.c array.c parse_mail.c
 OBJS	= $(SRCS:.c=.o)
-LIBS   += -llists -lmpools -lrfc822 -lexceptions
+LIBS   += -lrfc822 -lmpools -llists -lexceptions # -ldmalloc
 
-CFLAGS += -Wall
+CFLAGS  += -Wall
+CPPFLAGS+= -I/usr/local/include #-DDEBUG_DMALLOC
+LDFLAGS += -L/usr/local/lib
 
 all:	$(LIBS) mapson
 
@@ -19,7 +21,7 @@ clean:
 	rm -f mapson *.o *.core
 
 mapson:		$(OBJS)
-	$(CC) $(OBJS) -o mapson $(LIBS)
+	$(CC) $(LDFLAGS) $(OBJS) -o mapson $(LIBS)
 
 $(LIBS):
 	@(cd ../lib;$(MAKE))
