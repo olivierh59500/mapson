@@ -1,8 +1,12 @@
 \input texinfo   @c -*-texinfo-*-
+@c
+@c $Header$
+@c
 @c %**start of header
 @setfilename mapson.info
 @settitle The mapSoN User Manual
 @c %**end of header
+@finalout
 
 @titlepage
 @title The mapSoN User Manual
@@ -21,6 +25,7 @@ This manual describes the version 1.0 of the mapSoN utility.
 * Introduction::        What does mapSoN do?
 * Installation::        Install mapSoN as user.
 * Configuration::       Configuring mapSoN for your wishes.
+* Error Recovery::      The mail-rescue mechanism.
 * Copyright::           mapSoN is not in the public domain.
 @end menu
 
@@ -186,7 +191,7 @@ this part of the documentation.
 
 @section Creating the required configuration files
 
-Per default, mapSoN expects two configuration files:
+Per default, mapSoN expects only two configuration files:
 @file{$HOME/.mapson/ruleset} and @file{$HOME/.mapson/rfcmail}. The
 ruleset file will be discussed in great detail in the next chapter so
 we'll concentrate on the @file{rfcmail} file for the moment.
@@ -250,8 +255,21 @@ the moment you can simply copy them into the file using cut and paste.
 Running mapSoN without those rulesets installed is a really, really bad
 idea --- trust me.
 
+@section Dealing with junk mail, waiting in the spool
+
+Mails, for which no confirmation is submitted, will be stored in the
+@file{$HOME/.mapson/spool} directory for all eternity, unless you delete
+them. Included in the distribution is a script called
+@file{expire-mapson-spool.sh}, which will do this for you. The script
+will scan the spool directory and erase all files, which are older than
+seven days. (The number of days after which a file is expired can be set
+in the script itself.)
+
+All you have to do is to execute this script hourly/daily via the
+cron(8) facility of your system.
+
 @c --------------------------------- node -------------------------------------
-@node Configuration, Copyright, Installation, Top
+@node Configuration, Error Recovery, Installation, Top
 @chapter Customizing mapSoN
 
 Next to the @file{rfcmail} file, mapSoN's behavior can be customized
@@ -397,7 +415,48 @@ message id of the original article and in 99% of all cases this message
 id will contain the name of your machine. Hence it is a good thing to
 use to recognize replies and let them pass.
 
-@node Copyright,  , Configuration, Top
+
+@c --------------------------------- node -------------------------------------
+@node Error Recovery, Copyright, Configuration, Top
+@chapter How mapSoN handles errors
+
+There are various occasions at which mapSoN will not be able to process
+the incoming mail properly. Most notably, mapSoN will abort with an
+error if the incoming mail is syntactically incorrect. Assume you're
+receiving an e-mail with the sender: @code{This is not a real address,
+don't reply}. mapSoN can't determine how to deal with this. It can't let
+the mail pass without comment, but it can't send a request for
+confirmation back eiter.
+
+Other fatal errors may result from lack of disk storage space or wrong
+permissions in the file system, rendering mapSoN unable to create files
+in the spool directory.
+
+The answer to all this is the so called ``mail rescue mechanism''. The
+first thing mapSoN does, when it is started, is to copy the complete
+incoming mail into a ``rescue file''. This file is deleted @emph{only}
+when mapSoN has processed everything without problems and is about to
+terminate. If anything goes wrong, the rescue file will not be deleted.
+
+Hence, you will never lose an e-mail, if mapSoN aborts processing it,
+due to whatever problem it may have. The mail will always be there in
+the rescue file.
+
+The ``rescue files'' are created in the @file{$HOME/.mapson} directory
+and are called @file{rescue_file_X}, with @code{X} being a four-digit
+number ranging between ``0000'' and ``9999''. Hence you should
+occasionally look into the @file{$HOME/.mapson} directory, to check
+whether there are any rescue files waiting for attention --- and delete
+them if they're not needed anymore.
+
+Included in the distribution is a script called
+@file{detect-mapson-rescue-mails.sh}, which can be called per cron. This
+script will search for rescue mail files, list their contents on the
+standard output stream --- and delete them. The typical cron(8) utility
+will then mail the output to you.
+
+@c --------------------------------- node -------------------------------------
+@node Copyright,  , Error Recovery, Top
 @appendix mapSoN Copyright
 
 The mapSoN software both binary and source (hereafter ``Software''), is
