@@ -84,6 +84,7 @@ configuration::configuration(int argc, char** argv)
     runtime_error_rc = 75;
     syntax_error_rc = 65;
     debug = false;
+    accept = false;
     message_id = "<no-message-id@localhost>";
     have_message_id = false;
 
@@ -101,11 +102,12 @@ configuration::configuration(int argc, char** argv)
     // Parse the command line into temporary variables except for the
     // location of the config file.
 
-    const char* optstring = "hc:d";
+    const char* optstring = "hc:da";
     const option longopts[] =
         {
         { "config-file", required_argument, 0, 'c' },
         { "debug",       no_argument,       0, 'd' },
+        { "accept",      no_argument,       0, 'a' },
         { "help",        no_argument,       0, 'h' },
         { "version",     no_argument,       0, 'v' },
         { 0, 0, 0, 0 }          // mark end of array
@@ -122,6 +124,9 @@ configuration::configuration(int argc, char** argv)
                 break;
             case 'd':
                 cmdline_debug = true;
+                break;
+            case 'a':
+                accept = true;
                 break;
             case 'v':
                 printf("mapSoN version %s\n", VERSION);
@@ -191,6 +196,7 @@ void configuration::dump() const
     debug(("    RuntimeErrorRC     = '%d'", runtime_error_rc));
     debug(("    SyntaxErrorRC      = '%d'", syntax_error_rc));
     debug(("    Debug              = '%s'", (debug) ? "true" : "false"));
+    debug(("    Accept             = '%s'", (accept) ? "true" : "false"));
     }
 
 inline bool get_bool(const string& value)
