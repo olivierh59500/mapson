@@ -1,3 +1,24 @@
+2002-04-10  Peter Simons  <simons@computer.org>
+
+	* Released 2.0 beta 4.
+
+	* The documentation is almost complete. Two chapters are still
+	missing, but you can get along without them. Fixed several typos.
+
+	* Added the "--cookie" command line parameter: If it is specified
+	mapSoN does not scan the e-mail but tries to approve that one
+	directly. See the chapter about procmail for usage examples.
+
+	* The request-for-confirmation template file may now contain
+	environment variables, too.
+
+	* Added the "--accept" parameter to the command line: If it is
+	specified, mapSoN will accept the incoming mail unconditionally.
+	See the chapter about procmail for usage examples.
+
+	* Improved the sample request-for-confirmation template to be
+	user-independent. Users can simply use the installed default now.
+
 2002-02-10  Peter Simons  <simons@computer.org>
 
 	* Released 2.0 beta 3.
