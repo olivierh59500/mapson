@@ -87,7 +87,7 @@ open_address_database(void)
     database_path = fail_safe_sprintf("%s/.mapson/address.db", home_directory);
     free(home_directory);
 
-    db = dbopen(database_path, O_RDONLY | O_CREAT | O_EXLOCK, 0600, DB_HASH, NULL);
+    db = dbopen(database_path, O_RDWR | O_CREAT | O_EXLOCK, 0600, DB_HASH, NULL);
     if (db == NULL) {
 	syslog(LOG_ERR, "Failed to open address database '%s': %m",
 	       database_path);
