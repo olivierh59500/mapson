@@ -45,8 +45,8 @@ is_confirmation_mail(char * mail_buffer)
     if (rc != 0) {
         THROW(REGEX_EXCEPTION);
     }
-    regexec(&preg, mail_buffer, MAX_TRANSFORM_ELEMENTS-1, pmatch, 0);
-    if (preg.re_nsub <= 0) {
+    rc = regexec(&preg, mail_buffer, MAX_TRANSFORM_ELEMENTS-1, pmatch, 0);
+    if (rc != 0 || preg.re_nsub <= 0) {
 	regfree(&preg);
 	return NULL;
     }
