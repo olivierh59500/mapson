@@ -67,7 +67,7 @@ namespace
             {
             if (idx >= 0)
                 {
-                if (strcasecmp("header", name.c_str()) == 0)
+                if (strcasecmp("headerlines", name.c_str()) == 0)
                     {
                     for (size_t i = 0, pos = 0; pos != string::npos; pos = find_next_header_line(mail, pos), ++i)
                         {
@@ -77,7 +77,24 @@ namespace
                             {
                             i = find_next_header_line(mail, pos);
                             data = mail.substr(pos, i - pos);
-                            debug(("Found HEADER[%d] = '%s'", idx, data.c_str()));
+                            debug(("Found HEADERLINES[%d] = '%s'", idx, data.c_str()));
+                            return;
+                            }
+                        }
+                    }
+                else if (strcasecmp("header", name.c_str()) == 0)
+                    {
+                    for (size_t nextpos, i = 0, pos = 0; pos != string::npos && pos < mail.size(); ++i, pos = nextpos)
+                        {
+                        if (mail[pos] == '\n')
+                            break;
+                        nextpos = mail.find("\n", pos);
+                        if (nextpos != string::npos)
+                            ++nextpos;
+                        if (i == static_cast<size_t>(idx))
+                            {
+                            data = mail.substr(pos, nextpos - pos);
+                            debug(("Found $HEADER[%d] = '%s'", idx, data.c_str()));
                             return;
                             }
                         }
