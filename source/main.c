@@ -111,7 +111,16 @@ main(int argc, char * argv[])
 	      syslog(LOG_INFO, "Received confirmation for '%s'.", p);
 	      free_mail(Mail);
 	      free(mail_buffer);
-	      mail_buffer = get_mail_from_spool(p);
+	      TRY {
+		  mail_buffer = get_mail_from_spool(p);
+	      }
+	      HANDLE(IO_EXCEPTION) {
+		  syslog(LOG_ERR, "Mail '%s' is not there.", p);
+		  PASSTHROUGH();
+	      }
+	      OTHERWISE {
+		  PASSTHROUGH();
+	      }
 	      Mail = parse_mail(mail_buffer);
 	      for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
 		  syslog(LOG_INFO, "Adding '%s' to accept-database.", (Mail->from)[i]);
