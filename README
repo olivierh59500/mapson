@@ -17,8 +17,8 @@ want to try
 
     $ CXXFLAGS=-frepo ./configure
 
-to configure the build, as this will result in a about 30% smaller
-binary because unused template instances are optimized out.
+to configure the build. This will result in a about 30% smaller binary
+because unused template instances are optimized out.
 
 On some platforms, largefile support doesn't work yet. If you're
 getting compiler errors, give the configure script the option
