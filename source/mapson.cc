@@ -68,7 +68,7 @@ try
 	for (i = addresses.begin(); i != addresses.end(); ++i)
 	    address_db.insert(*i);
 
-	return 0;		// // Let the mail pass.
+	return 0;		// Let the mail pass.
 	}
     else
 	return 1;		// Don't let the mail pass.
