@@ -76,12 +76,11 @@ version.h:	VERSION
 
 config.o:	Makefile
 
-clean::
-	@find . -name '*.rpo' -exec rm -f {} \;
-	@find . -name '*.a'   -exec rm -f {} \;
-	@find . -name '*.o'   -exec rm -f {} \;
-	@rm -f mapson config-sample.local
-	@echo All dependent files have been removed.
+documentation/mapson.txt:
+	@(cd documentation && $(MAKE) mapson.txt)
+
+documentation/mapson.html:
+	@(cd documentation && $(MAKE) mapson.html)
 
 install:	mapson reqmail.template-sample config-sample documentation/mapson.txt
 	$(MKDIR) -p $(DESTDIR)$(bindir)
@@ -96,11 +95,19 @@ install:	mapson reqmail.template-sample config-sample documentation/mapson.txt
 	$(MKDIR) -p $(DESTDIR)$(mandir)/man1
 	$(INSTALL) -c -m 644 documentation/mapson.txt $(DESTDIR)$(mandir)/man1/mapson.1
 
+clean::
+	@find . -name '*.rpo' -exec rm -f {} \;
+	@find . -name '*.a'   -exec rm -f {} \;
+	@find . -name '*.o'   -exec rm -f {} \;
+	@rm -f mapson config-sample.local
+	@echo All dependent files have been removed.
+
 distclean:: clean
 	@rm -f Makefile config.log config.status
 
 realclean:: distclean
 	@rm -f configure version.h
+	@(cd documentation && $(MAKE) realclean)
 
 depend::
 	makedepend -Y -fMakefile.in '-s# Dependencies' `find . -name '*.c*' ` 2>/dev/null
@@ -120,12 +127,6 @@ dist:	mapson documentation/mapson.txt VERSION
 	(cd /tmp; tar cfz mapson-$$V.tar.gz mapson-$$V); \
 	rm -rf /tmp/mapson-$$V; \
 	echo Created distribution archive /tmp/mapson-$$V.tar.gz
-
-documentation/mapson.txt:
-	@(cd documentation && $(MAKE) mapson.txt)
-
-documentation/mapson.html:
-	@(cd documentation && $(MAKE) mapson.html)
 
 # Dependencies
 
