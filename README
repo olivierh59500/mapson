@@ -81,3 +81,5 @@ Things to do:
 
     o Try to create the all directories in the user's home
       automatically.
+
+    o Make the gather-addresses mode handle the mailbox format.
