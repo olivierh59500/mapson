@@ -6,7 +6,7 @@
 
 .include "../include/mapson.mk"
 
-SRCS	= main.c mail_rescue.c fail_safe.c
+SRCS	= main.c mail_rescue.c fail_safe.c array.c
 OBJS	= $(SRCS:.c=.o)
 LIBS   += -llists -lmpools -lrfc822 -lexceptions
 
@@ -36,3 +36,4 @@ depend:
 
 main.o: proto.h version.h
 mail_rescue.o: proto.h
+array.o: proto.h
