@@ -62,6 +62,12 @@ namespace
             throw runtime_error("Index lookups are not implemented for config files.");
             }
         };
+    inline int mysetenv(const char* name, const char* value)
+        {
+        string tmp = string(name) + "=" + value;
+        if (putenv(const_cast<char*>(tmp.c_str())) != 0)
+            throw system_error("putenv() failed");
+        }
     }
 
 // Construct configuration.
@@ -91,14 +97,11 @@ configuration::configuration(int argc, char** argv)
 
     // Set the environment variables supported in the config file.
 
-    if (setenv("MAILBOXDIR", MAILBOXDIR, 0) != 0
-        || setenv("DATADIR", DATADIR, 0) != 0
-        || setenv("MTA", MTA, 0) != 0
-        || setenv("HOME", sentry.pwd->pw_dir, 0) != 0
-        || setenv("USER", sentry.pwd->pw_name, 0) != 0)
-        {
-        throw bad_alloc();
-        }
+    mysetenv("MAILBOXDIR", MAILBOXDIR);
+    mysetenv("DATADIR", DATADIR);
+    mysetenv("MTA", MTA);
+    mysetenv("HOME", sentry.pwd->pw_dir);
+    mysetenv("USER", sentry.pwd->pw_name);
 
     // Parse the command line into temporary variables except for the
     // location of the config file.
