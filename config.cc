@@ -130,17 +130,17 @@ void configuration::dump() const
     // Log the final settings for debugging purposes.
 
     debug(("My configuration:"));
-    debug(("    mailbox = '%s'", mailbox.c_str()));
-    debug(("    config_file = '%s'", config_file.c_str()));
-    debug(("    spool_dir = '%s'", spool_dir.c_str()));
-    debug(("    address_db = '%s'", address_db.c_str()));
-    debug(("    request_for_confirmation_file = '%s'", request_for_confirmation_file.c_str()));
-    debug(("    mta = '%s'", mta.c_str()));
-    debug(("    strict_rfc_parser = '%s'", (strict_rfc_parser) ? "true" : "false"));
-    debug(("    let_incorrect_mails_pass = '%s'", (let_incorrect_mails_pass) ? "true" : "false"));
-    debug(("    runtime_error_rc = '%d'", runtime_error_rc));
-    debug(("    syntax_error_rc = '%d'", syntax_error_rc));
-    debug(("    debug = '%s'", (debug) ? "true" : "false"));
+    debug(("    Mailbox            = '%s'", mailbox.c_str()));
+    debug(("    ConfigFile         = '%s'", config_file.c_str()));
+    debug(("    SpoolDir           = '%s'", spool_dir.c_str()));
+    debug(("    AddressDB          = '%s'", address_db.c_str()));
+    debug(("    ReqConfirmTemplate = '%s'", request_for_confirmation_file.c_str()));
+    debug(("    MTA                = '%s'", mta.c_str()));
+    debug(("    StrictRFCParser    = '%s'", (strict_rfc_parser) ? "true" : "false"));
+    debug(("    PassIncorrectMails = '%s'", (let_incorrect_mails_pass) ? "true" : "false"));
+    debug(("    RuntimeErrorRC     = '%d'", runtime_error_rc));
+    debug(("    SyntaxErrorRC      = '%d'", syntax_error_rc));
+    debug(("    Debug              = '%s'", (debug) ? "true" : "false"));
     }
 
 inline bool get_bool(const string& value)
@@ -178,43 +178,43 @@ void configuration::set_option(const string& keyword, const string& _data)
 
     try
         {
-        if (strcasecmp("debug", keyword.c_str()) == 0)
+        if (strcasecmp("Debug", keyword.c_str()) == 0)
             {
             debug = get_bool(data);
             }
-        else if (strcasecmp("spool_dir", keyword.c_str()) == 0)
+        else if (strcasecmp("SpoolDir", keyword.c_str()) == 0)
             {
             spool_dir = data;
             }
-        else if (strcasecmp("address_db", keyword.c_str()) == 0)
+        else if (strcasecmp("AddressDB", keyword.c_str()) == 0)
             {
             address_db = data;
             }
-        else if (strcasecmp("request_for_confirmation_file", keyword.c_str()) == 0)
+        else if (strcasecmp("ReqConfirmTemplate", keyword.c_str()) == 0)
             {
             request_for_confirmation_file = data;
             }
-        else if (strcasecmp("mta", keyword.c_str()) == 0)
+        else if (strcasecmp("MTA", keyword.c_str()) == 0)
             {
             mta = data;
             }
-        else if (strcasecmp("mailbox", keyword.c_str()) == 0)
+        else if (strcasecmp("Mailbox", keyword.c_str()) == 0)
             {
             mailbox = data;
             }
-        else if (strcasecmp("strict_rfc_parser", keyword.c_str()) == 0)
+        else if (strcasecmp("StrictRFCParser", keyword.c_str()) == 0)
             {
             strict_rfc_parser = get_bool(data);
             }
-        else if (strcasecmp("let_incorrect_mails_pass", keyword.c_str()) == 0)
+        else if (strcasecmp("PassIncorrectMails", keyword.c_str()) == 0)
             {
             let_incorrect_mails_pass = get_bool(data);
             }
-        else if (strcasecmp("runtime_error_rc", keyword.c_str()) == 0)
+        else if (strcasecmp("RuntimeErrorRC", keyword.c_str()) == 0)
             {
             runtime_error_rc = get_rc(data);
             }
-        else if (strcasecmp("syntax_error_rc", keyword.c_str()) == 0)
+        else if (strcasecmp("SyntaxErrorRC", keyword.c_str()) == 0)
             {
             syntax_error_rc = get_rc(data);
             }
