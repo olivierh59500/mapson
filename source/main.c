@@ -98,7 +98,7 @@ main(int argc, char * argv[])
 	      for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
 		  printf("DEBUG: Checking '%s' in accept-database.\n", (Mail->from)[i]);
 		  if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
-		      printf("Sender is known, passing mail through.\n");
+		      save_to(mail_buffer, get_mailbox_path());
 		      break;
 		  }
 	      }
@@ -111,6 +111,7 @@ main(int argc, char * argv[])
 		  printf("DEBUG: Adding '%s' to accept-database.\n", (Mail->from)[i]);
 		  add_address_to_database((Mail->from)[i]);
 	      }
+	      save_to(mail_buffer, get_mailbox_path());
 	      break;
 	  case RLST_DROP:
 	      syslog(LOG_INFO, "Dropping mail from '%s'.\n", (Mail->from)[0]);
