@@ -6,9 +6,9 @@
 
 .include "../include/mapson.mk"
 
-SRCS	= main.c mail_rescue.c
+SRCS	= main.c mail_rescue.c fail_safe.c
 OBJS	= $(SRCS:.c=.o)
-LIBS   += -llists -lmpools -lrfc822 -ltext
+LIBS   += -llists -lmpools -lrfc822 -lexceptions
 
 CFLAGS += -Wall
 
@@ -32,13 +32,12 @@ proto.h:
 	@echo "====> Creating proto.h"
 	@echo > proto.h "/* Prototypes for mapSoN */"
 	@echo >>proto.h ""
-	@for n in $(SRCS); do \
+	for n in $(SRCS); do \
 		echo >>proto.h "/* $$n */"; \
 		echo >>proto.h ""; \
-		cproto -g $$n >>proto.h; \
+		$(CPP) $(CPPFLAGS) $$n | cproto -g >>proto.h; \
 		echo >>proto.h ""; \
 	done;
-
 
 #
 # Dependencies
