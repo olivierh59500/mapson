@@ -2,16 +2,15 @@
 # Build the mapSoN documentation
 #
 DOCBOOKBASE	= /usr/local/sgml/dsssl/docbook
-LDPBASE		= /usr/local/sgml/dsssl/ldp
 
 .SUFFIXES:
 .SUFFIXES: .sgml .tex .txt .dvi .ps .pdf .html
 
 .sgml.tex:
-	openjade -t tex -d $(LDPBASE)/ldp.dsl\#print -D $(DOCBOOKBASE)/print $<
+	openjade -t tex -d peti.dsl#print -D $(DOCBOOKBASE)/print $<
 
 .sgml.html:
-	openjade -t sgml -d $(LDPBASE)/ldp.dsl\#html -V nochunks -D $(DOCBOOKBASE)/html $< >$@
+	openjade -t sgml -d peti.dsl#html -D $(DOCBOOKBASE)/html $< >$@
 
 .html.txt:
 	w3m -T text/html -dump $< >$@

@@ -35,18 +35,18 @@ not!</para>
 
   <mediaobject>
     <imageobject>
-      <imagedata fileref="principle1.eps" format="eps" align="center" scale="40">
+      <imagedata fileref="principle1.eps" format="eps" scale="40">
     </imageobject>
     <imageobject>
-      <imagedata fileref="principle1.png" format="png" align="center">
+      <imagedata fileref="principle1.png" format="png">
     </imageobject>
   </mediaobject>
   <mediaobject>
     <imageobject>
-      <imagedata fileref="principle2.eps" format="eps" align="center" scale="40">
+      <imagedata fileref="principle2.eps" format="eps">
     </imageobject>
     <imageobject>
-      <imagedata fileref="principle2.png" format="png" align="center">
+      <imagedata fileref="principle2.png" format="png">
     </imageobject>
   </mediaobject>
 
