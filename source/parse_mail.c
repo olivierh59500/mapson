@@ -50,8 +50,10 @@ parse_mail(char * buffer)
 
     p = buffer;
     while(*p != '\0') {
-	if (*p == '\n' && p[1] == '\n')
-	  break;
+	if (*p == '\n' && p[1] == '\n') {
+	    p++;
+	    break;
+	}
 	p++;
     }
 
