@@ -181,6 +181,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
 
     // Pipe expanded buffer into MTA.
 
+    debug(("Executing mail transport agent '%s'.", config->mta.c_str()));
     FILE* fh = popen(config->mta.c_str(), "w");
     if (fh == NULL)
         throw system_error(string("Can't start MTA '") + config->mta + "'");
