@@ -7,7 +7,7 @@
 .include "../include/mapson.mk"
 
 SRCS	= main.c mail_rescue.c fail_safe.c array.c parse_mail.c confirm.c \
-	  home_dir.c
+	  home_dir.c address_db.c
 OBJS	= $(SRCS:.c=.o)
 LIBS   += -lconfigfile -lrfc822 -lmpools -llists -lexceptions
 
@@ -38,3 +38,6 @@ mail_rescue.o: mapson.h
 fail_safe.o: mapson.h
 array.o: mapson.h
 parse_mail.o: mapson.h
+confirm.o: mapson.h
+home_dir.o: mapson.h
+address_db.o: mapson.h
