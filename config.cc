@@ -49,7 +49,7 @@ configuration::configuration()
 
     // Set the default MTA.
 
-    mta = "/usr/sbin/sendmail -i";
+    mta = "/usr/sbin/sendmail -i -t";
 
     // Should we enforce correct a Sender: header?
 
