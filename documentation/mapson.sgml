@@ -2,12 +2,14 @@
 <!ENTITY mapson "<application>mapSoN</application>">
 <!ENTITY description SYSTEM "description.sgml">
 <!ENTITY building SYSTEM "building.sgml">
+<!ENTITY synopsis SYSTEM "synopsis.sgml">
+<!ENTITY cmdloptions SYSTEM "cmdloptions.sgml">
 <!ENTITY license SYSTEM "license.sgml">
 <!ENTITY defconfig SYSTEM "defconfig.sgml">
 <!ENTITY defreqmail SYSTEM "defreqmail.sgml">
 ]>
 
-<article>
+<article lang="en" revision="$Revision$">
   <articleinfo>
     <title>&mapson; User Manual</title>
     <author>
@@ -34,14 +36,137 @@ in various setups.</para>
   </sect1>
 
   <sect1>
-    <title>The &mapson; configuration file</title>
+    <title>Command Line Syntax</title>
 
-    <para>
-
+    &synopsis;
+    &cmdloptions;
   </sect1>
 
   <sect1>
-    <title>The request for confirmation file</title>
+    <title>The &mapson; Configuration File</title>
+
+    <para>The configuration file may contain the following directives:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term><literal>Mailbox</literal> <parameter>file</parameter></term>
+        <listitem>
+          <para>This directive sets the complete path of the mailbox file, where
+&mapson; stores approved mails.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal>SpoolDir</literal> <parameter>directory</parameter></term>
+        <listitem>
+          <para>This directive sets the complete path to the directory, in which
+deferred mails will be spooled until a confirmation arrives for them.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal>AddressDB</literal> <parameter>file</parameter></term>
+        <listitem>
+          <para>This directive sets the complete path of the file &mapson; uses
+to store the "known" addresses.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal>ReqConfirmTemplate</literal> <parameter>file</parameter></term>
+        <listitem>
+          <para>This directive sets the complete path to the
+request-for-confirmation template file &mapson; uses to generate the
+request-for-confirmation mail sent to first-time originators.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal>MTA</literal> <parameter>command</parameter></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal>PassIncorrectMails</literal> <parameter>boolean</parameter></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal>StrictRFCParser</literal> <parameter>boolean</parameter></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal>RuntimeErrorRC</literal> <parameter>integer</parameter></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><literal>SyntaxErrorRC</literal> <parameter>integer</parameter></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><literal>Debug</literal> <parameter>boolean</parameter></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>In the data part of these tags, you may use any of the following
+environment variables, which are provided my &mapson;:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>$MAILBOXDIR</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$MTA</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$DATADIR</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$USER</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$HOME</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+  </sect1>
+
+  <sect1>
+    <title>The Request-for-Confirmation File</title>
 
     <para>The request-for-confirmation mail is created by loading the configured
 template file and exanding the variables contained in it. The result is then
@@ -52,49 +177,49 @@ mail template file:</para>
 
     <variablelist>
       <varlistentry>
-        <term><varname>md5hash</varname></term>
+        <term><varname>$md5hash</varname></term>
         <listitem>
           <para></para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>envelope</varname></term>
+        <term><varname>$envelope</varname></term>
         <listitem>
           <para></para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>sender</varname></term>
+        <term><varname>$sender</varname></term>
         <listitem>
           <para></para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>return_path</varname></term>
+        <term><varname>$return_path</varname></term>
         <listitem>
           <para></para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>header</varname></term>
+        <term><varname>$header</varname></term>
         <listitem>
           <para></para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>body</varname></term>
+        <term><varname>$body</varname></term>
         <listitem>
           <para></para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><varname>messageid</varname></term>
+        <term><varname>$messageid</varname></term>
         <listitem>
           <para></para>
         </listitem>
@@ -105,7 +230,7 @@ mail template file:</para>
 
     <variablelist>
       <varlistentry>
-        <term><varname>headerlines[]</varname></term>
+        <term><varname>$headerlines[]</varname></term>
         <listitem>
           <para></para>
         </listitem>
@@ -114,7 +239,7 @@ mail template file:</para>
 
     <variablelist>
       <varlistentry>
-        <term><varname>header[]</varname></term>
+        <term><varname>$header[]</varname></term>
         <listitem>
           <para></para>
         </listitem>
@@ -123,17 +248,16 @@ mail template file:</para>
 
     <variablelist>
       <varlistentry>
-        <term><varname>body[]</varname></term>
+        <term><varname>$body[]</varname></term>
         <listitem>
           <para></para>
         </listitem>
       </varlistentry>
     </variablelist>
-
   </sect1>
 
   <sect1>
-    <title>Setting &mapson; up</title>
+    <title>How to Activate &mapson;</title>
 
     <sect2>
       <title>Via <filename>.forward</filename></title>
@@ -158,7 +282,7 @@ mail template file:</para>
       </blockquote>
 
       <sect3>
-        <title>Getting a notification in case of failure</title>
+        <title>Getting a Notification In Case of Failure</title>
 
       <para>You might want to add the recipt
 
@@ -212,7 +336,7 @@ $DEFAULT</programlisting>
   </sect1>
 
   <sect1>
-    <title>Expiring the mail spool</title>
+    <title>Expiring the Mail Spool</title>
 
     <para>
   </sect1>
@@ -224,12 +348,12 @@ $DEFAULT</programlisting>
   </appendix>
 
   <appendix>
-    <title>The default configuration</title>
+    <title>The Default Configuration</title>
     <programlisting>&defconfig;</programlisting>
   </appendix>
 
   <appendix>
-    <title>An example request-for-confirmation template</title>
+    <title>A Request-for-Confirmation Template Example</title>
     <programlisting>&defreqmail;</programlisting>
   </appendix>
 
