@@ -1,0 +1,20 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename mapson.info
+@settitle The mapSoN User Manual
+@c %**end of header
+
+@titlepage
+@title The mapSoN User Manual
+@author Peter Simons <simons@@rhein.de>
+@end titlepage
+
+@c --------------------------------- node -------------------------------------
+
+@node Top,  , (dir), (dir)
+@chapter Introduction to the mapSoN tool
+
+@c --------------------------------- node -------------------------------------
+
+@contents
+@bye
