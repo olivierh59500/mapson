@@ -4,7 +4,7 @@
 # $Header$
 #
 
-SUBDIRS	= lib src #man
+SUBDIRS	= lib src doc
 
 all:	include/mapson.mk $(SUBDIRS)
 
@@ -16,9 +16,9 @@ lib::
 	@echo "====> Building libraries"
 	@(cd lib;${MAKE})
 
-man::
-	@echo "====> Building manfiles"
-	@(cd man;${MAKE})
+doc::
+	@echo "====> Building documentation"
+	@(cd doc;${MAKE})
 
 clean:
 	@echo "====> Cleaning up"
