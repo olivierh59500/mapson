@@ -96,7 +96,7 @@ configuration::configuration(int argc, char** argv)
     address_db_auto_add = true;
     accept = false;
     debug = false;
-    bool scan_for_cookie = true;
+    scan_for_cookie = true;
     message_id = "<no-message-id@localhost>";
     have_message_id = false;
 
@@ -151,12 +151,12 @@ configuration::configuration(int argc, char** argv)
             case 'h':
                 fprintf(stderr, "Usage: mapson [ -h | --help ] [ --version ] [ -d | --debug ] [ -a | --accept ]\n"  \
                                 "              [ --cookie cookie ] [ -c config | --config-file config ]\n"          \
-                                "              [  --dont-scan ] [ mail ... ]\n");
+                                "              [ --dont-scan ] [ mail ... ]\n");
                 throw no_error();
             default:
                 fprintf(stderr, "Usage: mapson [ -h | --help ] [ --version ] [ -d | --debug ] [ -a | --accept ]\n"  \
                                 "              [ --cookie cookie ] [ -c config | --config-file config ]\n"          \
-                                "              [  --dont-scan ] [ mail ... ]\n");
+                                "              [ --dont-scan ] [ mail ... ]\n");
                 throw runtime_error("Incorrect command line syntax.");
             }
         }
@@ -208,7 +208,7 @@ void configuration::dump() const
     debug(("    LogFile            = '%s'", log_file.c_str()));
     debug(("    SpoolDir           = '%s'", spool_dir.c_str()));
     debug(("    AddressDB          = '%s'", address_db.c_str()));
-    debug(("    AddressDBAutoAdd   = '%s'", address_db_auto_add?"true":"false"));
+    debug(("    AddressDBAutoAdd   = '%s'", (address_db_auto_add) ? "true" : "false"));
     debug(("    ReqConfirmTemplate = '%s'", request_for_confirmation_file.c_str()));
     debug(("    MTA                = '%s'", mta.c_str()));
     debug(("    StrictRFCParser    = '%s'", (strict_rfc_parser) ? "true" : "false"));
