@@ -41,8 +41,6 @@ static char default_mail_text[] = \
 "mail I receive has made this preparative necessary. My tool keeps\n" \
 "track of who has sent me e-mail before and you won't see this notice\n" \
 "again.\n" \
-"\n" \
-"   Sincerely, Peter\n" \
 "\n";
 
 void
