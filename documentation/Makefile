@@ -28,9 +28,10 @@ all:	mapson.html mapson.pdf man-page.txt
 
 man-page.html:	license.sgml
 
-mapson.html mapson.tex:	license.sgml building.sgml defconfig.sgml defreqmail.sgml
+mapson.html mapson.tex:	license.sgml building.sgml synopsis.sgml cmdloptions.sgml
+mapson.html mapson.tex: defconfig.sgml defreqmail.sgml
 
-man-page.txt:	man-page.html
+man-page.txt:	man-page.html synopsis.sgml cmdloptions.sgml
 	lynx -width=80 -nolist -dump $< >$@
 
 defconfig.sgml:	../config-sample Makefile
