@@ -26,10 +26,11 @@
 
 all:	mapson.html mapson.pdf man-page.txt
 
-man-page.html:	synopsis.inc description.inc cmdloptions.inc license.inc
+man-page.html:	synopsis.inc description.inc cmdloptions.inc configfile.inc \
+		license.inc
 
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
-mapson.html mapson.tex: defconfig.inc defreqmail.inc
+mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc
 
 man-page.txt:	man-page.html
 	lynx -width=80 -nolist -dump $< >$@

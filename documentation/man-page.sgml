@@ -1,14 +1,9 @@
-<!--
-Local Variables:
-mode: sgml
-fill-column:80
-End:
--->
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
 <!ENTITY mapson "<application>mapSoN</application>">
 <!ENTITY synopsis SYSTEM "synopsis.inc">
 <!ENTITY description SYSTEM "description.inc">
 <!ENTITY cmdloptions SYSTEM "cmdloptions.inc">
+<!ENTITY configfile SYSTEM "configfile.inc">
 <!ENTITY license SYSTEM "license.inc">
 ]>
 
@@ -29,7 +24,6 @@ End:
 
   <refsect1>
     <title>Description</title>
-
     &description;
 
     <para>For a complete description of what &mapson; does and how to
@@ -40,10 +34,13 @@ options in detail.</para>
 
   <refsect1>
     <title>Command Line Syntax</title>
-
     <para>&mapson; understands the following command line parameters:</para>
-
     &cmdloptions;
+  </refsect1>
+
+  <refsect1>
+    <title>Configuration File</title>
+    &configfile;
   </refsect1>
 
   <refsect1>
@@ -52,3 +49,10 @@ options in detail.</para>
   </refsect1>
 
 </refentry>
+
+<!--
+Local Variables:
+mode: sgml
+fill-column:80
+End:
+-->
