@@ -36,7 +36,7 @@ try
 
     // Log the fact we're here.
 
-    debug(("mapSoN verion " VERSION " starting up", __DATE__, __TIME__));
+    debug(("mapSoN version " VERSION " starting up", __DATE__, __TIME__));
     config->dump();
 
     // If we have parameters left on the command line that were no
