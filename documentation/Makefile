@@ -26,23 +26,27 @@
 
 all:	mapson.html mapson.pdf man-page.txt
 
-man-page.html:	license.sgml
+man-page.html:	license.inc
 
-mapson.html mapson.tex:	license.sgml building.sgml synopsis.sgml cmdloptions.sgml
-mapson.html mapson.tex: defconfig.sgml defreqmail.sgml
+mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
+mapson.html mapson.tex: defconfig.inc defreqmail.inc
 
-man-page.txt:	man-page.html synopsis.sgml cmdloptions.sgml
+man-page.txt:	man-page.html synopsis.inc cmdloptions.inc
 	lynx -width=80 -nolist -dump $< >$@
 
-defconfig.sgml:	../config-sample Makefile
+defconfig.inc:	../config-sample Makefile
 	sed <$< >$@ -e 's/</\&lt;/g' \
 	            -e 's/>/\&gt;/g' \
+	            -e 's/&/\&amp;/g' \
+	            -e 's#-#<markup>-</markup>#g' \
 	            -e '/^#/d'       \
 	            -e '/^$$/d'
 
-defreqmail.sgml:../reqmail.template-sample Makefile
+defreqmail.inc:../reqmail.template-sample Makefile
 	sed <$< >$@ -e 's/</\&lt;/g' \
 	            -e 's/>/\&gt;/g' \
+	            -e 's/&/\&amp;/g' \
+	            -e 's#-#<markup>-</markup>#g' \
 	            -e 's#example.com#<replaceable>&</replaceable>#g' \
 	            -e 's#username#<replaceable>&</replaceable>#g'  \
 	            -e 's#Real Name#<replaceable>&</replaceable>#g'
@@ -51,4 +55,4 @@ clean distclean realclean:
 	@rm -f *.aux *.dvi *.log *.toc
 	@rm -f *.css *.fot *.html *.ps
 	@rm -f *.tex *.xml *.txt *.pdf
-	@rm -f defconfig.sgml defreqmail.sgml
+	@rm -f defconfig.inc defreqmail.inc

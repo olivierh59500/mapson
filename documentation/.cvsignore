@@ -1,2 +1,2 @@
 *.txt *.html *.ps *.pdf *.aux *.log *.tex
-defconfig.sgml defreqmail.sgml
+defconfig.inc defreqmail.inc
