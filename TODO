@@ -34,3 +34,5 @@ o Extract the message-id before looking for a cookie so that we have
   it when the success message is logged.
 
 o Add a way to match whole domains.
+
+o Implement my own setenv() because it is missing on Solaris.
