@@ -115,7 +115,7 @@ depend::
 	@mv Makefile.in.bak Makefile.in
 
 tag::
-	cvs tag -c mapson-`sed <VERSION -e "s/\-/g"`
+	cvs tag -c mapson-`sed <VERSION -e 's/\./-/g'`
 
 dist:	mapson documentation/mapson.txt VERSION
 	@V=`cat VERSION`; \
