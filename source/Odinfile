@@ -1,8 +1,8 @@
 # Build mapSoN.
 
-mapson == %mapson.cc.sm +cxx_flags='-Wall -pedantic' \
+mapson == %mapson.cc.sm +cxx_flags='-Wall -ansi -pedantic' \
 			+lib=(librfc822.a) \
-			+optimize=2 \
+			+optimize=3 \
 			:exe
 
 %mapson.cc.sm == <<
@@ -12,7 +12,7 @@ mapson == %mapson.cc.sm +cxx_flags='-Wall -pedantic' \
     home-dir.cc
     process-ack.cc
 
-librfc822.a     == librfc822/%librfc822.a.sm :a
+librfc822.a == librfc822/%librfc822.a.sm :a
 
 %clean ! == !<<
     rm -f librfc822.a mapson
