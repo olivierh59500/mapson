@@ -8,15 +8,10 @@ dnl
 dnl Get the absolute path of the top source directory. Unfortunately
 dnl the @top_src@ variable always gives the relative path, what is not
 dnl what I need.
-dnl
 
 AC_DEFUN(PETI_PATH_SRCDIR, [
 AC_MSG_CHECKING(path of top source directory)
-if test "$srcdir" = "."; then
-    SRCDIR=`pwd`
-else
-    SRCDIR=$srcdir
-fi
+SRCDIR=`(cd $srcdir;pwd)`
 AC_MSG_RESULT($SRCDIR)
 AC_SUBST(SRCDIR)
 ])
