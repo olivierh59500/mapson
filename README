@@ -93,3 +93,9 @@ Configuration options:
         aborted because of syntax errors in the mail. The default is
         "65" (data format error), but this may be overridden in the
         config file.
+
+ o Logging
+
+   bool debug
+
+        Log debug messages. The default is 'false'.

@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 // My own libraries.
+#include "config.hh"
 #include "log.hh"
 
 namespace
@@ -28,10 +29,13 @@ namespace
 
 void _debug(const char* fmt, ...) throw()
     {
-    va_list ap;
-    va_start(ap, fmt);
-    vsyslog(LOG_DEBUG, fmt, ap);
-    va_end(ap);
+    if (config && config->debug)
+        {
+        va_list ap;
+        va_start(ap, fmt);
+        vsyslog(LOG_DEBUG, fmt, ap);
+        va_end(ap);
+        }
     }
 
 void info(const char* fmt, ...) throw()
