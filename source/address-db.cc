@@ -63,14 +63,16 @@ bool AddressDB::find(const string& key) const
     do
 	{
 	pos = data.find(key, pos);
-	if ((pos != string::npos) &&
-	    (pos == 0 || data[pos-1] == '\n') &&
-	    ((pos + key.size() == data.size()) || (data[pos+key.size()] == '\n')))
+	if (pos != string::npos)
 	    {
-	    return true;
+	    if ((pos == 0 || data[pos-1] == '\n') &&
+		((pos + key.size() == data.size()) || (data[pos+key.size()] == '\n')))
+		{
+		return true;
+		}
+	    else
+		++pos;
 	    }
-	else
-	    ++pos;
 	}
     while (pos != string::npos);
     return false;
