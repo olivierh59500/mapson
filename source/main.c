@@ -27,7 +27,8 @@ main(int argc, char * argv[])
     char *         mail_rescue_filename,
          *         mail_buffer,
 	 *         escaped_mail_buffer,
-	 *         p;
+	 *         p,
+	 *         cookie;
     unsigned int   mail_size;
     char           buffer[4096];
     int            rc, i;
@@ -78,6 +79,12 @@ main(int argc, char * argv[])
     }
     fclose(fh);
     mail_buffer[mail_size] = '\0';
+
+
+    /* Create the cookie for this mail. */
+
+    cookie = generate_cookie(mail_buffer);
+
 
     /* Parse the mail. */
 
@@ -178,8 +185,8 @@ main(int argc, char * argv[])
 	  if ((Mail->from)[i] == NULL) {
 	      syslog(LOG_INFO, "Sender '%s' is unknown. Requesting confirmation for '%s'.",
 		     Mail->envelope, Mail->message_id);
-	      store_mail_in_spool(mail_buffer, Mail->message_id);
-	      send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
+	      store_mail_in_spool(mail_buffer, cookie);
+	      send_request_for_confirmation_mail(Mail->envelope, cookie);
 	  }
 	  break;
       case RLST_PASS:

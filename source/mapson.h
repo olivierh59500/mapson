@@ -138,4 +138,7 @@ char * get_user_name(void);
 
 char * escape_from_lines(char * buffer);
 
+/* cookie.c */
+char * generate_cookie(const char * buffer);
+
 #endif /* !defined(__MAPSON_H__) */
