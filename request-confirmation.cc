@@ -34,7 +34,7 @@ namespace
                 {
                 if (mail[body_pos] == '\n')
                     {
-                    body_pos += 2;
+                    ++body_pos;
                     break;
                     }
                 }
@@ -52,7 +52,7 @@ namespace
             else if (strcasecmp("return_path", name.c_str()) == 0)
                 data = addresses.return_path;
             else if (strcasecmp("header", name.c_str()) == 0)
-                data = mail.substr(0, body_pos - 2);
+                data = mail.substr(0, body_pos - 1);
             else if (strcasecmp("body", name.c_str()) == 0)
                 data = mail.substr(body_pos);
             else
