@@ -63,7 +63,13 @@ namespace
             else if (strcasecmp("messageid", name.c_str()) == 0)
                 data = config->message_id;
             else
-                throw varexp::undefined_variable();
+                {
+                const char* p = getenv(name.c_str());
+                if (p == NULL)
+                    throw varexp::undefined_variable();
+                else
+                    data = p;
+                }
             }
         virtual void operator()(const string& name, int idx, string& data)
             {
