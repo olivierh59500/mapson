@@ -141,14 +141,6 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
 	throw system_error(string("Can't open address db '") + filename + "' for reading");
     fd_sentry sentry(fd);
 
-    struct flock lock;
-    lock.l_type = F_WRLCK;
-    lock.l_whence = SEEK_SET;
-    lock.l_start  = 0;
-    lock.l_len    = 0;
-    if (fcntl(fd, F_SETLKW, &lock) != 0)
-	throw system_error(string("Can't lock file '") + filename + "'");
-
     // Read the file into memory.
 
     char buffer[1024];
