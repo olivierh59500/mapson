@@ -36,4 +36,4 @@ librfc822.a     == librfc822/%librfc822.a.sm +(config/cc.flags) +(config/cc_flag
 libexceptions.a == libexceptions/%libexceptions.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
 
 %clean ! == !<<
-    rm -f libexceptions.a liblists.a libmpools.a librfc822.a
+    rm -f libexceptions.a liblists.a libmpools.a librfc822.a mapson
