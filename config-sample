@@ -1,8 +1,8 @@
 #
 # mapSoN config file
 #
+# You may use environment variables in the data part of each directive.
 # The values shown in this file are the default settings for each keyword.
-#
 
 # Mailbox <file>
 #       This option specifies the complete path to the user's mailbox file.
