@@ -26,6 +26,7 @@ clean:
 
 distclean:	clean
 	rm -f config.log config.cache config.log config.status include/mapson.mk
+	rm -f include/paths.h
 
 realclean:	distclean
 	rm -f configure config.log config.cache config.log config.status
