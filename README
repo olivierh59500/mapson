@@ -87,3 +87,8 @@ Things to do:
     o Add an option that tells mapSoN to create missing parent
       directories on the fly, if it wants to write to the spool
       directory or to the address database.
+
+    o Make another template that does not use columns.
+
+    o Document the fact that the sample template file requires
+      procmail.
