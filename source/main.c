@@ -86,6 +86,7 @@ main(int argc, char * argv[])
     OTHERWISE {
 	PASSTHROUGH();
     }
+#if 0
     printf("DEBUG: Envelope is '%s'.\n", Mail->envelope);
     for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
 	printf("DEBUG: From[%d]: is '%s'.\n", i, (Mail->from)[i]);
@@ -98,6 +99,33 @@ main(int argc, char * argv[])
     }
     for (i = 0; Mail->reply_to && (Mail->reply_to)[i] != NULL; i++) {
 	printf("DEBUG: Reply_To[%d]: is '%s'.\n", i, (Mail->reply_to)[i]);
+    }
+#endif
+
+
+    /* Let the rulset check the mail to decide what we'll do with it. */
+
+    {
+	char *    p;
+
+	rc = check_ruleset_file(Mail, &p);
+	switch(rc) {
+	  case RLST_PASS:
+	      printf("Mail passes.\n");
+	      break;
+	  case RLST_DROP:
+	      printf("Mail will be dropped.\n");
+	      break;
+	  case RLST_RFC:
+	      printf("Send request for confirmation.\n");
+	      break;
+	  case RLST_SAVETO:
+	      printf("Write mail to file '%s'\n.", p);
+	      break;
+	  default:
+	      assert(0==1);
+	      THROW(UNKNOWN_FATAL_EXCEPTION);
+	}
     }
 
 
