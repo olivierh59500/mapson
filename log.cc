@@ -11,6 +11,11 @@
 #include "config.hh"
 #include "log.hh"
 
+// Solaris sucks.
+#ifndef LOG_PERROR
+#    define LOG_PERROR 0
+#endif
+
 namespace
     {
     struct init_logging
