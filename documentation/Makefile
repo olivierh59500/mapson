@@ -36,6 +36,11 @@ man-page.html:	configfile.inc license.inc
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
 mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc description.inc
 mapson.html mapson.tex: effectiveness.inc
+mapson.html mapson.tex: ../libvarexp/documentation/arrays-of-variables.inc
+mapson.html mapson.tex: ../libvarexp/documentation/looping.inc
+mapson.html mapson.tex: ../libvarexp/documentation/operations-on-variables.inc
+mapson.html mapson.tex: ../libvarexp/documentation/quoted-pairs.inc
+mapson.html mapson.tex: ../libvarexp/documentation/variable-expressions.inc
 mapson.html           :	principle1.png principle2.png
 mapson.tex	      :	principle1.eps principle2.eps
 
@@ -64,7 +69,7 @@ defreqmail.inc:../reqmail.template-sample
 
 clean distclean:
 	@rm -f *.aux *.dvi *.log *.toc
-	@rm -f *.css *.fot *.ps *.xml
+	@rm -f *.fot *.ps *.xml
 	@rm -f *.tex defconfig.inc defreqmail.inc
 
 realclean:	clean
