@@ -32,6 +32,7 @@ main(int argc, char * argv[])
 
     openlog("mapson", LOG_CONS | LOG_PERROR | LOG_PID, LOG_MAIL);
     assert_mapson_home_dir_exists();
+    assert_mapson_spool_dir_exists();
     mail_rescue_filename = get_mail_rescue_filename();
 
 
@@ -112,7 +113,7 @@ main(int argc, char * argv[])
 	      }
 	      break;
 	  case RLST_DROP:
-	      printf("Mail will be dropped.\n");
+	      syslog(LOG_INFO, "Dropping mail from '%s'.\n", (Mail->from)[0]);
 	      break;
 	  case RLST_RFC:
 	      printf("Send request for confirmation.\n");
