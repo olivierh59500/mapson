@@ -87,13 +87,15 @@ install:	mapson reqmail.template-sample config-sample documentation/man-page.txt
 	$(INSTALL) -c -m 555 mapson $(DESTDIR)$(bindir)/mapson
 	$(MKDIR) -p $(DESTDIR)$(datadir)
 	$(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)$(datadir)/reqmail.template-sample
-	sed -e "s:/usr/local:$(prefix):g" \
-	    -e "s:/var/spool/mail:$(mailboxdir):g" \
-	    <config-sample >config-sample.local
 	$(MKDIR) -p $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m 644 config-sample.local $(DESTDIR)$(sysconfdir)/config-sample
+	$(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/config-sample
 	$(MKDIR) -p $(DESTDIR)$(mandir)/man1
 	$(INSTALL) -c -m 644 documentation/man-page.txt $(DESTDIR)$(mandir)/man1/mapson.1
+	@echo
+	@echo mapSoN is installed now. You might want to rename and to
+	@echo edit the following files:
+	@echo ' - $(DESTDIR)$(datadir)/reqmail.template-sample'
+	@echo ' - $(DESTDIR)$(sysconfdir)/config-sample'
 
 clean::
 	@find . -name '*.rpo' -exec rm -f {} \;
