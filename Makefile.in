@@ -1,0 +1,133 @@
+#
+# Build mapSoN
+#
+# @configure_input@
+#
+DESTDIR		=
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+bindir		= @bindir@
+mandir		= @mandir@
+datadir		= @datadir@
+
+CC		= @CC@
+CXX		= @CXX@
+AR		= ar
+RANLIB		= @RANLIB@
+OPTIMFLAGS	=
+WARNFLAGS	=
+CPPFLAGS	= @CPPFLAGS@ @DEFS@
+CFLAGS		= @CFLAGS@
+CXXFLAGS	= @CXXFLAGS@
+LDFLAGS		= @LDFLAGS@
+
+OBJS		= address-db.o config.o deliver.o extract-addresses.o \
+		  gather-addresses.o log.o mapson.o request-confirmation.o \
+		  spool.o
+LIBS		= libmd5/md5.o libparse-config-file/parse-config-file.o \
+		  librfc822/lexer.o librfc822/parser.o \
+		  libvarexp/command.o libvarexp/cut-out-offset.o \
+		  libvarexp/expand-character-class.o \
+		  libvarexp/unescape.o libvarexp/expand.o \
+		  libvarexp/expression.o libvarexp/input.o \
+		  libvarexp/loop.o libvarexp/num-exp.o \
+		  libvarexp/padding.o libvarexp/search-and-replace.o \
+		  libvarexp/text.o libvarexp/transpose.o \
+		  libvarexp/variable.o libvarexp/error.o \
+		  libvarexp/parser.o
+
+.SUFFIXES:
+.SUFFIXES:	.c .cc .o
+
+.c.o:
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
+
+.cc.o:
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
+
+all:		mapson
+
+#
+# Main program
+#
+mapson:		$(OBJS) $(LIBS)
+	$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
+
+clean::
+	@rm -f $(OBJS)
+	@rm -f $(LIBS)
+	@rm -f mapson
+	@find . -name '*.rpo' -exec rm {} \;
+	@echo All dependent files have been removed.
+
+distclean:: clean
+	@rm -f Makefile config.log config.status
+
+realclean:: distclean
+	@rm -f configure
+
+
+# Dependencies
+
+librfc822/lexer.o: librfc822/rfc822.hh
+librfc822/parser.o: librfc822/rfc822.hh
+librfc822/test.o: librfc822/rfc822.hh
+address-db.o: system-error/system-error.hh fd-sentry.hh address-db.hh
+config.o: system-error/system-error.hh libvarexp/varexp.hh config.hh
+config.o: libparse-config-file/parse-config-file.hh log.hh
+extract-addresses.o: librfc822/rfc822.hh extract-addresses.hh log.hh
+extract-addresses.o: config.hh libparse-config-file/parse-config-file.hh
+log.o: config.hh libparse-config-file/parse-config-file.hh log.hh
+libparse-config-file/parse-config-file.o: RegExp/RegExp.hh
+libparse-config-file/parse-config-file.o: system-error/system-error.hh
+libparse-config-file/parse-config-file.o: libparse-config-file/parse-config-file.hh
+libparse-config-file/test.o: libparse-config-file/parse-config-file.hh
+libvarexp/regression-tests/empty-search-pattern.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand-character-class.o: libvarexp/internal.hh
+libvarexp/regression-tests/expand-character-class.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand1.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand2.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand3.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand4.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand5.o: libvarexp/varexp.hh
+libvarexp/regression-tests/expand6.o: libvarexp/varexp.hh
+libvarexp/regression-tests/unescape.o: libvarexp/varexp.hh
+libvarexp/regression-tests/offset-failure.o: libvarexp/varexp.hh
+libvarexp/command.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/cut-out-offset.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/error.o: libvarexp/varexp.hh
+libvarexp/expand-character-class.o: libvarexp/internal.hh
+libvarexp/expand-character-class.o: libvarexp/varexp.hh
+libvarexp/expand.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/expression.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/input.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/loop.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/num-exp.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/padding.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/parser.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/text.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/transpose.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/unescape.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/variable.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/search-and-replace.o: libvarexp/internal.hh
+libvarexp/search-and-replace.o: libvarexp/varexp.hh
+libmd5/md5.o: libmd5/md5.h
+libmd5/md5test.o: libmd5/md5.h
+RegExp/test.o: RegExp/RegExp.hh
+mapson.o: librfc822/rfc822.hh system-error/system-error.hh
+mapson.o: extract-addresses.hh config.hh
+mapson.o: libparse-config-file/parse-config-file.hh log.hh address-db.hh
+mapson.o: spool.hh deliver.hh request-confirmation.hh gather-addresses.hh
+spool.o: libmd5/md5.h system-error/system-error.hh log.hh config.hh
+spool.o: libparse-config-file/parse-config-file.hh fd-sentry.hh spool.hh
+deliver.o: system-error/system-error.hh config.hh
+deliver.o: libparse-config-file/parse-config-file.hh log.hh fd-sentry.hh
+deliver.o: deliver.hh
+request-confirmation.o: libvarexp/varexp.hh system-error/system-error.hh
+request-confirmation.o: log.hh config.hh
+request-confirmation.o: libparse-config-file/parse-config-file.hh
+request-confirmation.o: extract-addresses.hh fd-sentry.hh
+request-confirmation.o: request-confirmation.hh
+gather-addresses.o: system-error/system-error.hh address-db.hh config.hh
+gather-addresses.o: libparse-config-file/parse-config-file.hh fd-sentry.hh
+gather-addresses.o: extract-addresses.hh gather-addresses.hh
