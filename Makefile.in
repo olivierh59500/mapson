@@ -23,7 +23,7 @@ LDFLAGS		= @LDFLAGS@
 
 OBJS		= address-db.o config.o deliver.o extract-addresses.o \
 		  gather-addresses.o log.o mapson.o request-confirmation.o \
-		  spool.o
+		  spool.o accept-confirmation.o
 LIBS		= libmd5/md5.o libparse-config-file/parse-config-file.o \
 		  librfc822/lexer.o librfc822/parser.o \
 		  libvarexp/command.o libvarexp/cut-out-offset.o \
