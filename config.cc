@@ -83,7 +83,7 @@ configuration::configuration(int argc, char** argv)
     runtime_error_rc = 75;
     syntax_error_rc = 65;
     debug = false;
-    message_id = "no-message-id";
+    message_id = "<no-message-id@localhost>";
     have_message_id = false;
 
     // Set the environment variables supported in the config file.
