@@ -36,3 +36,4 @@ main.o: mapson.h version.h
 mail_rescue.o: mapson.h
 fail_safe.o: mapson.h
 array.o: mapson.h
+parse_mail.o: mapson.h
