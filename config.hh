@@ -13,7 +13,7 @@ class configuration
     {
   public:
     // Construction and Destruction.
-    explicit configuration();
+    explicit configuration(int, char**);
     ~configuration() throw();
 
     // Paths.
@@ -22,6 +22,7 @@ class configuration
     std::string address_db;
     std::string request_for_confirmation_file;
     std::string mta;
+    std::string mailbox;
 
     // Filtering criterias.
     bool strict_rfc_parser;
@@ -30,6 +31,10 @@ class configuration
     // Return codes.
     int runtime_error_rc;
     int syntax_error_rc;
+
+  protected:
+    friend int main(int, char**);
+    int parameter_index;
 
   private:
     configuration(const configuration&);

@@ -19,7 +19,7 @@ struct mail_addresses
     addrset_t from;
     addrset_t reply_to;
     };
-
+size_t find_next_header_line(const std::string& mail, size_t pos);
 mail_addresses extract_sender_addresses(const std::string& mail);
 
 #endif

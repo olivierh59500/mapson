@@ -18,6 +18,11 @@ Configuration options:
 
  o Paths
 
+   string mailbox
+
+        The complete path of the mailbox where mapSoN will store
+        accepted mails.
+
    string config_file
 
         The path of the mapson config file that contains these
@@ -48,7 +53,7 @@ Configuration options:
         e-mail on the system. It is expected that the MTA reads the
         mail on standard input and accepts the address(es) of the
         recipient(s) on the command line. Additional options may be
-        specified. The default is "/usr/sbin/sendmail -i", but this
+        specified. The default is "/usr/sbin/sendmail -i -t", but this
         may be overridden in the config file.
 
 
