@@ -9,6 +9,12 @@ dnl
 CFLAGS=$CFLAGS
 CXXFLAGS=$CXXFLAGS
 
+dnl Find the canonical name of our host.
+dnl
+AC_MSG_CHECKING(the type of host we're running on)
+hosttuple=`/bin/sh ./.shtool guessos`
+AC_MSG_RESULT(${hosttuple})
+
 dnl Figure out which development environment we're using.
 dnl
 AC_PROG_CC
@@ -27,7 +33,13 @@ AC_CHECK_TYPE(u_int32_t, [],
 
 dnl Do we have large file system support?
 dnl
-AC_SYS_LARGEFILE
+case "$hosttuple" in
+     *-*-solaris*)
+	;;
+     *)
+	AC_SYS_LARGEFILE
+	;;
+esac
 
 dnl If the system misses the getopt.h include or the getopt_long()
 dnl function, we use the version included in the distribution.
