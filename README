@@ -62,3 +62,6 @@ Things to do:
     o Convert libmd5 to uint32_t and stdint.h.
 
     o Add last-used timestamps to each address in the database.
+
+    o Add headers to the mails mapSoN processes and tell the user what
+      went on.
