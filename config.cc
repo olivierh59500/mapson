@@ -127,7 +127,7 @@ void configuration::dump() const
     debug(("    debug = '%s'", (debug) ? "true" : "false"));
     }
 
-inline bool get_bool(const std::string& value)
+inline bool get_bool(const string& value)
     {
     if (strcasecmp(value.c_str(), "true") == 0)
         return true;
@@ -137,7 +137,7 @@ inline bool get_bool(const std::string& value)
         throw no_bool_error();
     }
 
-inline unsigned int get_rc(const std::string& value)
+inline unsigned int get_rc(const string& value)
     {
     char* endptr;
     unsigned long int i = strtoul(value.c_str(), &endptr, 10);
@@ -146,7 +146,7 @@ inline unsigned int get_rc(const std::string& value)
     return i;
     }
 
-void configuration::set_option(const std::string& keyword, const std::string& data)
+void configuration::set_option(const string& keyword, const string& data)
     {
     try
         {
@@ -206,7 +206,7 @@ void configuration::set_option(const std::string& keyword, const std::string& da
         }
     }
 
-void configuration::unknown_line(const std::string& line)
+void configuration::unknown_line(const string& line)
     {
     info("Unknown line in config file: '%s'.", line.c_str());
     }
