@@ -88,4 +88,9 @@ void            send_request_for_confirmation_mail(char *, char *);
 
 void assert_mapson_home_dir_exists(void);
 
+/* address_db.c */
+
+void add_address_to_database(char *address);
+int does_address_exist_in_database(char *address);
+
 #endif /* !defined(__MAPSON_H__) */
