@@ -61,6 +61,8 @@ void extract_sender_addresses(const string& mail, addrset_t& addrset)
 	    line.erase(0, line.find(":") + 1);
 	    rfc822parser parser(lex(line), &committer);
 	    parser.addresses();
+	    if (!parser.empty())
+		throw rfc822_syntax_error("Unexpected trailing data.");
 	    }
 	}
     }
