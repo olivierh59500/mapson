@@ -28,6 +28,14 @@ void deliver(const string& mail)
 	throw system_error(string("Can't open mailbox file '") + config->mailbox + "' for writing");
     fd_sentry sentry(fd);
 
+    struct flock lock;
+    lock.l_type = F_WRLCK;
+    lock.l_whence = SEEK_SET;
+    lock.l_start  = 0;
+    lock.l_len    = 0;
+    if (fcntl(fd, F_SETLKW, &lock) != 0)
+	throw system_error(string("Can't lock file '") + config->mailbox + "'");
+
     for (size_t len = 0; len < mail.size(); )
 	{
 	ssize_t rc = write(fd, mail.data()+len, mail.size()-len);
