@@ -33,7 +33,7 @@ man-page.html:	synopsis.inc description.inc cmdloptions.inc configfile.inc \
 		license.inc
 
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
-mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc
+mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc description.inc
 
 readme.txt:	readme.sgml building.inc ../VERSION
 
