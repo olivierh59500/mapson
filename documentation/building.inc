@@ -47,8 +47,8 @@ depending on your setup, you might want to choose another path here.</para>
       <term><option>--with-mta=<replaceable>PATH</replaceable></option></term>
       <listitem>
         <para>&mapson; needs to know the complete path to your system's
-<systemitem>mail transport agent</systemitem> (<abbrev>MTA</abbrev>) in order to
-send out requests for confirmation. The <filename>configure</filename> script
+<systemitem>mail transport agent</systemitem> (<acronym>MTA</acronym>) in order
+to send out requests for confirmation. The <filename>configure</filename> script
 will assume that you have <application>sendmail</application> installed and look
 for it in various locations, but you can (and may have to) set the right choice
 manually using this option.</para>

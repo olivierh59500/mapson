@@ -15,7 +15,7 @@ End:
 <!ENTITY defreqmail SYSTEM "defreqmail.inc">
 ]>
 
-<article lang="en" revision="$Revision$">
+<article lang="en">
   <articleinfo>
     <title>Incomplete &mapson; User Manual</title>
     <author>
@@ -95,6 +95,30 @@ to store the "known" addresses.</para>
           <para>This directive sets the complete path to the
 request-for-confirmation template file &mapson; uses to generate the
 request-for-confirmation mail sent to first-time originators.</para>
+
+          <para>An arbitrary number of alternate paths can be
+specified, if they're separated by colons, for example:</para>
+
+          <informalexample>
+            <screen>$HOME/.mapson/reqmail.template:$DATADIR/reqmail.template:&hellip;</screen>
+          </informalexample>
+
+          <para>In this setup, &mapson; would first try to load the
+file <filename>$HOME/.mapson/reqmail.template</filename>. If that
+failed, it would try <filename>$DATADIR/reqmail.template</filename>,
+and so on, until one of the files can be loaded successfully.</para>
+
+          <para>This is an extreme useful feature if you are a system
+administrator who wishes to allow all users of the system to use
+&mapson; without having to create a request-for-confirmation template
+of their own: Configure &mapson; to load that request-for-confirmation
+template first, that is located in the user's home directory. If this
+file does not exist, then fall back to the system-wide file.</para>
+
+          <para>In effect, that means that the user can simply use
+&mapson; to filter his mail, and if he ever feels like it, he can
+create a request-for-confirmantion template file of his own and it
+will be preferred over the system-wide one.</para>
         </listitem>
       </varlistentry>
 
@@ -119,7 +143,7 @@ mail was not created by an RFC822-conformant mail client.</para>
 may chose to have &mapson fail on <emphasis>any</emphasis> syntax
 error -- even non-fatal ones. "Failing" means that &mapson; will abort
 and return the return code configured below to the
-<abbrev>MTA</abbrev>. Depending on the setting of the return code, the
+<acronym>MTA</acronym>. Depending on the setting of the return code, the
 MTA will then bounce the mail.</para>
 
           <para>The parameter given to this option is a boolean,
@@ -145,14 +169,34 @@ disable the <symbol>PassIncorrectMails</symbol> option.</para>
       <varlistentry>
         <term><literal>RuntimeErrorRC</literal> <parameter>integer</parameter></term>
         <listitem>
-          <para></para>
+          <para>This directive sets the return code &mapson; exits
+with in case it had to abort with a run-time error. Possible run-time
+errors are failure to open file, lack of available memory,
+<abbrev>etc.</abbrev> &hellip;</para>
+
+          <para>The default choice is "75", which
+<application>sendmail</application> will interpret as a temporary
+system error, so it will queue the mail and re-try.</para>
+
+          <para>A valid return code is a positive integer up to
+128.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
 
         <term><literal>SyntaxErrorRC</literal> <parameter>integer</parameter></term>
         <listitem>
-          <para></para>
+          <para>This directive sets the return code &mapson; exits
+with in case it encountered a fatal syntax error in the e-mail. If
+<symbol>PassIncorrectMails</symbol> is disabled, non-fatal syntax
+errors will also cause &mapson; to abort with this return code.</para>
+
+          <para>The default choice is "65", which
+<application>sendmail</application> will interpret as a permanent
+error that causes the mail to bounce.</para>
+
+          <para>A valid return code is a positive integer up to
+128.</para>
         </listitem>
       </varlistentry>
 
@@ -170,47 +214,84 @@ that is the default, though, so unless you exclicitely disabled it,
 debugging will be available.</para>
         </listitem>
       </varlistentry>
-
     </variablelist>
 
+    <para>In order to make the contents of the configuration file as
+independent from the system's directory structure as possible,
+&mapson; provides a set of environment variables, which are guaranteed
+to be defined. You can use them anywhere in the data part of a
+configuration directive, and you can use the usual manipulations on
+them.</para>
 
+    <para>Envirenment variables are looked-up case-sensitive, so
+<varname>$home</varname> is not the same thing as
+<varname>$HOME</varname>. This behavior is different in the
+request-for-confirmation template, where you can spell the variables
+upper- or lower-case as you wish. That's because the variables there
+are not coming from the environmnet, but are &mapson;'s internal
+variables. So be sure not to confuse that, because an undefined
+variable in this file will cause &mapson; to abort with an
+error.</para>
 
-    <para>In the data part of these tags, you may use any of the following
-environment variables, which are provided my &mapson;:</para>
+    <para>&mapson; will not overwrite already existing variables,
+though! If your system defines, for example, the
+<varname>$HOME</varname> variable, then you'll get the value from the
+system's variable.</para>
+
+    <para>Here is the complete list:</para>
 
     <variablelist>
       <varlistentry>
         <term><varname>$MAILBOXDIR</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the complete path of directory,
+in which the system's mailboxes are located, usually
+<filename>/var/spool/mail</filename>. Please note that the value
+provided here is the one determined at
+<emphasis>compile-time</emphasis>, so if you changed your system's
+installation and want to rely on this variable, you'll have to
+re-compile.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><varname>$MTA</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the path to the systems mail
+transport agent. Please note, that this is only the path of the
+executable -- for example <filename>/usr/sbin/sendmail</filename> --,
+the variable does not contain the flags that must be passed to the
+<acronym>MTA</acronym> in order to do something useful.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><varname>$DATADIR</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the complete path of the
+directory, which has been compiled into &mapson; as the directory
+where read-only architecture-independent data should be stored. You
+will, for example, find the system-wide request-for-confirmation
+template file here.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><varname>$USER</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the name of the user under
+which &mapson; is running. Depending on your <acronym>MTA</acronym>,
+this must not necessarily be the user who is receiving mail! If you're
+using <application>sendmail</application>, though, you're on the
+secure side.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><varname>$HOME</varname></term>
         <listitem>
-          <para></para>
+          <para>This variable contains the complete path of
+<varname>$USER</varname>'s home directory.</para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -337,16 +418,65 @@ purpose to
 <filename>/usr/local/share/mapson/reqmail.template-sample</filename>,
 so thats probably a good starting point.</para>
 
+    <para>Then, all that's left to do is to hook mapson into your mail
+system so that incoming e-mails are no longer delivered to your
+mailbox directly but are piped into &mapson;. How you can do this
+depends on the setup you have. The following sections will give you
+detailed instructions for the different scenarios.</para>
+
     <sect2>
       <title>Via <filename>.forward</filename></title>
+
+      <para>If you're using a plain
+<application>sendmail</application> installation, and don't have any
+fancy local mailers like <application>procmail</application>
+installed, you can activate &mapson; by writing an appropriate
+pipe-command to the file <filename>.forward</filename> in your home
+directory:</para>
 
       <blockquote>
         <programlisting>"|exec <replaceable>/usr/local/bin/mapson</replaceable>"</programlisting>
       </blockquote>
+
+      <para>Apparently, on some systems the home directory must grant
+execute-permission to "other" for the <acronym>MTA</acronym> to
+evaluate that file. So if you created the
+<filename>.forward</filename> file as shown above and still there's no
+sign of any &mapson; activity, execute <userinput>chmod 711
+$HOME</userinput> and try again.</para>
+
+      <para>Another potential obstacle is that some
+<application>sendmail</application> installation use the restricted
+shell (<acronym>smrsh</acronym>) for the execution of the local
+mailer. This shell will not allow users to execute arbitrary commands
+in the <filename>.forward</filename> file. If your system uses the
+smrsh, you must create a link from
+<filename>/usr/local/bin/mapson</filename> to
+<filename>/usr/adm/sm.bin/mapson</filename> in order to enable
+&mapson;. (The paths may vary from system to system,
+obviously.)</para>
     </sect2>
 
     <sect2>
       <title>Via <filename>.procmailrc</filename></title>
+
+      <para>Most systems these days use
+<application>procmail</application> to deliver local mail. That means,
+that you can configure your local mailer by adding cryptic recipts in
+an entirely undocumented syntax to the file
+<filename>.procmailrc</filename> in your home directory.</para>
+
+      <para>The good thing about <application>procmail</application>
+is that it gives you way more control over which e-mail is going
+where. For example, you don't want to pipe mail through &mapson; that
+has been delivered to you via a mailing list: It would be really gross
+to request confirmation for a mail from someone who doesn't even know
+you and hasn't even mailed you -- all he did was to post on a mailing
+list.</para>
+
+      <para>Unfortunately, recognizing mail that came from a mailing
+list is not an easy thing to do, but the following
+<application>procmail</application> recipt should work pretty good:</para>
 
       <blockquote>
         <programlisting># Pipe anything, that is not a reply or comes from a mailing
@@ -359,29 +489,10 @@ so thats probably a good starting point.</para>
 | <replaceable>/usr/local/mapson/bin/mapson</replaceable></programlisting>
       </blockquote>
 
-      <sect3>
-        <title>Getting a Notification In Case of Failure</title>
-
-      <para>You might want to add the recipt
-
-        <blockquote>
-          <programlisting>:0 ec
-| /usr/bin/sed -e 's/^/ | /' | \
-/bin/mail -s "mapSoN failed on this mail" <replaceable>postmaster</replaceable></programlisting>
-        </blockquote>
-
-directly after the &mapson; call. This action will only be executed if the
-previous repict failed with an error, and will send a notification of the fact
-that mapson failed to <systemitem class="username">postmaster</systemitem> or
-whoever is responsible for the mail system on your site.</para>
-
-      <para>Adding this recipt is <emphasis>not</emphasis> a good idea, though,
-if you're letting &mapson; fail for mails that have syntax errors!</para>
-      </sect3>
-
-      <sect3>
-        <title>Using <application>procmail</application>`s "argument"
-feature</title>
+      <para>Using <application>procmail</application>`s "argument"
+feature, you can make this work even better, but that is still marked
+TODO in this manual &hellip; Here are the recipts, nonetheless, in
+case you think you know what you're doing.</para>
 
         <blockquote>
           <programlisting>ARGUMENT="$1"
@@ -408,8 +519,7 @@ $DEFAULT
 :0
 * ARGUMENT ?? ..*
 $DEFAULT</programlisting>
-        </blockquote>
-      </sect3>
+      </blockquote>
     </sect2>
   </sect1>
 

@@ -41,9 +41,9 @@ options in detail.</para>
   <refsect1>
     <title>Command Line Syntax</title>
 
-    <para>&mapson; understands the following command line parameters:
-      &cmdloptions;
-    </para>
+    <para>&mapson; understands the following command line parameters:</para>
+
+    &cmdloptions;
   </refsect1>
 
   <refsect1>
