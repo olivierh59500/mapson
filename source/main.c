@@ -11,6 +11,9 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <syslog.h>
+#ifndef LOG_PERROR
+#  define LOG_PERROR 0
+#endif
 
 #include <myexceptions.h>
 #include "mapson.h"
