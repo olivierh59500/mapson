@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include <syslog.h>
 #include <ctype.h>
 
 #include <rfc822.h>
@@ -131,12 +130,12 @@ parse_mail(char * buffer)
 
 		/* Remove facing and trailing blanks. */
 		q = p = mail_struct->message_id;
-		while(isspace(*p))
+		while(isspace((int)*p))
 		  p++;
 		while ((*q++ = *p++))
 		  ;
 		q -= 2;
-		while (isspace(*q)) {
+		while (isspace((int)*q)) {
 		    *q = '\0';
 		    q--;
 		}
@@ -187,7 +186,7 @@ parse_address_line(char * string)
 	    THROW(OUT_OF_MEMORY_EXCEPTION);
 	}
 	else {
-	    syslog(LOG_WARNING, "Failed to parse address '%s'.", p);
+	    log("Failed to parse address '%s'.", p);
 	    THROW(INVALID_ADDRESS_EXCEPTION);
 	}
     }

@@ -8,7 +8,6 @@
  */
 
 #include <errno.h>
-#include <syslog.h>
 #include <assert.h>
 #include <sys/types.h>
 #include <sys/stat.h>

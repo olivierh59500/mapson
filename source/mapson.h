@@ -141,4 +141,8 @@ char * escape_from_lines(char * buffer);
 /* cookie.c */
 char * generate_cookie(const char * buffer);
 
+/* log.c */
+
+void log(const char * fmt, ...);
+
 #endif /* !defined(__MAPSON_H__) */

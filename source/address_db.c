@@ -8,11 +8,11 @@
  */
 
 #include <stdlib.h>
-#include <syslog.h>
 #include <assert.h>
 #include <fcntl.h>
 #include <string.h>
 #include <db.h>
+#include <errno.h>
 #ifndef O_EXLOCK
 #  define O_EXLOCK 0
 #endif
@@ -94,8 +94,8 @@ open_address_database(void)
 
     db = dbopen(database_path, O_RDWR | O_CREAT | O_EXLOCK, 0600, DB_HASH, NULL);
     if (db == NULL) {
-	syslog(LOG_ERR, "Failed to open address database '%s': %m",
-	       database_path);
+	log("Failed to open address database '%s': %s", database_path,
+	    strerror(errno));
 	free(database_path);
 	THROW(IO_EXCEPTION);
     }
@@ -119,8 +119,8 @@ add_address_to_database(char * address)
     rc = dbput(db, key, data, R_NOOVERWRITE);
     free_dbt(key);
     if (rc == -1) {
-	syslog(LOG_ERR, "Inserting address '%s' to the database failed: %m",
-	       address);
+	log("Inserting address '%s' to the database failed: %s", address,
+	    strerror(errno));
 	THROW(ADDRESS_DATABASE_EXCEPTION);
     }
 
@@ -140,8 +140,8 @@ does_address_exist_in_database(char * address)
     free_dbt(key);
     free(data);
     if (rc == -1) {
-	syslog(LOG_ERR, "Finding address '%s' in the database failed: %m",
-	       address);
+	log("Finding address '%s' in the database failed: %",
+	    strerror(errno), address);
 	THROW(ADDRESS_DATABASE_EXCEPTION);
     }
 

@@ -13,7 +13,6 @@
 #include <pwd.h>
 #include <sys/types.h>
 #include <errno.h>
-#include <syslog.h>
 
 #include <myexceptions.h>
 #include <paths.h>

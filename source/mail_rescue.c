@@ -15,7 +15,6 @@
 #include <pwd.h>
 #include <sys/types.h>
 #include <errno.h>
-#include <syslog.h>
 
 #include <myexceptions.h>
 #include <paths.h>
@@ -60,7 +59,7 @@ get_mail_rescue_filename(void)
 	    if (errno == EEXIST)
 	      continue;
 	    else {
-		syslog(LOG_ERR, "Tried to open file '%s': %m", filename);
+		log("Tried to open file '%s': %s", filename, strerror(errno));
 		free(filename);
 		THROW(IO_EXCEPTION);
 	    }

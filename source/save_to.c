@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <string.h>
 #include <assert.h>
-#include <syslog.h>
 #include <errno.h>
 
 #include <myexceptions.h>
@@ -38,7 +38,7 @@ save_to(char * mail_buffer, char * filename)
 
     fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0600);
     if (fd == -1) {
-	syslog(LOG_ERR, "Failed opening file '%s': %m", filename);
+	log("Failed opening file '%s': %s", filename, strerror(errno));
 	THROW(IO_EXCEPTION);
     }
 
@@ -55,19 +55,19 @@ save_to(char * mail_buffer, char * filename)
     }
 
     if (rc == -1 && errno != EACCES) {
-	syslog(LOG_ERR, "Failed to lock file '%s': %m", filename);
+	log("Failed to lock file '%s': %s", filename, strerror(errno));
 	THROW(IO_EXCEPTION);
     }
 
     if (lock_attempts >= 10)
-      syslog(LOG_WARNING, "Couldn't get exclusive lock on '%s'. Writing nonetheless now.",
+      log("Couldn't get exclusive lock on '%s'. Writing nonetheless now.",
 	     filename);
 
     /* Write the mail. */
 
     rc = write(fd, mail_buffer, strlen(mail_buffer));
     if (rc != strlen(mail_buffer)) {
-	syslog(LOG_ERR, "i/o error while writing mail to file '%s': %m", filename);
+	log("i/o error while writing mail to file '%s': %s", filename, strerror(errno));
 	THROW(IO_EXCEPTION);
     }
 

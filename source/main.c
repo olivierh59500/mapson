@@ -9,11 +9,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <assert.h>
-#include <syslog.h>
-#ifndef LOG_PERROR
-#  define LOG_PERROR 0
-#endif
+#include <string.h>
 
 #include <myexceptions.h>
 #include "mapson.h"
@@ -36,7 +34,6 @@ main(int argc, char * argv[])
 
     /* First of all initialize our environment. */
 
-    openlog("mapson", LOG_CONS | LOG_PERROR | LOG_PID, LOG_MAIL);
     assert_mapson_home_dir_exists();
     assert_mapson_spool_dir_exists();
     mail_rescue_filename = get_mail_rescue_filename();
@@ -46,8 +43,8 @@ main(int argc, char * argv[])
 
     fh = fopen(mail_rescue_filename, "r+");
     if (fh == NULL) {
-	syslog(LOG_ERR, "Failed to open mail rescue file '%s': %m",
-	       mail_rescue_filename);
+	log("Failed to open mail rescue file '%s': %s",
+	       mail_rescue_filename, strerror(errno));
 	THROW(IO_EXCEPTION);
     }
 
@@ -57,7 +54,7 @@ main(int argc, char * argv[])
 	  fail_safe_fwrite(buffer, 1, rc, fh);
 
 	if (rc == 0 && !feof(stdin)) {
-	    syslog(LOG_ERR, "I/O error while reading mail: %m");
+	    log("I/O error while reading mail: %s", strerror(errno));
 	    THROW(IO_EXCEPTION);
 	}
     }
@@ -66,15 +63,15 @@ main(int argc, char * argv[])
     /* Now read the mail into the buffer. */
 
     if (fseek(fh, 0L, SEEK_SET) != 0) {
-	syslog(LOG_ERR, "I/O while reading mail from rescue file '%s': %m",
-	       mail_rescue_filename);
+	log("I/O while reading mail from rescue file '%s': %s",
+	       mail_rescue_filename, strerror(errno));
 	THROW(IO_EXCEPTION);
     }
     mail_buffer = fail_safe_malloc(mail_size+1);
     rc = fread(mail_buffer, 1, mail_size, fh);
     if (rc != mail_size) {
-	syslog(LOG_ERR, "I/O while reading mail from rescue file '%s': %m",
-	       mail_rescue_filename);
+	log("I/O while reading mail from rescue file '%s': %s",
+	       mail_rescue_filename, strerror(errno));
 	THROW(IO_EXCEPTION);
     }
     fclose(fh);
@@ -92,8 +89,8 @@ main(int argc, char * argv[])
 	Mail = parse_mail(mail_buffer);
     }
     HANDLE(INVALID_ADDRESS_EXCEPTION) {
-	syslog(LOG_WARNING, "One or several addresses in the mail are syntactically incorrect.");
-	syslog(LOG_WARNING, "I'll leave it in a rescue file and exit.");
+	log("One or several addresses in the mail are syntactically incorrect.");
+	log("I'll leave it in a rescue file and exit.");
 	exit(0);
     }
     OTHERWISE {
@@ -104,19 +101,19 @@ main(int argc, char * argv[])
 
     rc = 0;
     if (Mail->envelope == NULL) {
-	syslog(LOG_WARNING, "The incoming mail's envelope is syntactically incorrect.");
+	log("The incoming mail's envelope is syntactically incorrect.");
 	rc++;
     }
     if (Mail->message_id == NULL) {
-	syslog(LOG_WARNING, "The incoming mail has no message-id.");
+	log("The incoming mail has no message-id.");
 	rc++;
     }
     if (Mail->from == NULL || (Mail->from)[0] == NULL) {
-	syslog(LOG_WARNING, "The incoming mail has no From: line.");
+	log("The incoming mail has no From: line.");
 	rc++;
     }
     if (rc > 0) {
-	syslog(LOG_WARNING, "I'll leave it in a rescue file and exit.");
+	log("I'll leave it in a rescue file and exit.");
 	exit(0);
     }
 
@@ -130,7 +127,7 @@ main(int argc, char * argv[])
 	/* Mail is an incoming request for confirmation. */
 
 	p = is_confirmation_mail(mail_buffer);
-	syslog(LOG_INFO, "Received request for confirmation for mail '%s'.", p);
+	log("Received request for confirmation for mail '%s'.", p);
 	save_to(mail_buffer, get_mailbox_path());
 	goto terminate;
     }
@@ -139,14 +136,14 @@ main(int argc, char * argv[])
 
     p = is_confirmation_mail(mail_buffer);
     if (p != NULL) {
-	syslog(LOG_INFO, "Received confirmation for '%s'.", p);
+	log("Received confirmation for '%s'.", p);
 	free_mail(Mail);
 	free(mail_buffer);
 	TRY {
 	    mail_buffer = get_mail_from_spool(p);
 	}
 	HANDLE(IO_EXCEPTION) {
-	    syslog(LOG_ERR, "Mail '%s' is not there.", p);
+	    log("Mail '%s' is not there.", p);
 	    PASSTHROUGH();
 	}
 	OTHERWISE {
@@ -154,7 +151,7 @@ main(int argc, char * argv[])
 	}
 	Mail = parse_mail(mail_buffer);
 	for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-	    syslog(LOG_INFO, "Adding '%s' to accept-database.", (Mail->from)[i]);
+	    log("Adding '%s' to accept-database.", (Mail->from)[i]);
 	    add_address_to_database((Mail->from)[i]);
 	}
 	save_to(mail_buffer, get_mailbox_path());
@@ -172,10 +169,10 @@ main(int argc, char * argv[])
     rc = check_ruleset_file(Mail, &p);
     switch(rc) {
       case RLST_CONTINUE:
-	  syslog(LOG_DEBUG, "No rule in ruleset matched '%s'.", Mail->message_id);
+	  log("No rule in ruleset matched '%s'.", Mail->message_id);
 	  for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
 	      if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
-		  syslog(LOG_INFO, "Sender '%s' is known. Delivering mail '%s'.",
+		  log("Sender '%s' is known. Delivering mail '%s'.",
 			 (Mail->from)[i], Mail->message_id);
 		  save_to(escaped_mail_buffer, get_mailbox_path());
 		  break;
@@ -183,32 +180,32 @@ main(int argc, char * argv[])
 	  }
 
 	  if ((Mail->from)[i] == NULL) {
-	      syslog(LOG_INFO, "Sender '%s' is unknown. Requesting confirmation for '%s'.",
+	      log("Sender '%s' is unknown. Requesting confirmation for '%s'.",
 		     Mail->envelope, Mail->message_id);
 	      store_mail_in_spool(mail_buffer, cookie);
 	      send_request_for_confirmation_mail(Mail->envelope, cookie);
 	  }
 	  break;
       case RLST_PASS:
-	  syslog(LOG_INFO, "Letting mail '%s' pass due to ruleset.",
+	  log("Letting mail '%s' pass due to ruleset.",
 		 Mail->message_id);
 	  for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-	      syslog(LOG_INFO, "Adding '%s' to accept-database.", (Mail->from)[i]);
+	      log("Adding '%s' to accept-database.", (Mail->from)[i]);
 	      add_address_to_database((Mail->from)[i]);
 	  }
 	  save_to(escaped_mail_buffer, get_mailbox_path());
 	  break;
       case RLST_QUICKPASS:
-	  syslog(LOG_INFO, "Quickpassing mail '%s' pass due to ruleset.",
+	  log("Quickpassing mail '%s' pass due to ruleset.",
 		 Mail->message_id);
 	  save_to(escaped_mail_buffer, get_mailbox_path());
 	  break;
       case RLST_DROP:
-	  syslog(LOG_INFO, "Dropping mail '%s' from '%s'.\n",
+	  log("Dropping mail '%s' from '%s'.\n",
 		 Mail->message_id, (Mail->from)[0]);
 	  break;
       case RLST_RFC:
-	  syslog(LOG_INFO, "Requesting confirmation for '%s' from '%s'.\n",
+	  log("Requesting confirmation for '%s' from '%s'.\n",
 		 Mail->message_id, Mail->envelope);
 	  store_mail_in_spool(mail_buffer, Mail->message_id);
 	  send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
@@ -218,7 +215,7 @@ main(int argc, char * argv[])
 	  if (!p) {
 	      THROW(UNKNOWN_FATAL_EXCEPTION);
 	  }
-	  syslog(LOG_INFO, "Writing mail '%s' to file '%s'.",
+	  log("Writing mail '%s' to file '%s'.",
 		 Mail->message_id, p);
 	  save_to(escaped_mail_buffer, p);
 	  break;

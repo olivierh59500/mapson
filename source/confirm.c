@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <syslog.h>
 #include <assert.h>
+#include <errno.h>
 
 #include <myexceptions.h>
 #include <paths.h>
@@ -74,8 +74,8 @@ send_request_for_confirmation_mail(char * recipient, char * cookie)
 	mail_text = loadfile(buffer);
     }
     HANDLE(IO_EXCEPTION) {
-	syslog(LOG_WARNING, "Failed to open file '%s': %m", buffer);
-	syslog(LOG_WARNING, "Using default text.");
+	log("Failed to open file '%s': %s", buffer, strerror(errno));
+	log("Using default text.");
 	mail_text = fail_safe_strdup(default_mail_text);
     }
     OTHERWISE {
@@ -89,7 +89,7 @@ send_request_for_confirmation_mail(char * recipient, char * cookie)
     buffer = fail_safe_sprintf("%s '-f<>' %s", SENDMAIL_PATH, recipient);
     fh = popen(buffer, "w");
     if (fh == NULL) {
-	syslog(LOG_ERR, "Failed to start command '%s': %m", buffer);
+	log("Failed to start command '%s': %s", buffer, strerror(errno));
 	free(buffer); free(mail_text); free(cookie_buffer);
 	THROW(IO_EXCEPTION);
     }

@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <syslog.h>
 #include <errno.h>
 
 #include <myexceptions.h>
@@ -93,7 +92,7 @@ static bool           rlst_donot;
 <parameter>\"[ \t]*$		{ BEGIN(INITIAL); }
 
 <action,INITIAL>.		{
-				  syslog(LOG_ERR, "Unexpected syntax in rulset file, line %d.", rlst_lineno);
+				  log("Unexpected syntax in rulset file, line %d.", rlst_lineno);
 				  return -1;
 				}
 %%
@@ -143,11 +142,11 @@ check_ruleset_file(struct Mail * mail, char ** parameter_ptr)
     if (yyin == NULL) {
         switch(errno) {
           case ENOENT:
-	      syslog(LOG_WARNING, "Ruleset file '%s' does not exist!", filename);
+	      log("Ruleset file '%s' does not exist!", filename);
 	      free(filename);
               break;
           default:
-              syslog(LOG_ERR, "Couldn't open ruleset file '%s': %m", filename);
+              log("Couldn't open ruleset file '%s': %s", filename, strerror(errno));
 	      free(filename);
 	      THROW(IO_EXCEPTION);
         }
@@ -159,12 +158,12 @@ check_ruleset_file(struct Mail * mail, char ** parameter_ptr)
 
     TRY {
 	if (yylex() != 0) {
-	    syslog(LOG_ERR, "Error occured while parsing the ruleset file!");
+	    log("Error occured while parsing the ruleset file!");
 	    THROW(RULESET_FILE_PARSE_EXCEPTION);
 	}
     }
     HANDLE(REGEX_EXCEPTION) {
-	syslog(LOG_ERR, "regular expression error while compiling pattern '%s'.",
+	log("regular expression error while compiling pattern '%s'.",
 	       rlst_pattern);
 	if (rlst_pattern)
 	  free(rlst_pattern);

@@ -9,8 +9,8 @@
 
 #include <stdlib.h>
 #include <errno.h>
-#include <syslog.h>
 #include <assert.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -39,7 +39,7 @@ assert_mapson_spool_dir_exists(void)
 	if ((sb.st_mode & S_IFDIR) != 0)
 	  return;		/* everything is okay */
 	else {
-	    syslog(LOG_ERR, "The mapSoN spool directory '%s' is not a directory.",
+	    log("The mapSoN spool directory '%s' is not a directory.",
 		   mapson_spool_dir);
 	    THROW(MAPSON_SPOOL_DIR_EXCEPTION);
 	}
@@ -49,8 +49,8 @@ assert_mapson_spool_dir_exists(void)
     /* See why stat() failed. */
 
     if (errno != ENOENT) {
-	syslog(LOG_ERR, "Couldn't find my spool directory '%s': %m",
-	       mapson_spool_dir);
+	log("Couldn't find my spool directory '%s': %s",
+	       mapson_spool_dir, strerror(errno));
 	free(mapson_spool_dir);
 	THROW(MAPSON_SPOOL_DIR_EXCEPTION);
     }
@@ -61,8 +61,8 @@ assert_mapson_spool_dir_exists(void)
     rc = mkdir(mapson_spool_dir, 0700);
     free(mapson_spool_dir);
     if (rc == -1) {
-	syslog(LOG_ERR, "Failed to create my spool directory '%s': %m",
-	       mapson_spool_dir);
+	log("Failed to create my spool directory '%s': %s",
+	       mapson_spool_dir, strerror(errno));
 	THROW(MAPSON_SPOOL_DIR_EXCEPTION);
     }
 }
