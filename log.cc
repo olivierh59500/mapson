@@ -32,7 +32,7 @@ inline string make_timestamp()
     struct tm* tmtime = localtime(&tstamp);
     if (tmtime == 0)
         throw system_error("localtime(3) failed");
-    strftime(buf, sizeof(buf), "%Y-%m-%d %T", tmtime);
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", tmtime);
     return buf;
     }
 
