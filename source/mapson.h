@@ -110,4 +110,12 @@ int check_ruleset_file(struct Mail *Mail, char **parameter_ptr);
 
 void save_to(char *mail_buffer, char *filename);
 
+/* spool_dir.c */
+
+void assert_mapson_spool_dir_exists(void  );
+
+/* mailbox_path.c */
+
+char *get_mailbox_path(void  );
+
 #endif /* !defined(__MAPSON_H__) */
