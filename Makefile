@@ -4,13 +4,13 @@
 # $Header$
 #
 
-SUBDIRS	= lib #src man
+SUBDIRS	= lib src #man
 
 all:	$(SUBDIRS)
 
 src::
 	@echo "====> Building mapSoN"
-#	@(cd src;$(MAKE))
+	@(cd src;$(MAKE))
 
 lib::
 	@echo "====> Building libraries"
@@ -18,7 +18,7 @@ lib::
 
 man::
 	@echo "====> Building manfiles"
-#	@(cd man;${MAKE})
+	@(cd man;${MAKE})
 
 clean:
 	@echo "====> Cleaning up"
