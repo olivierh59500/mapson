@@ -73,9 +73,7 @@ struct Mail {
     char *      header;		/* continuation lines are gone here */
     char *      envelope;
     char **     from;
-    char **     reply_to;
-    char **     to;
-    char **     cc;
+    char *      message_id;
 };
 
 struct Mail * parse_mail(char * buffer);
@@ -99,6 +97,7 @@ int does_address_exist_in_database(char *address);
 enum {
     RLST_CONTINUE = 0,
     RLST_PASS,
+    RLST_QUICKPASS,
     RLST_DROP,
     RLST_RFC,
     RLST_SAVETO

@@ -118,25 +118,11 @@ parse_mail(char * buffer)
 	    mail_struct->from = parse_address_line(tmp+1);
 	    q[-1] = backup;
 	}
-	else if (is_keyword("To:")) {
+	else if (is_keyword("Message-Id:")) {
 	    tmp = strchr(p, ':');
 	    backup = q[-1];
 	    q[-1] = '\0';
-	    mail_struct->to = parse_address_line(tmp+1);
-	    q[-1] = backup;
-	}
-	else if (is_keyword("Cc:")) {
-	    tmp = strchr(p, ':');
-	    backup = q[-1];
-	    q[-1] = '\0';
-	    mail_struct->cc = parse_address_line(tmp+1);
-	    q[-1] = backup;
-	}
-	else if (is_keyword("Reply-To:")) {
-	    tmp = strchr(p, ':');
-	    backup = q[-1];
-	    q[-1] = '\0';
-	    mail_struct->reply_to = parse_address_line(tmp+1);
+	    mail_struct->message_id = fail_safe_strdup(tmp+1);
 	    q[-1] = backup;
 	}
     }
@@ -209,15 +195,11 @@ free_mail(struct Mail * mail_struct)
       free(mail_struct->header);
     if (mail_struct->envelope)
       free(mail_struct->envelope);
+    if (mail_struct->message_id)
+      free(mail_struct->message_id);
 
     if (mail_struct->from)
       free_array(mail_struct->from);
-    if (mail_struct->reply_to)
-      free_array(mail_struct->reply_to);
-    if (mail_struct->to)
-      free_array(mail_struct->to);
-    if (mail_struct->cc)
-      free_array(mail_struct->cc);
 
     free(mail_struct);
 }
