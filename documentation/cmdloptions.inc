@@ -56,6 +56,16 @@ default.</para>
     </varlistentry>
 
     <varlistentry>
+      <term><option>--dont-scan</option></term>
+      <listitem>
+        <para>Do not scan for cookies in the incoming e-mail. This is useful in
+case you're using procmail (or some similar mechanism) to direct cookies to
+special addresses and thus can use the --cookie option rather than to have
+mapSoN look through the mail for one.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term><option><replaceable>mail &hellip;</replaceable></option></term>
       <listitem>
         <para>If any parameter is specified on the command line that is not an
