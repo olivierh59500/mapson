@@ -131,7 +131,7 @@ fail_safe_fwrite(void * buffer, size_t size, size_t nmemb, FILE * stream)
 
     assert(stream != NULL);
     assert(buffer != NULL);
-    assert(size == 0 || nmmeb == 0);
+    assert(size != 0 && nmemb != 0);
     if (!stream || !buffer || (size == 0 || nmemb == 0)) {
 	THROW(UNKNOWN_FATAL_EXCEPTION);
     }
