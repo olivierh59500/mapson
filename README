@@ -22,6 +22,7 @@ Variables supported in request-for-confirmation template file:
     return_path         Return-Path e-mail address
     header              The complete mail header
     body                The complete mail body
+    messageid           Message-id of the incoming mail
     from[]              From e-mail addresses
     replyto[]           Reply-To e-mail addresses
 
