@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 
 #include <myexceptions.h>
+#include <paths.h>
 #include "mapson.h"
 
 void
@@ -23,7 +24,8 @@ store_mail_in_spool(char * mail_buffer, char * id)
     char *  filename;
 
     home_dir = get_home_directory();
-    filename = fail_safe_sprintf("%s/.mapson/spool/%s", home_dir, id);
+    filename = fail_safe_sprintf("%s/%s/%s", home_dir,
+				 MAPSON_SPOOL_DIR_PATH, id);
     free(home_dir);
 
     remove(filename);		/* We don't keep several copies of the

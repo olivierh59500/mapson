@@ -16,6 +16,7 @@
 #include <errno.h>
 
 #include <myexceptions.h>
+#include <paths.h>
 #include "mapson.h"
 
 static unsigned int   rlst_lineno;
@@ -139,7 +140,7 @@ check_ruleset_file(struct Mail * mail, char ** parameter_ptr)
     BEGIN(INITIAL);
 
     home_dir = get_home_directory();
-    filename = fail_safe_sprintf("%s/.mapson/ruleset", home_dir);
+    filename = fail_safe_sprintf("%s/%s", home_dir, MAPSON_RULESET_FILE_PATH);
     free(home_dir);
 
     yyin = fopen(filename, "r");

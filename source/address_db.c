@@ -15,6 +15,7 @@
 #include <db.h>
 
 #include <myexceptions.h>
+#include <paths.h>
 #include "mapson.h"
 
 /********** static variables **********/
@@ -84,7 +85,8 @@ open_address_database(void)
       return;
 
     home_directory = get_home_directory();
-    database_path = fail_safe_sprintf("%s/.mapson/address.db", home_directory);
+    database_path = fail_safe_sprintf("%s/%s", home_directory,
+				      MAPSON_ADDRESS_DB_FILE_PATH);
     free(home_directory);
 
     db = dbopen(database_path, O_RDWR | O_CREAT | O_EXLOCK, 0600, DB_HASH, NULL);

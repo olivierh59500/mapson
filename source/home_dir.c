@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 
 #include <myexceptions.h>
+#include <paths.h>
 #include "mapson.h"
 
 void
@@ -27,7 +28,8 @@ assert_mapson_home_dir_exists(void)
     /* stat() the directory. */
 
     home_directory = get_home_directory();
-    mapson_home_dir = fail_safe_sprintf("%s/.mapson", home_directory);
+    mapson_home_dir = fail_safe_sprintf("%s/%s", home_directory,
+					MAPSON_HOME_DIR_PATH);
     free(home_directory);
 
     rc = stat(mapson_home_dir, &sb);

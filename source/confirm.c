@@ -44,7 +44,6 @@ send_request_for_confirmation_mail(char * recipient, char * cookie)
     free(buffer);
 
     TRY {
-	fprintf(fh, "From: simons@rhein.de (Peter Simons)\n");
 	fprintf(fh, "To: %s\n", recipient);
 	fprintf(fh, "Subject: [mapSoN] Request for Confirmation\n");
 	fprintf(fh, "Precedence: junk\n");
