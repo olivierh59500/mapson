@@ -1,0 +1,93 @@
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+<!ENTITY mapson "<application>mapSoN</application>">
+<!ENTITY description SYSTEM "description.sgml">
+<!ENTITY license SYSTEM "license.sgml">
+]>
+
+<refentry id="mapson" lang="en" revision="$Revision$">
+  <refmeta>
+    <refentrytitle>mapSoN</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>mapson</refname>
+    <refpurpose>An automatic spam filter</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>mapson</command>
+      <arg choice="opt">-d</arg>
+      <arg choice="opt">-c <replaceable>config-file</replaceable></arg>
+      <arg choice="opt" rep="repeat"><replaceable>mail</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1>
+    <title>Description</title>
+
+    &description;
+
+    <para>For a complete description of what &mapson; does and how to confirgure
+      it, please take a look at the user manual that comes with it. This
+      document is only a reference page and does not explain all options in
+      detail.</para>
+  </refsect1>
+
+  <refsect1>
+    <title>Command Line Syntax</title>
+
+    <para>&mapson; understands the following command line parameters:
+
+      <variablelist>
+        <varlistentry>
+          <term><option>-h</option></term>
+          <listitem>
+            <para>Show &mapson; usage information.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><option>-d</option></term>
+          <listitem>
+            <para>Enable debugging. Please note that debugging is only available
+              if &mapson; has been compiled with the define
+              <symbol>DEBUG</symbol>. Otherwise, the debug code is not included
+              in the binary.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><option>-c <replaceable>config</replaceable></option></term>
+          <listitem>
+            <para>Use the configuration file
+              <filename><replaceable>config</replaceable></filename> rather the
+              default.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><option><replaceable>mail &hellip;</replaceable></option></term>
+          <listitem>
+            <para>If any parameter is specified on the command line that is not
+              an option, &mapson; will go into <firstterm>gather
+              addresses</firstterm> mode. The parameters are interpreted as
+              filenames, each of the files containing an e-mail that &mapson;
+              will parse. Any sender address &mapson; finds in these mails will
+              be added to the database of known addresses. This mode is meant to
+              import addresses from your mail archive to the database.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>License</title>
+
+    &license;
+
+  </refsect1>
+
+</refentry>
