@@ -57,104 +57,137 @@ not!</para>
   <sect1>
     <title>How to Activate &mapson;</title>
 
-    <para>Assuming that you have successfully built and installed the &mapson;
-package, you can atctivate it by following these steps:</para>
+    <para>Assuming, you have built and installed the &mapson; package
+sucessfully, you must do two things to activate it: Create the directory
+<quote><filename>.mapson</filename></quote> in your home directory and tell your
+Mail Transport Agent to pipe incoming local mail into &mapson; rather than to
+deliver it to the mailbox directly.</para>
 
-
-    <para>Before you can activate &mapson; you have to make sure that all
-required directories exist and that all required files can be created. &mapson;
-will try to create the address database file, for instance, but the default
-setting is that this database is located at
-<filename>$HOME/.mapon/address-db</filename>, and &mapson; <emphasis>will
-not</emphasis> create the <filename>$HOME/.mapson</filename> directory.</para>
-
-    <para>The same applies to the mail spool directory, where &mapson; stores
-those mails that need a confirmation before they are delivered. The default
-location is <filename>$HOME/.mapson/spool</filename>, and &mapson will create
-the spool directory itself, but it won't create the
-<filename>$HOME/.mapson</filename> directory.</para>
-
-    <para>The cut a long story short: Create the directory
-<filename>.mapson</filename> in your home directory before you try to use
-&mapson;. If you changed the configuration, though, the locations may
-vary.</para>
-
-    <para>Once that's out of the way, you need to create a template file that
-&mapson; will use to generate the request-for-confirmation mail. The
-installation process has created you a sample file for this purpose to
-<filename>/usr/local/share/mapson/reqmail.template-sample</filename>, so thats
-probably a good starting point.</para>
-
-    <para>Then, all that's left to do is to hook mapson into your mail system so
-that incoming e-mails are no longer delivered to your mailbox directly but are
-piped into &mapson;. How you can do this depends on the setup you have. The
-following sections will give you detailed instructions for the different
-scenarios.</para>
+    <para>The first step should be manageable without further instructions, but
+installing &mapson; as local mailer is non-trivial. The rest of this chapter is
+divided into separate sections that will describe the various possible setups.
+How &mapson; must be installed depends entirely on the Mail Transport Agent you
+use, so if your configuration is not discussed in this manual, please consult
+your MTA's user manual instead. And if you found out how to do it, please write
+a short paragraph about it and let me know so that I can include it in the next
+version!</para>
 
     <sect2>
-      <title>Via <filename>.forward</filename></title>
+      <title>Using <application>sendmail</application>'s
+<filename>.forward</filename> mechanism</title>
 
-      <para>Please note that it is possible to run &mapson; without
-<application>procmail</application> or a similar tool that can sort incoming
-mail into different folders, but it is <emphasis>not</emphasis> recommended. If
-you do not have <application>procmail</application> installed, consider getting
-it, because you will lose a lot of functionality that is very useful.</para>
+      <para>Before I start, let me give you one piece of advice: Using &mapson;
+without any further tool installed that will allow you to filter and to redirect
+incoming mail into different folders will <emphasis>not</emphasis> make you
+happy. This kind of installation is nice to figure out whether &mapson; is
+useful to you, but you <emphasis>should</emphasis> install
+<application>procmail</application> or a similar program as soon as possible.
+Trust me.</para>
 
-      <para>Anyway, if you're using a plain <application>sendmail</application>
-installation, and don't have any fancy local mailers like
-<application>procmail</application> installed, you can activate &mapson; by
-writing an appropriate pipe-command to the file <filename>.forward</filename> in
-your home directory:</para>
+      <para>Anyway, <ulink
+url="http://www.sendmail.org/"><application>sendmail</application></ulink> uses
+a simple mechanism to forward incoming local mail into application programs: A
+file named <filename>.forward</filename>, that must be located in your home
+directory. To activate &mapson;, all you have to do is to create that file and
+put the following line into it:</para>
 
-      <blockquote>
-        <programlisting>"|exec <replaceable>/usr/local/bin/mapson</replaceable>"</programlisting>
-      </blockquote>
+      <informalexample>
+        <screen>"|exec <replaceable>/usr/local/bin/mapson</replaceable>"</screen>
+      </informalexample>
 
       <para>Apparently, on some systems the home directory must grant
-execute-permission to "other" for the <acronym>MTA</acronym> to evaluate that
-file. So if you created the <filename>.forward</filename> file as shown above
-and still there's no sign of any &mapson; activity, execute <userinput>chmod 711
-$HOME</userinput> and try again.</para>
+execute-permission to "other" for the <application>sendmail</application> to
+evaluate that file. So if you created the <filename>.forward</filename> file as
+shown above and still there's no sign of any &mapson; activity, execute
+<userinput>chmod 711 $HOME</userinput> and try again.</para>
 
       <para>Another potential obstacle is that some
-<application>sendmail</application> installation use the restricted shell
+<application>sendmail</application> installations use the restricted shell
 (<acronym>smrsh</acronym>) for the execution of the local mailer. This shell
 will not allow users to execute arbitrary commands in the
-<filename>.forward</filename> file. If your system uses the smrsh, you must
-create a link from <filename>/usr/local/bin/mapson</filename> to
+<filename>.forward</filename> file. If your system uses
+<acronym>smrsh</acronym>, you must create a link from
+<filename>/usr/local/bin/mapson</filename> to
 <filename>/usr/adm/sm.bin/mapson</filename> in order to enable &mapson;. (The
 paths may vary from system to system, obviously.)</para>
     </sect2>
 
     <sect2>
-      <title>Via <filename>.procmailrc</filename></title>
+      <title>Using <application>procmail</application></title>
 
-      <para>Most systems these days use <application>procmail</application> to
-deliver local mail. That means, that you can configure your local mailer by
+      <para>Most systems these days use <ulink
+url="http://www.procmail.org/"><application>procmail</application></ulink> to
+deliver local mail. This means, that you can configure your local mailer by
 adding cryptic recipes in an entirely undocumented syntax to the file
-<filename>.procmailrc</filename> in your home directory.</para>
+<filename>.procmailrc</filename> in your home directory:</para>
 
-      <para>The good thing about <application>procmail</application> is that it
-gives you way more control over which e-mail is going where. For example, you
-don't want to pipe mail through &mapson; that has been delivered to you via a
-mailing list: It would be really gross to request confirmation for a mail from
-someone who doesn't even know you and hasn't even mailed you -- all he did was
-to post on a mailing list.</para>
+      <informalexample>
+        <screen># Have mapSoN accept anything that is a reply to a
+# message of mine.
+#
+:0 w
+* ^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
+| <replaceable>/usr/local/bin/mapson</replaceable> --accept
 
-      <para>Unfortunately, recognizing mail that came from a mailing list is not
-an easy thing to do, but the following <application>procmail</application>
-recipe should work pretty good:</para>
-
-      <blockquote>
-        <programlisting># Pipe anything, that is not a reply or comes from a mailing
+# Pipe anything that does not  come from a mailing
 # list, into mapson for approval.
 #
 :0 w
-* !^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
 * !^Precedence: (list|bulk|junk)
 * !^Auto-Submitted:
-| <replaceable>/usr/local/mapson/bin/mapson</replaceable></programlisting>
-      </blockquote>
+| <replaceable>/usr/local/bin/mapson</replaceable></screen>
+      </informalexample>
+
+      <para>The first recipe will try to recognize mails that are a direct reply
+to a mail or a news posting of yours. Such mails will have the
+<literal>References</literal> or <literal>In-Reference-To</literal> headers set
+to the original <literal>Message-Id</literal>, and because
+<literal>Message-Id</literal>s contain your hostname, you can use that to make
+
+**TODO**
+&mapson; always accept those mails
+recipe to have those mails be delivered to you without having to pass
+&mapson;:</para>
+
+      <informalexample>
+        <screen># Have anything that is a reply to a message of mine
+# accepted by mapSoN.
+#
+:0 w
+* ^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
+| <replaceable>/usr/local/bin/mapson</replaceable> --accept</screen>
+      </informalexample>
+
+      <para>The <option>--accept</option> flag on the command line will tell
+&mapson; to accept those mails and to add the sender's address to the database,
+so that any new conversition with him will be accepted, too. Don't forget to
+replace the <quote>example.com</quote> with your actual domain name for this to
+work! Also, make sure that this recipe comes before<emphasis></emphasis> the
+other one!</para>
+
+      <para>One more thing that you will have to take care of is mails that are
+being sent to you via a mailing list. Since you subscribed to that list, you
+cannot possible expect people to confirm any postings that reach you via that
+list. So you must use <application>procmail</application> to pass those postings
+around &mapson; completely:</para>
+
+      <informalexample>
+        <screen># Mailing lists may always pass.
+:0 w
+* !^Precedence: (list|bulk|junk)
+* !^Auto-Submitted:
+$DEFAULT</screen>
+      </informalexample>
+
+<para>You can do it the other way round and modify the recipe we showed first to
+exclude those mails!</para>
+
+      <para>Because all this is probably confusing, here's the full recipe code
+at one glance:</para>
+
+
+      <sect3>
+        <title><application>Procmail</application>'s Argument Feature</title>
 
       <para>Using <application>procmail</application>`s <quote>argument</quote>
 feature, you can make this work even better. The idea is that an address of the
@@ -163,8 +196,8 @@ format <quote>user+parameter@example.com</quote> will still be delivered to the
 the <filename>.procmailrc</filename> config as an argument, which you can use to
 sort the mail into a different folder. Look at this:</para>
 
-      <blockquote>
-        <programlisting>ARGUMENT="$1"
+      <informalexample>
+        <screen>ARGUMENT="$1"
 
 # An argument of 'pass' will always by-pass all other
 # rules to make sure that I have a reliably working address
@@ -178,7 +211,7 @@ $DEFAULT
 #
 :0
 * ARGUMENT ?? [a-f0-9]...repeat 32 times...[a-f0-9]
-| <replaceable>/usr/local/mapson/bin/mapson</replaceable>
+| <replaceable>/usr/local/bin/mapson</replaceable>
 :0 ec
 
 # Anything else that has such an argument is probably coming
@@ -195,8 +228,8 @@ $DEFAULT
 * !^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
 * !^Precedence: (list|bulk|junk)
 * !^Auto-Submitted:
-| <replaceable>/usr/local/mapson/bin/mapson</replaceable></programlisting>
-      </blockquote>
+| <replaceable>/usr/local/bin/mapson</replaceable></screen>
+      </informalexample>
 
       <para>In case you're wondering: The <literal>[0-9]</literal> string must
 indeed be repeated exactly 32 times, because a cookie consists of 32 characters
@@ -227,6 +260,7 @@ subscribe your normal address to the list but
 &mapson; won't see it. It doesn't matter what you chose for
 <replaceable>whatever</replaceable>, procmail will accept any string in this
 configuration.</para>
+
     </sect2>
   </sect1>
 
@@ -543,7 +577,7 @@ your machine as <filename>${sysconfdir}/config-sample</filename>. If you didn't
 mess with the paths during the build, <varname>${sysconfdir}</varname> will be
 <filename>/usr/local/share/mapson</filename>.</para>
 
-    <programlisting>&defconfig;</programlisting>
+    <screen>&defconfig;</screen>
   </appendix>
 
   <appendix id="deftmpl">
@@ -554,7 +588,7 @@ mess with the paths during the build, <varname>${sysconfdir}</varname> will be
 the paths during the build, <varname>${datadir}</varname> will be
 <filename>/usr/local/share/mapson</filename>.</para>
 
-    <programlisting>&defreqmail;</programlisting>
+    <screen>&defreqmail;</screen>
   </appendix>
 
   <appendix>
