@@ -96,6 +96,7 @@ configuration::configuration(int argc, char** argv)
     address_db_auto_add = true;
     accept = false;
     debug = false;
+    bool scan_for_cookie = true;
     message_id = "<no-message-id@localhost>";
     have_message_id = false;
 
@@ -119,6 +120,7 @@ configuration::configuration(int argc, char** argv)
         { "cookie",      required_argument, 0, 'o' },
         { "help",        no_argument,       0, 'h' },
         { "version",     no_argument,       0, 'v' },
+        { "dont-scan",   no_argument,       0, 's' },
         { 0, 0, 0, 0 }          // mark end of array
         };
     int rc;
@@ -128,6 +130,9 @@ configuration::configuration(int argc, char** argv)
         {
         switch(rc)
             {
+            case 's':
+                scan_for_cookie = false;
+                break;
             case 'c':
                 config_file = optarg;
                 break;
@@ -144,12 +149,14 @@ configuration::configuration(int argc, char** argv)
                 printf("mapSoN version %s\n", VERSION);
                 throw no_error();
             case 'h':
-                fprintf(stderr, "Usage: mapson [-h | --help] [--version] [-d | --debug] [-a | --accept]\n" \
-                        "              [--cookie cookie] [-c config | --config-file config] [mail...]\n");
+                fprintf(stderr, "Usage: mapson  [ -h | --help ] [ --version ] [ -d | --debug ] [ -a | --accept ]\n"  \
+                                "               [ --cookie cookie ] [ -c config | --config-file config ]\n"          \
+                                "               [  --dont-scan ] [ mail ... ]\n");
                 throw no_error();
             default:
-                fprintf(stderr, "Usage: mapson [-h | --help] [--version] [-d | --debug] [-a | --accept]\n" \
-                        "              [--cookie cookie] [-c config | --config-file config] [mail...]\n");
+                fprintf(stderr, "Usage: mapson  [ -h | --help ] [ --version ] [ -d | --debug ] [ -a | --accept ]\n"  \
+                                "               [ --cookie cookie ] [ -c config | --config-file config ]\n"          \
+                                "               [  --dont-scan ] [ mail ... ]\n");
                 throw runtime_error("Incorrect command line syntax.");
             }
         }
@@ -211,6 +218,7 @@ void configuration::dump() const
     debug(("    Debug              = '%s'", (debug) ? "true" : "false"));
     debug(("    Accept             = '%s'", (accept) ? "true" : "false"));
     debug(("    Cookie             = '%s'", cookie.c_str()));
+    debug(("    ScanForCookie      = '%s'", (scan_for_cookie) ? "true" : "false"));
     }
 
 inline bool get_bool(const string& value)

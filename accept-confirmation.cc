@@ -80,7 +80,17 @@ bool accept_confirmation(string& mail, const string& cmdline_cookie)
             return true;
             }
         else
-            debug(("Cookie was not correct. Continuing to searching."));
+            debug(("Command line cookie was not correct."));
+        }
+
+
+    // Scan the body only when the command line configuration says to
+    // do so.
+
+    if (config->scan_for_cookie == false)
+        {
+        debug(("--dont-scan option was set on the command line. So we don't."));
+        return false;
         }
 
     // Find all strings in the mail that could be cookie and check,

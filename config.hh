@@ -49,6 +49,7 @@ class configuration : public AbstractConfig
     bool accept;
     std::string cookie;
     bool address_db_auto_add;
+    bool scan_for_cookie;
 
   protected:
     friend int main(int, char**);

@@ -18,6 +18,7 @@
       <arg choice="opt">-c <replaceable>config</replaceable></arg>
       <arg choice="opt">--config-file <replaceable>config</replaceable></arg>
     </group>
+    <arg choice="opt">--dont-scan</arg>
     <arg choice="opt" rep="repeat"><replaceable>mail</replaceable></arg>
   </cmdsynopsis>
 
