@@ -43,9 +43,9 @@ append_to_array(array_t state, char * string)
 
     /* Resize the array if necessary. */
 
-    if (state->array_size <= state->array_pos+1) {
+    if (state->array_size <= state->array_pos) {
 	state->array_size += 8;
-	state->array       = fail_safe_realloc(state->array, state->array_size);
+	state->array = fail_safe_realloc(state->array, state->array_size * sizeof( char *));
     }
 
     /* Store a copy of the string. */
