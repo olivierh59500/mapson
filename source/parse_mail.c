@@ -192,3 +192,30 @@ parse_address_line(char * string)
     free(state);
     return array;
 }
+
+void
+free_mail(struct Mail * mail_struct)
+{
+    /* Sanity checks. */
+
+    assert(mail_struct != NULL);
+    if (mail_struct == NULL) {
+	THROW(UNKNOWN_FATAL_EXCEPTION);
+    }
+
+    if (mail_struct->header)
+      free(mail_struct->header);
+    if (mail_struct->envelope)
+      free(mail_struct->envelope);
+
+    if (mail_struct->from)
+      free_array(mail_struct->from);
+    if (mail_struct->reply_to)
+      free_array(mail_struct->reply_to);
+    if (mail_struct->to)
+      free_array(mail_struct->to);
+    if (mail_struct->cc)
+      free_array(mail_struct->cc);
+
+    free(mail_struct);
+}
