@@ -101,6 +101,7 @@ install:	mapson reqmail.template-sample config-sample documentation/man-page.txt
 	@$(MKDIR) -p $(DESTDIR)$(mandir)/man1
 	@$(INSTALL) -c -m 644 documentation/man-page.txt $(DESTDIR)$(mandir)/man1/mapson.1
 	@$(INSTALL) -c -m 644 documentation/mapson.html $(DESTDIR)$(datadir)/
+	@$(INSTALL) -c -m 644 documentation/peti.css $(DESTDIR)$(datadir)/
 	@$(INSTALL) -c -m 644 documentation/mapson.pdf $(DESTDIR)$(datadir)/
 	@test -e $(DESTDIR)$(sysconfdir)/mapson.config || \
 	    $(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/mapson.config;
