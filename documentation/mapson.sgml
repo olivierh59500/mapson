@@ -1,13 +1,10 @@
-<!--
-Local Variables:
-mode: sgml
-fill-column:80
-End:
--->
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
 <!ENTITY mapson "<application>mapSoN</application>">
 <!ENTITY description SYSTEM "description.sgml">
+<!ENTITY building SYSTEM "building.sgml">
 <!ENTITY license SYSTEM "license.sgml">
+<!ENTITY defconfig SYSTEM "defconfig.sgml">
+<!ENTITY defreqmail SYSTEM "defreqmail.sgml">
 ]>
 
 <article>
@@ -28,101 +25,212 @@ End:
     &description;
 
     <para>This manual describes how to compile, install, and configure &mapson;
-      in various setups.
+in various setups.</para>
   </sect1>
 
   <sect1>
     <title>Building &mapson;</title>
-
-    <para>Compiling the software should be pretty straight forward; all you'll
-      have to do is the usual
-
-      <screen>
-        ./configure
-        make
-        make install
-      </screen>
-
-      routine. The last step may require super-user privileges, so have the
-      <systemitem class="username">root</systemitem> password ready if you're
-      going for a system-wide installation.</para>
-
-    <para>Be adviced that &mapson; needs a fairly recent C++ compiler because it
-      make full use of the new ISO C++ language features. If you're using the
-      <ulink url="http://gcc.gnu.org/">GNU C Compiler</ulink> version 2.95 or
-      later, you won't have any problems. But other compilers are known not to
-      be ISO C++ compatible. If you're having trouble, send me an e-mail and
-      I'll see what I can do.</para>
-
-    <para>The <filename>configure</filename> script is a standard <ulink
-        url="http://www.gnu.org/software/autoconf/">GNU Autoconf</ulink> script,
-        which supports all the usual options. If you are not familiar with these
-        scripts, please refer to the "Running <filename>configure</filename>
-        Scripts" section of the <application>Autoconf</application> user manual,
-        which is available at:
-
-    <informalfigure>
-      <ulink url="http://www.gnu.org/manual/autoconf/html_chapter/autoconf_13.html#SEC129">http://www.gnu.org/manual/autoconf/html_chapter/autoconf_13.html#SEC129</ulink>
-    </informalfigure></para>
-
-    <para>The following list will show only those options that are specific to
-      &mapson;.</para>
-
-      <variablelist>
-        <varlistentry>
-          <term><option>--with-mailboxdir=<replaceable>DIR</replaceable></option></term>
-          <listitem>
-            <para>In order to deliver incoming e-mail to your mailbox, &mapson
-            needs to know where the user mailboxes are located on your system.
-            It tries to figure that out automatically by checking for the
-            existance of the directories <filename>/var/mail</filename> and
-            <filename>/var/spool/mail</filename>, but depending on your setup,
-            you might want to choose another path here.
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term><option>--with-mta=<replaceable>PATH</replaceable></option></term>
-          <listitem>
-          <para>&mapson; needs to know the complete path to your system's
-            <systemitem>mail transport agent</systemitem> (<abbrev>MTA</abbrev>)
-            in order to send out requests for confirmation. The
-            <filename>configure</filename> script will assume that you have
-            <application>sendmail</application> installed and look for it in
-            various locations, but you can (and may have to) set the right
-            choice manually using this option.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term><option>--with-debug</option></term>
-          <listitem>
-          <para>Per default, &mapson; comes with a couple of additional debug
-          messages, which you can enable on the command line or in the
-          configuration file if you feel something's going wrong. But in order
-          for these log messages to be available, the binary must have been
-          compiled with the <symbol>DEBUG</symbol> flag. Using this option, you
-          can manually decide whether you want these log messages compiled in or
-          not.</para>
-          </listitem>
-        </varlistentry>
-    </variablelist>
-
-    <para>Any of the paths you configure here are only used as defaults. You can
-      override them at run-time in the configuration file &mapson; reads at
-      startup.</para>
+    &building;
   </sect1>
 
   <sect1>
     <title>The &mapson; configuration file</title>
 
-    <para>test</para>
+    <para>
+
+  </sect1>
+
+  <sect1>
+    <title>The request for confirmation file</title>
+
+    <para>The request-for-confirmation mail is created by loading the configured
+template file and exanding the variables contained in it. The result is then
+piped into the command, you have configured as <varname>MTA</varname>.</para>
+
+    <para>The following variables are provided in the request-for-confirmation
+mail template file:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>md5hash</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>envelope</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>sender</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>return_path</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>header</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>body</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>messageid</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>In addition to those, the following arrays are provided:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>headerlines[]</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>header[]</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>body[]</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+  </sect1>
+
+  <sect1>
+    <title>Setting &mapson; up</title>
+
+    <sect2>
+      <title>Via <filename>.forward</filename></title>
+
+      <blockquote>
+        <programlisting>"|exec <replaceable>/usr/local/bin/mapson</replaceable>"</programlisting>
+      </blockquote>
+    </sect2>
+
+    <sect2>
+      <title>Via <filename>.procmailrc</filename></title>
+
+      <blockquote>
+        <programlisting># Pipe anything, that is not a reply or comes from a mailing
+# list, into mapson for approval.
+#
+:0 w
+* !^(In-Reply-To|References|Message-Id):.*<replaceable>example.com</replaceable>
+* !^Precedence: (list|bulk|junk)
+* !^Auto-Submitted:
+| <replaceable>/usr/local/mapson/bin/mapson</replaceable></programlisting>
+      </blockquote>
+
+      <sect3>
+        <title>Getting a notification in case of failure</title>
+
+      <para>You might want to add the recipt
+
+        <blockquote>
+          <programlisting>:0 ec
+| /usr/bin/sed -e 's/^/ | /' | \
+/bin/mail -s "mapSoN failed on this mail" <replaceable>postmaster</replaceable></programlisting>
+        </blockquote>
+
+directly after the &mapson; call. This action will only be executed if the
+previous repict failed with an error, and will send a notification of the fact
+that mapson failed to <systemitem class="username">postmaster</systemitem> or
+whoever is responsible for the mail system on your site.</para>
+
+      <para>Adding this recipt is <emphasis>not</emphasis> a good idea, though,
+if you're letting &mapson; fail for mails that have syntax errors!</para>
+      </sect3>
+
+      <sect3>
+        <title>Using <application>procmail</application>`s "argument"
+feature</title>
+
+        <blockquote>
+          <programlisting>ARGUMENT="$1"
+
+# An argument of 'failsafe' will always by-pass all other
+# rules to make sure that I have a reliably working address
+# no matter what happens here.
+#
+:0
+* ARGUMENT ?? failsafe
+$DEFAULT
+
+# Confirmation mails go into mapSoN.
+# Note: Not all systems support that regular expression syntax!
+#
+:0
+* ARGUMENT ?? [a-f0-9]{32}
+| <replaceable>/usr/local/mapson/bin/mapson</replaceable>
+:0 ec
+
+# Anything that has such an argument is probably coming from
+# a mailing list and should not go through mapSoN.
+#
+:0
+* ARGUMENT ?? ..*
+$DEFAULT</programlisting>
+        </blockquote>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Expiring the mail spool</title>
+
+    <para>
   </sect1>
 
   <appendix>
     <title>License</title>
 
     &license;
+  </appendix>
+
+  <appendix>
+    <title>The default configuration</title>
+    <programlisting>&defconfig;</programlisting>
+  </appendix>
+
+  <appendix>
+    <title>An example request-for-confirmation template</title>
+    <programlisting>&defreqmail;</programlisting>
   </appendix>
 
 </article>

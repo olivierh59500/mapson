@@ -28,12 +28,26 @@ all:	mapson.html mapson.pdf man-page.txt
 
 man-page.html:	license.sgml
 
-mapson.html mapson.tex:	license.sgml
+mapson.html mapson.tex:	license.sgml building.sgml defconfig.sgml defreqmail.sgml
 
 man-page.txt:	man-page.html
 	lynx -width=80 -nolist -dump $< >$@
+
+defconfig.sgml:	../config-sample Makefile
+	sed <$< >$@ -e 's/</\&lt;/g' \
+	            -e 's/>/\&gt;/g' \
+	            -e '/^#/d'       \
+	            -e '/^$$/d'
+
+defreqmail.sgml:../reqmail.template-sample Makefile
+	sed <$< >$@ -e 's/</\&lt;/g' \
+	            -e 's/>/\&gt;/g' \
+	            -e 's#example.com#<replaceable>&</replaceable>#g' \
+	            -e 's#username#<replaceable>&</replaceable>#g'  \
+	            -e 's#Real Name#<replaceable>&</replaceable>#g'
 
 clean distclean realclean:
 	@rm -f *.aux *.dvi *.log *.toc
 	@rm -f *.css *.fot *.html *.ps
 	@rm -f *.tex *.xml *.txt *.pdf
+	@rm -f defconfig.sgml defreqmail.sgml
