@@ -15,10 +15,8 @@
 #include <assert.h>
 
 #include <myexceptions.h>
+#include <paths.h>
 #include "mapson.h"
-
-#define SENDMAIL_PATH  "/usr/sbin/sendmail"
-#define MIME_SEPARATOR "mapSoN_generated_part_separator"
 
 void
 send_request_for_confirmation_mail(char * recipient, char * cookie)
