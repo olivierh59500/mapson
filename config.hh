@@ -47,6 +47,7 @@ class configuration : public AbstractConfig
 
     // Run-time flags.
     bool accept;
+    std::string cookie;
 
   protected:
     friend int main(int, char**);

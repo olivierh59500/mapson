@@ -73,7 +73,7 @@ try
     // confirmed now. The mail has already been delivered; all we have
     // to do is to add the addresses to the database.
 
-    bool was_confirmation = accept_confirmation(mail);
+    bool was_confirmation = accept_confirmation(mail, config->cookie);
 
     // Extract the sender addresses from the mail and copy them into
     // an addrset_t for easier handling in the code that follows. This

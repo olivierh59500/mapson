@@ -108,6 +108,7 @@ configuration::configuration(int argc, char** argv)
         { "config-file", required_argument, 0, 'c' },
         { "debug",       no_argument,       0, 'd' },
         { "accept",      no_argument,       0, 'a' },
+        { "cookie",      required_argument, 0, 'o' },
         { "help",        no_argument,       0, 'h' },
         { "version",     no_argument,       0, 'v' },
         { 0, 0, 0, 0 }          // mark end of array
@@ -127,6 +128,9 @@ configuration::configuration(int argc, char** argv)
                 break;
             case 'a':
                 accept = true;
+                break;
+            case 'o':
+                cookie = optarg;
                 break;
             case 'v':
                 printf("mapSoN version %s\n", VERSION);
@@ -197,6 +201,7 @@ void configuration::dump() const
     debug(("    SyntaxErrorRC      = '%d'", syntax_error_rc));
     debug(("    Debug              = '%s'", (debug) ? "true" : "false"));
     debug(("    Accept             = '%s'", (accept) ? "true" : "false"));
+    debug(("    Cookie             = '%s'", cookie.c_str()));
     }
 
 inline bool get_bool(const string& value)
