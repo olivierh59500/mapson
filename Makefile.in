@@ -61,7 +61,7 @@ mapson:		$(OBJS) $(LIBS)
 	$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
 
 config.o:	config.cc
-	$(CXX) -DMAILBOXDIR=\"$(mailboxdir)\" -DMTA=\"$(mta)\" -DDATADIR=\"$(datadir)\" $(CPPFLAGS) $(DEFS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
+	$(CXX) -DMAILBOXDIR=\"$(mailboxdir)\" -DMTA=\"$(mta)\" -DDATADIR=\"$(datadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" $(CPPFLAGS) $(DEFS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
 
 main.o config.o:	version.h
 
@@ -98,7 +98,7 @@ install:	mapson reqmail.template-sample config-sample documentation/man-page.txt
 	$(MKDIR) -p $(DESTDIR)$(datadir)
 	$(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)$(datadir)/
 	$(MKDIR) -p $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/config-sample
+	$(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/mapson.config-sample
 	$(MKDIR) -p $(DESTDIR)$(mandir)/man1
 	$(INSTALL) -c -m 644 documentation/man-page.txt $(DESTDIR)$(mandir)/man1/mapson.1
 	$(INSTALL) -c -m 644 documentation/mapson.html $(DESTDIR)$(datadir)/
@@ -107,7 +107,7 @@ install:	mapson reqmail.template-sample config-sample documentation/man-page.txt
 	@echo mapSoN is installed now. You might want to rename and to
 	@echo edit the following files:
 	@echo ' - $(DESTDIR)$(datadir)/reqmail.template-sample'
-	@echo ' - $(DESTDIR)$(sysconfdir)/config-sample'
+	@echo ' - $(DESTDIR)$(sysconfdir)/mapson.config-sample'
 	@echo
 	@echo The user manual is installed in $(datadir).
 

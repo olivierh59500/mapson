@@ -72,7 +72,6 @@ configuration::configuration(int argc, char** argv)
     pwd_sentry sentry(getpwuid(getuid()));
     if (sentry.pwd == 0)
         throw system_error("Can't get my user name");
-    config_file.assign(sentry.pwd->pw_dir).append("/.mapson/config");
     log_file.assign(sentry.pwd->pw_dir).append("/.mapson/log");
     spool_dir.assign(sentry.pwd->pw_dir).append("/.mapson/spool");
     address_db.assign(sentry.pwd->pw_dir).append("/.mapson/address-db");
@@ -139,11 +138,20 @@ configuration::configuration(int argc, char** argv)
         }
     parameter_index = optind;
 
-    // Parse the config file.
+    // If a config file has been specified on the command line, use
+    // that one exclusively. If not, try the default location in the
+    // home and then the global one.
 
-    struct stat mystat;
-    if (stat(config_file.c_str(), &mystat) != -1)
+    if (!config_file.empty())
         {
+        parse_config_file(config_file.c_str(), *this);
+        }
+    else
+        {
+        struct stat mystat;
+        config_file.assign(sentry.pwd->pw_dir).append("/.mapson/config");
+        if (stat(config_file.c_str(), &mystat) == -1)
+            config_file = SYSCONFDIR "/mapson.config";
         parse_config_file(config_file.c_str(), *this);
         }
 
