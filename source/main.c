@@ -31,6 +31,7 @@ main(int argc, char * argv[])
     /* First of all initialize our environment. */
 
     openlog("mapson", LOG_CONS | LOG_PERROR | LOG_PID, LOG_MAIL);
+    assert_mapson_home_dir_exists();
     mail_rescue_filename = get_mail_rescue_filename();
 
 

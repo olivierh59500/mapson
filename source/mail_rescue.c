@@ -51,7 +51,7 @@ get_mail_rescue_filename(void)
     home_directory = get_home_directory();
 
     for (counter = 0; ; counter++) {
-	filename = fail_safe_sprintf("%s/mapson_rescue_%04d", home_directory, counter);
+	filename = fail_safe_sprintf("%s/.mapson/rescue_file_%04d", home_directory, counter);
 
 	fd = open(filename, O_WRONLY | O_CREAT | O_EXCL, 0600);
 	if (fd == -1) {
