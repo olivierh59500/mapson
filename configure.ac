@@ -42,6 +42,49 @@ fi
 
 dnl Find some paths we might need.
 dnl
+AC_SUBST(mailboxdir)
+AC_ARG_WITH(mailboxdir, [  --with-mailboxdir=DIR   location of the user mailboxes],
+    [
+    if test "$withval" = "no" -o "$withval" = "yes"; then
+        AC_MSG_ERROR([The --with-mailboxdir option expects a path as parameter!])
+    fi
+    AC_MSG_CHECKING(for the location of the user mailboxes);
+    mailboxdir=$withval
+    AC_MSG_RESULT($mailboxdir)
+    if test ! -d $mailboxdir; then
+        AC_MSG_WARN(The specified mailbox directory '$mailboxdir' does not exist.)
+    fi
+    ],
+    [
+    AC_CHECK_FILE(/var/mail, mailboxdir=/var/mail, [
+	AC_CHECK_FILE(/var/spool/mail, mailboxdir=/var/spool/mail, [
+	    AC_MSG_ERROR([Cannot determine the location of the mailboxes on this system.])
+	])])
+    ])
+
+AC_SUBST(mta)
+AC_ARG_WITH(mta, [  --with-mta=PATH         location of the mail transport agent (sendmail?)],
+    [
+    if test "$withval" = "no" -o "$withval" = "yes"; then
+        AC_MSG_ERROR([The --with-mta option expects a path as parameter!])
+    fi
+    AC_MSG_CHECKING(for the location of the mail transport agent);
+    mta=$withval
+    AC_MSG_RESULT($mta)
+    if test ! -f $mta; then
+        AC_MSG_WARN(The specified MTA '$mta' does not exist.)
+    elif test ! -x $mta; then
+        AC_MSG_WARN(The specified MTA '$mta' is not executable.)
+    fi
+    ],
+    [
+    AC_PATH_PROG(mta, sendmail, none, $PATH:/usr/lib:/etc/usr/etc)
+    if test "$mta" = "none"; then
+        AC_MSG_ERROR(Cannot locate your mail transport agent.)
+    fi
+    ])
+
+
 
 dnl Write results.
 dnl
