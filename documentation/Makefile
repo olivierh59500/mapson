@@ -13,7 +13,7 @@ LDPBASE		= /usr/local/sgml/dsssl/ldp
 .sgml.html:
 	openjade -t sgml -d $(LDPBASE)/ldp.dsl\#html -V nochunks -D $(DOCBOOKBASE)/html $< >$@
 
-.sgml.txt:
+.html.txt:
 	w3m -T text/html -dump $< >$@
 
 .tex.dvi:
@@ -36,15 +36,17 @@ man-page.html:	configfile.inc license.inc
 
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
 mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc description.inc
-mapson.html: principle1.png principle2.png
-mapson.html: principle1.eps principle2.eps
+mapson.html:		principle1.png principle2.png
+mapson.html:		principle1.eps principle2.eps
 
-readme.txt:	readme.sgml building.inc ../VERSION
+readme.html:	readme.sgml building.inc ../VERSION
+
+readme.txt:	readme.html
 
 man-page.txt:	man-page.html
 	lynx -width=78 -nolist -dump $< >$@
 
-defconfig.inc:	../config-sample Makefile
+defconfig.inc:	../config-sample
 	sed <$< >$@ -e 's/&/\&amp;/g' \
 		    -e 's/</\&lt;/g' \
 		    -e 's/>/\&gt;/g' \
@@ -52,7 +54,7 @@ defconfig.inc:	../config-sample Makefile
 		    -e '/^#/d'	     \
 		    -e '/^$$/d'
 
-defreqmail.inc:../reqmail.template-sample Makefile
+defreqmail.inc:../reqmail.template-sample
 	sed <$< >$@ -e 's/</\&lt;/g' \
 		    -e 's/>/\&gt;/g' \
 		    -e 's/&/\&amp;/g' \
