@@ -63,6 +63,8 @@ mapson:		$(OBJS) $(LIBS)
 config.o:	config.cc
 	$(CXX) -DMAILBOXDIR=\"$(mailboxdir)\" -DMTA=\"$(mta)\" -DDATADIR=\"$(datadir)\" $(CPPFLAGS) $(DEFS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
 
+main.o config.o:	version.h
+
 version.h:	VERSION
 	@echo  >$@ '/* Generated automatically; do not edit! */'
 	@echo >>$@ ''
