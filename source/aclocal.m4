@@ -41,3 +41,35 @@ LDFLAGS="$LDFLAGS -L$ac_cv_dmalloc/lib"
 LIBS="$LIBS -ldmalloc"
 ,AC_MSG_RESULT(no))
 ])
+
+
+dnl Find the sendmail binary with an extended path and replace
+dnl @SENDMAIL@ with the path in all defined output files.
+dnl
+AC_DEFUN(AC_PETI_PATH_SENDMAIL, [
+peti_path_backup=$PATH
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/lib:/usr/libexec:/usr/local/bin:/usr/local/sbin:/usr/local/lib:/usr/local/libexec:/usr/etc
+AC_PATH_PROG(SENDMAIL, sendmail, sendmail)
+PATH=$peti_path_backup
+])
+
+dnl Find the directory that contains the user's mail folders.
+dnl
+AC_DEFUN(AC_PETI_PATH_MAILDIR, [
+AC_MSG_CHECKING(for system mail directory)
+if test -d "/var/mail"; then
+    MAILDIR="/var/mail"
+    AC_MSG_RESULT($MAILDIR)
+else
+    if test -d "/var/spool/mail"; then
+	MAILDIR="/var/spool/mail"
+	AC_MSG_RESULT($MAILDIR)
+    else
+	MAILDIR="/var/mail"
+	AC_MSG_RESULT($MAILDIR    ** default **)
+	AC_MSG_WARN(Could not reliably determine the mail directory path!)
+	AC_MSG_WARN(Better check include/paths.h!)
+    fi
+fi
+AC_SUBST(MAILDIR)
+])
