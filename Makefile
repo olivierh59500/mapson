@@ -4,7 +4,7 @@
 # $Header$
 #
 
-SUBDIRS	= lib src doc
+SUBDIRS	= lib src
 
 all:	include/mapson.mk $(SUBDIRS)
 
