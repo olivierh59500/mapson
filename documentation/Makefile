@@ -13,7 +13,7 @@ DSSLBASE	= /usr/share/sgml/docbook/dsssl-stylesheets-1.77
 	openjade -t sgml -d peti.dsl#html -D $(DSSLBASE)/html $< >$@
 
 .html.txt:
-	w3m -T text/html -dump $< >$@
+	lynx -dump $< >$@
 
 .tex.dvi:
 	jadetex \\nonstopmode\\input $<;
