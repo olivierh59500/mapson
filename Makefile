@@ -33,7 +33,7 @@ realclean:	distclean
 
 
 build-dist:	all
-	@scripts/build-dist.sh `sed -n -e '/^#define[	 ][	 ]*VERS/p' src/version.h | sed -e 's/^.*"\(.*\)"/\1/' -e 's/ /-/g' -e 's/-beta-/b/g'`
+	@scripts/build-dist.sh
 
 configure:	configure.in aclocal.m4
 	autoconf
