@@ -1,3 +1,15 @@
+2003-05-27  Peter Simons  <simons@computer.org>
+
+	* Released 2.3.
+
+	* Config files will go to /etc/mapson now, unless set otherwise in
+	the configure stage.
+
+	* configure will chose smarter paths: When the prefix contains the
+	string "mapson" already, the name won't be appended to the various
+	directory names again. configure will dump the relevant paths
+	before it's done, so that you can inspect them.
+
 2003-01-27  Peter Simons  <simons@computer.org>
 
 	* VERSION: Bumped to beta 3.
