@@ -17,8 +17,8 @@ CC		= @CC@
 CXX		= @CXX@
 AR		= ar
 RANLIB		= @RANLIB@
-MKDIR		= .shtool mkdir
-INSTALL		= .shtool install
+MKDIR		= $(SHELL) .shtool mkdir
+INSTALL		= $(SHELL) .shtool install
 
 OPTIMFLAGS	=
 WARNFLAGS	=
