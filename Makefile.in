@@ -17,8 +17,8 @@ CC		= @CC@
 CXX		= @CXX@
 AR		= ar
 RANLIB		= @RANLIB@
-MKDIR		= .shtool mkdir
-INSTALL		= .shtool install
+MKDIR		= ./.shtool mkdir
+INSTALL		= ./.shtool install
 
 OPTIMFLAGS	=
 WARNFLAGS	=
@@ -75,13 +75,13 @@ version.h:	VERSION
 	@echo Built version.h file.
 
 clean::
-	@rm -f $(OBJS)
-	@rm -f $(LIBS)
+	@find . -name '*.rpo' -exec rm -f {} \;
+	@find . -name '*.a'   -exec rm -f {} \;
+	@find . -name '*.o'   -exec rm -f {} \;
 	@rm -f mapson config-sample.local
-	@find . -name '*.rpo' -exec rm {} \;
 	@echo All dependent files have been removed.
 
-install:	mapson reqmail.template-sample config-sample
+install:	mapson reqmail.template-sample config-sample documentation/mapson.txt
 	$(MKDIR) -p $(DESTDIR)$(bindir)
 	$(INSTALL) -c -m 555 mapson $(DESTDIR)$(bindir)/mapson
 	$(MKDIR) -p $(DESTDIR)$(datadir)
@@ -91,6 +91,8 @@ install:	mapson reqmail.template-sample config-sample
 	    <config-sample >config-sample.local
 	$(MKDIR) -p $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -m 644 config-sample.local $(DESTDIR)$(sysconfdir)/config-sample
+	$(MKDIR) -p $(DESTDIR)$(mandir)/man1
+	$(INSTALL) -c -m 644 documentation/mapson.txt $(DESTDIR)$(mandir)/man1/mapson.1
 
 distclean:: clean
 	@rm -f Makefile config.log config.status
@@ -103,8 +105,25 @@ depend::
 	@sed <Makefile.in >Makefile.in.bak -e 's/\.\///g'
 	@mv Makefile.in.bak Makefile.in
 
-tag:
+tag::
 	cvs tag -c mapson-`sed <VERSION -e "s/\-/g"`
+
+dist:	mapson documentation/mapson.txt VERSION
+	@V=`cat VERSION`; \
+	cp -ra . /tmp/mapson-$$V; \
+	$(MAKE) >/dev/null -C /tmp/mapson-$$V distclean; \
+	find /tmp/mapson-$$V -name 'Odinfile' -exec rm -f {} \; ; \
+	find /tmp/mapson-$$V -name 'CVS' -print | xargs rm -rf \; ; \
+	find /tmp/mapson-$$V -name '.cvsignore' -exec rm -f {} \; ; \
+	(cd /tmp; tar cfz mapson-$$V.tar.gz mapson-$$V); \
+	rm -rf /tmp/mapson-$$V; \
+	echo Created distribution archive /tmp/mapson-$$V.tar.gz
+
+documentation/mapson.txt:
+	@(cd documentation && $(MAKE) mapson.txt)
+
+documentation/mapson.html:
+	@(cd documentation && $(MAKE) mapson.html)
 
 # Dependencies
 
