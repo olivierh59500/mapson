@@ -89,7 +89,7 @@ mail_addresses extract_sender_addresses(const string& mail)
                     }
                 }
 
-            else if (strncasecmp("From: ", line.c_str(), sizeof("From:") - 1) == 0)
+            else if (strncasecmp("From:", line.c_str(), sizeof("From:") - 1) == 0)
                 try
                     {
                     line.erase(0, sizeof("From:") - 1).erase(line.size() - 1, 1);
@@ -163,6 +163,29 @@ mail_addresses extract_sender_addresses(const string& mail)
                 throw;
             }
         }
+
+#ifdef DEBUG
+    debug(("Found the following addresses in the mail:"));
+    debug(("    Envelope    = %s", addresses.envelope.c_str()));
+    debug(("    Sender      = %s", addresses.sender.c_str()));
+    debug(("    Return-Path = %s", addresses.return_path.c_str()));
+    string tmp;
+    for (addrset_t::const_iterator i = addresses.from.begin(); i != addresses.from.end(); ++i)
+        {
+        if (!tmp.empty())
+            tmp += ", ";
+        tmp += *i;
+        }
+    debug(("    From        = %s", tmp.c_str()));
+    tmp.clear();
+    for (addrset_t::const_iterator i = addresses.reply_to.begin(); i != addresses.reply_to.end(); ++i)
+        {
+        if (!tmp.empty())
+            tmp += ", ";
+        tmp += *i;
+        }
+    debug(("    Reply-To    = %s", tmp.c_str()));
+#endif
 
     // Now do consistency checks on the whole thing.
 
