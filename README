@@ -68,3 +68,6 @@ Things to do:
 
     o Read the user's config file and fall back to the global one, if
       the user doesn't have one.
+
+    o Try to create the all directories in the user's home
+      automatically.
