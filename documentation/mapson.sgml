@@ -12,7 +12,7 @@
 
 <article lang="en">
   <articleinfo>
-    <title>Incomplete &mapson; User Manual</title>
+    <title>The &mapson; User Manual</title>
     <author>
       <firstname>Peter</firstname>
       <surname>Simons</surname>
@@ -27,127 +27,22 @@
 
     &description;
 
-    <para>This manual describes how to compile, install, and configure &mapson;
-in various setups.</para>
-  </sect1>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="principle.eps" format="eps" align="center" scale="40">
+    </imageobject>
+    <imageobject>
+      <imagedata fileref="principle.png" format="png" align="center">
+    </imageobject>
+  </mediaobject>
+
+  <para>This illustration will probably help nothing and only add to the
+confusion, but I made it and now I have to include it here -- helpful or
+not!</para>
 
   <sect1>
     <title>Building &mapson;</title>
     &building;
-  </sect1>
-
-  <sect1>
-    <title>Command Line Syntax</title>
-
-    <para>&mapson understans severel optional parameters an the
-command line, which allow you to override the compiled-in default or
-the settings in the config file. The standard Unix synopsis line
-is:</para>
-
-    <blockquote>
-      &synopsis;
-    </blockquote>
-
-    <para>Here is a list of all options together with a short
-description of what the respective option does:</para>
-
-    &cmdloptions;
-  </sect1>
-
-  <sect1>
-    <title>The &mapson; Configuration File</title>
-    &configfile;
-  </sect1>
-
-  <sect1>
-    <title>The Request-for-Confirmation File</title>
-
-    <para>The request-for-confirmation mail is created by loading the configured
-template file and exanding the variables contained in it. The result is then
-piped into the command, you have configured as <varname>MTA</varname>.</para>
-
-    <para>The following variables are provided in the request-for-confirmation
-mail template file:</para>
-
-    <variablelist>
-      <varlistentry>
-        <term><varname>$md5hash</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><varname>$envelope</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><varname>$sender</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><varname>$return_path</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><varname>$header</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><varname>$body</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><varname>$messageid</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <para>In addition to those, the following arrays are provided:</para>
-
-    <variablelist>
-      <varlistentry>
-        <term><varname>$headerlines[]</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <varlistentry>
-        <term><varname>$header[]</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-    <variablelist>
-      <varlistentry>
-        <term><varname>$body[]</varname></term>
-        <listitem>
-          <para></para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
   </sect1>
 
   <sect1>
@@ -282,6 +177,120 @@ $DEFAULT
 $DEFAULT</programlisting>
       </blockquote>
     </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Command Line Syntax</title>
+
+    <para>&mapson understans several optional parameters on the
+command line, which allow you to override the compiled-in default or
+the settings in the config file. The standard Unix synopsis line
+is:</para>
+
+    <blockquote>
+      &synopsis;
+    </blockquote>
+
+    <para>Here is a list of all options together with a short
+description of what the respective option does:</para>
+
+    &cmdloptions;
+  </sect1>
+
+  <sect1>
+    <title>The &mapson; Configuration File</title>
+    &configfile;
+  </sect1>
+
+  <sect1>
+    <title>The Request-for-Confirmation File</title>
+
+    <para>The request-for-confirmation mail is created by loading the configured
+template file and exanding the variables contained in it. The result is then
+piped into the command, you have configured as <varname>MTA</varname>.</para>
+
+    <para>The following variables are provided in the request-for-confirmation
+mail template file:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>$md5hash</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$envelope</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$sender</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$return_path</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$header</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$body</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><varname>$messageid</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>In addition to those, the following arrays are provided:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>$headerlines[]</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>$header[]</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <variablelist>
+      <varlistentry>
+        <term><varname>$body[]</varname></term>
+        <listitem>
+          <para></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
   </sect1>
 
   <sect1>
