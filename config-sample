@@ -29,7 +29,7 @@ AddressDB $HOME/.mapson/address-db
 #       confirmation. Each filename must be separated by a colon, and
 #       mapSoN will try each of them, actually using the first file
 #       that can be opened successfully.
-ReqConfirmTemplate /usr/local/share/mapson/reqmail.template:$HOME/.mapson/reqmail.template
+ReqConfirmTemplate $HOME/.mapson/reqmail.template:/usr/local/share/mapson/reqmail.template
 
 # MTA <command>
 #       This option specifies the command mapSoN invokes in order to
