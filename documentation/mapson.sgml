@@ -10,6 +10,12 @@
 <!ENTITY defconfig SYSTEM "defconfig.inc">
 <!ENTITY defreqmail SYSTEM "defreqmail.inc">
 <!ENTITY version SYSTEM "../VERSION">
+<!ENTITY varexp "<application>libvarexp</application>">
+<!ENTITY arrays SYSTEM "../libvarexp/documentation/arrays-of-variables.inc">
+<!ENTITY looping SYSTEM "../libvarexp/documentation/looping.inc">
+<!ENTITY operations SYSTEM "../libvarexp/documentation/operations-on-variables.inc">
+<!ENTITY quoted-pairs SYSTEM "../libvarexp/documentation/quoted-pairs.inc">
+<!ENTITY expressions SYSTEM "../libvarexp/documentation/variable-expressions.inc">
 ]>
 
 <article lang="en">
@@ -490,9 +496,47 @@ accessed in upper-case!</para>
   </sect1>
 
   <sect1>
-    <title>Variable-Expansion Magic</title>
+    <title>Variable-Expression Magic</title>
 
-    <para>to be written</para>
+    <para>Throughout &mapson;, the user may specify variables in the text files
+in order to have their actual contents inserted at the apropriate location. This
+is a functionality provided by &varexp;. Hence, this section has been inserted
+verbatim from &varexp;'s documentation. Please don't worry if the documentation
+says things like <quote>implementation defined</quote>, etc. Just read about the
+expressions the library provides you with and how you can use them. Anything you
+need to know is included in <emphasis>this</emphasis> document.</para>
+
+    <para>If you're interested in incorporating &varexp; into programs of your
+own, though, check out the copy available in the <filename>libvarexp</filename>
+directory in the &mapson; distribution or take a look at <ulink
+url="http://cryp.to/libvarexp/">&varexp's homepage</ulink> for further
+details.</para>
+
+    <sect2>
+      <title>Variable Expressions</title>
+      &expressions;
+    </sect2>
+
+    <sect2>
+      <title>Operations on Variables</title>
+      &operations;
+    </sect2>
+
+    <sect2 id="quoted-pairs">
+      <title>Quoted Pairs</title>
+      &quoted-pairs;
+    </sect2>
+
+    <sect2>
+      <title>Arrays of Variables</title>
+      &arrays;
+    </sect2>
+
+    <sect2 id="looping">
+      <title>Looping</title>
+      &looping;
+    </sect2>
+
   </sect1>
 
   <sect1>
