@@ -6,7 +6,7 @@
 
 SUBDIRS	= lib src #man
 
-all:	.autoconf-stamp $(SUBDIRS)
+all:	include/mapson.mk $(SUBDIRS)
 
 src::
 	@echo "====> Building mapSoN"
@@ -23,6 +23,11 @@ man::
 clean:
 	@echo "====> Cleaning up"
 	@for n in $(SUBDIRS);do (cd $$n;$(MAKE) clean);done
+
+distclean:	clean
+	rm -f config.log config.cache config.log config.status include/mapson.mk
+
+realclean:	distclean
 	rm -f configure config.log config.cache config.log config.status
 
 dist:	all
@@ -31,7 +36,7 @@ dist:	all
 configure:	configure.in aclocal.m4
 	autoconf
 
-.autoconf-stamp:	configure
+include/mapson.mk:	configure
 	./configure $(ACFLAGS)
 
 real-build-dist::
