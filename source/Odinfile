@@ -1,9 +1,9 @@
 # Build mapSoN.
 
-mapson == %mapson.c.sm +lib=(libexceptions/libexceptions.a) \
-                       +lib=(librfc822/librfc822.a) \
-                       +lib=(libmpools/libmpools.a) \
-                       +lib=(liblists/liblists.a) \
+mapson == %mapson.c.sm +lib=(libexceptions.a) \
+                       +lib=(librfc822.a) \
+                       +lib=(libmpools.a) \
+                       +lib=(liblists.a) \
 		       +(my_db_linklib.flags) \
 		       :exe
 %mapson.c.sm == <<
@@ -27,6 +27,11 @@ mapson == %mapson.c.sm +lib=(libexceptions/libexceptions.a) \
     save_to.c
     spool.c
     spool_dir.c
+
+liblists.a      == liblists/%liblists.a.sm +cc='cc' :a
+libmpools.a     == libmpools/%libmpools.a.sm +cc='cc' :a
+librfc822.a     == librfc822/%librfc822.a.sm +cc='cc' :a
+libexceptions.a == libexceptions/%libexceptions.a.sm +cc='cc' :a
 
 configure == configure.in :ac
 paths.h             == /dev/zero +cmd=(./configure) +output_show :output/paths.h
