@@ -455,6 +455,10 @@ script will search for rescue mail files, list their contents on the
 standard output stream --- and delete them. The typical cron(8) utility
 will then mail the output to you.
 
+Also, mapSoN will log everything it does in the file @file{logfile},
+which is located in the @file{$HOME/.mapson/} directory. Take a look at
+what's going on there, if you thing mapSoN did something unexpected.
+
 @c --------------------------------- node -------------------------------------
 @node Copyright,  , Error Recovery, Top
 @appendix mapSoN Copyright
