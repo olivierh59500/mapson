@@ -29,10 +29,9 @@
 
 .PHONY: all clean distclean realclean
 
-all:	mapson.html mapson.txt
+all:	mapson.html mapson.ps man-page.txt
 
 clean distclean realclean:
-	rm -f mapson.aux mapson.dvi mapson.log mapson.toc
-	rm -f mapson_version.tex mapson.ps
-	rm -f mapson.css mapson.fot mapson.html
-	rm -f mapson.tex mapson.xml mapson.txt
+	rm -f *.aux *.dvi *.log *.toc
+	rm -f *.css *.fot *.html *.ps
+	rm -f *.tex *.xml *.txt

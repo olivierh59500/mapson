@@ -1,0 +1,13 @@
+    <para>This software is copyrighted by Peter Simons
+      <email>simons@computer.org</email>. Permission is granted to use it under
+      the terms of the GNU General Public License. For further details, refer to
+      the file <filename>LICENSE</filename> included in the software
+      distribution or see <ulink
+      url="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</ulink>
+      in case that file is missing.</para>
+
+    <para>&mapson; uses the Variable Expression Library, which is included in
+      the distribution for comfort. This library is <emphasis>not</emphasis>
+      part of the &mapson; package and is licensed under the terms described in
+      the file <filename>libvarexp/LICENSE</filename>. Should that file be
+      missing in your distribution, contact me for a copy.</para>
