@@ -130,6 +130,13 @@ parse_mail(char * buffer)
 	    mail_struct->cc = parse_address_line(tmp+1);
 	    q[-1] = backup;
 	}
+	else if (is_keyword("Reply-To:")) {
+	    tmp = strchr(p, ':');
+	    backup = q[-1];
+	    q[-1] = '\0';
+	    mail_struct->reply_to = parse_address_line(tmp+1);
+	    q[-1] = backup;
+	}
     }
 
     return mail_struct;
@@ -156,8 +163,6 @@ parse_address_line(char * string)
 
     /* Init structures. */
 
-    printf("DEBUG: Parsing '%s'\n", string);
-
     state = build_array();
     sep_state.address_line = buffer = fail_safe_strdup(string);
     sep_state.group_nest   = 0;
@@ -171,7 +176,6 @@ parse_address_line(char * string)
 
 	rc = rfc822_parse_address(p, &address, NULL, NULL);
 	if (rc == RFC822_OK) {
-	    printf("Got address '%s'\n", address);
 	    append_to_array(state, address);
 	}
 	else if (rc == RFC822_FATAL_ERROR) {

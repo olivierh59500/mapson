@@ -95,6 +95,9 @@ main(int argc, char * argv[])
     for (i = 0; Mail->cc && (Mail->cc)[i] != NULL; i++) {
 	printf("DEBUG: Cc[%d]: is '%s'.\n", i, (Mail->cc)[i]);
     }
+    for (i = 0; Mail->reply_to && (Mail->reply_to)[i] != NULL; i++) {
+	printf("DEBUG: Reply_To[%d]: is '%s'.\n", i, (Mail->reply_to)[i]);
+    }
 
 
     /* Terminating gracefully. */
