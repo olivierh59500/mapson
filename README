@@ -1,0 +1,70 @@
+
+			  mapSoN <--> NoSpam
+			     Version 1.0
+
+
+This is a brief instruction on how to compile mapSoN on your Unix
+platform of choice. I know how tedious reading manuals is, when you're
+eager to try the newly obtained package out, so I'll keep it short.
+
+In order to compile mapSoN successfully, you need the following
+utilities installed:
+
+ - a make(1) tool that understands the "include" statement. If your
+   vendor's make doesn't you might want to fetch GNU make from any GNU
+   mirror.
+
+ - a copy of lex(1) is required, too. Some vendors ship a lex that
+   doesn't understand the "-p" option, so if you're experiencing
+   problems at compile time, you might want to installed the GNU flex
+   utility and use this one instead.
+
+ - The Berkeley DB library (version 1.x!) is used to maintain the
+   address database. Most Unixes have libdb as part of their system,
+   so this shouldn't be a problem. If you don't have libdb at all, you
+   can get it from the following location:
+
+         http://www.sleepycat.com/packages/db.1.86.tar.gz
+
+If you have all these things, you're ready to compile mapSoN. In the
+best case, all you'll have to do is to execute "./configure && make"
+and that's all. "make install" will install the mapSoN binary and the
+manual in info format on your system.
+
+If this fails, you'll usually have to help the configure script to
+find the Berkeley db routines. To do this, the following options can
+be provided to configure:
+
+ --with-db-include=ARG
+
+	With this option you can specify the directory which contains
+	the db.h include file. On newer SGI's, for example, this would
+	be: "./configure --with-db-include=/usr/freeware/include".
+
+ --with-db-lib=ARG
+
+	This options tells configure the path and name of the link
+	library, which contains the Berkeley db code, most notably the
+	dbopen() function call. On the same SGI as above, the call
+	was: "./configure --with-db-lib=/usr/freeware/lib/libdb.a".
+
+Other options of configure can be display by calling it with
+"./configure --help". All the usual options from GNU autoconfig are
+understood, but these options will probably not be relevant unless you
+want to customize things like the target directory of the install,
+etc...
+
+
+If you have any problems compiling or running mapSoN, you're welcome
+to send me electronic mail at peter.simons@gmd.de and to ask for help.
+Alternatively you might want to post to the mapSoN users mailing list,
+which can be subscribed by sending the command "SUBSCRIBE MAPSON-L" in
+the body of an e-mail to the address listserv@listserv.gmd.de. On this
+mailing list, you will also find all kind of discussion, announcements
+and more about the mapSoN tool.
+
+Once you have compiled mapSoN correctly, please refer to the mapSoN
+user manual, which can be displayed with "info -f mapson" once the
+installation procedure ran.
+
+                                   Peter Simons <peter.simons@gmd.de>
