@@ -28,16 +28,6 @@ depend:
 	makedepend -Y /usr/include $(SRCS)
 	@rm -f Makefile.bak
 
-proto.h:
-	@echo "====> Creating proto.h"
-	@echo > proto.h "/* Prototypes for mapSoN */"
-	@echo >>proto.h ""
-	for n in $(SRCS); do \
-		echo >>proto.h "/* $$n */"; \
-		echo >>proto.h ""; \
-		$(CPP) $(CPPFLAGS) $$n | cproto -g >>proto.h; \
-		echo >>proto.h ""; \
-	done;
 
 #
 # Dependencies
