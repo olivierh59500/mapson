@@ -1,13 +1,13 @@
 #!/bin/sh
 ##
 ##  GNU shtool -- The GNU Portable Shell Tool
-##  Copyright (c) 1994-2002 Ralf S. Engelschall <rse@engelschall.com>
+##  Copyright (c) 1994-2000 Ralf S. Engelschall <rse@engelschall.com>
 ##
 ##  See http://www.gnu.org/software/shtool/ for more information.
 ##  See ftp://ftp.gnu.org/gnu/shtool/ for latest version.
 ##
-##  Version:  1.6.0 (23-Sep-2001)
-##  Contents: 2/19 available modules
+##  Version:  1.5.1 (29-Jul-2000)
+##  Contents: 3/17 available modules
 ##
 
 ##
@@ -26,7 +26,7 @@
 ##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 ##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
 ##
-##  NOTICE: Given that you include this file verbatim into your own
+##  Notice: Given that you include this file verbatim into your own
 ##  source tree, you are justified in saying that it remains separate
 ##  from your package, and that this way you are simply just using GNU
 ##  shtool. So, in this situation, there is no requirement that your
@@ -40,6 +40,7 @@
 ##  Available commands:
 ##    install    Install a program, script or datafile
 ##    mkdir      Make one or more directories
+##    guessos    Simple operating system guesser
 ##
 ##  Not available commands (because module was not built-in):
 ##    echo       Print string with optional construct expansion
@@ -50,10 +51,7 @@
 ##    mkln       Make link with calculation of relative paths
 ##    mkshadow   Make a shadow tree through symbolic links
 ##    fixperm    Fix file permissions inside a source tree
-##    rotate     Logfile rotation
 ##    tarball    Roll distribution tarballs
-##    subst      Apply sed(1) substitution operations
-##    guessos    Simple operating system guesser
 ##    arx        Extended archive command
 ##    slo        Separate linker options by library class
 ##    scpp       Sharing C Pre-Processor
@@ -67,11 +65,11 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 if [ ".$1" = ".-h" -o ".$1" = ".--help" ]; then
-    echo "This is GNU shtool, version 1.6.0 (23-Sep-2001)"
-    echo "Copyright (c) 1994-2002 Ralf S. Engelschall <rse@engelschall.com>"
+    echo "This is GNU shtool, version 1.5.1 (29-Jul-2000)"
+    echo "Copyright (c) 1994-2000 Ralf S. Engelschall <rse@engelschall.com>"
     echo "Report bugs to <bug-shtool@gnu.org>"
     echo ''
-    echo "Usage: shtool [<options>] [<cmd-name> [<cmd-options>] [<cmd-args>]]"
+    echo "Usage: shtool [<options>] [<cmd-name> [<cmd-options>] [<cmd-args>]]" 
     echo ''
     echo 'Available global <options>:'
     echo '  -v, --version   display shtool version information'
@@ -80,62 +78,38 @@ if [ ".$1" = ".-h" -o ".$1" = ".--help" ]; then
     echo '  -r, --recreate  recreate this shtool script via shtoolize'
     echo ''
     echo 'Available <cmd-name> [<cmd-options>] [<cmd-args>]:'
-    echo '  install  [-v|--verbose] [-t|--trace] [-c|--copy] [-C|--compare-copy]'
-    echo '           [-s|--strip] [-m|--mode <mode>] [-o|--owner <owner>]'
-    echo '           [-g|--group <group>] [-e|--exec <sed-cmd>] <file> [<file>'
-    echo '           ...] <path>'
-    echo '  mkdir    [-t|--trace] [-f|--force] [-p|--parents] [-m|--mode'
-    echo '           <mode>] <dir> [<dir> ...]'
+    echo '  install  [-v] [-t] [-c] [-C] [-s] [-m<mode>] [-o<owner>] [-g<group>]'
+    echo '           [-e<ext>] <file> [<file> ...] <path>'
+    echo '  mkdir    [-t] [-f] [-p] [-m<mode>] <dir> [<dir> ...]'
+    echo '  guessos  '
     echo ''
     echo 'Not available <cmd-name> (because module was not built-in):'
-    echo '  echo     [-n|--newline] [-e|--expand] [<str> ...]'
-    echo '  mdate    [-n|--newline] [-z|--zero] [-s|--shorten] [-d|--digits]'
-    echo '           [-f|--field-sep <str>] [-o|--order <spec>] <path>'
-    echo '  table    [-F|--field-sep <sep>] [-w|--width <width>] [-c|--columns'
-    echo '           <cols>] [-s|--strip <strip>] <str><sep><str>...'
-    echo '  prop     [-p|--prefix <str>]'
-    echo '  move     [-v|--verbose] [-t|--trace] [-e|--expand] [-p|--preserve]'
-    echo '           <src-file> <dst-file>'
-    echo '  mkln     [-t|--trace] [-f|--force] [-s|--symbolic] <src-path>'
-    echo '           [<src-path> ...] <dst-path>'
-    echo '  mkshadow [-v|--verbose] [-t|--trace] [-a|--all] <src-dir> <dst-dir>'
-    echo '  fixperm  [-v|--verbose] [-t|--trace] <path> [<path> ...]'
-    echo '  rotate   [-v|--verbose] [-t|--trace] [-f|--force] [-n|--num-files'
-    echo '           <count>] [-s|--min-size <size>] [-c|--copy] [-r|--remove]'
-    echo '           [-a|--archive-dir <dir>] [-z|--compress [<tool>:]<level>]'
-    echo '           [-b|--background] [-d|--delay] [-p|--pad <len>] [-o|--owner'
-    echo '           <owner>] [-g|--group <group>] [-m|--mode <mode>] [-M|--migrate'
-    echo '           <cmd>] [-P|--prolog <cmd>] [-E|--epilog <cmd>] <file> [...]'
-    echo '  tarball  [-t|--trace] [-v|--verbose] [-o|--output <tarball>]'
-    echo '           [-c|--compress <prog>] [-d|--directory <dir>] [-u|--user'
-    echo '           <user>] [-g|--group <group>] [-e|--exclude <pattern>]'
-    echo '           <path> [<path> ...]'
-    echo '  subst    [-v|--verbose] [-t|--trace] [-n|--nop] [-s|--stealth]'
-    echo '           [-i|--interactive] [-b|--backup <ext>] [-e|--exec <cmd>]'
-    echo '           [-f|--file <cmd-file>] [<file>] [...]'
-    echo '  guessos  '
-    echo '  arx      [-t|--trace] [-C|--command <cmd>] <op> <archive> [<file>'
-    echo '           ...]'
-    echo '  slo      [-p|--prefix <str>] -- -L<dir> -l<lib> [-L<dir> -l<lib>'
-    echo '           ...]'
-    echo '  scpp     [-v|--verbose] [-p|--preserve] [-f|--filter <filter>]'
-    echo '           [-o|--output <ofile>] [-t|--template <tfile>] [-M|--mark'
-    echo '           <mark>] [-D|--define <dname>] [-C|--class <cname>]'
-    echo '           <file> [<file> ...]'
-    echo '  version  [-l|--language <lang>] [-n|--name <name>] [-p|--prefix'
-    echo '           <prefix>] [-s|--set <version>] [-e|--edit] [-i|--increase'
-    echo '           <knob>] [-d|--display <type>] <file>'
-    echo '  path     [-s|--suppress] [-r|--reverse] [-d|--dirname] [-b|--basename]'
-    echo '           [-m|--magic] [-p|--path <path>] <str> [<str> ...]'
+    echo '  echo     [-n] [-e] [<str> ...]'
+    echo '  mdate    [-n] [-z] [-s] [-d] [-f<str>] [-o<spec>] <path>'
+    echo '  table    [-F<sep>] [-w<width>] [-c<cols>] [-s<strip>] <str><sep><str>...'
+    echo '  prop     [-p<str>]'
+    echo '  move     [-v] [-t] [-e] [-p] <src-file> <dst-file>'
+    echo '  mkln     [-t] [-f] [-s] <src-path> [<src-path> ...] <dst-path>'
+    echo '  mkshadow [-v] [-t] [-a] <src-dir> <dst-dir>'
+    echo '  fixperm  [-v] [-t] <path> [<path> ...]'
+    echo '  tarball  [-t] [-v] [-o <tarball>] [-c <prog>] [-d <dir>] [-u'
+    echo '           <user>] [-g <group>] [-e <pattern>] <path> [<path> ...]'
+    echo '  arx      [-t] [-C<cmd>] <op> <archive> [<file> ...]'
+    echo '  slo      [-p<str>] -- -L<dir> -l<lib> [-L<dir> -l<lib> ...]'
+    echo '  scpp     [-v] [-p] [-f<filter>] [-o<ofile>] [-t<tfile>] [-M<mark>]'
+    echo '           [-D<dname>] [-C<cname>] <file> [<file> ...]'
+    echo '  version  [-l<lang>] [-n<name>] [-p<prefix>] [-s<version>] [-e]'
+    echo '           [-i<knob>] [-d<type>] <file>'
+    echo '  path     [-s] [-r] [-d] [-b] [-m] [-p<path>] <str> [<str> ...]'
     echo ''
     exit 0
 fi
 if [ ".$1" = ".-v" -o ".$1" = ."--version" ]; then
-    echo "GNU shtool 1.6.0 (23-Sep-2001)"
+    echo "GNU shtool 1.5.1 (29-Jul-2000)"
     exit 0
 fi
 if [ ".$1" = ".-r" -o ".$1" = ."--recreate" ]; then
-    shtoolize -oshtool install mkdir
+    shtoolize -oshtool install mkdir guessos
     exit 0
 fi
 if [ ".$1" = ".-d" -o ".$1" = ."--debug" ]; then
@@ -144,7 +118,7 @@ if [ ".$1" = ".-d" -o ".$1" = ."--debug" ]; then
 fi
 name=`echo "$0" | sed -e 's;.*/\([^/]*\)$;\1;' -e 's;-sh$;;' -e 's;\.sh$;;'`
 case "$name" in
-    install|mkdir )
+    install|mkdir|guessos )
         #   implicit tool command selection
         tool="$name"
         ;;
@@ -165,30 +139,34 @@ gen_tmpfile=no
 case $tool in
     install )
         str_tool="install"
-        str_usage="[-v|--verbose] [-t|--trace] [-c|--copy] [-C|--compare-copy] [-s|--strip] [-m|--mode <mode>] [-o|--owner <owner>] [-g|--group <group>] [-e|--exec <sed-cmd>] <file> [<file> ...] <path>"
+        str_usage="[-v] [-t] [-c] [-C] [-s] [-m<mode>] [-o<owner>] [-g<group>] [-e<ext>] <file> [<file> ...] <path>"
         arg_spec="2+"
-        opt_spec="v.t.c.C.s.m:o:g:e+"
-        opt_alias="v:verbose,t:trace,c:copy,C:compare-copy,s:strip,m:mode,o:owner,g:group,e:exec"
+        opt_spec="v.t.c.C.s.m:o:g:e:"
         opt_v=no
         opt_t=no
         opt_c=no
         opt_C=no
         opt_s=no
-        opt_m="0755"
+        opt_m=""
         opt_o=""
         opt_g=""
         opt_e=""
         ;;
     mkdir )
         str_tool="mkdir"
-        str_usage="[-t|--trace] [-f|--force] [-p|--parents] [-m|--mode <mode>] <dir> [<dir> ...]"
+        str_usage="[-t] [-f] [-p] [-m<mode>] <dir> [<dir> ...]"
         arg_spec="1+"
         opt_spec="t.f.p.m:"
-        opt_alias="t:trace,f:force,p:parents,m:mode"
         opt_t=no
         opt_f=no
         opt_p=no
         opt_m=""
+        ;;
+    guessos )
+        str_tool="guessos"
+        str_usage=""
+        arg_spec="0="
+        opt_spec=""
         ;;
     -* )
         echo "$0:Error: unknown option \`$tool'" 2>&1
@@ -205,11 +183,6 @@ esac
 ##
 ##  COMMON UTILITY CODE
 ##
-
-#   commonly used ASCII values
-ASC_TAB="	"
-ASC_NL="
-"
 
 #   determine name of tool
 if [ ".$tool" != . ]; then
@@ -232,10 +205,6 @@ eval `echo $arg_spec |\
 eval `echo h.$opt_spec |\
       sed -e 's/\([a-zA-Z0-9]\)\([.:+]\)/opt_MODE_\1=\2;/g'`
 
-#   parse option alias string
-eval `echo h:help,$opt_alias |\
-      tr 'x-' 'x_' | sed -e 's/\([a-zA-Z0-9]\):\([^,]*\),*/opt_ALIAS_\2=\1;/g'`
-
 #   interate over argument line
 opt_PREV=''
 while [ $# -gt 0 ]; do
@@ -256,18 +225,6 @@ while [ $# -gt 0 ]; do
     else
         #   split argument into option and argument
         case "$1" in
-            --[a-zA-Z0-9]*=*)
-                eval `echo "x$1" |\
-                      sed -e 's/^x--\([a-zA-Z0-9-]*\)=\(.*\)$/opt_OPT="\1";opt_ARG="\2"/'`
-                opt_STR=`echo $opt_OPT | tr 'x-' 'x_'`
-                eval "opt_OPT=\${opt_ALIAS_${opt_STR}-${opt_OPT}}"
-                ;;
-            --[a-zA-Z0-9]*)
-                opt_OPT=`echo "x$1" | cut -c4-`
-                opt_STR=`echo $opt_OPT | tr 'x-' 'x_'`
-                eval "opt_OPT=\${opt_ALIAS_${opt_STR}-${opt_OPT}}"
-                opt_ARG=''
-                ;;
             -[a-zA-Z0-9]*)
                 eval `echo "x$1" |\
                       sed -e 's/^x-\([a-zA-Z0-9]\)/opt_OPT="\1";/' \
@@ -307,17 +264,17 @@ while [ $# -gt 0 ]; do
             ;;
         '+' )
             #   option with argument (multiple occurances append)
-            eval "opt_${opt_OPT}=\"\$opt_${opt_OPT}\${ASC_NL}\$opt_ARG\""
+            eval "opt_${opt_OPT}=\"\$opt_${opt_OPT} \$opt_ARG\""
             ;;
         * )
-            echo "$msgprefix:Error: unknown option: \`$opt_OPT'" 1>&2
+            echo "$msgprefix:Error: unknown option: \`-$opt_OPT'" 1>&2
             echo "$msgprefix:Hint:  run \`$toolcmdhelp -h' or \`man shtool' for details" 1>&2
             exit 1
             ;;
     esac
 done
 if [ ".$opt_PREV" != . ]; then
-    echo "$msgprefix:Error: missing argument to option \`$opt_PREV'" 1>&2
+    echo "$msgprefix:Error: missing argument to option \`-$opt_PREV'" 1>&2
     echo "$msgprefix:Hint:  run \`$toolcmdhelp -h' or \`man shtool' for details" 1>&2
     exit 1
 fi
@@ -358,7 +315,6 @@ if [ ".$gen_tmpfile" = .yes ]; then
     tmpfile="$tmpdir/.shtool.$$"
     rm -f $tmpfile >/dev/null 2>&1
     touch $tmpfile
-    chmod 600 $tmpfile
 fi
 
 ##
@@ -370,11 +326,11 @@ case $tool in
 install )
     ##
     ##  install -- Install a program, script or datafile
-    ##  Copyright (c) 1997-2002 Ralf S. Engelschall <rse@engelschall.com>
+    ##  Copyright (c) 1997-2000 Ralf S. Engelschall <rse@engelschall.com>
     ##  Originally written for shtool
     ##
     
-    #   determine source(s) and destination
+    #   determine source(s) and destination 
     argc=$#
     srcs=""
     while [ $# -gt 1 ]; do
@@ -400,13 +356,19 @@ install )
     for src in $srcs; do
         dst=$dstpath
     
-        #   if destination is a directory, append the input filename
+        #  If destination is a directory, append the input filename
         if [ $dstisdir = 1 ]; then
             dstfile=`echo "$src" | sed -e 's;.*/\([^/]*\)$;\1;'`
             dst="$dst/$dstfile"
         fi
     
-        #   check for correct arguments
+        #  Add a possible extension to src and dst
+        if [ ".$opt_e" != . ]; then
+            src="$src$opt_e"
+            dst="$dst$opt_e"
+        fi
+    
+        #  Check for correct arguments
         if [ ".$src" = ".$dst" ]; then
             echo "$msgprefix:Warning: source and destination are the same - skipped" 1>&2
             continue
@@ -416,18 +378,18 @@ install )
             continue
         fi
     
-        #   make a temp file name in the destination directory
+        #  Make a temp file name in the destination directory
         dsttmp=`echo $dst |\
                 sed -e 's;[^/]*$;;' -e 's;\(.\)/$;\1;' -e 's;^$;.;' \
                     -e "s;\$;/#INST@$$#;"`
     
-        #   verbosity
+        #  Verbosity
         if [ ".$opt_v" = .yes ]; then
             echo "$src -> $dst" 1>&2
         fi
     
-        #   copy or move the file name to the temp name
-        #   (because we might be not allowed to change the source)
+        #  Copy or move the file name to the temp name
+        #  (because we might be not allowed to change the source)
         if [ ".$opt_C" = .yes ]; then
             opt_c=yes
         fi
@@ -443,18 +405,8 @@ install )
             mv $src $dsttmp || exit $?
         fi
     
-        #   adjust the target file
-        if [ ".$opt_e" != . ]; then
-            sed='sed'
-            OIFS="$IFS"; IFS="$ASC_NL"; set -- $opt_e; IFS="$OIFS"
-            for e
-            do
-                sed="$sed -e '$e'"
-            done
-            cp $dsttmp $dsttmp.old
-            eval "$sed <$dsttmp.old >$dsttmp" || exit $?
-            rm -f $dsttmp.old
-        fi
+        #  Adjust the target file
+        #  (we do chmod last to preserve setuid bits)
         if [ ".$opt_s" = .yes ]; then
             if [ ".$opt_t" = .yes ]; then
                 echo "strip $dsttmp" 1>&2
@@ -473,14 +425,14 @@ install )
             fi
             chgrp $opt_g $dsttmp || exit $?
         fi
-        if [ ".$opt_m" != ".-" ]; then
+        if [ ".$opt_m" != . ]; then
             if [ ".$opt_t" = .yes ]; then
                 echo "chmod $opt_m $dsttmp" 1>&2
             fi
             chmod $opt_m $dsttmp || exit $?
         fi
     
-        #   determine whether to do a quick install
+        #   Determine whether to do a quick install
         #   (has to be done _after_ the strip was already done)
         quick=no
         if [ ".$opt_C" = .yes ]; then
@@ -491,7 +443,7 @@ install )
             fi
         fi
     
-        #   finally, install the file to the real destination
+        #   Finally install the file to the real destination
         if [ $quick = yes ]; then
             if [ ".$opt_t" = .yes ]; then
                 echo "rm -f $dsttmp" 1>&2
@@ -509,7 +461,7 @@ install )
 mkdir )
     ##
     ##  mkdir -- Make one or more directories
-    ##  Copyright (c) 1996-2002 Ralf S. Engelschall <rse@engelschall.com>
+    ##  Copyright (c) 1996-2000 Ralf S. Engelschall <rse@engelschall.com>
     ##  Originally written for public domain by Noah Friedman <friedman@prep.ai.mit.edu>
     ##  Cleaned up and enhanced for shtool
     ##
@@ -518,7 +470,7 @@ mkdir )
     for p in ${1+"$@"}; do
         #   if the directory already exists...
         if [ -d "$p" ]; then
-            if [ ".$opt_f" = .no -a ".$opt_p" = .no ]; then
+            if [ ".$opt_f" = .no ] && [ ".$opt_p" = .no ]; then
                 echo "$msgprefix:Error: directory already exists: $p" 1>&2
                 errstatus=1
                 break
@@ -532,12 +484,6 @@ mkdir )
                 echo "mkdir $p" 1>&2
             fi
             mkdir $p || errstatus=$?
-            if [ ".$opt_m" != . ]; then
-                if [ ".$opt_t" = .yes ]; then
-                    echo "chmod $opt_m $p" 1>&2
-                fi
-                chmod $opt_m $p || errstatus=$?
-            fi
         else
             #   the smart situation
             set fnord `echo ":$p" |\
@@ -569,6 +515,252 @@ mkdir )
         fi
     done
     exit $errstatus
+    ;;
+
+guessos )
+    ##
+    ##  guessos -- Simple operating system guesser
+    ##  Copyright (c) 1996-1999 The Apache Group, http://www.apache.org/
+    ##  The Apache license applies (see http://www.apache.org/docs/LICENSE)
+    ##  Originally written for Apache
+    ##
+    
+    MACHINE=`(uname -m) 2>/dev/null` || MACHINE=`(uname -p) 2>/dev/null` || MACHINE="unknown"
+    RELEASE=`(uname -r) 2>/dev/null` || RELEASE="unknown"
+     SYSTEM=`(uname -s) 2>/dev/null` ||  SYSTEM="unknown"
+    VERSION=`(uname -v) 2>/dev/null` || VERSION="unknown"
+    
+    XREL=`(uname -X) 2>/dev/null | grep "^Release" | awk '{print $3}'`
+    if [ "x$XREL" != "x" ]; then
+        if [ -f /etc/kconfig ]; then
+            case "$XREL" in
+                4.0|4.1) echo "${MACHINE}-whatever-isc4"; exit 0 ;;
+            esac
+        else
+        case "$XREL" in
+            3.2v4.2)
+                echo "whatever-whatever-sco3"; exit 0
+                ;;
+            3.2v5.0*)
+                echo "whatever-whatever-sco5"; exit 0
+                ;;
+            4.2MP)
+                if [ "x$VERSION" = "x2.1.1" ]; then
+                    echo "${MACHINE}-whatever-unixware211"; exit 0
+                elif [ "x$VERSION" = "x2.1.2" ]; then
+                    echo "${MACHINE}-whatever-unixware212"; exit 0
+                else
+                    echo "${MACHINE}-whatever-unixware2"; exit 0
+                fi
+                ;;
+            4.2)
+                echo "whatever-whatever-unixware1"; exit 0
+                ;;
+            5)
+                case "$VERSION" in
+                    7*) echo "${MACHINE}-whatever-unixware7"; exit 0 ;;
+                esac
+                ;;
+        esac
+        fi
+    fi
+    case "${SYSTEM}:${RELEASE}:${VERSION}:${MACHINE}" in
+        MiNT:*)
+            echo "m68k-atari-mint"; exit 0
+            ;;
+        A/UX:*)
+            echo "m68k-apple-aux3"; exit 0
+            ;;
+        AIX:*)
+            MACH=`echo $MACHINE | sed -e 's;[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F];;'`
+            echo "${MACH}-ibm-aix${VERSION}.${RELEASE}"; exit 0
+            ;;
+        dgux:*)
+            echo "${MACHINE}-dg-dgux"; exit 0
+            ;;
+        HI-UX:*)
+            echo "${MACHINE}-hi-hiux"; exit 0
+            ;;
+        HP-UX:*)
+            HPUXVER=`echo ${RELEASE}|sed -e 's/[^.]*.[0B]*//'`
+            echo "${MACHINE}-hp-hpux${HPUXVER}"; exit 0
+            ;;
+        IRIX:*)
+            if [ -f /usr/lib32/mips4/libm.so ]; then
+                echo "${MACHINE}/32-sgi-irix${RELEASE}"; exit 0
+            else
+                echo "${MACHINE}-sgi-irix${RELEASE}"; exit 0
+            fi
+            ;;
+        IRIX64:*)
+            echo "${MACHINE}/64-sgi-irix${RELEASE}"; exit 0
+            ;;
+        Linux:*)
+            V='whatever'
+            case "$MACHINE" in
+                i?86) V='pc' ;;
+            esac
+            R=''
+            case "$RELEASE" in
+                [1-9].*) R=`echo $RELEASE | cut -c1` ;;
+            esac
+            echo "${MACHINE}-${V}-linux-gnu${R}"; exit 0
+            ;;
+        LynxOS:*)
+            echo "${MACHINE}-lynx-lynxos"; exit 0
+            ;;
+        BSD/386|BSD/OS:3.*)
+            echo "${MACHINE}-whatever-bsdi3"; exit 0
+            ;;
+        BSD/386:*:*:*486*|BSD/OS:*:*:*:*486*)
+            echo "i486-whatever-bsdi"; exit 0
+            ;;
+        BSD/386:*|BSD/OS:*)
+            echo "${MACHINE}-whatever-bsdi"; exit 0
+            ;;
+        FreeBSD:*)
+            VERS=`echo ${RELEASE} | sed -e 's/[-(].*//'`
+            MACH=`/sbin/sysctl -n hw.model`
+            ARCH='whatever'
+            case ${MACH} in
+               *386*       ) MACH="i386"     ;;
+               *486*       ) MACH="i486"     ;;
+               Pentium\ II*) MACH="i686"     ;;
+               Pentium*    ) MACH="i586"     ;;
+               Alpha*      ) MACH="alpha"    ;;
+               *           ) MACH="$MACHINE" ;;
+            esac
+            case ${MACH} in
+               i[0-9]86 ) ARCH="pc" ;;
+            esac
+            echo "${MACH}-${ARCH}-freebsd${VERS}"; exit 0
+            ;;
+        NetBSD:*:*:*486*)
+            echo "i486-whatever-netbsd${RELEASE}"; exit 0
+            ;;
+        NetBSD:*)
+            echo "${MACHINE}-whatever-netbsd${RELEASE}"; exit 0
+            ;;
+        OpenBSD:*)
+            echo "${MACHINE}-whatever-openbsd"; exit 0
+            ;;
+        OSF1:*:*:*alpha*)
+            VERS=`echo $RELEASE | sed -e 's;^V;;'`
+            echo "${MACHINE}-dec-osf${VERS}"; exit 0
+            ;;
+        QNX:*)
+            if [ "$VERSION" -gt 422 ]; then
+                echo "${MACHINE}-qssl-qnx32"
+            else
+                echo "${MACHINE}-qssl-qnx"
+            fi
+            exit 0
+            ;;
+        Paragon*:*:*:*)
+            echo "i860-intel-osf1"; exit 0
+            ;;
+        SunOS:5.*)
+            VERSION=`echo $RELEASE | sed -e 's;^5\.;;'`
+            echo "${MACHINE}-sun-solaris2.${VERSION}"; exit 0
+            ;;
+        SunOS:*)
+            echo "${MACHINE}-sun-sunos4"; exit 0
+            ;;
+        UNIX_System_V:4.*:*)
+            echo "${MACHINE}-whatever-sysv4"; exit 0
+            ;;
+        unix:3.0.9*:*:88k)
+            echo "${MACHINE}-encore-sysv4"; exit 0
+            ;;
+        *:4*:R4*:m88k)
+            echo "${MACHINE}-whatever-sysv4"; exit 0
+            ;;
+        UnixWare:5:99*:*)
+            # Gemini, beta release of next rev of unixware
+            echo "${MACHINE}-whatever-unixware212"; exit 0
+            ;;
+        DYNIX/ptx:4*:*)
+            echo "${MACHINE}-whatever-sysv4"; exit 0
+            ;;
+        *:4.0:3.0:[345][0-9]?? | *:4.0:3.0:3[34]??[/,]* | library:*)
+            echo "x86-ncr-sysv4"; exit 0
+            ;;
+        ULTRIX:*)
+            echo "${MACHINE}-unknown-ultrix"; exit 0
+            ;;
+        SINIX-?:* | ReliantUNIX-?:*)
+            echo "${MACHINE}-siemens-sysv4"; exit 0
+            ;;
+        POSIX*BS2000)
+            echo "${MACHINE}-siemens-sysv4"; exit 0
+            ;;
+        machten:*)
+           echo "${MACHINE}-tenon-${SYSTEM}"; exit 0;
+           ;;
+        ConvexOS:*:11.*:*)
+           echo "${MACHINE}-v11-${SYSTEM}"; exit 0;
+           ;;
+        UNIX_SV:*:*:maxion)
+           echo "${MACHINE}-ccur-sysv4"; exit 0;
+           ;;
+        PowerMAX_OS:*:*:Night_Hawk)
+           MACHINE=`uname -p`
+           echo "${MACHINE}-concurrent-powermax"; exit 0;
+           ;;
+        UNIX_SV:*)
+           if [ -d /usr/nec ];then
+               echo "mips-nec-sysv4"; exit 0;
+           fi
+           ;;
+        NonStop-UX:4.[02]*:[BC]*:*)
+           echo "${MACHINE}-tandem-sysv4"; exit 0;
+           ;;
+        Rhapsody:*:*:*)
+           case "${MACHINE}" in
+               "Power Macintosh") MACHINE=powerpc ;;
+           esac
+           echo "${MACHINE}-apple-rhapsody${RELEASE}"; exit 0
+           ;;
+        "Mac OS":*:*:*)
+           MACHINE=`uname -p`
+           echo "${MACHINE}-apple-macos${RELEASE}"; exit 0
+           ;;
+        "RISC iX":*)
+           echo "arm-whatever-riscix"; exit 0;
+           ;;
+        *:4.0:2:*)
+           echo "whatever-unisys-sysv4"; exit 0;
+           ;;
+        *:*:dcosx:NILE*)
+           echo "pyramid-pyramid-svr4"; exit 0;
+           ;;
+        *:*:*:"DRS 6000")
+           echo "drs6000-whatever-whatever"; exit 0;
+           ;;
+        AmigaOS:*:*:* )
+           echo "${MACHINE}-whatever-${SYSTEM}${RELEASE}"; exit 0
+           ;;
+    esac
+    
+    # Now NeXT
+    ISNEXT=`(hostinfo) 2>/dev/null`
+    case "$ISNEXT" in
+        *NeXT*)
+             # Swiped from a friendly uname clone for NEXT/OPEN Step.
+             NEXTOSVER="`hostinfo | sed -n 's/.*NeXT Mach \([0-9\.]*\).*/\1/p'`"
+             if [ "$NEXTOSVER" -gt 3.3 ]; then
+                 NEXTOS="openstep"
+             else
+                 NEXTOS="nextstep"
+             fi
+             NEXTREL="`hostinfo | sed -n 's/.*NeXT Mach \([0-9\.]*\).*/\1/p'`"
+             NEXTARCH=`arch`
+             echo "${NEXTARCH}-next-${NEXTOS}${NEXTREL}" ; exit 0
+             ;;
+    esac
+    
+    # Fallback
+    echo "${MACHINE}-unknown-${SYSTEM}/${RELEASE}/${VERSION}"
     ;;
 
 esac
