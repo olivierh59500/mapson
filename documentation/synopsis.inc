@@ -13,6 +13,7 @@
       <arg choice="opt">-a</arg>
       <arg choice="opt">--accept</arg>
     </group>
+    <arg choice="opt">--cookie <replaceable>cookie</replaceable></arg>
     <group>
       <arg choice="opt">-c <replaceable>config</replaceable></arg>
       <arg choice="opt">--config-file <replaceable>config</replaceable></arg>

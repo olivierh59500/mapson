@@ -137,11 +137,11 @@ configuration::configuration(int argc, char** argv)
                 throw no_error();
             case 'h':
                 fprintf(stderr, "Usage: mapson [-h | --help] [--version] [-d | --debug] [-a | --accept]\n" \
-                                "              [-c config | --config-file config] [mail...]\n",
-                        argv[0]);
+                        "              [--cookie cookie] [-c config | --config-file config] [mail...]\n");
                 throw no_error();
             default:
-                fprintf(stderr, "Usage: %s [-h | --help] [--version] [-d | --debug] [-c config | --config-file config] [mail...]", argv[0]);
+                fprintf(stderr, "Usage: mapson [-h | --help] [--version] [-d | --debug] [-a | --accept]\n" \
+                        "              [--cookie cookie] [-c config | --config-file config] [mail...]\n");
                 throw runtime_error("Incorrect command line syntax.");
             }
         }
