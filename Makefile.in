@@ -155,9 +155,7 @@ dist:		mapson documentation/man-page.txt documentation/mapson.html \
 
 # Dependencies
 
-librfc822/lexer.o: librfc822/rfc822.hh
-librfc822/parser.o: librfc822/rfc822.hh
-librfc822/test.o: librfc822/rfc822.hh
+RegExp/test.o: RegExp/RegExp.hh
 accept-confirmation.o: system-error/system-error.hh log.hh config.hh
 accept-confirmation.o: libparse-config-file/parse-config-file.hh
 accept-confirmation.o: fd-sentry.hh deliver.hh accept-confirmation.hh
@@ -172,18 +170,31 @@ extract-addresses.o: config.hh libparse-config-file/parse-config-file.hh
 gather-addresses.o: system-error/system-error.hh address-db.hh config.hh
 gather-addresses.o: libparse-config-file/parse-config-file.hh fd-sentry.hh
 gather-addresses.o: extract-addresses.hh gather-addresses.hh
-log.o: config.hh libparse-config-file/parse-config-file.hh log.hh
+log.o: system-error/system-error.hh file-sentry.hh config.hh
+log.o: libparse-config-file/parse-config-file.hh log.hh
 mapson.o: librfc822/rfc822.hh system-error/system-error.hh
 mapson.o: extract-addresses.hh config.hh
 mapson.o: libparse-config-file/parse-config-file.hh log.hh address-db.hh
 mapson.o: spool.hh deliver.hh request-confirmation.hh gather-addresses.hh
 mapson.o: accept-confirmation.hh version.h
+request-confirmation.o: libvarexp/varexp.hh system-error/system-error.hh
+request-confirmation.o: log.hh config.hh
+request-confirmation.o: libparse-config-file/parse-config-file.hh
+request-confirmation.o: extract-addresses.hh fd-sentry.hh multi-open.hh
+request-confirmation.o: request-confirmation.hh
 spool.o: libmd5/md5.h system-error/system-error.hh log.hh config.hh
 spool.o: libparse-config-file/parse-config-file.hh fd-sentry.hh spool.hh
+libgetopt/getopt.o: libgetopt/getopt.h
+libgetopt/getopt1.o: libgetopt/getopt.h
+libmd5/md5.o: libmd5/md5.h
+libmd5/md5test.o: libmd5/md5.h
 libparse-config-file/parse-config-file.o: RegExp/RegExp.hh
 libparse-config-file/parse-config-file.o: system-error/system-error.hh
 libparse-config-file/parse-config-file.o: libparse-config-file/parse-config-file.hh
 libparse-config-file/test.o: libparse-config-file/parse-config-file.hh
+librfc822/lexer.o: librfc822/rfc822.hh
+librfc822/parser.o: librfc822/rfc822.hh
+librfc822/test.o: librfc822/rfc822.hh
 libvarexp/command.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/regression-tests/empty-search-pattern.o: libvarexp/varexp.hh
 libvarexp/regression-tests/expand-character-class.o: libvarexp/internal.hh
@@ -213,13 +224,3 @@ libvarexp/text.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/transpose.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/unescape.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/variable.o: libvarexp/internal.hh libvarexp/varexp.hh
-libmd5/md5.o: libmd5/md5.h
-libmd5/md5test.o: libmd5/md5.h
-RegExp/test.o: RegExp/RegExp.hh
-request-confirmation.o: libvarexp/varexp.hh system-error/system-error.hh
-request-confirmation.o: log.hh config.hh
-request-confirmation.o: libparse-config-file/parse-config-file.hh
-request-confirmation.o: extract-addresses.hh fd-sentry.hh multi-open.hh
-request-confirmation.o: request-confirmation.hh
-libgetopt/getopt.o: libgetopt/getopt.h
-libgetopt/getopt1.o: libgetopt/getopt.h
