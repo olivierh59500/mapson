@@ -94,10 +94,20 @@ main(int argc, char * argv[])
 
     /* Check whether the mail is complete. */
 
-    if (Mail->envelope == NULL ||
-	Mail->message_id == NULL ||
-	Mail->from == NULL || (Mail->from)[0] == NULL) {
-	syslog(LOG_WARNING, "The incoming mail is syntactically incorrect.");
+    rc = 0;
+    if (Mail->envelope == NULL) {
+	syslog(LOG_WARNING, "The incoming mail's envelope is syntactically incorrect.");
+	rc++;
+    }
+    if (Mail->message_id == NULL) {
+	syslog(LOG_WARNING, "The incoming mail has no message-id.");
+	rc++;
+    }
+    if (Mail->from == NULL || (Mail->from)[0] == NULL) {
+	syslog(LOG_WARNING, "The incoming mail has no From: line.");
+	rc++;
+    }
+    if (rc > 0) {
 	syslog(LOG_WARNING, "I'll leave it in a rescue file and exit.");
 	exit(0);
     }
