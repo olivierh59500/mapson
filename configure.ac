@@ -68,10 +68,10 @@ dnl Do we have large file system support?
 dnl
 case "$hosttuple" in
      *-*-solaris*)
-	;;
+        ;;
      *)
-	AC_SYS_LARGEFILE
-	;;
+        AC_SYS_LARGEFILE
+        ;;
 esac
 
 dnl If the system misses the getopt.h include or the getopt_long()
@@ -101,10 +101,10 @@ AC_ARG_WITH(mailboxdir, [  --with-mailboxdir=DIR   location of the user mailboxe
     fi
     ],
     [
-    AC_CHECK_FILE(/var/mail, mailboxdir=/var/mail, [
-	AC_CHECK_FILE(/var/spool/mail, mailboxdir=/var/spool/mail, [
-	    AC_MSG_ERROR([Cannot determine the location of the mailboxes on this system.])
-	])])
+    AC_CHECK_FILE(/var/spool/mail, mailboxdir=/var/spool/mail, [
+        AC_CHECK_FILE(/var/mail, mailboxdir=/var/mail, [
+            AC_MSG_ERROR([Cannot determine the location of the mailboxes on this system.])
+        ])])
     ])
 
 AC_SUBST(mta)
@@ -161,6 +161,9 @@ The build is configured as follows:
     mandir          = $mandir
     datadir         = $datadir
     sysconfdir      = $sysconfdir
+
+    mta             = $mta
+    mailboxdir      = $mailboxdir
 
 [EOF]
 
