@@ -19,7 +19,7 @@
 #include "mapson.h"
 
 #define MAX_TRANSFORM_ELEMENTS 8
-#define COOKIE_PATTERN "mapSoN-Confirm-Cookie: *(.*) *$"
+#define COOKIE_PATTERN "mapSoN-Confirm-Cookie:[ \t]*(.*[^ \t])[ \t]*$"
 
 char *
 is_confirmation_mail(char * mail_buffer)
