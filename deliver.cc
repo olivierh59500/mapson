@@ -13,19 +13,10 @@
 #include "system-error/system-error.hh"
 #include "config.hh"
 #include "log.hh"
+#include "fd-sentry.hh"
 #include "deliver.hh"
 
 using namespace std;
-
-namespace
-    {
-    struct fd_sentry
-        {
-        explicit fd_sentry(int arg) throw() : fd(arg) { }
-        ~fd_sentry() throw() { close(fd); }
-        int fd;
-        };
-    }
 
 void deliver(const string& mail)
     {
@@ -36,6 +27,7 @@ void deliver(const string& mail)
     if (fd < 0)
 	throw system_error(string("Can't open mailbox file '") + config->mailbox + "' for writing");
     fd_sentry sentry(fd);
+
     for (size_t len = 0; len < mail.size(); )
 	{
 	ssize_t rc = write(fd, mail.data()+len, mail.size()-len);

@@ -11,6 +11,7 @@
 
 // My own libraries.
 #include "system-error/system-error.hh"
+#include "fd-sentry.hh"
 #include "address-db.hh"
 
 using namespace std;
@@ -23,6 +24,7 @@ AddressDB::AddressDB(const string& filename_arg)
     fd = open(filename.c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't open address db '") + filename + "' for reading");
+    fd_sentry sentry(fd);
 
     struct flock lock;
     lock.l_type = F_WRLCK;
@@ -40,6 +42,10 @@ AddressDB::AddressDB(const string& filename_arg)
 	data.append(buffer, rc);
     if (rc < 0)
 	throw system_error(string("Failed to read address db '") + filename + "' into memory");
+
+    // Success. Don't close the file descriptor.
+
+    sentry.fd = -1;
     }
 
 AddressDB::~AddressDB() throw()

@@ -15,6 +15,7 @@
 #include "log.hh"
 #include "config.hh"
 #include "extract-addresses.hh"
+#include "fd-sentry.hh"
 #include "request-confirmation.hh"
 
 using namespace std;
@@ -135,6 +136,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
     int fd = open(filename.c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't open address db '") + filename + "' for reading");
+    fd_sentry sentry(fd);
 
     struct flock lock;
     lock.l_type = F_WRLCK;
