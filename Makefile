@@ -4,7 +4,7 @@
 # $Header$
 #
 
-SUBDIRS	= lib src man
+SUBDIRS	= lib #src man
 
 all:	$(SUBDIRS)
 
@@ -14,7 +14,7 @@ src::
 
 lib::
 	@echo "====> Building libraries"
-#	@(cd lib;${MAKE})
+	@(cd lib;${MAKE})
 
 man::
 	@echo "====> Building manfiles"
@@ -22,6 +22,8 @@ man::
 
 clean:
 	@echo "====> Cleaning up"
+	@for n in $(SUBDIRS);do (cd $$n;$(MAKE) clean);done
+	rm -f configure config.log config.cache config.log config.status
 
 build-dist:	all
 	@${MAKE} real-build-dist VERS=`sed -n -e '/^#define[	 ][	 ]*VERS/p' src/version.h | sed -e 's/^.*"\(.*\)"/\1/' -e 's/ /-/g' -e 's/-beta-/b/g'`
