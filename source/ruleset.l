@@ -14,11 +14,12 @@
 #include <assert.h>
 #include <errno.h>
 
-#include <myexceptions.h>
-#include <paths.h>
+#include "myexceptions.h"
+#include "paths.h"
 #include "mapson.h"
 
-static unsigned int   rlst_lineno;
+/* static unsigned int   yylineno;
+ */
 static struct Mail *  rlst_mail;
 static int            rlst_rc;
 static char *         rlst_pattern;
