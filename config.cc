@@ -47,7 +47,7 @@ namespace
             {
             const char* p = getenv(name.c_str());
             if (p == NULL)
-                data.clear();
+                data.erase();
             else
                 data = p;
             }
