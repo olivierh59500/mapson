@@ -8,6 +8,7 @@
 
 // Our logging routines.
 
+void init_logging(const char* file);
 void _debug(const char* fmt, ...) throw();
 void info(const char* fmt, ...)  throw();
 void error(const char* fmt, ...) throw();

@@ -82,6 +82,11 @@ RuntimeErrorRC 75
 #       Valid return codes are in the range of 0 <= rc <= 128.
 SyntaxErrorRC 65
 
+# LogFile <file>
+#       This option specifies the complete path of the file mapSoN will use
+#       to log its actions. The file will be created if it does not exist.
+LogFile ${HOME}/.mapson/log
+
 # Debug <boolean>
 #       If this option is set to "true", mapSoN will log extensive
 #       debugging information. Please note that debug information is only

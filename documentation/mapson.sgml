@@ -348,39 +348,27 @@ request-for-confirmation mail.</para>
     <para>There's a chance that &mapson; isn't working the way you expect it --
 especially in the current unfinished state of the program. Here's a short
 description of how you can probably figure what's going wrong. The magic word is
-"log file". &mapson; logs pretty much everything it does via the Unix
-<application>syslog</application> daemon under the <systemitem>MAIL</systemitem>
-facility. Usually these messages are written to the file
-<filename>/var/log/messages</filename>, but this may vary on some installations.
-So take a look at <filename>/etc/syslogd.conf</filename> config file and see
-where the <systemitem>MAIL</systemitem> facility is going on your
-machine.</para>
-
-    <para>In the file configured there, you'll recognize &mapson;'s messages by
-the <computeroutput>mapson[<replaceable>id</replaceable>]</computeroutput> prefix. The
-<replaceable>id</replaceable> part stands for the process id assigned by the
-system to the &mapson; process. It's probably not of interest to you except to
-figure out the correct order of the messages in case multiple &mapson; processes
-have been running simultaneously.</para>
+"log file". &mapson; logs pretty much everything it does to a file, which is per
+default located at <filename>$HOME/.mapson/log</filename>.</para>
 
     <para>A typical set of messages found there may look like this:</para>
 
     <informalexample>
-      <screen>mapson[1571]: mapSoN verion 2.0-beta-2 starting up
-mapson[1571]: My configuration:
-mapson[1571]:     Mailbox            = '/var/spool/mail/'
-mapson[1571]:     ConfigFile         = 'config-sample'
-mapson[1571]:     SpoolDir           = '/.mapson/spool'
-mapson[1571]:     AddressDB          = '/.mapson/address-db'
-mapson[1571]:     ReqConfirmTemplate = '/.mapson/reqmail.template: \
+      <screen>debug: mapSoN verion 2.0-beta-2 starting up
+debug: My configuration:
+debug:     Mailbox            = '/var/spool/mail/'
+debug:     ConfigFile         = 'config-sample'
+debug:     SpoolDir           = '/.mapson/spool'
+debug:     AddressDB          = '/.mapson/address-db'
+debug:     ReqConfirmTemplate = '/.mapson/reqmail.template: \
     /usr/local/mapson/share/mapson/reqmail.template'
-mapson[1571]:     MTA                = '/usr/sbin/sendmail '-f&lt;&gt;' -i -t'
-mapson[1571]:     StrictRFCParser    = 'false'
-mapson[1571]:     PassIncorrectMails = 'true'
-mapson[1571]:     RuntimeErrorRC     = '75'
-mapson[1571]:     SyntaxErrorRC      = '65'
-mapson[1571]:     Debug              = 'true'
-mapson[1571]: Runtime error while processing mail 'no-message-id': \
+debug:     MTA                = '/usr/sbin/sendmail '-f&lt;&gt;' -i -t'
+debug:     StrictRFCParser    = 'false'
+debug:     PassIncorrectMails = 'true'
+debug:     RuntimeErrorRC     = '75'
+debug:     SyntaxErrorRC      = '65'
+debug:     Debug              = 'true'
+error: Runtime error while processing mail 'no-message-id': \
     Can't open address db '/.mapson/address-db' for reading: No such \
     file or directory</screen>
     </informalexample>

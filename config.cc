@@ -71,6 +71,7 @@ configuration::configuration(int argc, char** argv)
     if (sentry.pwd == 0)
         throw system_error("Can't get my user name");
     config_file.assign(sentry.pwd->pw_dir).append("/.mapson/config");
+    log_file.assign(sentry.pwd->pw_dir).append("/.mapson/log");
     spool_dir.assign(sentry.pwd->pw_dir).append("/.mapson/spool");
     address_db.assign(sentry.pwd->pw_dir).append("/.mapson/address-db");
     request_for_confirmation_file.assign(sentry.pwd->pw_dir).append("/.mapson/reqmail.template");
@@ -139,6 +140,10 @@ configuration::configuration(int argc, char** argv)
 
     if (cmdline_debug)
         debug = true;
+
+    // Init the log file routines.
+
+    init_logging(log_file.c_str());
     }
 
 // The destructor is pretty straightforward.
@@ -156,6 +161,7 @@ void configuration::dump() const
     debug(("My configuration:"));
     debug(("    Mailbox            = '%s'", mailbox.c_str()));
     debug(("    ConfigFile         = '%s'", config_file.c_str()));
+    debug(("    LogFile            = '%s'", log_file.c_str()));
     debug(("    SpoolDir           = '%s'", spool_dir.c_str()));
     debug(("    AddressDB          = '%s'", address_db.c_str()));
     debug(("    ReqConfirmTemplate = '%s'", request_for_confirmation_file.c_str()));
@@ -214,6 +220,10 @@ void configuration::set_option(const string& keyword, const string& _data)
             {
             address_db = data;
             }
+        else if (strcasecmp("LogFile", keyword.c_str()) == 0)
+            {
+            log_file = data;
+            }
         else if (strcasecmp("ReqConfirmTemplate", keyword.c_str()) == 0)
             {
             request_for_confirmation_file = data;
@@ -243,7 +253,7 @@ void configuration::set_option(const string& keyword, const string& _data)
             syntax_error_rc = get_rc(data);
             }
         else
-            throw runtime_error(string("The Config file uses the unknown keyword '")
+            throw runtime_error(string("The config file uses the unknown keyword '")
                                 + keyword + "'; ignoring line.");
         }
     catch(const varexp::error& e)
