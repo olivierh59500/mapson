@@ -103,13 +103,13 @@ try
     // out that are already in the database.
 
     bool had_a_hit = (was_confirmation || config->accept);
-    for (addrset_t::const_iterator i = all_addresses.begin(); i != all_addresses.end(); )
+    for (addrset_t::iterator i = all_addresses.begin(); i != all_addresses.end(); )
         {
 	if (address_db.find(*i))
             {
             debug(("The address '%s' is already in the database.", i->c_str()));
 	    had_a_hit = true;
-            addrset_t::const_iterator tmp = i;
+            addrset_t::iterator tmp = i;
             ++tmp;
             all_addresses.erase(i);
             i = tmp;
