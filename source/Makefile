@@ -28,7 +28,7 @@ depend:
 	makedepend -Y /usr/include $(SRCS)
 	@rm -f Makefile.bak
 
-proto:
+proto.h:
 	@echo "====> Creating proto.h"
 	@echo > proto.h "/* Prototypes for mapSoN */"
 	@echo >>proto.h ""
