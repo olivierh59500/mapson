@@ -79,7 +79,7 @@ mail_addresses extract_sender_addresses(const string& mail)
                     throw rfc822_syntax_error("Mail contains duplicate 'From ' header.");
                 try
                     {
-                    line.erase(0, sizeof("From ") - 1);
+                    line.erase(0, sizeof("From ") - 1).erase(line.size() - 1, 1);
                     rfc822parser parser(lex(line));
                     addresses.envelope = to_lowercase(parser.addr_spec().address);
                     }
