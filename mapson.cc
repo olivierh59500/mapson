@@ -126,10 +126,13 @@ try
 	// Add all addresses to the database that are not in it
 	// already.
 
-        for (addrset_t::const_iterator i = all_addresses.begin(); i != all_addresses.end(); ++i)
+        if (config->address_db_auto_add)
             {
-            debug(("Adding address '%s' to the database.", i->c_str()));
-            address_db.insert(*i);
+            for (addrset_t::const_iterator i = all_addresses.begin(); i != all_addresses.end(); ++i)
+                {
+            	debug(("Adding address '%s' to the database.", i->c_str()));
+                address_db.insert(*i);
+                }
             }
 
         // Deliver the mail.

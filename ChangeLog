@@ -1,3 +1,11 @@
+2003-01-04  David van Wijngaarden <you may contact me at http://vmlinuz.nl>
+
+	* Added option to choose if confirmed addresses should be added
+	to the db automatically or not. Some ppl may want to do this
+	manually
+	
+	* mapSoN can spool its output to a pipe now.
+
 2002-06-26  Peter Simons  <simons@computer.org>
 
 	* Released 2.1.

@@ -25,7 +25,11 @@ such an example.</para>
       <term><literal>Mailbox</literal> <parameter>file</parameter></term>
       <listitem>
         <para>This directive sets the complete path of the mailbox file, where
-&mapson; stores approved mails.</para>
+&mapson; stores approved mails. Unless, of course, the parameter configured here
+starts with a pipe sign (<quote><literal>|</literal></quote>), as in
+<quote><literal>|/usr/sbin/sendmail foo@example.org</literal></quote>. In this
+case, &mapson; will pipe the mail to the standard input channel of this command
+rather than to write it to a file.</para>
       </listitem>
     </varlistentry>
 
@@ -42,6 +46,13 @@ deferred mails will be spooled until a confirmation arrives for them.</para>
       <listitem>
         <para>This directive sets the complete path of the file &mapson; uses to
 store the <quote>known</quote> addresses.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>AddressDBAutoAdd</literal> <parameter>boolean</parameter></term>
+      <listitem>
+        <para>If this directive is set to <literal>true</literal> (the default), then &mapson; will add so-far unknown addresses from which mail has been accepted to the database automatically, so that in future mails from these addresses will pass. You can disable this behavior, though, in case you want to maintain that database manually or by other means.</para>
       </listitem>
     </varlistentry>
 

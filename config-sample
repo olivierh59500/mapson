@@ -14,9 +14,14 @@
 # config files changes effectively nothing.
 
 # Mailbox <file>
-#       This option specifies the complete path to the user's mailbox file.
-#       That is the location where mapSoN will store incoming e-mail that
-#       passed.
+
+#       This option specifies the complete path to the user's mailbox
+#       file. That is the location where mapSoN will store incoming
+#       e-mail that passed. If the first character of the configured
+#       mailbox is a pipe ("|"),the string here will be interpreted as
+#       a command to which the mail is piped for delivery, for
+#       instance:
+#           |/usr/sbin/sendmail other@address.example.org
 Mailbox            ${MAILBOXDIR}/${USER}
 
 # SpoolDir <directory>
@@ -31,6 +36,12 @@ SpoolDir           ${HOME}/.mapson/spool
 #       store the known addresses. The file will be created if it does not
 #       exist.
 AddressDB          ${HOME}/.mapson/address-db
+
+# AddressDBAutoAdd <boolean>
+#       This option defines whether to add confirmed addresses to the
+#       database, as some people may want to do this manually ... The
+#       default is to add them automatically, though.
+AddressDBAutoAdd   true
 
 # ReqConfirmTemplate <file>[:<file>:<file>...]
 #       This option specifies a list of possible filenames for the
