@@ -1,26 +1,27 @@
 #
 # Build the mapSoN documentation
 #
+DOCBOOKBASE	= /usr/local/sgml/dsssl/docbook
+LDPBASE		= /usr/local/sgml/dsssl/ldp
 
 .SUFFIXES:
 .SUFFIXES: .sgml .tex .txt .dvi .ps .pdf .html
 
 .sgml.tex:
-	sgmltools -b jadetex $<
+	openjade -t tex -d $(LDPBASE)/ldp.dsl\#print -D $(DOCBOOKBASE)/print $<
 
 .sgml.html:
-	sgmltools -b onehtml $<
+	openjade -t sgml -d $(LDPBASE)/ldp.dsl\#html -V nochunks -D $(DOCBOOKBASE)/html $< >$@
 
 .sgml.txt:
-	sgmltools -b w3m $<
+	w3m -T text/html -dump $< >$@
 
 .tex.dvi:
-	jadetex \\nonstopmode\\input $<; \
-	while grep -i 'Rerun' $*.log; do \
-	     jadetex \\nonstopmode\\input $<; \
-	done
+	jadetex \\nonstopmode\\input $<;
+	jadetex \\nonstopmode\\input $<;
+	jadetex \\nonstopmode\\input $<;
 
-.dvi.dvi:
+.dvi.ps:
 	dvips $< -o $@
 
 .dvi.pdf:
@@ -35,13 +36,13 @@ man-page.html:	configfile.inc license.inc
 
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
 mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc description.inc
-mapson.html: principle.png
-mapson.html: principle.eps
+mapson.html: principle1.png principle2.png
+mapson.html: principle1.eps principle2.eps
 
 readme.txt:	readme.sgml building.inc ../VERSION
 
 man-page.txt:	man-page.html
-	lynx -width=80 -nolist -dump $< >$@
+	lynx -width=78 -nolist -dump $< >$@
 
 defconfig.inc:	../config-sample Makefile
 	sed <$< >$@ -e 's/&/\&amp;/g' \

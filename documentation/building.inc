@@ -76,7 +76,7 @@ startup.</para>
 want to try</para>
 
   <informalexample>
-    <screen>CXXFLAGS=-frepo ./configure</screen>
+    <screen>CXXFLAGS=-frepo LDFLAGS=-frepo ./configure</screen>
   </informalexample>
 
   <para>to configure the build. This will result in a about 30% smaller binary
