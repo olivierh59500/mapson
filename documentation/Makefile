@@ -1,7 +1,7 @@
 #
 # Build the mapSoN documentation
 #
-DSSLBASE	= /usr/share/sgml/docbook/dsssl-stylesheets-1.77
+DSSLBASE	= /usr/share/sgml/docbook/dsssl-stylesheets-1.78
 
 .SUFFIXES:
 .SUFFIXES: .sgml .tex .txt .dvi .ps .pdf .html
