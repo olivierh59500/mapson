@@ -1,10 +1,11 @@
   <para>Compiling the software should be pretty straight-forward; all you'll
 have to do is the usual routine:</para>
 
-  <screen>
-    ./configure
-    make
-    make install</screen>
+  <informalfigure>
+    <screen>./configure
+make
+make install</screen>
+  </informalfigure>
 
   <para>The last step may require super-user privileges, so have the <systemitem
 class="username">root</systemitem> password ready if you're going for a
@@ -22,7 +23,7 @@ url="http://www.gnu.org/software/autoconf/">GNU Autoconf</ulink> script, which
 supports all the usual options. If you are not familiar with these scripts,
 please refer to the <quote>Running <filename>configure</filename>
 Scripts</quote> section of the <application>Autoconf</application> user manual,
-which is available at: </para>
+which is available at:</para>
 
   <informalfigure>
     <ulink url="http://www.gnu.org/manual/autoconf/html_chapter/autoconf_13.html#SEC129">http://www.gnu.org/manual/autoconf/html_chapter/autoconf_13.html#SEC129</ulink>
