@@ -20,9 +20,9 @@ do.</para>
   <para>The <filename>configure</filename> script is a standard <ulink
 url="http://www.gnu.org/software/autoconf/">GNU Autoconf</ulink> script, which
 supports all the usual options. If you are not familiar with these scripts,
-please refer to the "Running <filename>configure</filename> Scripts" section of
-the <application>Autoconf</application> user manual, which is available
-at: </para>
+please refer to the <quote>Running <filename>configure</filename>
+Scripts</quote> section of the <application>Autoconf</application> user manual,
+which is available at: </para>
 
   <informalfigure>
     <ulink url="http://www.gnu.org/manual/autoconf/html_chapter/autoconf_13.html#SEC129">http://www.gnu.org/manual/autoconf/html_chapter/autoconf_13.html#SEC129</ulink>
@@ -84,7 +84,7 @@ because unused template instances are optimized out.</para>
 
   <para>On some platforms, largefile support doesn't work yet. If you're getting
 compiler errors, give the configure script the option
-<userinput>--disable-largefile</userinput> and try again.</para>
+<parameter>--disable-largefile</parameter> and try again.</para>
 
 <!--
 Local Variables:

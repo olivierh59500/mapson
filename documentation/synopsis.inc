@@ -1,6 +1,11 @@
   <cmdsynopsis>
     <command>mapson</command>
     <group>
+      <arg choice="opt">-h</arg>
+      <arg choice="opt">--help</arg>
+    </group>
+    <arg choice="opt">--version</arg>
+    <group>
       <arg choice="opt">-d</arg>
       <arg choice="opt">--debug</arg>
     </group>

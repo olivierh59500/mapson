@@ -21,7 +21,7 @@ deferred mails will be spooled until a confirmation arrives for them.</para>
       <term><literal>AddressDB</literal> <parameter>file</parameter></term>
       <listitem>
         <para>This directive sets the complete path of the file &mapson; uses to
-store the "known" addresses.</para>
+store the <quote>known</quote> addresses.</para>
       </listitem>
     </varlistentry>
 
@@ -79,9 +79,9 @@ an RFC822-conformant mail client.</para>
 
         <para>Many spam mails contain incorrect header lines, so you may chose
 to have &mapson fail on <emphasis>any</emphasis> syntax error -- even non-fatal
-ones. "Failing" means that &mapson; will abort and return the return code
-configured below to the <acronym>MTA</acronym>. Depending on the setting of the
-return code, the MTA will then bounce the mail.</para>
+ones. <quote>Failing</quote> means that &mapson; will abort and return the
+return code configured below to the <acronym>MTA</acronym>. Depending on the
+setting of the return code, the MTA will then bounce the mail.</para>
 
         <para>The parameter given to this option is a boolean, meaning that you
 may specify either <literal>yes</literal> or <literal>no</literal>.</para>
@@ -110,7 +110,7 @@ may specify either <literal>yes</literal> or <literal>no</literal>.</para>
 had to abort with a run-time error. Possible run-time errors are failure to open
 file, lack of available memory, <abbrev>etc.</abbrev> &hellip;</para>
 
-        <para>The default choice is "75", which
+        <para>The default choice is <quote>75</quote>, which
 <application>sendmail</application> will interpret as a temporary system error,
 so it will queue the mail and re-try.</para>
 
@@ -127,7 +127,7 @@ encountered a fatal syntax error in the e-mail. If
 <symbol>PassIncorrectMails</symbol> is disabled, non-fatal syntax errors will
 also cause &mapson; to abort with this return code.</para>
 
-        <para>The default choice is "65", which
+        <para>The default choice is <quote>65</quote>, which
 <application>sendmail</application> will interpret as a permanent error that
 causes the mail to bounce.</para>
 

@@ -1,8 +1,9 @@
   <para>&mapson; is a spam filter that uses a pretty unique approach to keep
 unsolicited commercial e-mail out of your mailbox. Rather than using a set of
-configured "bad words", a list of "know spammers", or complicated scoring
-mechanisms to determine what is spam and what is not, it relies on "known
-senders" -- or rather "unknown senders".</para>
+configured <quote>bad words</quote>, a list of <quote>know spammers</quote>, or
+complicated scoring mechanisms to determine what is spam and what is not, it
+relies on <quote>known senders</quote> -- or rather <quote>unknown
+senders</quote>.</para>
 
   <para>Every time you receive an e-mail, &mapson; will look-up the sender's
 e-mail address in a small database file and check whether that address is in
@@ -23,12 +24,12 @@ confirmation, they will never reply, and their spam will sit in that spool file
 until hell freezes over or an apropriate cron job deletes it. Using this
 heuristic, &mapson; catches way above 95% of all spam mail I receive.</para>
 
-  <para>In order to avoid annoying more "real" people, who are trying to contact
-you, than necessary, you can import the addresses from your mail archive into
-the &mapson; database. Furthermore, you can set &mapson; up in a way that will
-let any mail pass automatically, that is a reply to a mail or a news posting of
-yours: If you sent someone an e-mail and he replies back, &mapson; won't bother
-him. It would be pretty inpolite, if it did.</para>
+  <para>In order to avoid annoying more <quote>real</quote> people, who are
+trying to contact you, than necessary, you can import the addresses from your
+mail archive into the &mapson; database. Furthermore, you can set &mapson; up in
+a way that will let any mail pass automatically, that is a reply to a mail or a
+news posting of yours: If you sent someone an e-mail and he replies back,
+&mapson; won't bother him. It would be pretty inpolite, if it did.</para>
 
 <!--
 Local Variables:
