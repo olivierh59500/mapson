@@ -29,19 +29,17 @@ distclean:	clean
 	rm -f include/paths.h
 
 realclean:	distclean
-	rm -f configure config.log config.cache config.log config.status
+	rm -f configure
 
-dist:	all
-#	@${MAKE} real-build-dist VERS=`sed -n -e '/^#define[	 ][	 ]*VERS/p' src/version.h | sed -e 's/^.*"\(.*\)"/\1/' -e 's/ /-/g' -e 's/-beta-/b/g'`
+
+build-dist:	all
+	@scripts/build-dist.sh `sed -n -e '/^#define[	 ][	 ]*VERS/p' src/version.h | sed -e 's/^.*"\(.*\)"/\1/' -e 's/ /-/g' -e 's/-beta-/b/g'`
 
 configure:	configure.in aclocal.m4
 	autoconf
 
 include/mapson.mk:	configure
 	./configure $(ACFLAGS)
-
-real-build-dist::
-	@echo Assembling release archive for ${VERS}
 
 bump:
 	@scripts/bump.sh
