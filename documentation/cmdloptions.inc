@@ -25,6 +25,15 @@ the debug code is not included in the binary.</para>
     </varlistentry>
 
     <varlistentry>
+      <term><option>-a</option></term>
+      <term><option>--accept</option></term>
+      <listitem>
+        <para>Accept the incoming e-mail unconditionally and add the sender's
+addresses to the database.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term><option>-c <replaceable>config</replaceable></option></term>
       <term><option>--config-file <replaceable>config</replaceable></option></term>
       <listitem>
