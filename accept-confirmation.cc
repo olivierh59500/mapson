@@ -46,7 +46,6 @@ bool accept_confirmation(string& mail)
 
     for (string::size_type i = 0; ; ++i)
         {
-        debug(("Current search position is %u.", i));
         i = find_cookie(mail, i);
         if (i != string::npos)
             {
