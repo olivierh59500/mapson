@@ -41,7 +41,7 @@ is_confirmation_mail(char * mail_buffer)
 
     /* Let's see whether we find a cookie. */
 
-    rc = regcomp(&preg, COOKIE_PATTERN, REG_EXTENDED | REG_NEWLINE);
+    rc = regcomp(&preg, COOKIE_PATTERN, REG_EXTENDED | REG_ICASE | REG_NEWLINE);
     if (rc != 0) {
         THROW(REGEX_EXCEPTION);
     }
