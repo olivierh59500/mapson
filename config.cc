@@ -93,8 +93,9 @@ configuration::configuration(int argc, char** argv)
     let_incorrect_mails_pass = true;
     runtime_error_rc = 75;
     syntax_error_rc = 65;
-    debug = false;
+    address_db_auto_add = true;
     accept = false;
+    debug = false;
     message_id = "<no-message-id@localhost>";
     have_message_id = false;
 
@@ -200,6 +201,7 @@ void configuration::dump() const
     debug(("    LogFile            = '%s'", log_file.c_str()));
     debug(("    SpoolDir           = '%s'", spool_dir.c_str()));
     debug(("    AddressDB          = '%s'", address_db.c_str()));
+    debug(("    AddressDBAutoAdd   = '%s'", address_db_auto_add?"true":"false"));
     debug(("    ReqConfirmTemplate = '%s'", request_for_confirmation_file.c_str()));
     debug(("    MTA                = '%s'", mta.c_str()));
     debug(("    StrictRFCParser    = '%s'", (strict_rfc_parser) ? "true" : "false"));
@@ -257,6 +259,10 @@ void configuration::set_option(const string& keyword, const string& _data)
         else if (strcasecmp("AddressDB", keyword.c_str()) == 0)
             {
             address_db = data;
+            }
+        else if (strcasecmp("AddressDBAutoAdd", keyword.c_str()) == 0)
+            {
+            address_db_auto_add = get_bool(data);
             }
         else if (strcasecmp("LogFile", keyword.c_str()) == 0)
             {

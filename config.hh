@@ -48,6 +48,7 @@ class configuration : public AbstractConfig
     // Run-time flags.
     bool accept;
     std::string cookie;
+    bool address_db_auto_add;
 
   protected:
     friend int main(int, char**);
