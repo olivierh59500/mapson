@@ -60,8 +60,8 @@ parse_mail(char * buffer)
 	mail_struct->header = fail_safe_strdup(buffer);
     }
     else {
-	header_size = (p - buffer) + 1;
-	mail_struct->header = fail_safe_malloc(header_size);
+	header_size = (p - buffer);
+	mail_struct->header = fail_safe_malloc(header_size+1);
 	memcpy(mail_struct->header, buffer, header_size);
 	(mail_struct->header)[header_size] = '\0';
     }
@@ -131,7 +131,6 @@ parse_mail(char * buffer)
 	    q[-1] = backup;
 	}
     }
-
 
     return mail_struct;
 }
