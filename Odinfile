@@ -18,9 +18,13 @@ mapson == %mapson.cc.sm +(%comile_flags) \
 %mapson.cc.sm == <<
     address-db.cc
     config.cc
+    deliver.cc
     extract-addresses.cc
+    gather-addresses.cc
     log.cc
     mapson.cc
+    request-confirmation.cc
+    spool.cc
 
 librfc822.a == librfc822/%librfc822.a.sm +(%comile_flags) :a
 
@@ -31,4 +35,4 @@ libvarexp.a == libvarexp/%libvarexp.a.sm +(%comile_flags) :a
 libmd5.a == libmd5/%libmd5.a.sm +(%comile_flags) :a
 
 %clean ! == !<<
-    rm -f librfc822.a libparse-config-file.a libvarexp libmd5.a mapson
+    rm -f librfc822.a libparse-config-file.a libvarexp.a libmd5.a mapson

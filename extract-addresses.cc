@@ -15,7 +15,7 @@
 
 using namespace std;
 
-inline size_t find_next_header_line(const string& mail, size_t pos)
+size_t find_next_header_line(const string& mail, size_t pos)
     {
     if (mail[pos] == '\n')
 	return string::npos;	// Header ends here.

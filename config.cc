@@ -8,6 +8,9 @@
 #include <pwd.h>
 #include <unistd.h>
 
+// POSIX.2 system headers.
+#include <getopt.h>
+
 // My own libraries.
 #include "system-error/system-error.hh"
 #include "config.hh"
@@ -34,10 +37,9 @@ namespace
 
 // Construct configuration.
 
-configuration::configuration()
+configuration::configuration(int argc, char** argv)
     {
-    // Determine path of the user's home directory to construct the
-    // other paths relative to it.
+    // Initialize the variables with the default settings.
 
     pwd_sentry sentry(getpwuid(getuid()));
     if (sentry.pwd == 0)
@@ -46,30 +48,43 @@ configuration::configuration()
     spool_dir.assign(sentry.pwd->pw_dir).append("/.mapson/spool");
     address_db.assign(sentry.pwd->pw_dir).append("/.mapson/address-db");
     request_for_confirmation_file.assign(sentry.pwd->pw_dir).append("/.mapson/request-for-confirmation.txt");
-
-    // Set the default MTA.
-
+    mailbox.assign("/var/spool/mail/").append(sentry.pwd->pw_name);
     mta = "/usr/sbin/sendmail -i -t";
-
-    // Should we enforce correct a Sender: header?
-
     strict_rfc_parser = false;
-
-    // Per default, we bounce syntactically incorrect mail.
-
     let_incorrect_mails_pass = true;
-
-    // Use temporary failure in case of runtime errors.
-
     runtime_error_rc = 75;
-
-    // Fail fatally if the mail is incorrect.
-
     syntax_error_rc = 65;
+
+    // Parse the command line into temporary variables except for the
+    // location of the config file.
+
+    const char* optstring = "c:";
+    const option longopts[] =
+        {
+        { "config-file", required_argument, 0, 'c' },
+        { 0, 0, 0, 0 }          // mark end of array
+        };
+    int rc;
+    opterr = 0;
+    while ((rc = getopt_long(argc, argv, optstring, longopts, 0)) != -1)
+        {
+        switch(rc)
+            {
+            case 'c':
+                config_file = optarg;
+                break;
+            default:
+                error("Usage: %s [-c config-file] [mail [mail ...]]\n", argv[0]);
+                throw runtime_error("Incorrect command line syntax.");
+            }
+        }
+
+    parameter_index = optind;
 
     // Log the final settings for debugging purposes.
 
     debug(("My configuration:"));
+    debug(("    mailbox = '%s'", mailbox.c_str()));
     debug(("    config_file = '%s'", config_file.c_str()));
     debug(("    spool_dir = '%s'", spool_dir.c_str()));
     debug(("    address_db = '%s'", address_db.c_str()));
