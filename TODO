@@ -36,3 +36,15 @@ o Extract the message-id before looking for a cookie so that we have
 o Add a way to match whole domains.
 
 o Implement my own setenv() because it is missing on Solaris.
+
+o The sample config config is installed as $prefix/etc/config-sample;
+  there's no way to recognize it belongs to mapson if there's no
+  specific prefix! That must not be. Also, mapson does not read the
+  global config file at all! Lot's of work to do!
+
+o The documentation of the config file doesn't say where mapson
+  expects the config file or anything!
+
+o Add switch that tells mapson to accept the incoming mail in any case
+  so that you can redirect user+trust to that address and add the
+  senders to the database.
