@@ -121,4 +121,8 @@ char *get_mailbox_path(void  );
 
 void store_mail_in_spool(char *mail_buffer, char *id);
 
+/* loadfile.c */
+
+char *loadfile(const char *filename);
+
 #endif /* !defined(__MAPSON_H__) */

@@ -8,7 +8,7 @@
 
 SRCS	= main.c mail_rescue.c fail_safe.c array.c parse_mail.c confirm.c \
 	  home_dir.c address_db.c ruleset.c save_to.c spool_dir.c mailbox_path.c \
-	  spool.c
+	  spool.c loadfile.c
 OBJS	= $(SRCS:.c=.o)
 LIBS   += -lconfigfile -lrfc822 -lmpools -llists -lexceptions
 
@@ -54,3 +54,4 @@ save_to.o: mapson.h
 spool_dir.o: mapson.h
 mailbox_path.o: mapson.h
 spool.o: mapson.h
+loadfile.o: mapson.h
