@@ -1,0 +1,28 @@
+#
+# mapSoN ruleset file
+#
+# $Header$
+#
+
+# QUICKPASS all mail that looks like a bounce message or a mail coming
+# from a mailing list.
+#
+"^From +[^@]*(-)?owner(-)?[^@]*@"			quickpass
+"^From +(postmaster|mailer-daemon@)"			quickpass
+
+# QUICKPASS all local mail.
+#
+"^From +[^@ ]+ "					quickpass
+
+# PASS all mail from senders in a trusted domain.
+#
+"^From .*(your.local.domain|friends.org)"		pass
+
+# Vacation tools, aargh
+#
+"^X-Delivered-By-The-Graces-Of: The vacation program"	quickpass
+
+# PASS all replies to mails or postings of mine.
+#
+"^In-Reply-To:.*@your.machine.org"			pass
+"^References:.*@your.machine.org"			pass
