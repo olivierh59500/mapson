@@ -35,4 +35,5 @@ is to much for me to bear.              derzeit durch das Internet geistert,
 
 Your e-mail was:                        Ihre E-Mail war:
 
-[   | ${HEADER[#]}]   | \[...\]
+[   | ${HEADER[#]}]   |
+[${BODY[#]:+   | }${BODY[#]}]{0,5}   | \[...\]
