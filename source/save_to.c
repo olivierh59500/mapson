@@ -36,20 +36,21 @@ save_to(char * mail_buffer, char * filename)
 
     /* Open and lock the file. */
 
-    fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0600);
+    fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0600);
     if (fd == -1) {
 	syslog(LOG_ERR, "Failed opening file '%s': %m", filename);
 	THROW(IO_EXCEPTION);
     }
 
-    for (lock_attempts = 0, rc = -1;
-	 rc == -1 && errno == EACCES && lock_attempts < 10;
-	 lock_attempts++, sleep(1)) {
+    for (lock_attempts = 0;
+	 lock_attempts == 0 || (rc == -1 && (errno == EACCES || errno == EAGAIN) && lock_attempts < 10);
+	 lock_attempts++) {
 	lock.l_start  = 0;
 	lock.l_len    = 0;
-	lock.l_pid    = getpid();
 	lock.l_type   = F_WRLCK;
 	lock.l_whence = SEEK_SET;
+	if (lock_attempts > 0)
+	  sleep(1);
 	rc = fcntl(fd, F_SETLK, &lock);
     }
 
@@ -62,7 +63,16 @@ save_to(char * mail_buffer, char * filename)
       syslog(LOG_WARNING, "Couldn't get exclusive lock on '%s'. Writing nonetheless now.",
 	     filename);
 
-
     /* Write the mail. */
 
+    rc = write(fd, mail_buffer, strlen(mail_buffer));
+    if (rc != strlen(mail_buffer)) {
+	syslog(LOG_ERR, "i/o error while writing mail to file '%s': %m", filename);
+	THROW(IO_EXCEPTION);
+    }
+
+
+    /* That's it. */
+
+    close(fd);
 }
