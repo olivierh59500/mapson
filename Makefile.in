@@ -17,8 +17,8 @@ CC		= @CC@
 CXX		= @CXX@
 AR		= ar
 RANLIB		= @RANLIB@
-MKDIR		= ./.shtool mkdir
-INSTALL		= ./.shtool install
+MKDIR		= .shtool mkdir
+INSTALL		= .shtool install
 
 OPTIMFLAGS	=
 WARNFLAGS	=
@@ -63,6 +63,17 @@ mapson:		$(OBJS) $(LIBS)
 config.o:	config.cc
 	$(CXX) -DMAILBOXDIR=\"$(mailboxdir)\" -DMTA=\"$(mta)\" -DDATADIR=\"$(datadir)\" $(CPPFLAGS) $(DEFS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
 
+version.h:	VERSION
+	@echo  >$@ '/* Generated automatically; do not edit! */'
+	@echo >>$@ ''
+	@echo >>$@ '#ifndef VERSION_H'
+	@echo >>$@ '#define VERSION_H'
+	@echo >>$@ ''
+	@sed <$< >>$@ -e 's/^/#define VERSION "/' -e 's/$$/"/'
+	@echo >>$@ ''
+	@echo >>$@ '#endif'
+	@echo Built version.h file.
+
 clean::
 	@rm -f $(OBJS)
 	@rm -f $(LIBS)
@@ -85,26 +96,48 @@ distclean:: clean
 	@rm -f Makefile config.log config.status
 
 realclean:: distclean
-	@rm -f configure
+	@rm -f configure version.h
 
 depend::
 	makedepend -Y -fMakefile.in '-s# Dependencies' `find . -name '*.c*' ` 2>/dev/null
 	@sed <Makefile.in >Makefile.in.bak -e 's/\.\///g'
 	@mv Makefile.in.bak Makefile.in
 
+tag:
+	cvs tag -c mapson-`sed <VERSION -e "s/\-/g"`
+
 # Dependencies
 
 librfc822/lexer.o: librfc822/rfc822.hh
 librfc822/parser.o: librfc822/rfc822.hh
 librfc822/test.o: librfc822/rfc822.hh
+accept-confirmation.o: system-error/system-error.hh log.hh config.hh
+accept-confirmation.o: libparse-config-file/parse-config-file.hh
+accept-confirmation.o: fd-sentry.hh deliver.hh accept-confirmation.hh
 address-db.o: system-error/system-error.hh fd-sentry.hh address-db.hh
+config.o: system-error/system-error.hh libvarexp/varexp.hh config.hh
+config.o: libparse-config-file/parse-config-file.hh log.hh
+deliver.o: system-error/system-error.hh config.hh
+deliver.o: libparse-config-file/parse-config-file.hh log.hh fd-sentry.hh
+deliver.o: deliver.hh
 extract-addresses.o: librfc822/rfc822.hh extract-addresses.hh log.hh
 extract-addresses.o: config.hh libparse-config-file/parse-config-file.hh
+gather-addresses.o: system-error/system-error.hh address-db.hh config.hh
+gather-addresses.o: libparse-config-file/parse-config-file.hh fd-sentry.hh
+gather-addresses.o: extract-addresses.hh gather-addresses.hh
 log.o: config.hh libparse-config-file/parse-config-file.hh log.hh
+mapson.o: librfc822/rfc822.hh system-error/system-error.hh
+mapson.o: extract-addresses.hh config.hh
+mapson.o: libparse-config-file/parse-config-file.hh log.hh address-db.hh
+mapson.o: spool.hh deliver.hh request-confirmation.hh gather-addresses.hh
+mapson.o: accept-confirmation.hh version.h
+spool.o: libmd5/md5.h system-error/system-error.hh log.hh config.hh
+spool.o: libparse-config-file/parse-config-file.hh fd-sentry.hh spool.hh
 libparse-config-file/parse-config-file.o: RegExp/RegExp.hh
 libparse-config-file/parse-config-file.o: system-error/system-error.hh
 libparse-config-file/parse-config-file.o: libparse-config-file/parse-config-file.hh
 libparse-config-file/test.o: libparse-config-file/parse-config-file.hh
+libvarexp/command.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/regression-tests/empty-search-pattern.o: libvarexp/varexp.hh
 libvarexp/regression-tests/expand-character-class.o: libvarexp/internal.hh
 libvarexp/regression-tests/expand-character-class.o: libvarexp/varexp.hh
@@ -114,9 +147,8 @@ libvarexp/regression-tests/expand3.o: libvarexp/varexp.hh
 libvarexp/regression-tests/expand4.o: libvarexp/varexp.hh
 libvarexp/regression-tests/expand5.o: libvarexp/varexp.hh
 libvarexp/regression-tests/expand6.o: libvarexp/varexp.hh
-libvarexp/regression-tests/unescape.o: libvarexp/varexp.hh
 libvarexp/regression-tests/offset-failure.o: libvarexp/varexp.hh
-libvarexp/command.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/regression-tests/unescape.o: libvarexp/varexp.hh
 libvarexp/cut-out-offset.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/error.o: libvarexp/varexp.hh
 libvarexp/expand-character-class.o: libvarexp/internal.hh
@@ -128,37 +160,17 @@ libvarexp/loop.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/num-exp.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/padding.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/parser.o: libvarexp/internal.hh libvarexp/varexp.hh
+libvarexp/search-and-replace.o: libvarexp/internal.hh
+libvarexp/search-and-replace.o: libvarexp/varexp.hh
 libvarexp/text.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/transpose.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/unescape.o: libvarexp/internal.hh libvarexp/varexp.hh
 libvarexp/variable.o: libvarexp/internal.hh libvarexp/varexp.hh
-libvarexp/search-and-replace.o: libvarexp/internal.hh
-libvarexp/search-and-replace.o: libvarexp/varexp.hh
 libmd5/md5.o: libmd5/md5.h
 libmd5/md5test.o: libmd5/md5.h
 RegExp/test.o: RegExp/RegExp.hh
-mapson.o: librfc822/rfc822.hh system-error/system-error.hh
-mapson.o: extract-addresses.hh config.hh
-mapson.o: libparse-config-file/parse-config-file.hh log.hh address-db.hh
-mapson.o: spool.hh deliver.hh request-confirmation.hh gather-addresses.hh
-mapson.o: accept-confirmation.hh
-spool.o: libmd5/md5.h system-error/system-error.hh log.hh config.hh
-spool.o: libparse-config-file/parse-config-file.hh fd-sentry.hh spool.hh
-deliver.o: system-error/system-error.hh config.hh
-deliver.o: libparse-config-file/parse-config-file.hh log.hh fd-sentry.hh
-deliver.o: deliver.hh
 request-confirmation.o: libvarexp/varexp.hh system-error/system-error.hh
 request-confirmation.o: log.hh config.hh
 request-confirmation.o: libparse-config-file/parse-config-file.hh
 request-confirmation.o: extract-addresses.hh fd-sentry.hh multi-open.hh
 request-confirmation.o: request-confirmation.hh
-gather-addresses.o: system-error/system-error.hh address-db.hh config.hh
-gather-addresses.o: libparse-config-file/parse-config-file.hh fd-sentry.hh
-gather-addresses.o: extract-addresses.hh gather-addresses.hh
-config.o: system-error/system-error.hh libvarexp/varexp.hh config.hh
-config.o: libparse-config-file/parse-config-file.hh log.hh
-libgetopt/getopt.o: libgetopt/getopt.h
-libgetopt/getopt1.o: libgetopt/getopt.h
-accept-confirmation.o: system-error/system-error.hh RegExp/RegExp.hh log.hh
-accept-confirmation.o: config.hh libparse-config-file/parse-config-file.hh
-accept-confirmation.o: fd-sentry.hh deliver.hh accept-confirmation.hh
