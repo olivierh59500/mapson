@@ -45,14 +45,12 @@ bump::
 	@scripts/bump.sh
 
 ChangeLog::
-	-cp ChangeLog ChangeLog.old
+	-cp etc/ChangeLog ChangeLog
 	rcs2log -u 'simons	Peter Simons	peter.simons@gmd.de' >ChangeLog.new;
 	if [ -s ChangeLog.new ]; then \
-		cat ChangeLog.new ChangeLog.old >ChangeLog; \
-		rm ChangeLog.new ChangeLog.old;\
-	else \
-		rm ChangeLog.new ChangeLog.old; \
+		cat ChangeLog ChangeLog.new >etc/ChangeLog; \
 	fi
+	rm ChangeLog.new ChangeLog;
 
 install:	all
 	@(cd src;$(MAKE) install)
