@@ -9,9 +9,9 @@ Interpreted header fields in the incoming mail:
 
 Command line arguments:
 
-   -d                   Enable debugging messages.
-   -c <file>            Use this config file instead of default.
-   [mail [mail ...]]    Gather addresses from files.
+   -d                   Enable debugging messages
+   -c <file>            Use this config file instead of default
+   [mail [mail ...]]    Gather addresses from files
 
 
 Variables supported in request-for-confirmation template file:
@@ -23,12 +23,16 @@ Variables supported in request-for-confirmation template file:
     header              The complete mail header
     body                The complete mail body
     from[]              From e-mail addresses
-    replyto[]           Reply-To e-mail addresses.
+    replyto[]           Reply-To e-mail addresses
+
+    headerlines[]
+        Each entry in this array contains the corresponding header
+        line. Please note that a "line" in the header may consist of
+        multiple actual text lines because of continuation.
 
     header[]
-        Each entry in this array contains the corresponding header
-        line. Please note that a "line" in the header may be multiple
-        actual text lines because of continuation.
+        Each entry in this array contains the corresponding text line
+        of the mail body -- continuation does not occur here.
 
     body[]
         Each entry in this array contains the corresponding text line
@@ -52,5 +56,3 @@ Things to do:
     o Include message id in log messages.
 
     o Convert libmd5 to uint32_t and stdint.h.
-
-    o Support both $HEADER[] and $HEADERLINES[].
