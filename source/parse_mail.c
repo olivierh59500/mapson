@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <syslog.h>
 
 #include <rfc822.h>
 #include <myexceptions.h>
@@ -178,6 +179,7 @@ parse_address_line(char * string)
 	    THROW(OUT_OF_MEMORY_EXCEPTION);
 	}
 	else {
+	    syslog(LOG_WARNING, "Failed to parse address '%s'.", p);
 	    THROW(INVALID_ADDRESS_EXCEPTION);
 	}
     }
