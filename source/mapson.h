@@ -106,5 +106,8 @@ enum {
 
 int check_ruleset_file(struct Mail *Mail, char **parameter_ptr);
 
+/* save_to.c */
+
+void save_to(char *mail_buffer, char *filename);
 
 #endif /* !defined(__MAPSON_H__) */
