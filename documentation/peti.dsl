@@ -46,11 +46,11 @@
 
 (define %footnote-ulinks%
   ;; Generate footnotes for ULinks?
-  #t)
+  #f)
 
 (define %bop-footnotes%
   ;; Make "bottom-of-page" footnotes?
-  #f)
+  #t)
 
 (define %body-start-indent%
   ;; Default indent of body text
