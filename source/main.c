@@ -106,34 +106,35 @@ main(int argc, char * argv[])
     switch(rc) {
       case RLST_CONTINUE:
 	  for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-	      printf("DEBUG: Checking '%s' in accept-database.\n", (Mail->from)[i]);
 	      if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
 		  save_to(mail_buffer, get_mailbox_path());
 		  break;
 	      }
 	  }
 	  if ((Mail->from)[i] == NULL) {
-	      printf("Sender is unknown. Will require confirmation.\n");
+	      syslog(LOG_INFO, "Sender '%s' is unknown. Requesting confirmation for '%s'.",
+		     Mail->envelope, Mail->message_id);
 	      store_mail_in_spool(mail_buffer, Mail->message_id);
 	      send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
 	  }
 	  break;
       case RLST_PASS:
 	  for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
-	      printf("DEBUG: Adding '%s' to accept-database.\n", (Mail->from)[i]);
+	      syslog(LOG_INFO, "Adding '%s' to accept-database.", (Mail->from)[i]);
 	      add_address_to_database((Mail->from)[i]);
 	  }
 	  save_to(mail_buffer, get_mailbox_path());
 	  break;
       case RLST_QUICKPASS:
-	  printf("Delivering mail without adding the From: senders to the database.\n");
 	  save_to(mail_buffer, get_mailbox_path());
 	  break;
       case RLST_DROP:
-	  syslog(LOG_INFO, "Dropping mail from '%s'.\n", (Mail->from)[0]);
+	  syslog(LOG_INFO, "Dropping mail '%s' from '%s'.\n",
+		 Mail->message_id, (Mail->from)[0]);
 	  break;
       case RLST_RFC:
-	  printf("Send request for confirmation.\n");
+	  syslog(LOG_INFO, "Requesting confirmation for '%s' from '%s'.\n",
+		 Mail->message_id, Mail->envelope);
 	  store_mail_in_spool(mail_buffer, Mail->message_id);
 	  send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
 	  break;
@@ -142,7 +143,8 @@ main(int argc, char * argv[])
 	  if (!p) {
 	      THROW(UNKNOWN_FATAL_EXCEPTION);
 	  }
-	  printf("Write mail to file '%s'.\n", p);
+	  syslog(LOG_INFO, "Writing mail '%s' to file '%s'.",
+		 Mail->message_id, p);
 	  save_to(mail_buffer, p);
 	  break;
       default:
