@@ -72,7 +72,44 @@ namespace
                             {
                             i = find_next_header_line(mail, pos);
                             data = mail.substr(pos, i - pos);
-                            debug(("Found header '%s'", data.c_str()));
+                            debug(("Found HEADER[%d] = '%s'", idx, data.c_str()));
+                            return;
+                            }
+                        }
+                    }
+                else if (strcasecmp("body", name.c_str()) == 0)
+                    {
+                    for (size_t nextpos, i = 0, pos = body_pos; pos != string::npos && pos < mail.size(); ++i, pos = nextpos)
+                        {
+                        nextpos = mail.find("\n", pos);
+                        if (nextpos != string::npos)
+                            ++nextpos;
+                        if (i == static_cast<size_t>(idx))
+                            {
+                            data = mail.substr(pos, nextpos - pos);
+                            debug(("Found $BODY[%d] = '%s'", idx, data.c_str()));
+                            return;
+                            }
+                        }
+                    }
+                else if (strcasecmp("from", name.c_str()) == 0)
+                    {
+                    for (addrset_t::const_iterator i = addresses.from.begin(); i != addresses.from.end(); ++i)
+                        {
+                        if (idx-- == 0)
+                            {
+                            data = *i;
+                            return;
+                            }
+                        }
+                    }
+                else if (strcasecmp("replyto", name.c_str()) == 0)
+                    {
+                    for (addrset_t::const_iterator i = addresses.reply_to.begin(); i != addresses.reply_to.end(); ++i)
+                        {
+                        if (idx-- == 0)
+                            {
+                            data = *i;
                             return;
                             }
                         }
