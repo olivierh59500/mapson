@@ -87,7 +87,7 @@ if test "$withval" = "yes" -o "$withval" = "no"; then
     AC_CHECK_HEADERS(db.h)
     if test "$ac_cv_header_db_h" = no; then
 	AC_MSG_WARN(no)
-	AC_MSG_ERROR(Please set --db-include when calling configure.)
+	AC_MSG_ERROR(Please set --with-db-include when calling configure.)
     fi
 else
     CPPFLAGS="$CPPFLAGS -I$withval"
@@ -98,7 +98,7 @@ fi,
     AC_CHECK_HEADERS(db.h)
     if test "$ac_cv_header_db_h" = no; then
 	AC_MSG_WARN(no)
-	AC_MSG_ERROR(Please set --db-include when calling configure.)
+	AC_MSG_ERROR(Please set --with-db-include when calling configure.)
     fi
 ])
 
