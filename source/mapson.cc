@@ -68,24 +68,18 @@ try
 	for (i = addresses.begin(); i != addresses.end(); ++i)
 	    address_db.insert(*i);
 
-	// Deliver the e-mail.
-
+	return 0;		// // Let the mail pass.
 	}
     else
-	{
-	// Request a confirmation for the e-mail.
-
-	}
-
-    return 0;
+	return 1;		// Don't let the mail pass.
     }
 catch(const exception& e)
     {
     fprintf(stderr, "*** RUN-TIME ERROR: %s\n", e.what());
-    return 1;
+    return 2;
     }
 catch(...)
     {
     fprintf(stderr, "*** Caught unknown exception. Aborting.\n");
-    return 1;
+    return 2;
     }
