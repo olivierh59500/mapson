@@ -357,7 +357,7 @@ where the <systemitem>MAIL</systemitem> facility is going on your
 machine.</para>
 
     <para>In the file configured there, you'll recognize &mapson;'s messages by
-the <literal>mapson[<replaceable>id</replaceable>]</literal> prefix. The
+the <computeroutput>mapson[<replaceable>id</replaceable>]</computeroutput> prefix. The
 <replaceable>id</replaceable> part stands for the process id assigned by the
 system to the &mapson; process. It's probably not of interest to you except to
 figure out the correct order of the messages in case multiple &mapson; processes
@@ -390,8 +390,8 @@ there, they just denote added line breaks for the layout. In the real file,
 these split lines are just one one long line.</para>
 
     <para>If you find that your copy of &mapson; does not log the proceedings in
-this amount of detail, set the <literal>Debug</literal> directive in the
-configuration file to <literal>yes</literal> or add the
+this amount of detail, set the <userinput>Debug</userinput> directive in the
+configuration file to <userinput>yes</userinput> or add the
 <parameter>-d</parameter> parameter to the command line when calling
 &mapson;.</para>
 
@@ -430,7 +430,7 @@ have used the example snippets from this manual to activate &mapson;, there's a
 good chance that your system's regular expression library cannot deal with the
 expression that's used to direct confirmation mails into &mapson;. As far as I
 know, even the latest <application>GNU libc</application> does not support the
-repetition of a match in the term <literal>[a-f0-9]{32}</literal>. So if you
+repetition of a match in the term <userinput>[a-f0-9]{32}</userinput>. So if you
 find that &mapson; does not receive the confirmation mails, try to replace the
 line</para>
 
@@ -444,12 +444,12 @@ line</para>
           <screen>* ARGUMENT ?? [a-f0-9][a-f0-9][a-f0-9]<replaceable>&hellip;</replaceable>[a-f0-9][a-f0-9]</screen>
         </informalexample>
 
-        <para>where the number of <literal>[a-f0-9]</literal> terms is exactly
-32. Yes, I know this sucks big time, but that's the way it is. I will resist the
-temptation to get into a big ranting about the fact that there's a perfectly
-good regular expression engine available as free software for years, but the GNU
-people won't use it because it is released under the BSD license. For once, I
-won't go into that. :-)</para>
+        <para>where the number of <userinput>[a-f0-9]</userinput> terms is
+exactly 32. Yes, I know this sucks big time, but that's the way it is. I will
+resist the temptation to get into a big ranting about the fact that there's a
+perfectly good regular expression engine available as free software for years,
+but the GNU people won't use it because it is released under the BSD license.
+For once, I won't go into that. :-)</para>
       </listitem>
     </itemizedlist>
   </sect1>
