@@ -1,0 +1,25 @@
+/*
+ * Copyright (C) 2001 by Peter Simons <simons@computer.org>.
+ * All rights reserved.
+ */
+
+#ifndef ADDRESS_DB_HH
+#define ADDRESS_DB_HH
+
+#include <string>
+
+class AddressDB
+    {
+  public:
+    explicit AddressDB(const std::string& filename_arg);
+    ~AddressDB();
+    bool find(const std::string& key) const;
+    void insert(const std::string& key);
+
+  private:
+    const std::string filename;
+    int fd;
+    std::string data;
+    };
+
+#endif

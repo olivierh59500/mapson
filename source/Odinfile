@@ -1,12 +1,14 @@
 # Build mapSoN.
 
-mapson == %mapson.cc.sm +cc_flags='-Wall -pedantic' \
+mapson == %mapson.cc.sm +cxx_flags='-Wall -pedantic' \
 			+lib=(librfc822.a) \
+			+optimize=2 \
 			:exe
 
 %mapson.cc.sm == <<
     mapson.cc
     extract-addresses.cc
+    address-db.cc
 
 librfc822.a     == librfc822/%librfc822.a.sm :a
 

@@ -3,6 +3,9 @@
  * All rights reserved.
  */
 
+#ifndef EXTRACT_ADDRESSES_HH
+#define EXTRACT_ADDRESSES_HH
+
 #include <set>
 #include <string>
 
@@ -15,3 +18,5 @@ struct ltstr
     };
 typedef std::set<std::string,ltstr> addrset_t;
 void extract_sender_addresses(const std::string& header, addrset_t& addrset);
+
+#endif

@@ -15,7 +15,7 @@ inline size_t find_next_header_line(const string& header, size_t pos)
 	{
 	if (header[pos] == '\n')
 	    {
-	    if (header[pos+1] < header.size())
+	    if (pos+1 < header.size())
 		{
 		if (header[pos+1] != ' ' && header[pos+1] != '\t')
 		    return pos+1;
