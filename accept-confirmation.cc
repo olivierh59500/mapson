@@ -23,7 +23,7 @@
 
 using namespace std;
 
-bool accept_confirmation(const std::string& mail)
+bool accept_confirmation(std::string& mail)
     {
     // Find all strings in the mail that match the pattern and check,
     // whether a mail has been spooled under that name. If, deliver
@@ -48,18 +48,18 @@ bool accept_confirmation(const std::string& mail)
             // We found the mail; now deliver it.
 
             info("Incoming e-mail contained cookie '%s'; delivering the corresponding spooled mail.", cookie.c_str());
-            string buffer;
+            mail.erase();
             char tmp[8*1024];
             ssize_t rc;
             for (rc = read(fd, tmp, sizeof(tmp));
                  rc > 0;
                  rc = read(fd, tmp, sizeof(tmp)))
                 {
-                buffer.append(tmp, rc);
+                mail.append(tmp, rc);
                 }
             if (rc < 0)
                 throw system_error(string("Failed to read mail file '") + filename + "'");
-            deliver(buffer);
+            deliver(mail);
             unlink(filename.c_str());
             return true;
             }

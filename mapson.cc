@@ -67,12 +67,12 @@ try
     if (rc < 0)
 	throw system_error("Failed to read mail from standard input");
 
-    // Check whether the mail contains a valid cookie. If it does, it
-    // is an incoming confirmation and should not be processed any
-    // further.
+    // Check whether the mail contains a valid cookie. If it does,
+    // mail will be replaced with the original e-mail, that was
+    // confirmed now. The mail has already been delivered; all we have
+    // to do is to add the addresses to the database.
 
-    if (accept_confirmation(mail))
-        return 0;
+    bool was_confirmation = accept_confirmation(mail);
 
     // Extract the sender addresses from the mail and copy them into
     // an addrset_t for easier handling in the code that follows. This
@@ -99,7 +99,7 @@ try
     // Check whether any of the addresses we found is already in the
     // database.
 
-    bool had_a_hit = false;
+    bool had_a_hit = was_confirmation;
     for (addrset_t::const_iterator i = all_addresses.begin(); i != all_addresses.end(); )
         {
 	if (address_db.find(*i))
@@ -131,7 +131,8 @@ try
 
         // Deliver the mail.
 
-        deliver(mail);
+        if (!was_confirmation)
+            deliver(mail);
 	}
     else
         {
