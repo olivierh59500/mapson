@@ -1,4 +1,11 @@
-2002-02-09  Peter Simons  <simons@computer.org>
+2002-02-10  Peter Simons  <simons@computer.org>
+
+	* Released 2.0 beta 3.
+
+	* mapSoN will log to $HOME/.mapson/log now rather than via
+	syslog(3). This is better because it is a per-user tool and not so
+	much a system tool and on many systems the normal user can't even
+	read syslog.
 
 	* Added a chapter describing ways to debug mapson to the manual.
 
