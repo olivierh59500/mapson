@@ -108,26 +108,26 @@ void gather_addresses(int argc, char** argv)
                     address_db.insert(addresses.return_path);
                     }
                 }
-            for (addrset_t::const_iterator i = addresses.from.begin(); i != addresses.from.end(); ++i)
+            for (addrset_t::const_iterator j = addresses.from.begin(); j != addresses.from.end(); ++j)
                 {
-                print_progress(*i);
-                if (address_db.find(*i))
+                print_progress(*j);
+                if (address_db.find(*j))
                     print_known();
                 else
                     {
                     print_new();
-                    address_db.insert(*i);
+                    address_db.insert(*j);
                     }
                 }
-            for (addrset_t::const_iterator i = addresses.reply_to.begin(); i != addresses.reply_to.end(); ++i)
+            for (addrset_t::const_iterator j = addresses.reply_to.begin(); j != addresses.reply_to.end(); ++j)
                 {
-                print_progress(*i);
-                if (address_db.find(*i))
+                print_progress(*j);
+                if (address_db.find(*j))
                     print_known();
                 else
                     {
                     print_new();
-                    address_db.insert(*i);
+                    address_db.insert(*j);
                     }
                 }
             }
