@@ -1,5 +1,5 @@
 From: simons+${MD5HASH}@cryp.to (Peter Simons' Anti-Spam-Tool)
-To: ${ENVELOPE:-${RETURN_PATH:-${SENDER:-${FROM[0]}}}}
+To: ${ENVELOPE:-${RETURN_PATH:-${SENDER}}}
 Subject: please confirm / bitte bestaetigen
 Precedence: junk
 Auto-Submitted: auto-generated
