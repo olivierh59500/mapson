@@ -65,7 +65,10 @@ namespace
     inline int mysetenv(const char* name, const char* value)
         {
         string tmp = string(name) + "=" + value;
-        if (putenv(const_cast<char*>(tmp.c_str())) != 0)
+        char* env = strdup(tmp.c_str());
+        if (env == 0)
+            throw system_error("strdup() failed");
+        if (putenv(env) != 0)
             throw system_error("putenv() failed");
         }
     }
