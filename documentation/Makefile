@@ -3,34 +3,35 @@
 #
 
 .SUFFIXES:
+.SUFFIXES: .sgml .tex .txt .dvi .ps .pdf .html
 
-%.tex : %.sgml
+.sgml.tex:
 	sgmltools -b jadetex $<
 
-%.html : %.sgml
+.sgml.html:
 	sgmltools -b onehtml $<
 
-%.txt : %.sgml
+.sgml.txt:
 	sgmltools -b w3m $<
 
-%.dvi : %.tex
+.tex.dvi:
 	jadetex \\nonstopmode\\input $<; \
 	while grep -i 'Rerun' $*.log; do \
 	     jadetex \\nonstopmode\\input $<; \
 	done
 
-%.ps : %.dvi
+.dvi.dvi:
 	dvips $< -o $@
 
-%.pdf : %.dvi
+.dvi.pdf:
 	dvipdf $< $@
 
 .PHONY: all clean distclean realclean
 
 all:	mapson.html mapson.pdf man-page.txt readme.txt
 
-man-page.html:	synopsis.inc description.inc cmdloptions.inc configfile.inc \
-		license.inc
+man-page.html:	synopsis.inc description.inc cmdloptions.inc
+man-page.html:	configfile.inc license.inc
 
 mapson.html mapson.tex:	license.inc building.inc synopsis.inc cmdloptions.inc
 mapson.html mapson.tex: defconfig.inc defreqmail.inc configfile.inc description.inc
