@@ -147,7 +147,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
     ssize_t rc;
     for (rc = read(fd, buffer, sizeof(buffer)); rc > 0; rc = read(fd, buffer, sizeof(buffer)))
 	mail_template.append(buffer, rc);
-    //if (rc < 0)
+    if (rc < 0)
 	throw system_error(string("Failed to read request-mail template file '") + filename + "' into memory");
 
     // Expand variables in the template.
