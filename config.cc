@@ -132,7 +132,7 @@ configuration::configuration(int argc, char** argv)
                 printf("mapSoN version %s\n", VERSION);
                 throw no_error();
             case 'h':
-                fprintf(stderr, "Usage: mapson [-h | --help] [--version] [-d | --debug] \\\n" \
+                fprintf(stderr, "Usage: mapson [-h | --help] [--version] [-d | --debug] [-a | --accept]\n" \
                                 "              [-c config | --config-file config] [mail...]\n",
                         argv[0]);
                 throw no_error();

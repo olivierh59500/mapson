@@ -57,6 +57,10 @@ not!</para>
   <sect1>
     <title>How to Activate &mapson;</title>
 
+    <para>Assuming that you have successfully built and installed the &mapson;
+package, you can atctivate it by following these steps:</para>
+
+
     <para>Before you can activate &mapson; you have to make sure that all
 required directories exist and that all required files can be created. &mapson;
 will try to create the address database file, for instance, but the default
