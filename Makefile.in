@@ -103,9 +103,9 @@ install:	mapson reqmail.template-sample config-sample documentation/mapson.1 \
 	@$(INSTALL) -c -m 644 documentation/mapson.html $(DESTDIR)$(datadir)/
 	@$(INSTALL) -c -m 644 documentation/peti.css $(DESTDIR)$(datadir)/
 	@$(INSTALL) -c -m 644 documentation/mapson.pdf $(DESTDIR)$(datadir)/
-	@test -e $(DESTDIR)$(sysconfdir)/mapson.config || \
+	@test -f $(DESTDIR)$(sysconfdir)/mapson.config || \
 	    $(INSTALL) -c -m 644 config-sample $(DESTDIR)$(sysconfdir)/mapson.config;
-	@test -e $(DESTDIR)$(datadir)/reqmail.template || \
+	@test -f $(DESTDIR)$(datadir)/reqmail.template || \
 	    $(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)$(datadir)/reqmail.template
 	@echo
 	@echo mapSoN is installed now. You will find the user manual at:
@@ -125,6 +125,7 @@ clean::
 
 distclean:: clean
 	@rm -f Makefile config.log config.status
+	@rm -rf autom4te.cache
 
 realclean:: distclean
 	@rm -f configure version.h README
