@@ -52,7 +52,7 @@ forward_mail(const char * mail, char * recipient)
 	fprintf(fh, "Mime-Version: 1.0\n");
 	fprintf(fh, "Content-Type: multipart/mixed;\n");
 	fprintf(fh, "        boundary=\"%s\"\n", MIME_SEPARATOR);
-	fprintf(fh, "Content-Transfer-Encoding: 7bit\n");
+	fprintf(fh, "Content-Transfer-Encoding: 8bit\n");
 	fprintf(fh, "\n");
 	fprintf(fh, "--%s\n", MIME_SEPARATOR);
 	fprintf(fh, "Content-Type: text/plain; charset=US-ASCII\n");
