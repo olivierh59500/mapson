@@ -38,12 +38,12 @@ try
 	    try { process_ack(address_db, argv[i]); }
 	    catch(const exception& e)
 		{
-		fprintf(stderr, "*** RUN-TIME ERROR: %s\n", e.what());
+		fprintf(stderr, "*** RUN-TIME ERROR while processing file '%s': %s\n", argv[i], e.what());
 		rc = 2;
 		}
 	    catch(...)
 		{
-		fprintf(stderr, "*** Caught unknown exception. Aborting.\n");
+		fprintf(stderr, "*** Caught unknown exception while processing file '%s'.\n", argv[i]);
 		rc = 2;
 		}
 	    }
