@@ -48,3 +48,5 @@ o The documentation of the config file doesn't say where mapson
 o Add switch that tells mapson to accept the incoming mail in any case
   so that you can redirect user+trust to that address and add the
   senders to the database.
+
+o Change the .template suffix to "-templ".
