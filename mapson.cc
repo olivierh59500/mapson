@@ -24,6 +24,8 @@ using namespace std;
 int main(int argc, char * argv[])
 try
     {
+    debug(("mapSoN verion 0.0 (%s %s) starting up", __DATE__, __TIME__));
+
     // Create our configuration.
 
     config = new configuration;
