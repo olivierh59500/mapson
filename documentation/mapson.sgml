@@ -1,3 +1,9 @@
+<!--
+Local Variables:
+mode: sgml
+fill-column:80
+End:
+-->
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
 <!ENTITY mapson "<application>mapSoN</application>">
 <!ENTITY description SYSTEM "description.inc">
@@ -11,7 +17,7 @@
 
 <article lang="en" revision="$Revision$">
   <articleinfo>
-    <title>&mapson; User Manual</title>
+    <title>Incomplete &mapson; User Manual</title>
     <author>
       <firstname>Peter</firstname>
       <surname>Simons</surname>
@@ -37,7 +43,19 @@ in various setups.</para>
 
   <sect1>
     <title>Command Line Syntax</title>
-    &synopsis;
+
+    <para>&mapson understans severel optional parameters an the
+command line, which allow you to override the compiled-in default or
+the settings in the config file. The standard Unix synopsis line
+is:</para>
+
+    <blockquote>
+      &synopsis;
+    </blockquote>
+
+    <para>Here is a list of all options together with a short
+description of what the respective option does:</para>
+
     &cmdloptions;
   </sect1>
 
@@ -83,21 +101,44 @@ request-for-confirmation mail sent to first-time originators.</para>
       <varlistentry>
         <term><literal>MTA</literal> <parameter>command</parameter></term>
         <listitem>
-          <para></para>
+          <para>This directive sets the command &mapson will use to
+send-out a request-for-confirmation mail. The actual mail will be
+piped into the started process.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><literal>PassIncorrectMails</literal> <parameter>boolean</parameter></term>
         <listitem>
-          <para></para>
+          <para>When &mapson; parses the incoming mail's headers for
+the addresses, it may detect syntax errors in the mail header, that do
+not cause a fatal error, but that surely hint to the fact that this
+mail was not created by an RFC822-conformant mail client.</para>
+
+          <para>Many spam mails contain incorrect header lines, so you
+may chose to have &mapson fail on <emphasis>any</emphasis> syntax
+error -- even non-fatal ones. "Failing" means that &mapson; will abort
+and return the return code configured below to the
+<abbrev>MTA</abbrev>. Depending on the setting of the return code, the
+MTA will then bounce the mail.</para>
+
+          <para>The parameter given to this option is a boolean,
+meaning that you may specify either <literal>yes</literal> or
+<literal>no</literal>.</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><literal>StrictRFCParser</literal> <parameter>boolean</parameter></term>
         <listitem>
-          <para></para>
+          <para>If you enable this option by specifying
+<literal>yes</literal>, &mapson; will perform additional syntax checks
+on the incoming mail, if you say <literal>no</literal>, it will check
+only those headers that are needed for &mapson; to operate at
+all.</para>
+
+          <para>Enabling this option makes little sense unless you
+disable the <symbol>PassIncorrectMails</symbol> option.</para>
         </listitem>
       </varlistentry>
 
@@ -108,19 +149,31 @@ request-for-confirmation mail sent to first-time originators.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
+
         <term><literal>SyntaxErrorRC</literal> <parameter>integer</parameter></term>
         <listitem>
           <para></para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
         <term><literal>Debug</literal> <parameter>boolean</parameter></term>
         <listitem>
-          <para></para>
+          <para>If you enable debugging messages by saying
+<literal>yes</literal> here, &mapson; will log additional information
+about its procssing of the mail. If you say <literal>no</literal>,
+&mapson; will log only very few messages at all.</para>
+
+          <para>Debugging is available only when the binary has been
+compiled with the <symbol>DEBUG</symbol> symbol defined. Currently,
+that is the default, though, so unless you exclicitely disabled it,
+debugging will be available.</para>
         </listitem>
       </varlistentry>
 
     </variablelist>
+
+
 
     <para>In the data part of these tags, you may use any of the following
 environment variables, which are provided my &mapson;:</para>
@@ -258,6 +311,32 @@ mail template file:</para>
   <sect1>
     <title>How to Activate &mapson;</title>
 
+    <para>Before you can activate &mapson; you have to make sure that
+all required directories exist and that all required files can be
+created. &mapson; will try to create the address database file, for
+instance, but the default setting is that this database is located at
+<filename>$HOME/.mapon/address-db</filename>, and &mapson;
+<emphasis>will not</emphasis> create the
+<filename>$HOME/.mapson</filename> directory.</para>
+
+    <para>The same applies to the mail spool directory, where &mapson;
+stores those mails that need a confirmation before they are delivered.
+The default location is <filename>$HOME/.mapson/spool</filename>, and
+&mapson will create the spool directory itself, but it won't create
+the <filename>$HOME/.mapson</filename> directory.</para>
+
+    <para>The cut a long story short: Create the directory
+<filename>.mapson</filename> in your home directory before you try to
+use &mapson;. If you changed the configuration, though, the locations
+may vary.</para>
+
+    <para>Once that's out of the way, you need to create a template
+file that &mapson; will use to generate the request-for-confirmation
+mail. The installation process has created you a sample file for this
+purpose to
+<filename>/usr/local/share/mapson/reqmail.template-sample</filename>,
+so thats probably a good starting point.</para>
+
     <sect2>
       <title>Via <filename>.forward</filename></title>
 
@@ -340,9 +419,60 @@ $DEFAULT</programlisting>
     <para>
   </sect1>
 
+  <sect1>
+    <title>Importing Addresses From a Mail Archive</title>
+
+    <para>Of course it would be unpolite to have &mapson; send out
+requests for confirmation to people who you have been communicating
+with you for months or years, just because you installed a new
+tool. If you were wise enough to archive your old e-mails, there's a
+simple way to avoid that happening: Import their addresses into
+&mapson;'s database.</para>
+
+    <para>Unfortunately, most mail readers archive old mails in one
+single file: Each new mail is just appended at the end, just like the
+mailbox format itself. Currently, &mapson; can not deal with those
+files. The current version can import addresses only from an archive
+where a each mail is stored in a separate file, like the archives
+maintained by the <application>Gnus</application> software, that is
+part of <application>Emacs</application>, for example.</para>
+
+    <para>In this case, though, it's simple enough: Just start
+&mapson; and give it the file names as parameters on the command line.
+You might want to enable debugging by giving it the
+<option>-d</option> flag, so that you can see what's going on:</para>
+
+    <informalexample>
+      <screen>simons@peti:~/mail-archive$ mapson -d *
+1:
+12:
+    simons@peti.gmd.de................................. new
+16:
+    simons@peti.gmd.de................................. known
+17:
+    th@example.com..................................... new
+    th@example.com..................................... known
+    th@example.com..................................... known
+19:
+    bscw@cscwmail.example.org.......................... new
+    manfred.bogen@gmd.example.org...................... new
+53:
+    pakhomenko@example.com............................. new
+    pakhomenko@example.com............................. known
+</screen>
+    </informalexample>
+
+    <para>Depending on the size of your mail archive, this may take a
+while, but usually &mapson; is pretty quick.</para>
+
+    <para>Once that's finished, you'll have a pretty good database to
+start with, and it's highly unlikely that someone, who has been in
+contact with you before, will be bothered with an
+request-for-confirmation mail.</para>
+  </sect1>
+
   <appendix>
     <title>License</title>
-
     &license;
   </appendix>
 
