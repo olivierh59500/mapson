@@ -207,8 +207,8 @@ main(int argc, char * argv[])
       case RLST_RFC:
 	  log("Requesting confirmation for '%s' from '%s'.\n",
 		 Mail->message_id, Mail->envelope);
-	  store_mail_in_spool(mail_buffer, Mail->message_id);
-	  send_request_for_confirmation_mail(Mail->envelope, Mail->message_id);
+	  store_mail_in_spool(mail_buffer, cookie);
+	  send_request_for_confirmation_mail(Mail->envelope, cookie);
 	  break;
       case RLST_SAVETO:
 	  assert(p != NULL);
