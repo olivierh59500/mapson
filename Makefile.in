@@ -73,8 +73,6 @@ librfc822/lexer.o: librfc822/rfc822.hh
 librfc822/parser.o: librfc822/rfc822.hh
 librfc822/test.o: librfc822/rfc822.hh
 address-db.o: system-error/system-error.hh fd-sentry.hh address-db.hh
-config.o: system-error/system-error.hh libvarexp/varexp.hh config.hh
-config.o: libparse-config-file/parse-config-file.hh log.hh
 extract-addresses.o: librfc822/rfc822.hh extract-addresses.hh log.hh
 extract-addresses.o: config.hh libparse-config-file/parse-config-file.hh
 log.o: config.hh libparse-config-file/parse-config-file.hh log.hh
@@ -118,6 +116,7 @@ mapson.o: librfc822/rfc822.hh system-error/system-error.hh
 mapson.o: extract-addresses.hh config.hh
 mapson.o: libparse-config-file/parse-config-file.hh log.hh address-db.hh
 mapson.o: spool.hh deliver.hh request-confirmation.hh gather-addresses.hh
+mapson.o: accept-confirmation.hh
 spool.o: libmd5/md5.h system-error/system-error.hh log.hh config.hh
 spool.o: libparse-config-file/parse-config-file.hh fd-sentry.hh spool.hh
 deliver.o: system-error/system-error.hh config.hh
@@ -126,8 +125,15 @@ deliver.o: deliver.hh
 request-confirmation.o: libvarexp/varexp.hh system-error/system-error.hh
 request-confirmation.o: log.hh config.hh
 request-confirmation.o: libparse-config-file/parse-config-file.hh
-request-confirmation.o: extract-addresses.hh fd-sentry.hh
+request-confirmation.o: extract-addresses.hh fd-sentry.hh multi-open.hh
 request-confirmation.o: request-confirmation.hh
 gather-addresses.o: system-error/system-error.hh address-db.hh config.hh
 gather-addresses.o: libparse-config-file/parse-config-file.hh fd-sentry.hh
 gather-addresses.o: extract-addresses.hh gather-addresses.hh
+config.o: system-error/system-error.hh libvarexp/varexp.hh config.hh
+config.o: libparse-config-file/parse-config-file.hh log.hh
+libgetopt/getopt.o: libgetopt/getopt.h
+libgetopt/getopt1.o: libgetopt/getopt.h
+accept-confirmation.o: system-error/system-error.hh RegExp/RegExp.hh log.hh
+accept-confirmation.o: config.hh libparse-config-file/parse-config-file.hh
+accept-confirmation.o: fd-sentry.hh deliver.hh accept-confirmation.hh
