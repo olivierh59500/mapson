@@ -11,14 +11,14 @@
 #include <assert.h>
 #include <fcntl.h>
 #include <string.h>
-#include <db.h>
+#include <db_185.h>
 #include <errno.h>
 #ifndef O_EXLOCK
 #  define O_EXLOCK 0
 #endif
 
-#include <myexceptions.h>
-#include <paths.h>
+#include "myexceptions.h"
+#include "paths.h"
 #include "mapson.h"
 
 /********** static variables **********/
