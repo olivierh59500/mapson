@@ -23,11 +23,13 @@ SpoolDir $HOME/.mapson/spool
 #       exist.
 AddressDB $HOME/.mapson/address-db
 
-# ReqConfirmTemplate <file>
-#       This option specifies the complete path to the template file mapSoN
-#       will use when it sends out a request for confirmation. mapSoN will
-#       fail if this file does not exist.
-ReqConfirmTemplate $HOME/.mapson/reqmail.template
+# ReqConfirmTemplate <file>[:<file>:<file>...]
+#       This option specifies a list of possible filenames for the
+#       template file, mapSoN uses to send out a request for
+#       confirmation. Each filename must be separated by a colon, and
+#       mapSoN will try each of them, actually using the first file
+#       that can be opened successfully.
+ReqConfirmTemplate /usr/local/share/mapson/reqmail.template:$HOME/.mapson/reqmail.template
 
 # MTA <command>
 #       This option specifies the command mapSoN invokes in order to
