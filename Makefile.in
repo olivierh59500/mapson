@@ -76,6 +76,10 @@ version.h:	VERSION
 
 config.o:	Makefile
 
+README:
+	@(cd documentation && $(MAKE) readme.txt)
+	cp documentation/readme.txt $@
+
 documentation/man-page.txt:
 	@(cd documentation && $(MAKE) man-page.txt)
 
@@ -112,7 +116,7 @@ clean::
 	@find . -name '*.rpo' -exec rm -f {} \;
 	@find . -name '*.a'   -exec rm -f {} \;
 	@find . -name '*.o'   -exec rm -f {} \;
-	@find . -name '.#*' -exec rm -f {} \; ; \
+	@find . -name '.#*' -exec rm -f {} \;
 	@rm -f mapson config-sample.local
 	@echo All dependent files have been removed.
 
@@ -120,7 +124,7 @@ distclean:: clean
 	@rm -f Makefile config.log config.status
 
 realclean:: distclean
-	@rm -f configure version.h
+	@rm -f configure version.h README
 	@(cd documentation && $(MAKE) realclean)
 
 depend::
@@ -138,7 +142,7 @@ changelog::
 	rm ChangeLog.old ChangeLog.new
 
 dist:		mapson documentation/man-page.txt documentation/mapson.html \
-		documentation/mapson.pdf VERSION
+		documentation/mapson.pdf VERSION README
 	@V=`cat VERSION`; \
 	cp -ra . /tmp/mapson-$$V; \
 	$(MAKE) >/dev/null -C /tmp/mapson-$$V distclean; \
