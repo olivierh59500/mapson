@@ -102,6 +102,15 @@ main(int argc, char * argv[])
 
     /* Terminating gracefully. */
 
+#ifdef DEBUG_DMALLOC
+    /*
+       Freeing the buffers directly before the exit isn't particular
+       useful, but it will reduce the output of the dmalloc library,
+       in case I am debugging the code.
+     */
+    free_mail(Mail);
+    free(mail_buffer);
+#endif
     remove(mail_rescue_filename);
     return 0;
 }
