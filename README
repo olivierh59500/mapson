@@ -52,3 +52,5 @@ Things to do:
     o Include message id in log messages.
 
     o Convert libmd5 to uint32_t and stdint.h.
+
+    o Support both $HEADER[] and $HEADERLINES[].
