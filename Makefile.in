@@ -8,15 +8,22 @@ prefix		= @prefix@
 exec_prefix	= @exec_prefix@
 bindir		= @bindir@
 mandir		= @mandir@
-datadir		= @datadir@
+datadir		= @datadir@/mapson
+sysconfdir	= @sysconfdir@
+mailboxdir	= @mailboxdir@
+mta		= @mta@
 
 CC		= @CC@
 CXX		= @CXX@
 AR		= ar
 RANLIB		= @RANLIB@
+MKDIR		= ./.shtool mkdir
+INSTALL		= ./.shtool install
+
 OPTIMFLAGS	=
 WARNFLAGS	=
-CPPFLAGS	= @CPPFLAGS@ @DEFS@
+DEFS		= @DEFS@
+CPPFLAGS	= @CPPFLAGS@
 CFLAGS		= @CFLAGS@
 CXXFLAGS	= @CXXFLAGS@
 LDFLAGS		= @LDFLAGS@
@@ -40,10 +47,10 @@ LIBS		= libmd5/md5.o libparse-config-file/parse-config-file.o \
 .SUFFIXES:	.c .cc .o
 
 .c.o:
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(DEFS) $(CFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
 
 .cc.o:
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) $(DEFS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
 
 all:		mapson
 
@@ -53,12 +60,26 @@ all:		mapson
 mapson:		$(OBJS) $(LIBS)
 	$(CXX) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
 
+config.o:	config.cc
+	$(CXX) -DMAILBOXDIR=\"$(mailboxdir)\" -DMTA=\"$(mta)\" -DDATADIR=\"$(datadir)\" $(CPPFLAGS) $(DEFS) $(CXXFLAGS) $(WARNFLAGS) $(OPTIMFLAGS) -c $< -o $@
+
 clean::
 	@rm -f $(OBJS)
 	@rm -f $(LIBS)
-	@rm -f mapson
+	@rm -f mapson config-sample.local
 	@find . -name '*.rpo' -exec rm {} \;
 	@echo All dependent files have been removed.
+
+install:	mapson reqmail.template-sample config-sample
+	$(MKDIR) -p $(DESTDIR)$(bindir)
+	$(INSTALL) -c -m 555 mapson $(DESTDIR)$(bindir)/mapson
+	$(MKDIR) -p $(DESTDIR)$(datadir)
+	$(INSTALL) -c -m 644 reqmail.template-sample $(DESTDIR)$(datadir)/reqmail.template-sample
+	sed -e "s:/usr/local:$(prefix):g" \
+	    -e "s:/var/spool/mail:$(mailboxdir):g" \
+	    <config-sample >config-sample.local
+	$(MKDIR) -p $(DESTDIR)$(sysconfdir)
+	$(INSTALL) -m 644 config-sample.local $(DESTDIR)$(sysconfdir)/config-sample
 
 distclean:: clean
 	@rm -f Makefile config.log config.status

@@ -71,9 +71,9 @@ configuration::configuration(int argc, char** argv)
     spool_dir.assign(sentry.pwd->pw_dir).append("/.mapson/spool");
     address_db.assign(sentry.pwd->pw_dir).append("/.mapson/address-db");
     request_for_confirmation_file.assign(sentry.pwd->pw_dir).append("/.mapson/reqmail.template");
-    request_for_confirmation_file.append(":/usr/local/share/mapson/reqmail.template");
-    mailbox.assign("/var/spool/mail/").append(sentry.pwd->pw_name);
-    mta = "/usr/sbin/sendmail '-f<>' -i -t";
+    request_for_confirmation_file.append(":" DATADIR "/reqmail.template");
+    mailbox.assign(MAILBOXDIR "/").append(sentry.pwd->pw_name);
+    mta = MTA " '-f<>' -i -t";
     strict_rfc_parser = false;
     let_incorrect_mails_pass = true;
     runtime_error_rc = 75;
