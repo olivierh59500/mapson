@@ -86,8 +86,14 @@ main(int argc, char * argv[])
 	PASSTHROUGH();
     }
     printf("DEBUG: Envelope is '%s'.\n", Mail->envelope);
-    for (i = 0; (Mail->from)[i] != NULL; i++) {
+    for (i = 0; Mail->from && (Mail->from)[i] != NULL; i++) {
 	printf("DEBUG: From[%d]: is '%s'.\n", i, (Mail->from)[i]);
+    }
+    for (i = 0; Mail->to && (Mail->to)[i] != NULL; i++) {
+	printf("DEBUG: To[%d]: is '%s'.\n", i, (Mail->to)[i]);
+    }
+    for (i = 0; Mail->cc && (Mail->cc)[i] != NULL; i++) {
+	printf("DEBUG: Cc[%d]: is '%s'.\n", i, (Mail->cc)[i]);
     }
 
 
