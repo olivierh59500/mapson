@@ -97,7 +97,8 @@ int does_address_exist_in_database(char *address);
 /* ruleset.c */
 
 enum {
-    RLST_PASS = 0,
+    RLST_CONTINUE = 0,
+    RLST_PASS,
     RLST_DROP,
     RLST_RFC,
     RLST_SAVETO

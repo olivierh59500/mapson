@@ -110,6 +110,9 @@ main(int argc, char * argv[])
 
 	rc = check_ruleset_file(Mail, &p);
 	switch(rc) {
+	  case RLST_CONTINUE:
+	      printf("No rule matched.\n");
+	      break;
 	  case RLST_PASS:
 	      printf("Mail passes.\n");
 	      break;
@@ -120,7 +123,7 @@ main(int argc, char * argv[])
 	      printf("Send request for confirmation.\n");
 	      break;
 	  case RLST_SAVETO:
-	      printf("Write mail to file '%s'\n.", p);
+	      printf("Write mail to file '%s'.\n", p);
 	      break;
 	  default:
 	      assert(0==1);

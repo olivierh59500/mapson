@@ -84,9 +84,10 @@ static bool           rlst_donot;
 <quote>\"			{ BEGIN(action); }
 
 <action>[ \t]+			/* Eat up whitespace. */
+<action>continue[ \t]*$		{ rlst_action = RLST_CONTINUE; BEGIN(INITIAL); }
+<action>pass[ \t]*$		{ rlst_action = RLST_PASS; BEGIN(INITIAL); }
 <action>drop[ \t]*$		{ rlst_action = RLST_DROP; BEGIN(INITIAL); }
-<action>pass[ \t]*$		{ rlst_action = RLST_PASS; BEGIN(INITIAL); }
-<action>pass[ \t]*$		{ rlst_action = RLST_PASS; BEGIN(INITIAL); }
+<action>rfc[ \t]*$		{ rlst_action = RLST_RFC; BEGIN(INITIAL); }
 <action>saveto[ \t]+\"		{ rlst_action = RLST_SAVETO; BEGIN(parameter); }
 
 <parameter>[^"]+		{ rlst_parameter = fail_safe_strdup(yytext); }
@@ -129,7 +130,7 @@ check_ruleset_file(struct Mail * mail, char ** parameter_ptr)
 
     rlst_lineno    = 1;
     rlst_mail      = mail;
-    rlst_rc        = RLST_PASS;
+    rlst_rc        = RLST_CONTINUE;
     rlst_pattern   = NULL;
     rlst_parameter = NULL;
     rlst_action    = -1;
