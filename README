@@ -92,3 +92,7 @@ Things to do:
 
     o Document the fact that the sample template file requires
       procmail.
+
+    o mapSoN should have options that tell it not to look for cookies
+      or to require a cookie in case the mail comes from procmail's
+      +argument feature.
