@@ -16,9 +16,18 @@ AC_PROG_CXX
 AC_PROG_CPP
 AC_PROG_RANLIB
 
-dnl Find characteristics of the system.
+dnl Find endianess of the system.
 dnl
 AC_C_BIGENDIAN
+if test "x$ac_cv_c_bigendian" = "xyes"; then
+    DEFS="$DEFS -DBYTE_ORDER=BIG_ENDIAN"
+else
+    echo little endian
+    DEFS="$DEFS -DBYTE_ORDER=LITTLE_ENDIAN"
+fi
+
+dnl Do we have large file system support?
+dnl
 AC_SYS_LARGEFILE
 
 dnl If the system misses the getopt.h include or the getopt_long()
