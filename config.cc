@@ -5,6 +5,7 @@
 
 // ISO C++ headers
 #include <cstdio>
+#include <cstdlib>
 #include <memory>
 
 // POSIX.1 system headers.
