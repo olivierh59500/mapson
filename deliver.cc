@@ -17,6 +17,16 @@
 
 using namespace std;
 
+namespace
+    {
+    struct fd_sentry
+        {
+        explicit fd_sentry(int arg) throw() : fd(arg) { }
+        ~fd_sentry() throw() { close(fd); }
+        int fd;
+        };
+    }
+
 void deliver(const string& mail)
     {
     // Open the mailbox file and write store the mail there.
@@ -25,6 +35,7 @@ void deliver(const string& mail)
     int fd = open(config->mailbox.c_str(), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't open mailbox file '") + config->mailbox + "' for writing");
+    fd_sentry sentry(fd);
     for (size_t len = 0; len < mail.size(); )
 	{
 	ssize_t rc = write(fd, mail.data()+len, mail.size()-len);
@@ -33,5 +44,4 @@ void deliver(const string& mail)
 	else
 	    len += rc;
 	}
-    close(fd);
     }
