@@ -52,21 +52,35 @@ AddressDB::~AddressDB()
 
 bool AddressDB::find(const string& key) const
     {
+    if (key.empty())
+	throw invalid_argument("AddressDB::find() may not be called with an empty string.");
+
     // Find the string in the buffer. Then check whether it begins at
     // the beginning of a line and whether it ends at the end of a
     // line. If it does not, it's not a valid hit.
 
-    string::size_type pos = data.find(key);
-    if ((pos != string::npos) &&
-	(pos == 0 || data[pos-1] == '\n') &&
-	((pos + key.size() == data.size()) || (data[pos+key.size()] == '\n')))
-	return true;
-    else
-	return false;
+    string::size_type pos = 0;
+    do
+	{
+	pos = data.find(key, pos);
+	if ((pos != string::npos) &&
+	    (pos == 0 || data[pos-1] == '\n') &&
+	    ((pos + key.size() == data.size()) || (data[pos+key.size()] == '\n')))
+	    {
+	    return true;
+	    }
+	else
+	    ++pos;
+	}
+    while (pos != string::npos);
+    return false;
     }
 
 void AddressDB::insert(const string& key)
     {
+    if (key.empty())
+	throw invalid_argument("AddressDB::find() may not be called with an empty string.");
+
     // Append the address to our buffer and then write it to disk
     // immediately. If any of these operations fail, the memory buffer
     // and the disk-file are possibly in an undefined state.
