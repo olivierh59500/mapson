@@ -1,1 +1,7 @@
-*.txt *.html *.ps *.pdf
+*.txt
+*.html
+*.ps
+*.pdf
+*.aux
+*.log
+*.tex
