@@ -55,3 +55,5 @@ spool_dir.o: mapson.h
 mailbox_path.o: mapson.h
 spool.o: mapson.h
 loadfile.o: mapson.h
+is_confirmation.o: mapson.h
+get_user_name.o: mapson.h
