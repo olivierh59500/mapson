@@ -13,7 +13,7 @@
 #include <unistd.h>
 
 // My own libraries.
-#include "system-error.hh"
+#include "system-error/system-error.hh"
 #include "address-db.hh"
 
 using namespace std;

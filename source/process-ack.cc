@@ -12,8 +12,8 @@
 #include <unistd.h>
 
 // My own libraries.
+#include "system-error/system-error.hh"
 #include "extract-addresses.hh"
-#include "system-error.hh"
 #include "process-ack.hh"
 
 using namespace std;

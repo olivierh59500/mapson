@@ -14,8 +14,8 @@
 #include <unistd.h>
 
 // My own libraries.
+#include "system-error/system-error.hh"
 #include "home-dir.hh"
-#include "system-error.hh"
 
 using namespace std;
 

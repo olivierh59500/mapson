@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 // My own libraries.
-#include "system-error.hh"
+#include "system-error/system-error.hh"
 #include "extract-addresses.hh"
 #include "address-db.hh"
 #include "home-dir.hh"
