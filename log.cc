@@ -57,11 +57,11 @@ void _debug(const char* fmt, ...) throw()
         {
         va_list ap;
         va_start(ap, fmt);
-        string new_fmt = make_timestamp();
-        new_fmt += " debug: ";
+        string new_fmt = "debug: ";
         new_fmt += fmt;
         new_fmt += "\n";
         vfprintf(stderr, new_fmt.c_str(), ap);
+        new_fmt = make_timestamp() + " " + new_fmt;
         if (fileh.file)
             vfprintf(fileh.file, new_fmt.c_str(), ap);
         va_end(ap);
@@ -72,11 +72,11 @@ void info(const char* fmt, ...) throw()
     {
     va_list ap;
     va_start(ap, fmt);
-    string new_fmt = make_timestamp();
-    new_fmt += " info: ";
+    string new_fmt = "info: ";
     new_fmt += fmt;
     new_fmt += "\n";
     vfprintf(stderr, new_fmt.c_str(), ap);
+    new_fmt = make_timestamp() + " " + new_fmt;
     if (fileh.file)
         vfprintf(fileh.file, new_fmt.c_str(), ap);
     va_end(ap);
@@ -86,11 +86,11 @@ void error(const char* fmt, ...) throw()
     {
     va_list ap;
     va_start(ap, fmt);
-    string new_fmt = make_timestamp();
-    new_fmt += " error: ";
+    string new_fmt = "error: ";
     new_fmt += fmt;
     new_fmt += "\n";
     vfprintf(stderr, new_fmt.c_str(), ap);
+    new_fmt = make_timestamp() + " " + new_fmt;
     if (fileh.file)
         vfprintf(fileh.file, new_fmt.c_str(), ap);
     va_end(ap);

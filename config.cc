@@ -4,6 +4,7 @@
  */
 
 // ISO C++ headers
+#include <cstdio>
 #include <memory>
 
 // POSIX.1 system headers.
@@ -20,6 +21,7 @@
 #include "libvarexp/varexp.hh"
 #include "config.hh"
 #include "log.hh"
+#include "version.h"
 
 using namespace std;
 
@@ -100,11 +102,13 @@ configuration::configuration(int argc, char** argv)
     // Parse the command line into temporary variables except for the
     // location of the config file.
 
-    const char* optstring = "c:d";
+    const char* optstring = "hc:d";
     const option longopts[] =
         {
         { "config-file", required_argument, 0, 'c' },
         { "debug",       no_argument,       0, 'd' },
+        { "help",        no_argument,       0, 'h' },
+        { "version",     no_argument,       0, 'v' },
         { 0, 0, 0, 0 }          // mark end of array
         };
     int rc;
@@ -120,8 +124,16 @@ configuration::configuration(int argc, char** argv)
             case 'd':
                 cmdline_debug = true;
                 break;
+            case 'v':
+                printf("mapSoN version %s\n", VERSION);
+                throw no_error();
+            case 'h':
+                fprintf(stderr, "Usage: mapson [-h | --help] [--version] [-d | --debug] \\\n" \
+                                "              [-c config | --config-file config] [mail...]\n",
+                        argv[0]);
+                throw no_error();
             default:
-                error("Usage: %s [-d | --debug] [-c config | --config-file config] [mail...]", argv[0]);
+                fprintf(stderr, "Usage: %s [-h | --help] [--version] [-d | --debug] [-c config | --config-file config] [mail...]", argv[0]);
                 throw runtime_error("Incorrect command line syntax.");
             }
         }
