@@ -463,9 +463,9 @@ The mapSoN software both binary and source (hereafter ``Software''), is
 intellectual property owned jointly by Peter Simons and German National
 Research Center for Information Technology (hereafter ``GMD'') and is
 copyrighted by GMD in all countries in the world, and ownership remains
-with the GMD.
+with GMD.
 
-The GMD grants you (hereafter ``Licensee'') a license to use the Software
+GMD grants you (hereafter ``Licensee'') a license to use the Software
 for academic, research and internal business purposes only, without a
 fee. Only for these purposes, Licensee may distribute the binary and
 source code (if released) to third parties provided that the copyright
@@ -483,12 +483,12 @@ notify GMD regarding its distribution of the derivative work, and
 
 @item
 clearly notify users that such derivative work is a modified version and
-not the original mapSoN distributed by the GMD.
+not the original mapSoN distributed by GMD.
 
 @end enumerate
 
 Any Licensee wishing to make commercial use of the Software should
-contact the GMD, to negotiate an appropriate license for such commercial
+contact GMD, to negotiate an appropriate license for such commercial
 use. Commercial use includes
 
 @enumerate
