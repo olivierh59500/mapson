@@ -26,10 +26,14 @@
 
 all:	mapson.html mapson.pdf man-page.txt
 
+man-page.html:	license.sgml
+
+mapson.html mapson.tex:	license.sgml
+
 man-page.txt:	man-page.html
-	lynx -width=72 -hiddenlinks=ignore -dump $< >$@
+	lynx -width=80 -nolist -dump $< >$@
 
 clean distclean realclean:
-	rm -f *.aux *.dvi *.log *.toc
-	rm -f *.css *.fot *.html *.ps
-	rm -f *.tex *.xml *.txt *.pdf
+	@rm -f *.aux *.dvi *.log *.toc
+	@rm -f *.css *.fot *.html *.ps
+	@rm -f *.tex *.xml *.txt *.pdf
