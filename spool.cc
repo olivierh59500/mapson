@@ -41,7 +41,7 @@ string spool(const string& mail)
 
     string filename = config->spool_dir + "/" + buf;
     debug(("Spooling e-mail as '%s'.", filename.c_str()));
-    int fd = open(filename.c_str(), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+    int fd = open(filename.c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't open spool file '") + filename + "' for writing");
     fd_sentry sentry(fd);

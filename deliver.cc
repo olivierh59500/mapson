@@ -23,7 +23,7 @@ void deliver(const string& mail)
     // Open the mailbox file and write store the mail there.
 
     debug(("Delivering mail to mailbox '%s'.", config->mailbox.c_str()));
-    int fd = open(config->mailbox.c_str(), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+    int fd = open(config->mailbox.c_str(), O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
     if (fd < 0)
 	throw system_error(string("Can't open mailbox file '") + config->mailbox + "' for writing");
     fd_sentry sentry(fd);
