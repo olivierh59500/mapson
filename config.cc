@@ -90,6 +90,7 @@ configuration::configuration(int argc, char** argv)
         { 0, 0, 0, 0 }          // mark end of array
         };
     int rc;
+    bool cmdline_debug = false;
     opterr = 0;
     while ((rc = getopt_long(argc, argv, optstring, longopts, 0)) != -1)
         {
@@ -99,7 +100,7 @@ configuration::configuration(int argc, char** argv)
                 config_file = optarg;
                 break;
             case 'd':
-                debug = true;
+                cmdline_debug = true;
                 break;
             default:
                 error("Usage: %s [-c config-file] [mail [mail ...]]\n", argv[0]);
@@ -115,6 +116,12 @@ configuration::configuration(int argc, char** argv)
         {
         parse_config_file(config_file.c_str(), *this);
         }
+
+    // Don't let the config file overwrite the debug flag from the
+    // command line.
+
+    if (cmdline_debug)
+        debug = true;
     }
 
 // The destructor is pretty straightforward.
