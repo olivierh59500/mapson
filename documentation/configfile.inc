@@ -1,7 +1,7 @@
   <para>At startup, &mapson; will try to read its configuration file at
 <filename>${HOME}/.mapson/config</filename> first of all. If that file does not
 exist, &mapson; falls back to the system-wide file
-<filename>/usr/local/etc/mapson.config</filename>. This means that if &mapson;
+<filename>/etc/mapson/mapson.config</filename>. This means that if &mapson;
 has been installed well, you don't need a configuration file of your own. It
 also means, that you may <emphasis>have</emphasis> a configuration file of your
 own nonetheless.</para>
