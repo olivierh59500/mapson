@@ -30,6 +30,19 @@ fail_safe_malloc(size_t size)
 }
 
 void *
+fail_safe_calloc(size_t nmemb, size_t size)
+{
+    void *  buf;
+
+    buf = calloc(nmemb, size);
+    if (buf == NULL) {
+	THROW(OUT_OF_MEMORY_EXCEPTION);
+    }
+
+    return buf;
+}
+
+void *
 fail_safe_realloc(void * ptr, size_t size)
 {
     void *  buf;
