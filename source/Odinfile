@@ -1,39 +1,13 @@
 # Build mapSoN.
 
-mapson == %mapson.c.sm +(config/cc.flags) \
-		       +(config/cc_flags.flags) \
-		       +lib=(libexceptions.a) \
-                       +lib=(librfc822.a) \
-                       +lib=(libmpools.a) \
-                       +lib=(liblists.a) \
-		       +(config/db_linklib.flags) \
-		       :exe
-%mapson.c.sm == <<
-    address_db.c
-    array.c
-    confirm.c
-    cookie.c
-    escape_from.c
-    fail_safe.c
-    get_user_name.c
-    home_dir.c
-    is_confirmation.c
-    loadfile.c
-    log.c
-    mail_rescue.c
-    mailbox_path.c
-    main.c
-    md5.c
-    parse_mail.c
-    ruleset.l +lex_prefix='rlst_' :c
-    save_to.c
-    spool.c
-    spool_dir.c
+mapson == %mapson.cc.sm +cc_flags='-Wall -pedantic' \
+			+lib=(librfc822.a) \
+			:exe
 
-liblists.a      == liblists/%liblists.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
-libmpools.a     == libmpools/%libmpools.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
-librfc822.a     == librfc822/%librfc822.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
-libexceptions.a == libexceptions/%libexceptions.a.sm +(config/cc.flags) +(config/cc_flags.flags) :a
+%mapson.cc.sm == <<
+    mapson.cc
+
+librfc822.a     == librfc822/%librfc822.a.sm :a
 
 %clean ! == !<<
-    rm -f libexceptions.a liblists.a libmpools.a librfc822.a mapson
+    rm -f librfc822.a mapson
