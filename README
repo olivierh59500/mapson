@@ -83,3 +83,7 @@ Things to do:
       automatically.
 
     o Make the gather-addresses mode handle the mailbox format.
+
+    o Add an option that tells mapSoN to create missing parent
+      directories on the fly, if it wants to write to the spool
+      directory or to the address database.
