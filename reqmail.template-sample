@@ -1,0 +1,10 @@
+From: simons+${MD5HASH}@cryp.to
+To: ${ENVELOPE}
+Subject: \[mapSoN\] Request for confirmation
+
+I have received the following e-mail from you:
+
+${HEADER:s/^/    /g}
+The e-mail has not yet been delivered to my mailbox because this is
+the first time that I receive e-mail from your address. Please confirm
+that you're not sending me any spam simply by replying to this mail.
