@@ -22,7 +22,7 @@ void deliver(const string& mail)
 
     int fd = open(config->mailbox.c_str(), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
     if (fd < 0)
-	throw system_error(string("Can't mailbox file '") + config->mailbox + "' for writing");
+	throw system_error(string("Can't open mailbox file '") + config->mailbox + "' for writing");
     for (size_t len = 0; len < mail.size(); )
 	{
 	ssize_t rc = write(fd, mail.data()+len, mail.size()-len);
