@@ -1,4 +1,4 @@
-From: simons+${MD5HASH}@cryp.to
+From: simons+${MD5HASH}@cryp.to (Peter Simons)
 To: ${ENVELOPE:-${RETURN_PATH:-${SENDER:-${FROM[0]}}}}
 Subject: \[mapSoN\] Request for Confirmation
 Precedence: junk
