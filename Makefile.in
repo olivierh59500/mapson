@@ -112,6 +112,7 @@ clean::
 	@find . -name '*.rpo' -exec rm -f {} \;
 	@find . -name '*.a'   -exec rm -f {} \;
 	@find . -name '*.o'   -exec rm -f {} \;
+	@find . -name '.#*' -exec rm -f {} \; ; \
 	@rm -f mapson config-sample.local
 	@echo All dependent files have been removed.
 
