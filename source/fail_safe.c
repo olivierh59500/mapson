@@ -28,6 +28,19 @@ fail_safe_malloc(size_t size)
     return buf;
 }
 
+void *
+fail_safe_realloc(void * ptr, size_t size)
+{
+    void *  buf;
+
+    buf = realloc(ptr, size);
+    if (buf == NULL) {
+	THROW(OUT_OF_MEMORY_EXCEPTION);
+    }
+
+    return buf;
+}
+
 char *
 fail_safe_strdup(char * string)
 {
