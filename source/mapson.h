@@ -93,4 +93,16 @@ void assert_mapson_home_dir_exists(void);
 void add_address_to_database(char *address);
 int does_address_exist_in_database(char *address);
 
+/* ruleset.c */
+
+enum {
+    RLST_PASS = 0,
+    RLST_DROP,
+    RLST_RFC,
+    RLST_SAVETO
+};
+
+int check_ruleset_file(struct Mail *Mail, char **parameter_ptr);
+
+
 #endif /* !defined(__MAPSON_H__) */
