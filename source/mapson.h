@@ -134,4 +134,8 @@ char * is_confirmation_mail(char * mail_buffer);
 
 char * get_user_name(void);
 
+/* escape_from.c */
+
+char * escape_from_lines(char * buffer);
+
 #endif /* !defined(__MAPSON_H__) */

@@ -26,6 +26,7 @@ main(int argc, char * argv[])
     FILE *         fh;
     char *         mail_rescue_filename,
          *         mail_buffer,
+	 *         escaped_mail_buffer,
 	 *         p;
     unsigned int   mail_size;
     char           buffer[4096];
@@ -154,6 +155,10 @@ main(int argc, char * argv[])
 	goto terminate;
     }
 
+    /* Escape "From " strings in the mail body, so that the mail
+       readers don't get confused. */
+
+    escaped_mail_buffer = escape_from_lines(mail_buffer);
 
     /* Let the rulset check the mail to decide what we'll do with it. */
 
@@ -165,7 +170,7 @@ main(int argc, char * argv[])
 	      if (does_address_exist_in_database((Mail->from)[i]) == TRUE) {
 		  syslog(LOG_INFO, "Sender '%s' is known. Delivering mail '%s'.",
 			 (Mail->from)[i], Mail->message_id);
-		  save_to(mail_buffer, get_mailbox_path());
+		  save_to(escaped_mail_buffer, get_mailbox_path());
 		  break;
 	      }
 	  }
@@ -184,12 +189,12 @@ main(int argc, char * argv[])
 	      syslog(LOG_INFO, "Adding '%s' to accept-database.", (Mail->from)[i]);
 	      add_address_to_database((Mail->from)[i]);
 	  }
-	  save_to(mail_buffer, get_mailbox_path());
+	  save_to(escaped_mail_buffer, get_mailbox_path());
 	  break;
       case RLST_QUICKPASS:
 	  syslog(LOG_INFO, "Quickpassing mail '%s' pass due to ruleset.",
 		 Mail->message_id);
-	  save_to(mail_buffer, get_mailbox_path());
+	  save_to(escaped_mail_buffer, get_mailbox_path());
 	  break;
       case RLST_DROP:
 	  syslog(LOG_INFO, "Dropping mail '%s' from '%s'.\n",
@@ -208,7 +213,7 @@ main(int argc, char * argv[])
 	  }
 	  syslog(LOG_INFO, "Writing mail '%s' to file '%s'.",
 		 Mail->message_id, p);
-	  save_to(mail_buffer, p);
+	  save_to(escaped_mail_buffer, p);
 	  break;
       default:
 	  assert(0==1);
@@ -227,6 +232,8 @@ terminate:
      */
     free_mail(Mail);
     free(mail_buffer);
+    if (escaped_mail_buffer != mail_buffer)
+      free(escaped_mail_buffer);
 #endif
     remove(mail_rescue_filename);
     return 0;
