@@ -87,6 +87,8 @@ main(int argc, char * argv[])
 	PASSTHROUGH();
     }
 
+    printf("Message-Id: '%s'.\n", Mail->message_id);
+
     /* Let the rulset check the mail to decide what we'll do with it. */
 
     {
@@ -111,6 +113,10 @@ main(int argc, char * argv[])
 		  printf("DEBUG: Adding '%s' to accept-database.\n", (Mail->from)[i]);
 		  add_address_to_database((Mail->from)[i]);
 	      }
+	      save_to(mail_buffer, get_mailbox_path());
+	      break;
+	  case RLST_QUICKPASS:
+	      printf("Delivering mail without adding the From: senders to the database.\n");
 	      save_to(mail_buffer, get_mailbox_path());
 	      break;
 	  case RLST_DROP:

@@ -86,6 +86,7 @@ static bool           rlst_donot;
 <action>[ \t]+			/* Eat up whitespace. */
 <action>continue[ \t]*$		{ rlst_action = RLST_CONTINUE; BEGIN(INITIAL); }
 <action>pass[ \t]*$		{ rlst_action = RLST_PASS; BEGIN(INITIAL); }
+<action>quickpass[ \t]*$	{ rlst_action = RLST_QUICKPASS; BEGIN(INITIAL); }
 <action>drop[ \t]*$		{ rlst_action = RLST_DROP; BEGIN(INITIAL); }
 <action>rfc[ \t]*$		{ rlst_action = RLST_RFC; BEGIN(INITIAL); }
 <action>saveto[ \t]+\"		{ rlst_action = RLST_SAVETO; BEGIN(parameter); }
