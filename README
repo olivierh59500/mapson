@@ -71,3 +71,5 @@ Things to do:
 
     o Try to create the all directories in the user's home
       automatically.
+
+    o Add DEBUG to CPPFLAGS via autoconf.
