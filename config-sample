@@ -14,7 +14,6 @@
 # config files changes effectively nothing.
 
 # Mailbox <file>
-
 #       This option specifies the complete path to the user's mailbox
 #       file. That is the location where mapSoN will store incoming
 #       e-mail that passed. If the first character of the configured
