@@ -10,8 +10,6 @@ o Support headers
 
 o Convert libmd5 to uint32_t and stdint.h.
 
-o Make libmd5 get along without __alignof__.
-
 o Add last-used timestamps to each address in the database.
 
 o Add headers to the mails mapSoN processes and tell the user what
@@ -31,8 +29,6 @@ o Extract the message-id before looking for a cookie so that we have
 
 o Add a way to match whole domains, probably even including patters,
   negation, etc.
-
-o Implement my own setenv() because it is missing on Solaris.
 
 o The result of jadetex will swallow "--" in <option> tags and turn it
   into a longer hyphen. This must not be.
