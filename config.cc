@@ -62,7 +62,7 @@ namespace
             throw runtime_error("Index lookups are not implemented for config files.");
             }
         };
-    inline int mysetenv(const char* name, const char* value)
+    inline void mysetenv(const char* name, const char* value)
         {
         string tmp = string(name) + "=" + value;
         char* env = strdup(tmp.c_str());
