@@ -1,0 +1,2 @@
+lib md5           : md5.c ;
+unit-test md5test : md5test.c md5 ;
