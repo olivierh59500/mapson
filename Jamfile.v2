@@ -1,0 +1,27 @@
+# build mapson
+
+exe mapson
+    : accept-confirmation.cpp
+      address-db.cpp
+      config.cpp
+      deliver.cpp
+      extract-addresses.cpp
+      gather-addresses.cpp
+      lines2regex.cpp
+      log.cpp
+      mapson.cpp
+      request-confirmation.cpp
+      spool.cpp
+      ../rfc822//rfc822
+      ../md5//md5
+      ../varexp//varexp
+      ../hashcash//hc
+    : <include>..
+      <define>MAILBOXDIR=\\\"/var/mail\\\"
+      <define>MTA=\\\"/usr/sbin/sendmail\\\"
+      <define>DATADIR=\\\"/usr/share/mapson\\\"
+      <define>SYSCONFDIR=\\\"/etc/mapson\\\"
+      <define>PACKAGE_VERSION=\\\"3.1-beta1\\\"
+      <threading>single
+      <define>_FILE_OFFSET_BITS=64
+    ;
