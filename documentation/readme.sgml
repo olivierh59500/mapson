@@ -1,0 +1,90 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+<!ENTITY librfc "<application>librfc822</application>">
+<!ENTITY purpose SYSTEM "purpose.inc">
+<!ENTITY version SYSTEM "../VERSION">
+]>
+
+<article lang="en">
+  <articleinfo>
+    <title>&librfc; &version;</title>
+    <author>
+      <firstname>Peter</firstname>
+      <surname>Simons</surname>
+      <affiliation>
+        <address><email>simons@cryp.to</email></address>
+      </affiliation>
+    </author>
+  </articleinfo>
+
+  <section>
+    <title>Purpose of &librfc;</title>
+    &purpose;
+  </section>
+
+  <section>
+    <title>Building &librfc;</title>
+
+    <para>The distribution contains <filename>Makefile</filename>s suited for
+compilation with the GNU C++ compiler. Be adviced, though, that you will need a
+fairly recent version in order to compile &librfc;, because the library makes
+use of many features of the ISO C++ standard that are not supported by older
+versions of <application>g++</application>.</para>
+
+    <para>Nonetheless, it should be possible to translate &librfc; with other
+ISO C++ compilers, too; the library does not use any system specific functions
+with the exception of POSIX regular expressions, but these should be widely
+available -- at least on Unix platforms. So just take a look at the
+<filename>Makefile</filename>s: With only a few modifications you should get
+along.</para>
+  </section>
+
+  <section>
+    <title>The <filename>test</filename> program</title>
+
+    <para>Included in the distribution is a small test programm,
+<filename>test.cc</filename>, which you can compile by executing <command>make
+test</command>. When started, this program will read an arbitrary RFC822 address
+from standard input, then it will parse the address and print the separate
+addresses.</para>
+
+    <para>In addition, the program performs a few parsing operations on
+addresses built into the binary.</para>
+
+    <para>The program is not intended to serve any useful purpose, but you might
+want to look at the source code to get an impression of how this library may be
+used.</para>
+  </section>
+
+  <section>
+    <title>Documentation</title>
+
+    <para>The directory <filename>documentation</filename> contains a complete
+user's manual for &librfc; -- most notably the files
+<filename>user-manual.html</filename> and <filename>user-manual.pdf</filename>.
+You should really take a look at them if you plan to use this code. :-)</para>
+  </section>
+
+  <section>
+    <title>Getting the latest version</title>
+
+    <para>The latest version of &librfc; is available from
+<literal>http://cryp.to/librfc822/</literal>.</para>
+  </section>
+
+  <section>
+    <title>Copyright</title>
+
+    <para>&librfc; is copyrighted by <literal>Peter Simons
+&lt;simons@cryp.to&gt;</literal>. Permission is granted to use this code
+under the terms described in the <filename>LICENSE</filename> file.</para>
+
+  </section>
+
+</article>
+
+<!--
+Local Variables:
+mode: sgml
+fill-column:80
+End:
+-->

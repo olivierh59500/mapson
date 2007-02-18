@@ -1,0 +1,571 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+<!ENTITY purpose SYSTEM "purpose.inc">
+<!ENTITY version SYSTEM "../VERSION">
+<!ENTITY librfc "<application>librfc822</application>">
+]>
+
+<article lang="en">
+  <articleinfo>
+    <title>RFC822 Address Parser Library &version;</title>
+    <author>
+      <firstname>Peter</firstname>
+      <surname>Simons</surname>
+      <affiliation>
+        <address><email>simons@cryp.to</email></address>
+      </affiliation>
+    </author>
+  </articleinfo>
+
+  <sect1>
+    <title>Purpose of this Library</title>
+    &purpose;
+  </sect1>
+
+  <sect1>
+    <title>The high-level Interface</title>
+
+    <para>You can use &librfc;'s internal parser class directly, if you need
+complete control over everything, but that's not for the faint hearted.
+Honestly, I use the high-level interface myself! <quote>High-level</quote> means
+that the include <filename>rfc822.hh</filename> defines a set of routines which
+parse a certain type of address each. In contrast, accessing the parser directly
+would give you the ability to parse arbitrary RFC822 headers with relatively
+little effort. Eventually I will provide comfortable routines for this purpose,
+too; that's on the <quote>to do</quote> list.</para>
+
+    <sect2>
+      <title>The <type>rfc822address</type> Structure</title>
+
+      <para>When dealing with &librfc;, the results of the parsing process will
+be placed into the <type>rfc822address</type> structure, which is defined as
+follows:</para>
+
+      <classsynopsis>
+        <ooclass>
+          <classname>rfc822address</classname>
+        </ooclass>
+        <fieldsynopsis>
+          <type>std::string</type>
+          <varname>address</varname>
+        </fieldsynopsis>
+        <fieldsynopsis>
+          <type>std::string</type>
+          <varname>localpart</varname>
+        </fieldsynopsis>
+        <fieldsynopsis>
+          <type>std::string</type>
+          <varname>hostpart</varname>
+        </fieldsynopsis>
+      </classsynopsis>
+
+      <para>The <structfield>address</structfield> field will contain the
+<emphasis>complete</emphasis> address without any comments, whitespace, or
+whatever madness the standard allows. If you want to compare to addresses for
+equity, this is the place to go. The <structfield>localpart</structfield> field
+is set to the localpart of the address. <quote>localpart</quote> in that context
+does not necessarily mean <quote>username</quote>. For addresses of the type
+<quote>user@example.org</quote>, <quote>user</quote> will be the localpart,
+granted, but when parsing the routing address
+<quote>&lt;@example.com:user@example.org&gt;</quote>, the localpart will be
+<quote>user@example.org</quote>. Imagine the <quote>localpart</quote> as being
+that part of the address that remains when the <quote>hostpart</quote> is
+stripped off!</para>
+
+      <para>In case of a routing address, the hostpart will be the first
+hostname in the list of routed hosts and the remainder will be the localpart.
+So, when having an address parsed by the library, you can check whether the
+address is really a local address by checking whether the
+<structfield>localpart</structfield> field does still contain an
+<quote>@</quote>. If it does, parse it again (and again, and again &hellip) to
+get the username.</para>
+
+      <para>The <structfield>hostpart</structfield> field will contain the name
+of the host that would interpret this address as <quote>local</quote>. This
+should be relatively clear from the discussion of the
+<structfield>localpart</structfield> field.</para>
+
+      <para><filename>rfc822.hh</filename> defines an
+<function>operator&lt;&lt;</function> for <type>rfc822address</type>, so you can
+print instances of the structure to any <type>std::ostream</type>, but the
+format printed by the operator is meant more or less for debugging purposes, not
+for anything useful. An <function>operator&gt;&gt;</function> is not defined by
+the library.</para>
+    </sect2>
+
+    <sect2>
+      <title>The
+<function>check_rfc822_<replaceable>xxx</replaceable></function>
+functions</title>
+
+      <para>This set of free functions is defined in
+<filename>rfc822.hh</filename>. Each of these routines parses a certain type of
+address, as defined in the standard, but no results are returned. Rather, these
+functions will be used to verify the addresses syntax. If an address contains an
+error, an <exceptionname>rfc822_syntax_error</exceptionname> exception will be
+thrown.</para>
+
+      <para>The available routines are:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>check_rfc822_addr_spec</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Verify an address of the form: <literal>local-part "@"
+domain</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>check_rfc822_route_addr</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Verify an address of the form: <literal>"&lt;" [route]
+addr-spec "&gt;"</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>check_rfc822_mailbox</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Verify an address of the form: <literal>addr-spec | phrase
+route-addr</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>check_rfc822_address</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Verify an address of the form: <literal>mailbox |
+group</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>check_rfc822_mailboxes</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Verify an address of the form: <literal>mailbox (","
+mailbox)*</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>check_rfc822_addresses</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Verify an address of the form: <literal>address (","
+address)*</literal>.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+      <para>Obviously, the syntax specification here is a bit short. Please
+refer to section 6 of <citation>RFC822</citation> for further details!</para>
+    </sect2>
+
+    <sect2>
+      <title>The
+<function>parse_rfc822_<replaceable>xxx</replaceable></function>
+functions</title>
+
+      <para>This set of free functions is defined in
+<filename>rfc822.hh</filename>. Each of these routines parses a certain type of
+address, as defined in the standard, and returns the result in one or more
+<type>rfc822address</type> structure. The routines that parse a
+<emphasis>single</emphasis> address will return the structure directly as the
+return value, the routines that may possibly return
+<emphasis>multiple</emphasis> addresses require an additional parameter of type
+<type>std::insert_iterator&lt;T&gt;*</type> -- a pointer to a class instance
+that will be used to append the results to a container of your choice.</para>
+
+      <para>If an address contains an syntax error, an
+<exceptionname>rfc822_syntax_error</exceptionname> exception will be thrown.
+Please note that when the exception is thrown, an arbitrary number of addresses
+might already have been added to the container!</para>
+
+      <para>The available routines are:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>rfc822address <function>parse_rfc822_addr_spec</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Parse an address of the form: <literal>local-part "@"
+domain</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>rfc822address <function>parse_rfc822_route_addr</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Parse an address of the form: <literal>"&lt;" [route]
+addr-spec "&gt;"</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>rfc822address <function>parse_rfc822_mailbox</function></funcdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Parse an address of the form: <literal>addr-spec | phrase
+route-addr</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>parse_rfc822_address</function></funcdef>
+                <paramdef>std::insert_iterator&lt;T&gt;* <parameter>ii</parameter></paramdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Parse an address of the form: <literal>mailbox |
+group</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>parse_rfc822_mailboxes</function></funcdef>
+                <paramdef>std::insert_iterator&lt;T&gt;* <parameter>ii</parameter></paramdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Parse an address of the form: <literal>mailbox (","
+mailbox)*</literal>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><funcsynopsis>
+              <funcprototype>
+                <funcdef>void <function>parse_rfc822_addresses</function></funcdef>
+                <paramdef>std::insert_iterator&lt;T&gt;* <parameter>ii</parameter></paramdef>
+                <paramdef>const std::string <parameter>input</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis></term>
+          <listitem>
+            <para>Parse an address of the form: <literal>address (","
+address)*</literal>.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+      <para>Obviously, the syntax specification here is a bit short. Please
+refer to section 6 of <citation>RFC822</citation> for further details!</para>
+
+      <para>One more note: It is legal to pass <quote>0</quote> for the
+<parameter>ii</parameter> parameter; in that case, the routines will throw all
+parsers results away and effectively act like the corresponding
+<function>check_rfc822_xxx</function> function.</para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>The low-level Interface</title>
+
+    <para>If don't trust those comfortable high-level routines, you may access
+the RFC parser directly. This will also allow you to re-use parts of the parser
+to implement new parsers for other RFC822 components or for parsers that need to
+understand a similar syntax.</para>
+
+    <sect2>
+      <title>The Lexer</title>
+
+      <para>The lexer used in &librfc; is a free function called
+<function>lex</function>, which is defined in <filename>rfc822.hh</filename>.
+Its synopsis is:</para>
+
+      <funcsynopsis>
+        <funcprototype>
+          <funcdef>tokstream_t <function>lex</function></funcdef>
+          <paramdef>const std::string& <parameter>input</parameter></paramdef>
+        </funcprototype>
+      </funcsynopsis>
+
+      <para><function>lex</function> will walk throught the text buffer
+<parameter>input</parameter> and produce a stream of actual tokens. Everything
+that's <emphasis>not</emphasis> a token according to the standard is omitted,
+such as whitespace, comments, etc. <type>tokstream_t</type> is defined to be
+<type>std::deque&lt;token&gt;</type> in <filename>rfc822.hh</filename>, but
+don't depend on the choice of the container, because it might change in future
+versions of the library. Use the abstract name instead.</para>
+
+      <para>The <classname>token</classname> structure contains an enumerator,
+which defines the type of the token and the actual string value of the token.
+Please refer to <filename>rfc822.hh</filename> and <filename>lexer.cc</filename>
+if you want to know those details. They are usually not important for users of
+the library.</para>
+    </sect2>
+
+    <sect2>
+      <title>The Parser</title>
+
+      <para>The parser of &librfc; consists of the class
+<classname>rfc822parser</classname>, which is defined in
+<filename>rfc822.hh</filename>. It's public interface is:</para>
+
+      <classsynopsis>
+        <ooclass>
+          <classname>rfc822parser</classname>
+        </ooclass>
+        <constructorsynopsis>
+          <methodname>rfc822parser</methodname>
+          <methodparam>
+            <type>tokstream_t</type>
+            <parameter>ts</parameter>
+          </methodparam>
+          <methodparam>
+            <type>address_comitter*</type>
+            <parameter>c</parameter>
+          </methodparam>
+        </constructorsynopsis>
+        <methodsynopsis>
+          <void>
+          <methodname>addresses</methodname>
+          <void>
+        </methodsynopsis>
+        <methodsynopsis>
+          <void>
+          <methodname>mailboxes</methodname>
+          <void>
+        </methodsynopsis>
+        <methodsynopsis>
+          <void>
+          <methodname>address</methodname>
+          <void>
+        </methodsynopsis>
+        <methodsynopsis>
+          <type>rfc822address</type>
+          <methodname>mailbox</methodname>
+          <void>
+        </methodsynopsis>
+        <methodsynopsis>
+          <type>rfc822address</type>
+          <methodname>route_addr</methodname>
+          <void>
+        </methodsynopsis>
+        <methodsynopsis>
+          <type>rfc822address</type>
+          <methodname>addr_spec</methodname>
+          <void>
+        </methodsynopsis>
+        <methodsynopsis>
+          <type>bool</type>
+          <methodname>empty</methodname>
+          <void>
+        </methodsynopsis>
+      </classsynopsis>
+
+      <para>Obviously, the parser class must be created with a token stream as
+returned by <function>lex</function> and a pointer to a committer class, which
+is used to return the parsed results by the member functions that may return
+multiple addresses. This data is stored internally in the class and may be
+erased once <classname>rfc822parser</classname> is instantiated. Consequently,
+you may parse only one token stream per parser instance, but creating an
+instance is not very expensive.</para>
+
+      <para>Once the <classname>rfc822parser</classname> instance has been
+created, you may call the various member functions repeatedly to parse the
+corresponding expression. The parsed tokens are thereby consumed from the
+internal token stream. If no tokens are left, the
+<methodname>rfc822parser::empty()</methodname> function will return
+<literal>true</literal>.</para>
+    </sect2>
+
+    <sect2>
+      <title>The Address Committer</title>
+
+      <para>The class <classname>rfc822parser::address_committer</classname>
+defines an interface from which you can derive your own committer classes.
+<filename>rfc822.hh</filename> defines this interface as follows:</para>
+
+      <classsynopsis>
+        <ooclass>
+          <classname>rfc822parser::address_committer</classname>
+        </ooclass>
+        <methodsynopsis>
+          <modifier>virtual</modifier>
+          <void>
+          <methodname>operator()</methodname>
+          <methodparam>
+            <type>const rfc822address&</type>
+            <parameter>address</parameter>
+          </methodparam>
+        </methodsynopsis>
+      </classsynopsis>
+
+      <para>It effectively implements a simple callback. Whenever any of the
+member functions <methodname>rfc822parser::address</methodname>,
+<methodname>rfc822parser::addresses</methodname>, or
+<methodname>rfc822parser::mailboxes</methodname> finds a complete RFC822
+address, it will invoke the instance of the committer class that
+<classname>rfc822parser</classname> has been instantiated with. If the class has
+been instantiated with <quote>0</quote> for a pointer to the committer class,
+the results of the parser will be thrown away.</para>
+    </sect2>
+
+    <sect2>
+      <title>An Example Program</title>
+      <para></para>
+
+      <informalexample>
+        <programlisting>#include &lt;rfc822.hh&gt;
+using namespace std;
+
+class my_committer : public rfc822parser::address_committer
+    {
+  public:
+    void operator() (const rfc822address &amp; addr)
+        {
+        cout &lt;&lt; addr &lt;&lt; endl;
+        }
+    };
+
+int main()
+try
+    {
+    string input = \
+        "testing my parser : peter.simons@gmd.de,\n"    \
+        "\t (peter.)simons@rhein.de ,,,,,\n"            \
+        "\t testing my parser &lt;simons@cryp.to&gt;,\n"     \
+        "\t it rules &lt;@peti.gmd.de:simons @ cys .de&gt;\n" \
+        "\t ;\n"                                        \
+        "\t ,\n"                                        \
+        "\t peter.simons@acm.org\n";
+
+    my_committer   committer;
+    rfc822parser parser(lex(input), &amp;committer);
+    parser.addresses();
+
+    return 0;
+    }
+catch(rfc822_syntax_error &amp; e)
+    {
+    cout &lt;&lt; "Address contains an syntax error: " &lt;&lt; e.what() &lt;&lt; endl;
+    }
+catch(...)
+    {
+    cout &lt;&lt; "Caught unknown exception." &lt;&lt; endl;
+    }</programlisting>
+      </informalexample>
+
+
+    </sect2>
+
+  </sect1>
+
+
+  <sect1 id="exceptions">
+    <title>Exceptions Thrown by &librfc;</title>
+
+    <para>The only exception actually thrown by &librfc; is the
+<exceptionname>rfc822_syntax_error</exceptionname>, which occurs in case of an
+syntax error. Other exceptions may be throw by the classes used in the library,
+that's your problem. :-)</para>
+
+    <para>The class is defined as follows:</para>
+
+    <classsynopsis>
+      <ooclass>
+        <classname>rfc822_syntax_error : public std::runtime_error</classname>
+      </ooclass>
+      <methodsynopsis>
+        <modifier>virtual</modifier>
+        <type>const char*</type>
+        <methodname>what</methodname>
+        <void>
+      </methodsynopsis>
+    </classsynopsis>
+
+    <para>The <methodname>what</methodname> member function inherited from
+<exceptionname>std::runtime_error</exceptionname> provides you with a text
+description of the syntax error that caused this exception to be thrown.</para>
+
+    <para>Arguably this interface doesn't provide the programmer with overly
+detailed information for error recovery and I always wanted to polish it, but
+the truth is: I have used &librfc; in several programs of mine and never
+actually <emphasis>needed</emphasis> something else! That's why the library
+still provides only this simple mechanism for error reporting.</para>
+  </sect1>
+
+  <sect1>
+    <title>License</title>
+
+  <para>This software is copyrighted by Peter Simons
+<email>simons@cryp.to</email>. Permission is granted to use it under the
+terms of the GNU General Public License. For further details, refer to the file
+<filename>LICENSE</filename> included in the software distribution or see <ulink
+url="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</ulink>
+in case that file is missing.</para>
+  </sect1>
+
+  <bibliography>
+    <biblioentry>
+      <abbrev>RFC822</abbrev>
+      <author>
+        <firstname>David</firstname>
+        <othername>H.</othername>
+        <surname>Crocker</surname>
+      </author>
+      <title>
+        <ulink url="http://rfc.fh-koeln.de/rfc/html_gz/rfc822.html.gz">Request
+for Comments 822: <quote>Standard for the Format of ARPA Internet Text
+Messages</quote>
+        </ulink>
+      </title>
+    </biblioentry>
+  </bibliography>
+
+</article>
+
+<!--
+Local Variables:
+mode: sgml
+fill-column:80
+End:
+-->
