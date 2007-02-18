@@ -1,0 +1,17 @@
+lib hc
+    : libhc.c utct.c sdb.c lock.c sstring.c random.c libsha1.c
+      libfastmint.c fastmint_mmx_standard_1.c fastmint_mmx_compact_1.c
+      fastmint_ansi_compact_1.c fastmint_ansi_standard_1.c
+      fastmint_ansi_compact_2.c fastmint_ansi_standard_2.c
+      fastmint_altivec_standard_1.c fastmint_altivec_standard_2.c
+      fastmint_altivec_compact_2.c fastmint_ansi_ultracompact_1.c
+      fastmint_library.c
+    : <define>REGEXP_POSIX
+    :
+    : <search>.
+    ;
+
+exe hashcash : hashcash.c hc ;
+exe sha1 : sha1.c hc ;
+
+unit-test sha1test : sha1test.c hc ;
