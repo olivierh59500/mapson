@@ -26,3 +26,7 @@ exe mapson
       <threading>single
       <define>_FILE_OFFSET_BITS=64
     ;
+
+test-suite mapson_tests
+    : [ run md5test.c md5.c ]
+    ;
