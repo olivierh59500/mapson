@@ -13,7 +13,8 @@ exe mapson
       mapson.cpp
       request-confirmation.cpp
       spool.cpp
-      ../rfc822//rfc822
+      rfc822-lexer.cpp
+      rfc822-parser.cpp
       ../md5//md5
       ../varexp//varexp
       ../hashcash//hc
