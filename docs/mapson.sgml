@@ -11,11 +11,11 @@
 <!ENTITY defreqmail SYSTEM "defreqmail.inc">
 <!ENTITY version SYSTEM "../VERSION">
 <!ENTITY varexp "<application>libvarexp</application>">
-<!ENTITY arrays SYSTEM "../libvarexp/documentation/arrays-of-variables.inc">
-<!ENTITY looping SYSTEM "../libvarexp/documentation/looping.inc">
-<!ENTITY operations SYSTEM "../libvarexp/documentation/operations-on-variables.inc">
-<!ENTITY quoted-pairs SYSTEM "../libvarexp/documentation/quoted-pairs.inc">
-<!ENTITY expressions SYSTEM "../libvarexp/documentation/variable-expressions.inc">
+<!ENTITY arrays SYSTEM "../varexp/documentation/arrays-of-variables.inc">
+<!ENTITY looping SYSTEM "../varexp/documentation/looping.inc">
+<!ENTITY operations SYSTEM "../varexp/documentation/operations-on-variables.inc">
+<!ENTITY quoted-pairs SYSTEM "../varexp/documentation/quoted-pairs.inc">
+<!ENTITY expressions SYSTEM "../varexp/documentation/variable-expressions.inc">
 ]>
 
 <article lang="en">
