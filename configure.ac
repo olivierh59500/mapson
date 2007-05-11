@@ -147,7 +147,6 @@ AC_ARG_WITH(debug, [  --with-debug            Support debugging? (default: yes)]
 
 dnl Grande Finale
 
-AC_CONFIG_FILES([librfc822/Makefile])
 AC_CONFIG_FILES([libvarexp/Makefile libvarexp/tests/Makefile])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
