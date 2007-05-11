@@ -10,19 +10,8 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-// POSIX.1 system headers.
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-
-// My own libraries.
+#include "mapson.hpp"
 #include "md5/md5.h"
-#include "system-error.hpp"
-#include "log.hpp"
-#include "config.hpp"
-#include "fd-sentry.hpp"
-#include "spool.hpp"
 
 using namespace std;
 

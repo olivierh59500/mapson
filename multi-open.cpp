@@ -10,12 +10,9 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-#ifndef MULTI_OPEN_HPP
-#define MULTI_OPEN_HPP
-
 #include "mapson.hpp"
 
-inline int multi_open(std::string& pathname, int flags, mode_t mode)
+int multi_open(std::string& pathname, int flags, mode_t mode)
 {
   debug(("Trying to open one of multiple files '%s'.", pathname.c_str()));
 
@@ -56,5 +53,3 @@ inline int multi_open(std::string& pathname, int flags, mode_t mode)
   debug(("Could not open any file."));
   return -1;
 }
-
-#endif

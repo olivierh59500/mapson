@@ -10,22 +10,8 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-// ISO C++ headers.
+#include "mapson.hpp"
 #include <vector>
-
-// POSIX.1 system headers.
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-
-// My own libraries.
-#include "system-error.hpp"
-#include "log.hpp"
-#include "config.hpp"
-#include "fd-sentry.hpp"
-#include "deliver.hpp"
-#include "accept-confirmation.hpp"
 
 using namespace std;
 

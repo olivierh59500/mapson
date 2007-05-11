@@ -10,32 +10,137 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-// ISO C++ headers.
-#include <cstdio>
-#include <string>
-
-// POSIX.1 system headers.
-#include <sys/types.h>
-#include <unistd.h>
-
-// My own libraries.
-#include "hashcash/hashcash.h"
-#undef word
+#include "mapson.hpp"
 #include "rfc822/rfc822.hpp"
 #include "regexp.hpp"
-#include "system-error.hpp"
-#include "extract-addresses.hpp"
-#include "config.hpp"
-#include "log.hpp"
-#include "address-db.hpp"
-#include "lines2regex.hpp"
-#include "spool.hpp"
-#include "deliver.hpp"
-#include "request-confirmation.hpp"
-#include "gather-addresses.hpp"
-#include "accept-confirmation.hpp"
+#include "hashcash/hashcash.h"
+#undef word
 
 using namespace std;
+
+// ------------------------------------------------------------------------
+//                          Gather Address Mode
+// ------------------------------------------------------------------------
+
+inline void print_progress(const string& addr)
+{
+  printf("    %s", addr.c_str());
+  for (size_t i = addr.size(); i <= 50; ++i)
+    printf(".");
+  printf(" ");
+}
+
+inline void print_known()
+{
+  printf("known\n");
+}
+
+inline void print_new()
+{
+  printf("new\n");
+}
+
+static void gather_addresses(int argc, char** argv)
+{
+  AddressDB address_db(config->address_db);
+
+  for (int i = 0; i < argc; ++i)
+  {
+    printf("%s:\n", argv[i]);
+    int fd;
+    char buffer[8*1024];
+    ssize_t rc;
+    try
+    {
+      // Open the file and read it into memory.
+
+      fd = open(argv[i], O_RDONLY, 0);
+      if (fd < 0)
+        throw system_error("Can't open file for reading");
+      fd_sentry sentry(fd);
+      string mail;
+      for (rc = read(fd, buffer, sizeof(buffer));
+           rc > 0;
+           rc = read(fd, buffer, sizeof(buffer)))
+      {
+        mail.append(buffer, rc);
+      }
+      if (rc < 0)
+        throw system_error("Failed to read from file");
+
+      // Extract the mail addresses.
+
+      mail_addresses addresses = extract_sender_addresses(mail);
+
+      // Check whether the addresses are known already and add
+      // them to the database if not.
+
+      if (!addresses.envelope.empty())
+      {
+        print_progress(addresses.envelope);
+        if (address_db.find(addresses.envelope))
+          print_known();
+        else
+        {
+          print_new();
+          address_db.insert(addresses.envelope);
+        }
+      }
+      if (!addresses.sender.empty())
+      {
+        print_progress(addresses.sender);
+        if (address_db.find(addresses.sender))
+          print_known();
+        else
+        {
+          print_new();
+          address_db.insert(addresses.sender);
+        }
+      }
+      if (!addresses.return_path.empty())
+      {
+        print_progress(addresses.return_path);
+        if (address_db.find(addresses.return_path))
+          print_known();
+        else
+        {
+          print_new();
+          address_db.insert(addresses.return_path);
+        }
+      }
+      for (addrset_t::const_iterator j = addresses.from.begin(); j != addresses.from.end(); ++j)
+      {
+        print_progress(*j);
+        if (address_db.find(*j))
+          print_known();
+        else
+        {
+          print_new();
+          address_db.insert(*j);
+        }
+      }
+      for (addrset_t::const_iterator j = addresses.reply_to.begin(); j != addresses.reply_to.end(); ++j)
+      {
+        print_progress(*j);
+        if (address_db.find(*j))
+          print_known();
+        else
+        {
+          print_new();
+          address_db.insert(*j);
+        }
+      }
+    }
+    catch(const exception& e)
+    {
+      printf("    %s\n", e.what());
+    }
+  }
+}
+
+// ------------------------------------------------------------------------
+//                          Main Program Driver
+// ------------------------------------------------------------------------
 
 int main(int argc, char** argv)
 try

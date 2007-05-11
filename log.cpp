@@ -10,18 +10,8 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-// POSIX.1 system headers.
-#include <cstdio>
+#include "mapson.hpp"
 #include <cstdarg>
-#include <ctime>
-#include <unistd.h>
-#include <fcntl.h>
-
-// My own libraries.
-#include "system-error.hpp"
-#include "file-sentry.hpp"
-#include "config.hpp"
-#include "log.hpp"
 
 using namespace std;
 

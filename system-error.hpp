@@ -10,8 +10,8 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-#ifndef SYSTEM_ERROR_HPP
-#define SYSTEM_ERROR_HPP
+#ifndef SYSTEM_ERROR_HPP_INCLUDED
+#define SYSTEM_ERROR_HPP_INCLUDED
 
 #include <stdexcept>
 #include <cerrno>

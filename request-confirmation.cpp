@@ -10,24 +10,8 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-// ISO C++ headers.
-#include <cstdio>
-
-// POSIX.1 system headers.
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-
-// My own libraries.
+#include "mapson.hpp"
 #include "varexp/varexp.hpp"
-#include "system-error.hpp"
-#include "log.hpp"
-#include "config.hpp"
-#include "extract-addresses.hpp"
-#include "fd-sentry.hpp"
-#include "multi-open.hpp"
-#include "request-confirmation.hpp"
 
 using namespace std;
 

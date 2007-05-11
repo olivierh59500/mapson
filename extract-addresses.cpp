@@ -10,15 +10,9 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-// ISO C++ headers.
-#include <set>
+#include "mapson.hpp"
 #include <cctype>
-
-// My own libraries.
 #include "rfc822/rfc822.hpp"
-#include "extract-addresses.hpp"
-#include "log.hpp"
-#include "config.hpp"
 
 using namespace std;
 

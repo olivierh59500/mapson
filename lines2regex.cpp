@@ -10,17 +10,7 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-// POSIX.1 system headers.
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <cerrno>
-
-// My own libraries.
-#include "system-error.hpp"
-#include "fd-sentry.hpp"
-#include "lines2regex.hpp"
+#include "mapson.hpp"
 
 using namespace std;
 

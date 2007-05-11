@@ -6,8 +6,9 @@ exe mapson
       config.cpp
       deliver.cpp
       extract-addresses.cpp
-      gather-addresses.cpp
       lines2regex.cpp
+      parse-config-file.cpp
+      multi-open.cpp
       log.cpp
       mapson.cpp
       request-confirmation.cpp

@@ -10,35 +10,20 @@
  * provided the copyright notice and this notice are preserved.
  */
 
-// ISO C++ headers
-#include <cstdio>
+#include "mapson.hpp"
+#include "varexp/varexp.hpp"
 #include <cstdlib>
 #include <memory>
-
-// POSIX.1 system headers.
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <pwd.h>
-#include <unistd.h>
-
-// POSIX.2 system headers.
-#include <getopt.h>
-
-// My own libraries.
-#include "system-error.hpp"
-#include "varexp/varexp.hpp"
-#include "config.hpp"
-#include "log.hpp"
-
+#include <getopt.h>             // POSIX.2
 #ifdef USE_MY_SETENV
 #  include "setenv.h"
 #endif
-
 #ifdef USE_MY_UNSETENV
 #  include "unsetenv.h"
 #endif
 
-static const char USAGE[] =
+static char const USAGE[] =
 "Usage: mapson [ -h | --help ] [ --version ] [ -d | --debug ]\n"    \
 "              [ -a | --accept ] [ --cookie cookie ]\n"             \
 "              [ -c config | --config-file config ]\n"              \
@@ -69,7 +54,7 @@ namespace
   {
     virtual void operator()(const string& name, string& data)
     {
-      const char* p = getenv(name.c_str());
+      char const * p = getenv(name.c_str());
       if (p == NULL)
         throw varexp::undefined_variable();
       else
@@ -80,7 +65,7 @@ namespace
       throw runtime_error("Index lookups are not implemented for config files.");
     }
   };
-  inline void mysetenv(const char* name, const char* value)
+  inline void mysetenv(char const * name, char const * value)
   {
     string tmp = string(name) + "=" + value;
     char* env = strdup(tmp.c_str());
@@ -132,7 +117,7 @@ configuration::configuration(int argc, char** argv)
   // Parse the command line into temporary variables except for the
   // location of the config file.
 
-  const char* optstring = "hc:da";
+  char const * optstring = "hc:da";
   const option longopts[] =
     {
       { "config-file", required_argument, 0, 'c' },
@@ -209,7 +194,7 @@ configuration::configuration(int argc, char** argv)
 
 // The destructor is pretty straightforward.
 
-configuration::~configuration() throw()
+configuration::~configuration()
 {
 }
 
