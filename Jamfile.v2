@@ -15,7 +15,7 @@ exe mapson
       spool.cpp
       rfc822-lexer.cpp
       rfc822-parser.cpp
-      ../md5//md5
+      md5.c
       ../varexp//varexp
       ../hashcash//hc
     : <define>MAILBOXDIR=\\\"/var/mail\\\"
