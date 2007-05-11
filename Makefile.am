@@ -4,20 +4,18 @@
 
 bin_PROGRAMS    = mapson
 
-mapson_SOURCES  = address-db.cpp config.cpp deliver.cpp         \
-                  extract-addresses.cpp gather-addresses.cpp    \
-                  log.cpp mapson.cpp request-confirmation.cpp   \
-                  spool.cpp accept-confirmation.cpp             \
-                  libmd5/md5.c lines2regex.cpp                  \
-                  libparse-config-file/parse-config-file.cpp    \
-                  libhashcash/libhc.c libhashcash/libsha1.c     \
-                  libhashcash/timer.c libhashcash/utct.c        \
-                  libhashcash/random.c
+mapson_SOURCES  =                                               \
+  accept-confirmation.cpp address-db.cpp config.cpp deliver.cpp \
+  extract-addresses.cpp log.cpp mapson.cpp multi-open.cpp       \
+  parse-config-file.cpp request-confirmation.cpp md5.c          \
+  rfc822-lexer.cpp rfc822-parser.cpp rfc822.hpp spool.cpp       \
+  lines2regex.cpp
 
-mapson_CPPFLAGS = -DMAILBOXDIR=\"${mailboxdir}\"                \
-                  -DMTA=\"${mta}\"                              \
-                  -DSYSCONFDIR=\"${sysconfdir}\"                \
-                  -DDATADIR=\"${datadir}\"
+mapson_CPPFLAGS =                                               \
+  -DMAILBOXDIR=\"${mailboxdir}\"                                \
+  -DMTA=\"${mta}\"                                              \
+  -DSYSCONFDIR=\"${sysconfdir}\"                                \
+  -DDATADIR=\"${datadir}\"
 
 if !HAVE_GNU_GETOPT
 mapson_CPPFLAGS += -Igetopt
@@ -37,14 +35,10 @@ endif
 mapson-mapson.o \
 mapson-config.o:        Makefile
 
-noinst_HEADERS  = accept-confirmation.hpp address-db.hpp		\
-                  config.hpp deliver.hpp extract-addresses.hpp		\
-                  fd-sentry.hpp file-sentry.hpp lines2regex.hpp		\
-                  gather-addresses.hpp log.hpp multi-open.hpp		\
-                  request-confirmation.hpp spool.hpp
+noinst_HEADERS  = mapson.hpp parse-config-file.hpp regexp.hpp	\
+		  rfc822.hpp system-error.hpp
 
-mapson_LDADD    = librfc822/librfc822.a                         \
-                  libvarexp/libvarexp.a
+mapson_LDADD    = varexp/libvarexp.a hashcash/libhashcash.a
 
 mapson.1:
 	docbook2man docs/man-page.sgml
@@ -55,7 +49,7 @@ mapson.html:
 	docbook2html -u docs/mapson.sgml
 	@rm -f VERSION
 
-SUBDIRS         = librfc822 libvarexp
+SUBDIRS         = varexp hashcash
 man_MANS        = mapson.1
 EXTRA_DIST      = libhashcash/LICENSE sample-challenge-template \
                   sample-config ${man_MANS} mapson.html
@@ -65,14 +59,6 @@ data_DATA       = sample-challenge-template mapson.html
 CLEANFILES      = manpage.links manpage.refs mapson-*.tar.gz VERSION
 MAINTAINERCLEANFILES = mapson.1 mapson.html
 
-init-src:
-	mtn co --branch=to.cryp.RegExp RegExp
-	mtn co --branch=to.cryp.system-error system-error
-	mtn co --branch=to.cryp.libgetopt libgetopt
-	mtn co --branch=to.cryp.libmd5 libmd5
-	mtn co --branch=to.cryp.libparse-config-file libparse-config-file
-	mtn co --branch=to.cryp.librfc822 librfc822
-	mtn co --branch=to.cryp.libvarexp libvarexp
-	mtn co --branch=to.cryp.libenv libenv
-	mtn co --branch=to.cryp.hashcash libhashcash
-	autoreconf -i
+check_PROGRAMS		= md5test
+md5test_SOURCES         = md5test.c
+md5test_LDADD           = md5.o

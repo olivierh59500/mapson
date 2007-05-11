@@ -18,7 +18,7 @@ dnl Figure out which development environment we're using.
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_RANLIB
-AC_LANG(C++)
+AC_LANG([C++])
 
 dnl Does the system have a working <getopt.h> include and
 dnl getopt_long() function?
@@ -147,6 +147,7 @@ AC_ARG_WITH(debug, [  --with-debug            Support debugging? (default: yes)]
 
 dnl Grande Finale
 
-AC_CONFIG_FILES([libvarexp/Makefile libvarexp/tests/Makefile])
+AC_CONFIG_FILES([hashcash/Makefile])
+AC_CONFIG_FILES([varexp/Makefile varexp/tests/Makefile])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
