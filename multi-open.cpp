@@ -13,17 +13,7 @@
 #ifndef MULTI_OPEN_HPP
 #define MULTI_OPEN_HPP
 
-// ISO C++ headers.
-#include <string>
-#include <cerrno>
-
-// POSIX.1 system headers.
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
-// My own libraries.
-#include "log.hpp"
+#include "mapson.hpp"
 
 inline int multi_open(std::string& pathname, int flags, mode_t mode)
 {
