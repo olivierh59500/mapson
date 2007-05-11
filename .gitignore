@@ -1,6 +1,8 @@
+*.o
 .deps/*
 Makefile
 Makefile.in
+VERSION
 aclocal.m4
 autom4te.cache/*
 bin/*
@@ -8,6 +10,10 @@ config.log
 config.status
 configure
 depcomp
+hashcash/*
 install-sh
-libvarexp/*
+mapson
+mapson.en.1
+mapson.html
 missing
+varexp/*
