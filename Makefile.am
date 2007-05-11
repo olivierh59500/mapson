@@ -47,12 +47,12 @@ mapson_LDADD    = librfc822/librfc822.a                         \
                   libvarexp/libvarexp.a
 
 mapson.1:
-	docbook2man documentation/man-page.sgml
+	docbook2man docs/man-page.sgml
 	@rm -f manpage.links manpage.refs
 
 mapson.html:
 	@echo >VERSION ${PACKAGE_VERSION}
-	docbook2html -u documentation/mapson.sgml
+	docbook2html -u docs/mapson.sgml
 	@rm -f VERSION
 
 SUBDIRS         = librfc822 libvarexp
