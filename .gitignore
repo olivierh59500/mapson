@@ -15,5 +15,6 @@ install-sh
 mapson
 mapson.en.1
 mapson.html
+md5test
 missing
 varexp/*
