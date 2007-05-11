@@ -4,17 +4,17 @@ dnl
 
 dnl Get our current version
 
-AC_INIT([mapson], [3.1-beta-2], [simons@cryp.to])
-AM_INIT_AUTOMAKE([foreign 1.9])
-AC_CONFIG_SRCDIR([mapson.cc])
+AC_INIT([mapson], [3.2-beta-1], [simons@cryp.to])
+AM_INIT_AUTOMAKE([foreign])
+AC_CONFIG_SRCDIR([mapson.cpp])
 
 dnl Get rid of the lousy '-g -O2' defaults.
-dnl
+
 CFLAGS=$CFLAGS
 CXXFLAGS=$CXXFLAGS
 
 dnl Figure out which development environment we're using.
-dnl
+
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_RANLIB
@@ -22,7 +22,7 @@ AC_LANG(C++)
 
 dnl Does the system have a working <getopt.h> include and
 dnl getopt_long() function?
-dnl
+
 AC_CHECKING([whether getopt library supports long-style parameters])
 AC_CHECK_HEADER(getopt.h, have_gnu_getopt=yes, have_gnu_getopt=no, [#include <unistd.h>])
 AC_CHECK_FUNC(getopt_long, have_gnu_getopt=yes, have_gnu_getopt=no)
@@ -30,17 +30,15 @@ AM_CONDITIONAL(HAVE_GNU_GETOPT, test x$have_gnu_getopt = xyes)
 
 dnl If the system is missing setenv(3) or unsetenv(3), use
 dnl the version included in this distribution instead.
-dnl
+
 AC_CHECK_FUNC(setenv, have_setenv=yes, have_setenv=no)
 AM_CONDITIONAL(HAVE_SETENV, test x$have_setenv = xyes)
 AC_CHECK_FUNC(unsetenv, have_unsetenv=yes, have_unsetenv=no)
 AM_CONDITIONAL(HAVE_UNSETENV, test x$have_unsetenv = xyes)
 
-dnl Perform some incredibly experimental magic to guess installation
-dnl paths in an unexpectedly clever way. Henceforth evaluate the paths
-dnl right away so that we can guarantee _absolute_ paths for our
-dnl customers.
-dnl
+dnl Magically transform installation paths to avoid having the
+dnl name "mapson" in it several times.
+
 if test "$prefix" = "NONE"; then
     prefix=/usr/local
     if test "$exec_prefix" = "NONE"; then
@@ -67,7 +65,7 @@ case $prefix in
 esac
 
 dnl Make sure u_int32_t is defined.
-dnl
+
 AC_CHECK_TYPE(u_int32_t, [],
     [
     AC_CHECK_TYPE(uint32_t, [CPPFLAGS="$CPPFLAGS -Du_int32_t=uint32_t"],
@@ -77,7 +75,7 @@ AC_CHECK_TYPE(u_int32_t, [],
     ], [#include <sys/types.h>])
 
 dnl Do we have large file system support?
-dnl
+
 case "$hosttuple" in
      *-*-solaris*)
         ;;
@@ -87,7 +85,7 @@ case "$hosttuple" in
 esac
 
 dnl Find some paths we might need.
-dnl
+
 AC_SUBST(mailboxdir)
 AC_ARG_WITH(mailboxdir, [  --with-mailboxdir=DIR   location of the user mailboxes],
     [
@@ -130,9 +128,8 @@ AC_ARG_WITH(mta, [  --with-mta=PATH         location of the mail transport agent
     fi
     ])
 
-dnl
 dnl Include debug code?
-dnl
+
 AC_MSG_CHECKING([whether to include debugging capabilities])
 AC_ARG_WITH(debug, [  --with-debug            Support debugging? (default: yes)],
     [
@@ -149,7 +146,7 @@ AC_ARG_WITH(debug, [  --with-debug            Support debugging? (default: yes)]
     ])
 
 dnl Grande Finale
-dnl
+
 AC_CONFIG_FILES([librfc822/Makefile])
 AC_CONFIG_FILES([libvarexp/Makefile libvarexp/tests/Makefile])
 AC_CONFIG_FILES([Makefile])

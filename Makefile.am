@@ -41,7 +41,7 @@ noinst_HEADERS  = accept-confirmation.hpp address-db.hpp		\
                   config.hpp deliver.hpp extract-addresses.hpp		\
                   fd-sentry.hpp file-sentry.hpp lines2regex.hpp		\
                   gather-addresses.hpp log.hpp multi-open.hpp		\
-                  request-confirmation.hpp spool.hpp			\
+                  request-confirmation.hpp spool.hpp
 
 mapson_LDADD    = librfc822/librfc822.a                         \
                   libvarexp/libvarexp.a
