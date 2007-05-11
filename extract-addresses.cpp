@@ -12,7 +12,7 @@
 
 #include "mapson.hpp"
 #include <cctype>
-#include "rfc822/rfc822.hpp"
+#include "rfc822.hpp"
 
 using namespace std;
 
