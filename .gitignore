@@ -1,1 +1,7 @@
+*.a
+*.o
+.deps/*
+Makefile
+Makefile.in
 bin/*
+sha1test
