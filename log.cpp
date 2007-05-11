@@ -1,6 +1,13 @@
 /*
- * Copyright (c) 2002 by Peter Simons <simons@cryp.to>.
- * All rights reserved.
+ * Copyright (c) 2001-2007 Peter Simons <simons@cryp.to>
+ *
+ * This software is provided 'as-is', without any express or
+ * implied warranty. In no event will the authors be held liable
+ * for any damages arising from the use of this software.
+ *
+ * Copying and distribution of this file, with or without
+ * modification, are permitted in any medium without royalty
+ * provided the copyright notice and this notice are preserved.
  */
 
 // POSIX.1 system headers.
@@ -11,7 +18,7 @@
 #include <fcntl.h>
 
 // My own libraries.
-#include "sanity/system-error.hpp"
+#include "system-error.hpp"
 #include "file-sentry.hpp"
 #include "config.hpp"
 #include "log.hpp"
@@ -51,7 +58,7 @@ void init_logging(const char* file)
     throw system_error(string("Can't lock file '") + file + "'");
 }
 
-void _debug(const char* fmt, ...) throw()
+void _debug(const char* fmt, ...)
 {
   if (config && config->debug)
   {
@@ -68,7 +75,7 @@ void _debug(const char* fmt, ...) throw()
   }
 }
 
-void info(const char* fmt, ...) throw()
+void info(const char* fmt, ...)
 {
   va_list ap;
   va_start(ap, fmt);
@@ -82,7 +89,7 @@ void info(const char* fmt, ...) throw()
   va_end(ap);
 }
 
-void error(const char* fmt, ...) throw()
+void error(const char* fmt, ...)
 {
   va_list ap;
   va_start(ap, fmt);

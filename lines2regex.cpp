@@ -1,6 +1,13 @@
 /*
- * Copyright (C) 2002 by Peter Simons <simons@cryp.to>.
- * All rights reserved.
+ * Copyright (c) 2001-2007 Peter Simons <simons@cryp.to>
+ *
+ * This software is provided 'as-is', without any express or
+ * implied warranty. In no event will the authors be held liable
+ * for any damages arising from the use of this software.
+ *
+ * Copying and distribution of this file, with or without
+ * modification, are permitted in any medium without royalty
+ * provided the copyright notice and this notice are preserved.
  */
 
 // POSIX.1 system headers.
@@ -11,13 +18,13 @@
 #include <cerrno>
 
 // My own libraries.
-#include "sanity/system-error.hpp"
+#include "system-error.hpp"
 #include "fd-sentry.hpp"
 #include "lines2regex.hpp"
 
 using namespace std;
 
-string lines2regex(const string& filename)
+string lines2regex(string const & filename)
 {
   // Open the file and lock it for reading.
 

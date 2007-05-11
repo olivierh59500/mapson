@@ -1,6 +1,13 @@
 /*
- * Copyright (C) 2002 by Peter Simons <simons@cryp.to>.
- * All rights reserved.
+ * Copyright (c) 2001-2007 Peter Simons <simons@cryp.to>
+ *
+ * This software is provided 'as-is', without any express or
+ * implied warranty. In no event will the authors be held liable
+ * for any damages arising from the use of this software.
+ *
+ * Copying and distribution of this file, with or without
+ * modification, are permitted in any medium without royalty
+ * provided the copyright notice and this notice are preserved.
  */
 
 // POSIX.1 system headers.
@@ -10,21 +17,21 @@
 #include <unistd.h>
 
 // My own libraries.
-#include "sanity/system-error.hpp"
+#include "system-error.hpp"
 #include "fd-sentry.hpp"
 #include "address-db.hpp"
 
 using namespace std;
 
 AddressDB::AddressDB(const string& filename_arg)
-    : filename(filename_arg)
-  {
+  : filename(filename_arg)
+{
   // Open the address db file and lock it exclusively.
 
   fd = open(filename.c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd < 0)
     throw system_error(string("Can't open address db '") +
-      filename + "' for reading");
+                      filename + "' for reading");
   fd_sentry sentry(fd);
 
   struct flock lock;
@@ -45,20 +52,20 @@ AddressDB::AddressDB(const string& filename_arg)
     data.append(buffer, rc);
   if (rc < 0)
     throw system_error(string("Failed to read address db '") +
-      filename + "' into memory");
+                      filename + "' into memory");
 
   // Success. Don't close the file descriptor.
 
   sentry.fd = -1;
-  }
+}
 
 AddressDB::~AddressDB() throw()
-  {
+{
   close(fd);
-  }
+}
 
 bool AddressDB::find(const string& key) const
-  {
+{
   if (key.empty())
     throw invalid_argument("AddressDB::find() called with empty string.");
 
@@ -68,25 +75,25 @@ bool AddressDB::find(const string& key) const
 
   string::size_type pos = 0;
   do
-    {
+  {
     pos = data.find(key, pos);
     if (pos != string::npos)
-      {
+    {
       if ((pos == 0 || data[pos-1] == '\n') &&
-        ((pos + key.size() == data.size()) || (data[pos+key.size()] == '\n')))
-        {
+         ((pos + key.size() == data.size()) || (data[pos+key.size()] == '\n')))
+      {
         return true;
-        }
+      }
       else
         ++pos;
-      }
     }
+  }
   while (pos != string::npos);
   return false;
-  }
+}
 
 void AddressDB::insert(const string& key)
-  {
+{
   if (key.empty())
     throw invalid_argument("AddressDB::find() may not be called with an empty string.");
 
@@ -101,11 +108,11 @@ void AddressDB::insert(const string& key)
   data.append(key).append("\n");
 
   for (size_t len = end_pos; len < data.size(); )
-    {
+  {
     ssize_t rc = write(fd, data.data()+len, data.size()-len);
     if (rc < 0)
       throw system_error(string("Failed writing to the address db '") + filename + "'");
     else
       len += rc;
-    }
   }
+}

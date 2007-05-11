@@ -1,6 +1,13 @@
 /*
- * Copyright (c) 2002 by Peter Simons <simons@cryp.to>.
- * All rights reserved.
+ * Copyright (c) 2001-2007 Peter Simons <simons@cryp.to>
+ *
+ * This software is provided 'as-is', without any express or
+ * implied warranty. In no event will the authors be held liable
+ * for any damages arising from the use of this software.
+ *
+ * Copying and distribution of this file, with or without
+ * modification, are permitted in any medium without royalty
+ * provided the copyright notice and this notice are preserved.
  */
 
 #ifndef CONFIG_HH
@@ -12,11 +19,11 @@
 #include <set>
 
 // My own libraries.
-#include "sanity/parse-config-file.hpp"
+#include "parse-config-file.hpp"
 
 class configuration : public AbstractConfig
-  {
- public:
+{
+public:
   // Exit with no error when displaying version or help.
   struct no_error { };
 
@@ -57,16 +64,16 @@ class configuration : public AbstractConfig
   bool address_db_auto_add;
   bool scan_for_cookie;
 
- protected:
+protected:
   friend int main(int, char**);
   int parameter_index;
 
- private:
+private:
   configuration(const configuration&);
   configuration& operator= (const configuration&);
   virtual void set_option(const std::string&, const std::string&);
   virtual void unknown_line(const std::string&);
-  };
+};
 extern const configuration* config;
 
 #endif

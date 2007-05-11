@@ -25,10 +25,10 @@ class RegExp
 public:
   struct init_failure : public std::runtime_error
   {
-    init_failure(const std::string& s) : std::runtime_error(s) { }
+    init_failure(std::string const & s) : std::runtime_error(s) { }
   };
 
-  explicit RegExp(const std::string& pattern, int flags = REG_EXTENDED | REG_NEWLINE | REG_ICASE | REG_NOSUB)
+  explicit RegExp(std::string const & pattern, int flags = REG_EXTENDED | REG_NEWLINE | REG_ICASE | REG_NOSUB)
   {
     int rc = regcomp(&preg, pattern.c_str(), flags);
     if (rc != 0)
@@ -41,7 +41,7 @@ public:
     }
   }
 
-  ~RegExp() throw()
+  ~RegExp()
   {
     regfree(&preg);
   }
@@ -50,7 +50,7 @@ public:
   // expression. Use this to determine the size of the pmatch array
   // when doing submatching regexec() calls.
 
-  unsigned int submatch_num() const throw() { return preg.re_nsub; }
+  unsigned int submatch_num() const  { return preg.re_nsub; }
 
   // Perform a submatch. Returns 'true' if the string matched. Partial matches
   // are placed into the provided array. The string at offset 0 is the part
@@ -58,7 +58,7 @@ public:
   //
   // If the expression doesn't match the string, 'false' is returned.
 
-  bool submatch(const std::string& s, std::vector<std::string>& res_vec, int eflags = 0) const
+  bool submatch(std::string const & s, std::vector<std::string>& res_vec, int eflags = 0) const
   {
     std::auto_ptr<regmatch_t> pmatch(new regmatch_t[submatch_num()+1]);
 
@@ -73,39 +73,39 @@ public:
     return true;
   }
 
-  operator const regex_t* () const throw()
+  operator const regex_t* () const
   {
     return &preg;
   }
 
 private:			// don't copy me
-  RegExp(const RegExp& rhs);
-  RegExp& operator= (const RegExp& rhs);
+  RegExp(RegExp const & rhs);
+  RegExp& operator= (RegExp const & rhs);
 
 protected:
   regex_t     preg;
-  friend inline bool operator== (const std::string&, const RegExp&) throw();
-  friend inline bool operator== (const RegExp&, const std::string&) throw();
-  friend inline bool operator!= (const std::string&, const RegExp&) throw();
-  friend inline bool operator!= (const RegExp&, const std::string&) throw();
+  friend inline bool operator== (std::string const &, RegExp const &);
+  friend inline bool operator== (RegExp const &, std::string const &);
+  friend inline bool operator!= (std::string const &, RegExp const &);
+  friend inline bool operator!= (RegExp const &, std::string const &);
 };
 
 
 // Match a string against a RegExp instance.
 
-inline bool operator== (const std::string& s, const RegExp& e) throw()
+inline bool operator== (std::string const & s, RegExp const & e)
 {
   return (regexec(&e.preg, s.c_str(), 0, 0, 0) == 0) ? true : false;
 }
-inline bool operator== (const RegExp& e, const std::string& s) throw()
+inline bool operator== (RegExp const & e, std::string const & s)
 {
   return (regexec(&e.preg, s.c_str(), 0, 0, 0) == 0) ? true : false;
 }
-inline bool operator!= (const std::string& s, const RegExp& e) throw()
+inline bool operator!= (std::string const & s, RegExp const & e)
 {
   return !(s == e);
 }
-inline bool operator!= (const RegExp& e, const std::string& s) throw()
+inline bool operator!= (RegExp const & e, std::string const & s)
 {
   return !(e == s);
 }

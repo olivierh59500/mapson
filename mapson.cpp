@@ -1,6 +1,13 @@
 /*
- * Copyright (C) 2002 by Peter Simons <simons@cryp.to>.
- * All rights reserved.
+ * Copyright (c) 2001-2007 Peter Simons <simons@cryp.to>
+ *
+ * This software is provided 'as-is', without any express or
+ * implied warranty. In no event will the authors be held liable
+ * for any damages arising from the use of this software.
+ *
+ * Copying and distribution of this file, with or without
+ * modification, are permitted in any medium without royalty
+ * provided the copyright notice and this notice are preserved.
  */
 
 // ISO C++ headers.
@@ -15,8 +22,8 @@
 #include "hashcash/hashcash.h"
 #undef word
 #include "rfc822/rfc822.hpp"
-#include "sanity/regexp.hpp"
-#include "sanity/system-error.hpp"
+#include "regexp.hpp"
+#include "system-error.hpp"
 #include "extract-addresses.hpp"
 #include "config.hpp"
 #include "log.hpp"
@@ -116,21 +123,37 @@ try
   // If the mail has a valid HashCash header, it will always be
   // accepted.
 
-  for (addrset_t::const_iterator i = addresses.hashcash.begin();
-       i != addresses.hashcash.end();
-       ++i)
+  for (addrset_t::const_iterator i = addresses.hashcash.begin()
+      ; i != addresses.hashcash.end()
+      ; ++i)
   {
     int vers;
+    int bits;
     char resource[1024], utct[1024];
-    int rc = hashcash_parse(i->c_str(),
-                           &vers, utct, sizeof(utct)-1, resource, sizeof(resource)-1);
-
-    if (whoami_db.find(resource))
+    int rc = hashcash_parse( i->c_str()
+                           , &vers
+                           , &bits
+                           , utct, sizeof(utct)-1
+                           , resource, sizeof(resource)-1
+                           , NULL, 0
+                           );
+    if (rc && whoami_db.find(resource))
     {
       debug(("HashCash '%s' is issued for us, but is it valid?", i->c_str()));
-      int rc = hashcash_check(i->c_str(), resource, time(NULL),
-                             config->hc_expiry, config->hc_grace,
-                             config->hc_req_bits);
+      void ** regex_cache( NULL );
+      char * regex_error( NULL );
+      time_t stamptime;
+      int rc = hashcash_check( i->c_str()
+                             , true /* no-case */
+                             , resource
+                             , regex_cache, &regex_error
+                             , TYPE_STR
+                             , time(NULL)
+                             , config->hc_expiry
+                             , config->hc_grace
+                             , config->hc_req_bits
+                             , &stamptime
+                             );
       if (rc > 0)
       {
         if (hashcash_db.find(i->c_str()) == true)
@@ -197,7 +220,7 @@ try
            i != all_addresses.end();
            ++i)
       {
-        info(("Adding address '%s' to the database.", i->c_str()));
+        info("Adding address '%s' to the database.", i->c_str());
         address_db.insert(*i);
       }
     }
