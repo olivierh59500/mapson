@@ -1,0 +1,49 @@
+From: ${USER} (${USER}'s Anti-Spam Tool)
+To: ${ENVELOPE:-${RETURN_PATH:-${SENDER}}}
+Subject: please confirm \[${MD5HASH}\]
+Precedence: junk
+Auto-Submitted: auto-generated
+References: $MESSAGEID
+In-Reply-To: $MESSAGEID
+
+                         ----- English -----
+
+Because I receive several dozen spam messages each day, I installed a
+small tool that will defer incoming mail message if it comes from an
+address it sees for the first time. This is the case with the message
+you sent me, I'm afraid.
+
+Before your message will be delivered to my mailbox, I need a
+confirmation that your sender address is a valid e-mail address. You
+can confirm this simply by replying to this message. Be sure _not_ to
+erase the cookie found in the Subject: line whon doing so! Once my
+tool sees your reply, it will deliver the original message to my
+mailbox, and I'll answer it as soon as possible.
+
+I am sorry that this is somewhat annoying for you, but the amount of
+unsolicited commercial advertisement sent through the Internet these
+days is to much for me to bear.
+
+                         ----- Deutsch -----
+
+Da ich taeglich dutzende Spam-Nachrichten erhalte, habe ich ein
+Programm installiert, das alle eingehende Mail-Nachrichten abweist,
+wenn diese von einer mir bisher unbekannten Absendeadresse kommt.
+Leider ist dies bei Ihrer Nachricht der Fall.
+
+Bevor mir die Nachricht tatsaechlich zugestellt wird, brauche ich eine
+Bestaetigung, das die Absendeadresse "echt" ist. Sie koennen dies
+einfach dadurch bestaetigen, dass Sie auf diese Nachricht antworten.
+Bitte achten Sie dabei darauf, dass Sie den Zahlen- und Buchstabencode
+in der Betreff-Zeile _nicht_ loeschen! Der Inhalt der Antwort spielt
+dabei keine Rolle, es geht nur darum, dass das Programm sieht, dass
+Ihre Adresse nicht gefaelscht war.
+
+Ich bedauere, dass ich Ihnen damit Umstaende bereiten muss, aber die
+Menge an unerwuenschter Werbung, die derzeit durch das Internet
+geistert, war einfach zuviel.
+
+     ----- Your message was: ---------- Ihre Nachricht war: -----
+
+[ | ${HEADER[#]}] |
+[${BODY[#]:+ | }${BODY[#]}]{0,5} | \[...\]

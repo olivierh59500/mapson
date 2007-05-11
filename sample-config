@@ -1,0 +1,134 @@
+#
+# mapSoN config file
+#
+# You may use environment variables in the data part of each directive.
+# The following variables are guaranteed to be set:
+#
+#    MAILBOXDIR  the mailbox directoy as determined at compile-time
+#    MTA         the MTA as determined at compile-time
+#    DATADIR     the data directory as determined at compile-time
+#    USER        the name of the user mapson running mapSoN
+#    HOME        the home directory of that user
+#
+# The values shown in this file are the default settings; so this
+# config files effectively changes nothing.
+
+# Mailbox <file> or <pipe>
+#       The complete path to the user's mailbox file. If the first
+#       character is a pipe ("|"), the string here will be interpreted
+#       as a command, to which the mail is piped for delivery. For
+#       example:
+#           |/usr/sbin/sendmail other@address.example.org
+Mailbox         ${MAILBOXDIR}/${USER}
+
+# SpoolDir <directory>
+#       The complete path to the directory, in which mapSoN will spool
+#       incoming e-mails that do not pass the test and require a
+#       confirmation. The directory will be created if it does not
+#       exist.
+SpoolDir        ${HOME}/.mapson/spool
+
+# AddressDB <file>
+#       The complete path the file mapSoN will use to store the known
+#       addresses. The file will be created if it does not exist.
+AddressDB       ${HOME}/.mapson/address-db
+
+# WhiteListDB <file>
+#       The "white list" is a list of regular expressions,
+#       one per line. E-Mail coming from an address matching
+#       any of those regular expressions will always pass
+#       mapSoN. Be careful what you add here!
+WhiteListDB       ${HOME}/.mapson/whitelist-db
+
+# WhoamiDB <file>
+#       HashCash cookies are issued for the recipient's address,
+#       hence, mapSoN must know your local addresses in order to
+#       verify the HashCash is valid. This option sets the path to an
+#       address database very much like AddressDB, which should
+#       contain one e-mail address per line. HashCashes issued for any
+#       of these addresses are accepted, everything else is ignored.
+WhoamiDB        ${HOME}/.mapson/whoami-db
+
+# HashCashDB <file>
+#       The complete path the seen-HashCash database. The file will be
+#       created if it does not exist.
+HashCashDB      ${HOME}/.mapson/hashcash-db
+
+# HashCashExpiry <seconds>
+#       HashCash cookies contain a time stamp, which tells, when they
+#       were generated. Per defaultt, mapSoN will ignore all
+#       HashCashes, which are older than a week. You can change this
+#       setting here.
+HashCashExpiry  604800
+
+# HashCashGrace <seconds>
+#       Set a grace time allowing for clock skew. This setting is
+#       used, for example, when a HashCash cookie arrives with a
+#       timestamp in the future! If the error is within the grace
+#       time, it will be accepted nonetheless. The default is one
+#       hour.
+HashCashGrace   3600
+
+# ReqHashCashBits <Int>
+#       How large a bit-collision do we require in order to accept a
+#       HashCash as valid.
+ReqHashCashBits 20
+
+# AddressDBAutoAdd <boolean>
+#       This option defines whether to add confirmed addresses to the
+#       database, as some people may want to do this manually ...
+AddressDBAutoAdd true
+
+# ChallengeTemplate <file>[:<file>:<file>...]
+#       This option specifies a list of paths to the challenge
+#       template file, which mapSoN uses to send out a request for
+#       confirmation. Each filename must be separated by a colon, and
+#       mapSoN will try to read them in order, using the first file
+#       that can be opened successfully.
+ChallengeTemplate ${HOME}/.mapson/challenge-template:${DATADIR}/challenge-template
+
+# MTA <command>
+#       This option specifies the command mapSoN invokes in order to
+#       deliver a request-for-confirmation e-mail. The expanded template
+#       file will be piped into this command on the standard input channel.
+MTA             ${MTA} '-f<>' -i -t
+
+# PassIncorrectMails <boolean>
+#       This option determines how mapSoN will deal with RFC syntax errors
+#       in the incoming e-mail. If PassIncorrectMails is set to "true",
+#       mapSoN will terminate and return the return code configured via the
+#       SyntaxErrorRC directive when it detects an error. If this option is
+#       set to "false", mapSoN will ignore syntax errors as far as
+#       possible.
+PassIncorrectMails true
+
+# RuntimeErrorRC <int>
+#       This option specifies the return code mapSoN should return in case
+#       it encounters a run-time error such as failure to open the address
+#       data base file, etc. These return codes are interpreted by the MTA
+#       that called mapSoN and determine what the MTA should do with the
+#       mail.
+#
+#       Valid return codes are in the range of 0 <= rc <= 128.
+RuntimeErrorRC  75
+
+# SyntaxErrorRC <int>
+#       This option specifies the return code mapSoN should return in case
+#       it encounters a syntax error in the incoming e-mail. These return
+#       codes are interpreted by the MTA that called mapSoN and determine
+#       what the MTA should do with the mail.
+#
+#       Valid return codes are in the range of 0 <= rc <= 128.
+SyntaxErrorRC   65
+
+# LogFile <file>
+#       This option specifies the complete path of the file mapSoN will use
+#       to log its actions. The file will be created if it does not exist.
+LogFile         ${HOME}/.mapson/log
+
+# Debug <boolean>
+#       If this option is set to "true", mapSoN will log extensive
+#       debugging information. Please note that debug information is only
+#       available if the program has been compiled with "DEBUG" defined by
+#       the pre-processor. Otherwise, this option is ignored.
+Debug           false

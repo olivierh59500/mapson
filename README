@@ -1,0 +1,73 @@
+                           mapSoN 3.0
+
+                  Peter Simons <simons@cryp.to>
+
+
+Installing mapSoN 3.x
+=====================
+
+mapSoN should compile on any Unix system with a moderately
+up-to-date C++ compiler. GNU gcc 3.x or later will work just
+fine. Just do the usual Autoconf routine:
+
+    ./configure --prefix=/usr/local/mapson
+    make all
+    make check
+    make install-strip
+
+With that part out of the way, go to /usr/local/mapson/etc,
+rename the file "sample-config" to "config", and customize to
+your system. This is a side-wide configuration file! Users may
+override all settings by creating a configuration file of their
+own in "$HOME/.mapson/config".
+
+Now go to /usr/local/mapson/share and rename the file
+"sample-challenge-template" to "challenge-template". Again, you
+might want to customize it to your preferred wording, language
+etc. This is a site-wide file, too. Users can override it by
+changing the path in their local configuration file or by
+creating "$HOME/.mapson/challenge-template".
+
+Further details on how to configure mapSoN (and how to activate
+it) can be found in the fine manual "mapson.html".
+
+
+Upgrading from Version 2
+========================
+
+If you have a working installation of mapSoN 2.x already, you
+should perform the following steps to upgrade after installing
+the software:
+
+ * The cumbersome "ReqConfirmTemplate" option in the
+   configuration file has been renamed to "ChallengeTemplate".
+   You should edit your configuration files accordingly, because
+   mapSoN will abort with an error when finding the old keyword.
+
+   Along with this change, the template file has been renamed
+   from "reqmail.template" to "challenge-template". Since your
+   existing configuration files points to the old name, you don't
+   need to change that if you don't want to.
+
+ * The StrictRFCParser option has been removed from mapSoN
+   altogether, so you'll have to remove it from your
+   configuration files as well.
+
+ * The following directives have been added to the configuration
+   file:
+
+     WhiteListDB      - one regex per line; matching
+                        addresses may always pass
+     WhoamiDB         - list of accepted HashCash resources
+     HashCashDB       - path to seen-HashCash database
+     HashCashExpiry   - expiry time for HashCashes
+     HashCashGrace    - grace time to allow for clock skew
+     ReqHashCashBits  - required number of collisien bits
+
+   See the installed sample configurations for further hints.
+
+ * To enable HashCash support, all you have to do is to create
+   the file pointed to by WhoamiDB. All other settings have
+   defaults.
+
+Alright ... have fun. :-)
