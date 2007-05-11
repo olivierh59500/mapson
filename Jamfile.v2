@@ -16,8 +16,7 @@ exe mapson
       ../md5//md5
       ../varexp//varexp
       ../hashcash//hc
-    : <include>..
-      <define>MAILBOXDIR=\\\"/var/mail\\\"
+    : <define>MAILBOXDIR=\\\"/var/mail\\\"
       <define>MTA=\\\"/usr/sbin/sendmail\\\"
       <define>DATADIR=\\\"/usr/share/mapson\\\"
       <define>SYSCONFDIR=\\\"/etc/mapson\\\"
