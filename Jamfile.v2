@@ -1,2 +1,0 @@
-lib rfc822      : lexer.cpp parser.cpp ;
-unit-test test  : test.cpp rfc822 ;
