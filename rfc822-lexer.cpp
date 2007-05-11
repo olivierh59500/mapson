@@ -43,7 +43,7 @@ inline bool is_LWSP(char c) { return (c == 32 || c == 9) ? true : false; }
 
 inline bool is_BIGCHAR(char c)
 {
-  return ((unsigned char)c >= 160 && (unsigned char)c <= 255) ? true : false;
+  return ((unsigned char)c >= 160 /* && (unsigned char)c <= 255) */) ? true : false;
 }
 
 inline bool is_special(char c)
