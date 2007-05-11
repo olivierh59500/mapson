@@ -2,7 +2,6 @@
 <!ENTITY mapson "<application>mapSoN</application>">
 <!ENTITY description SYSTEM "description.inc">
 <!ENTITY building SYSTEM "building.inc">
-<!ENTITY effectiveness SYSTEM "effectiveness.inc">
 <!ENTITY synopsis SYSTEM "synopsis.inc">
 <!ENTITY cmdloptions SYSTEM "cmdloptions.inc">
 <!ENTITY configfile SYSTEM "configfile.inc">
@@ -33,11 +32,6 @@
   <sect1>
     <title>Introduction</title>
     &description;
-  </sect1>
-
-  <sect1>
-    <title>How effective is &mapson;</title>
-    &effectiveness;
   </sect1>
 
   <sect1>
