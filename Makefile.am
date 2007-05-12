@@ -36,7 +36,7 @@ mapson-mapson.o \
 mapson-config.o:	Makefile
 
 noinst_HEADERS	= mapson.hpp parse-config-file.hpp regexp.hpp	\
-		  rfc822.hpp system-error.hpp
+		  rfc822.hpp system-error.hpp md5.h
 
 mapson_LDADD	= varexp/libvarexp.a hashcash/libhashcash.a
 
@@ -52,10 +52,8 @@ mapson.html:
 
 SUBDIRS			= varexp hashcash
 man_MANS		= mapson.1
-EXTRA_DIST		= README INSTALL COPYING ${man_MANS}	\
-			  sample-challenge-template mapson.html \
-			  sample-config
-
+EXTRA_DIST		= README COPYING ${man_MANS} sample-config \
+			  sample-challenge-template mapson.html
 sysconf_DATA		= sample-config
 data_DATA		= sample-challenge-template mapson.html
 
