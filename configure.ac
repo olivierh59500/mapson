@@ -5,7 +5,7 @@ dnl
 dnl Get our current version
 
 AC_INIT([mapson], [3.2-beta-1], [simons@cryp.to])
-AM_INIT_AUTOMAKE([foreign])
+AM_INIT_AUTOMAKE([foreign -Wall])
 AC_CONFIG_SRCDIR([mapson.cpp])
 
 dnl Get rid of the lousy '-g -O2' defaults.
@@ -15,15 +15,15 @@ CXXFLAGS=$CXXFLAGS
 
 dnl Figure out which development environment we're using.
 
+AC_LANG([C++])
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_RANLIB
-AC_LANG([C++])
 
 dnl Does the system have a working <getopt.h> include and
 dnl getopt_long() function?
 
-AC_CHECKING([whether getopt library supports long-style parameters])
 AC_CHECK_HEADER(getopt.h, have_gnu_getopt=yes, have_gnu_getopt=no, [#include <unistd.h>])
 AC_CHECK_FUNC(getopt_long, have_gnu_getopt=yes, have_gnu_getopt=no)
 AM_CONDITIONAL(HAVE_GNU_GETOPT, test x$have_gnu_getopt = xyes)

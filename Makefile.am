@@ -12,24 +12,24 @@ mapson_SOURCES	=						\
   lines2regex.cpp
 
 mapson_CPPFLAGS =						\
+  -DREGEXP_POSIX						\
   -DMAILBOXDIR=\"${mailboxdir}\"				\
   -DMTA=\"${mta}\"						\
   -DSYSCONFDIR=\"${sysconfdir}\"				\
   -DDATADIR=\"${datadir}\"
 
 if !HAVE_GNU_GETOPT
-mapson_CPPFLAGS += -Igetopt
-mapson_SOURCES	+= libgetopt/getopt.c libgetopt/getopt1.c
+mapson_SOURCES	+= getopt.c getopt1.c
 endif
 
 if !HAVE_SETENV
-mapson_CPPFLAGS += -Ilibenv -DUSE_MY_SETENV
-mapson_SOURCES	+= libenv/setenv.c
+mapson_CPPFLAGS += -DUSE_MY_SETENV
+mapson_SOURCES	+= setenv.c
 endif
 
 if !HAVE_UNSETENV
-mapson_CPPFLAGS += -Ilibenv -DUSE_MY_UNSETENV
-mapson_SOURCES	+= libenv/unsetenv.c
+mapson_CPPFLAGS += -DUSE_MY_UNSETENV
+mapson_SOURCES	+= unsetenv.c
 endif
 
 mapson-mapson.o \
@@ -52,15 +52,16 @@ mapson.html:
 
 SUBDIRS			= varexp hashcash
 man_MANS		= mapson.1
-EXTRA_DIST		= libhashcash/LICENSE sample-challenge-template \
-			  sample-config ${man_MANS} mapson.html
+EXTRA_DIST		= README INSTALL COPYING ${man_MANS}	\
+			  sample-challenge-template mapson.html \
+			  sample-config
+
 sysconf_DATA		= sample-config
 data_DATA		= sample-challenge-template mapson.html
 
 CLEANFILES		= manpage.links manpage.refs mapson-*.tar.gz VERSION
 MAINTAINERCLEANFILES	= mapson.1 mapson.html Makefile.in aclocal.m4	\
-			  configure depcomp install-sh missing
+			  configure depcomp install-sh missing compile
 
 check_PROGRAMS		= md5test
-md5test_SOURCES		= md5test.c
-md5test_LDADD		= md5.o
+md5test_SOURCES		= md5test.c md5.c
