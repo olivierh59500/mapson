@@ -12,6 +12,7 @@ config.status
 configure
 depcomp
 hashcash/*
+index.html
 install-sh
 mapson
 mapson.1
