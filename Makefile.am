@@ -61,5 +61,6 @@ CLEANFILES		= manpage.links manpage.refs mapson-*.tar.gz VERSION
 MAINTAINERCLEANFILES	= mapson.1 mapson.html Makefile.in aclocal.m4	\
 			  configure depcomp install-sh missing compile
 
-check_PROGRAMS		= md5test
+TESTS			= md5test
+check_PROGRAMS		= $(TESTS)
 md5test_SOURCES		= md5test.c md5.c

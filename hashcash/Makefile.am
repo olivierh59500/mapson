@@ -13,7 +13,8 @@ libhashcash_a_SOURCES	= \
   fastmint_altivec_standard_2.c fastmint_altivec_compact_2.c	\
   fastmint_ansi_ultracompact_1.c fastmint_library.c
 
-check_PROGRAMS		= sha1test
+TESTS			= sha1test
+check_PROGRAMS		= $(TESTS)
 sha1test_LDADD		= libsha1.o
 
 include_HEADERS		= hashcash.h
