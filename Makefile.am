@@ -59,7 +59,8 @@ data_DATA		= sample-challenge-template mapson.html
 
 CLEANFILES		= manpage.links manpage.refs mapson-*.tar.gz VERSION
 MAINTAINERCLEANFILES	= mapson.1 mapson.html Makefile.in aclocal.m4	\
-			  configure depcomp install-sh missing compile
+			  configure depcomp install-sh missing compile	\
+			  INSTALL hashcash/Makefile.in
 
 TESTS			= md5test
 check_PROGRAMS		= $(TESTS)
