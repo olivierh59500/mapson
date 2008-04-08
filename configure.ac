@@ -5,7 +5,7 @@ dnl
 dnl Get our current version
 
 AC_INIT([mapson], [3.2-beta-1], [simons@cryp.to])
-AM_INIT_AUTOMAKE([foreign -Wall])
+AM_INIT_AUTOMAKE([gnu -Wall 1.10])
 AC_CONFIG_SRCDIR([mapson.cpp])
 
 dnl Get rid of the lousy '-g -O2' defaults.
