@@ -1,8 +1,9 @@
 *.o
-.deps/*
+.deps
+COPYING
+INSTALL
 Makefile
 Makefile.in
-VERSION
 aclocal.m4
 autom4te.cache/*
 bin/*
@@ -11,12 +12,6 @@ config.log
 config.status
 configure
 depcomp
-hashcash/*
-index.html
 install-sh
-mapson
-mapson.1
-mapson.html
-md5test
 missing
-varexp/*
+varexp
