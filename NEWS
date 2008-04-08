@@ -1,0 +1,65 @@
+                        History of the mapSoN utility
+                        =============================
+
+2004-06-21:
+
+	Released version 3.0.
+
+	The StrictRFCParser option is gone. Didn't do anything useful anyway.
+
+	Added WhiteListDB option. This points to a file containing one regular
+	expression per line. Every incoming sender address that matches any of
+	those regexes is is accepted and added to the AddressDB as well.
+
+	The cumbersome ReqConfirmTemplate config option has been renamed to
+	ChallengeTemplate. Along, the default file name has been renamed from
+	reqmail.template to challenge-template.
+
+	Added support for HashCash: http://www.hashcash.org/ This required
+	adding the following config options:
+
+	    WhoamiDB          - list of accepted address
+	    HashCashDB        - path to seen-database
+	    HashCashExpiry    - expiry time for HashCashes
+	    HashCashGrace     - grace time to allow for clock skew
+	    ReqHashCashBits   - required number of collisien bits
+
+	To enable HashCash support, you _must_ create the WhoamiDB file and
+	state your e-mail addresses, one per line, so that mapSoN can verify
+	the signature in the X-Hashcash header.
+
+2003-06-28:
+
+	Released version 2.4.
+
+2003-05-27:
+
+	Released version 2.3.
+
+	Added the --dont-scan option to the command line. Specifying this will
+	tell mapSoN _not_ to scan the body of the incoming mail for a cookie.
+	This is useful in setups, where the cookie is extracted via procmail's
+	"+argument" mechanism, for instance, thus it is passed to mapSoN via
+	the --cookie flag anyway.
+
+2002-06-26:
+
+	Released version 2.1.
+
+2002-05-03:
+
+	Released version 2.0.
+
+	Added the "--cookie" command line parameter: If it is specified mapSoN
+	does not scan the e-mail but tries to approve that one directly.
+
+	The request-for-confirmation template file may now contain environment
+	variables, too.
+
+	Added the "--accept" parameter to the command line: If it is
+	specified, mapSoN will accept the incoming mail unconditionally.
+
+	Improved the sample request-for-confirmation template to be
+	user-independent. Users can simply use the installed default now.
+
+	mapSoN will log to $HOME/.mapson/log now rather than via syslog(3).
