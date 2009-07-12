@@ -16,6 +16,7 @@
 #include <stdexcept>
 #include <cerrno>
 #include <string>
+#include <cstring>
 
 class system_error : public std::runtime_error
 {

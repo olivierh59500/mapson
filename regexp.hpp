@@ -16,6 +16,7 @@
 #include <stdexcept>
 #include <vector>
 #include <string>
+#include <cstring>
 #include <memory>
 #include <sys/types.h>
 #include <regex.h>
@@ -33,6 +34,7 @@ public:
     int rc = regcomp(&preg, pattern.c_str(), flags);
     if (rc != 0)
     {
+      using namespace std;
       char errormsg[256];
       strcpy(errormsg, "RegExp: ");
       regerror(rc, &preg, errormsg+8, sizeof(errormsg)-8);
