@@ -152,7 +152,7 @@ the system-wide one.</para>
     <varlistentry>
       <term><literal>MTA</literal> <parameter>command</parameter></term>
       <listitem>
-        <para>This directive sets the command &mapson will use to send-out a
+        <para>This directive sets the command &mapson; will use to send-out a
 challenge mail. The actual mail will be piped into the started
 process.</para>
       </listitem>
@@ -168,7 +168,7 @@ fatal error, but that surely hint to the fact that this mail was not created by
 an RFC822-conformant mail client.</para>
 
         <para>Many spam mails contain incorrect header lines, so you may chose
-to have &mapson fail on <emphasis>any</emphasis> syntax error -- even non-fatal
+to have &mapson; fail on <emphasis>any</emphasis> syntax error -- even non-fatal
 ones. <quote>Failing</quote> means that &mapson; will abort and return the
 return code configured below to the <acronym>MTA</acronym>. Depending on the
 setting of the return code, the MTA will then bounce the mail.</para>

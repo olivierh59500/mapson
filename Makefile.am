@@ -41,14 +41,10 @@ noinst_HEADERS	= mapson.hpp parse-config-file.hpp regexp.hpp	\
 mapson_LDADD	= varexp/libvarexp.a hashcash/libhashcash.a
 
 mapson.1:
-	docbook2man docs/man-page.sgml
-	@rm -f manpage.links manpage.refs
-	@mv mapson.en.1 mapson.1
+	docbook2man docs/man-page.xml
 
 mapson.html:
-	@echo >VERSION ${PACKAGE_VERSION}
-	docbook2html -u docs/mapson.sgml
-	@rm -f VERSION
+	xmlto html-nochunks docs/mapson.xml
 
 SUBDIRS			= varexp hashcash
 man_MANS		= mapson.1

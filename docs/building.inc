@@ -36,7 +36,7 @@ which is available at:</para>
     <varlistentry>
       <term><option>--with-mailboxdir=<replaceable>DIR</replaceable></option></term>
       <listitem>
-        <para>In order to deliver incoming e-mail to your mailbox, &mapson needs
+        <para>In order to deliver incoming e-mail to your mailbox, &mapson; needs
 to know where the user mailboxes are located on your system. It tries to figure
 that out automatically by checking for the existance of the directories
 <filename>/var/mail</filename> and <filename>/var/spool/mail</filename>, but
