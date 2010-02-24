@@ -38,7 +38,7 @@ dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
 	if test -d .git; then						\
 	  $(top_srcdir)/build-aux/gitlog-to-changelog			\
-	    >$(distdir)/cl-t -- master $(top_srcdir)/m4;		\
+	    >$(distdir)/cl-t $(top_srcdir);				\
 	  rm -f $(distdir)/ChangeLog;					\
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;			\
 	fi
