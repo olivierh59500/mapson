@@ -3,7 +3,7 @@
 #
 
 lib_LIBRARIES		= libhashcash.a
-libhashcash_a_CPPFLAGS	= -DREGEXP_POSIX
+libhashcash_a_CPPFLAGS	= -DREGEXP_POSIX -I${srcdir}/../libgnu
 libhashcash_a_SOURCES	= \
   libhc.c utct.c sdb.c lock.c sstring.c random.c libsha1.c	\
   libfastmint.c fastmint_mmx_standard_1.c			\
@@ -19,5 +19,5 @@ sha1test_LDADD		= libsha1.o
 
 include_HEADERS		= hashcash.h
 noinst_HEADERS		= \
-  getopt.h hashcash.h libfastmint.h lock.h sdb.h utct.h sha1.h	\
+  hashcash.h libfastmint.h lock.h sdb.h utct.h sha1.h	\
   sstring.h timer.h types.h random.h

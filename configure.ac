@@ -1,25 +1,30 @@
-dnl
 dnl configure.ac -- Process this file with autoconf to produce a configure script.
-dnl
 
-dnl Get our current version
-
-AC_INIT([mapson], [3.2-beta-1], [simons@cryp.to])
-AM_INIT_AUTOMAKE([gnu -Wall 1.10])
+AC_INIT([mapson], m4_esyscmd([build-aux/git-version-gen .tarball-version]), [simons@cryp.to])
+AC_CONFIG_AUX_DIR([build-aux])
+AM_INIT_AUTOMAKE([1.11 -Wall gnu])
 AC_CONFIG_SRCDIR([mapson.cpp])
+AC_COPYRIGHT([dnl
+Copyright 2010 Peter Simons
 
-dnl Get rid of the lousy '-g -O2' defaults.
+This program is free software: you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
 
-CFLAGS=$CFLAGS
-CXXFLAGS=$CXXFLAGS
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.])
 
-dnl Figure out which development environment we're using.
+AC_MSG_NOTICE([mapSoN version $VERSION])
 
-AC_LANG([C++])
 AC_PROG_CC
+gl_EARLY
 AM_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_RANLIB
+gl_INIT
 
 dnl Does the system have a working <getopt.h> include and
 dnl getopt_long() function?
@@ -147,7 +152,6 @@ AC_ARG_WITH(debug, [  --with-debug            Support debugging? (default: yes)]
 
 dnl Grande Finale
 
-AC_CONFIG_FILES([hashcash/Makefile])
-AC_CONFIG_FILES([varexp/Makefile varexp/tests/Makefile])
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([hashcash/Makefile varexp/Makefile varexp/tests/Makefile])
+AC_CONFIG_FILES([doc/Makefile libgnu/Makefile Makefile])
 AC_OUTPUT

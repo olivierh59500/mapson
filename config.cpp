@@ -12,16 +12,10 @@
 
 #include "mapson.hpp"
 #include "varexp/varexp.hpp"
-#include <cstdlib>
+#include <stdlib.h>
 #include <memory>
 #include <pwd.h>
 #include <getopt.h>             // POSIX.2
-#ifdef USE_MY_SETENV
-#  include "setenv.h"
-#endif
-#ifdef USE_MY_UNSETENV
-#  include "unsetenv.h"
-#endif
 
 static char const USAGE[] =
 "Usage: mapson [ -h | --help ] [ --version ] [ -d | --debug ]\n"    \

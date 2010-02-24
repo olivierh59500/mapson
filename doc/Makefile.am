@@ -7,7 +7,7 @@ data_DATA		= mapson.html
 EXTRA_DIST		= mapson.1 mapson.html
 
 mapson.1:
-	docbook2man doc/man-page.xml
+	docbook2man man-page.xml
 
 mapson.html:
-	xmlto html-nochunks doc/mapson.xml
+	xmlto html-nochunks mapson.xml
