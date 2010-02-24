@@ -152,6 +152,7 @@ AC_ARG_WITH(debug, [  --with-debug            Support debugging? (default: yes)]
 
 dnl Grande Finale
 
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([hashcash/Makefile varexp/Makefile varexp/tests/Makefile])
 AC_CONFIG_FILES([doc/Makefile libgnu/Makefile Makefile])
 AC_OUTPUT

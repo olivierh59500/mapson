@@ -15,6 +15,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 #include "mapson.hpp"
 #include "rfc822.hpp"
 #include "regexp.hpp"

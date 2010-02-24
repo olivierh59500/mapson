@@ -6,6 +6,8 @@
 /aclocal.m4
 /autom4te.cache/*
 /build-aux
+/config.h
+/config.h.in
 /config.log
 /config.status
 /configure
@@ -13,6 +15,7 @@
 /libgnu
 /mapson-*.tar.gz
 /mapson-*.tar.gz.sig
+/stamp-h1
 Makefile
 Makefile.in
 
@@ -22,6 +25,7 @@ Makefile.in
 /GNUmakefile
 /doc/mapson.1
 /doc/mapson.html
+/hashcash/sha1test
 /maint.mk
 /mapson
 lib*.a
