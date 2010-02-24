@@ -3,6 +3,8 @@
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+  Cleaned up the user documentation.
+
 * Noteworthy changes in release 3.2 (2010-02-24) [stable]
 
   Converted the entire build system to gnulib.

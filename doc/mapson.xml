@@ -7,7 +7,6 @@
     <!ENTITY synopsis SYSTEM "synopsis.inc">
     <!ENTITY cmdloptions SYSTEM "cmdloptions.inc">
     <!ENTITY configfile SYSTEM "configfile.inc">
-    <!ENTITY updating SYSTEM "updating.inc">
     <!ENTITY license SYSTEM "license.inc">
     <!ENTITY defreqmail SYSTEM "defreqmail.inc">
     <!ENTITY varexp "<application>libvarexp</application>">
@@ -36,8 +35,13 @@
   </sect1>
 
   <sect1>
-    <title>Updating from Version 2.x</title>
-    &updating;
+    <title>Downloading &mapson;</title>
+
+    <para>The most current version of the software can be <ulink
+url="http://sourceforge.net/project/showfiles.php?group_id=37091">downloaded
+from its project page</ulink> at SourceForge.Net -- whom I wish to thank at this
+point for kindly hosting this project and for providing a generally excellent
+service to the software-development community.</para>
   </sect1>
 
   <sect1>
