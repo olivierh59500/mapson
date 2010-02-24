@@ -1,7 +1,7 @@
 /* -*- Mode: C; c-file-style: "stroustrup" -*- */
 
-/*  hashcash mint and verification 
- * 
+/*  hashcash mint and verification
+ *
  *  hashcash is payment in burnt CPU cycles by calculating n-bit
  *  partial hash preimages of the all 0 string
  *
@@ -24,7 +24,6 @@
 #include <ctype.h>
 #include <time.h>
 #include <errno.h>
-#include <assert.h>
 #include <math.h>
 
 #include "sdb.h"
@@ -66,9 +65,9 @@
 #define PPE (!out_is_tty||quiet_flag)
 #define VVE (verbose_flag)
 
-#define QQ if (QQE) 
-#define PP if (PPE) 
-#define VV if (VVE) 
+#define QQ if (QQE)
+#define PP if (PPE)
+#define VV if (VVE)
 #define QPRINTF QQ fprintf
 #define PPRINTF PP fprintf
 #define VPRINTF VV fprintf
@@ -78,7 +77,7 @@
 #define VPUTS(f,str) VV { fputs(str,f); }
 
 #define HDR_LINE_LEN 80
-char *read_header( FILE* f, char** s, int* slen, int* alloc, 
+char *read_header( FILE* f, char** s, int* slen, int* alloc,
 		   char* a, int alen );
 int read_eof( FILE* fp, char* a );
 void chomplf( char* token );
@@ -120,10 +119,10 @@ typedef struct {
 } ARRAY;
 
 void db_open( DB* db, const char* db_filename );
-void db_purge_arr( DB* db, ARRAY* purge_resource, int purge_all, 
+void db_purge_arr( DB* db, ARRAY* purge_resource, int purge_all,
 		   long purge_period, time_t now_time, long validity_period,
 		   long grace_period );
-int db_purge( DB* db, ARRAY* purge_resource, int purge_all, 
+int db_purge( DB* db, ARRAY* purge_resource, int purge_all,
 	      long purge_period, time_t now_time, long validity_period,
 	      long grace_period, int verbose, int* err );
 int db_in( DB* db, char* token, char *period );
@@ -131,8 +130,8 @@ void db_add( DB* db, char* token, char *token_utime );
 void db_close( DB* db ) ;
 
 void array_alloc( ARRAY* array, int num );
-void array_push( ARRAY* array, const char *str, int type, int case_flag, 
-		 long validity, long grace, long anon, int width, int bits, 
+void array_push( ARRAY* array, const char *str, int type, int case_flag,
+		 long validity, long grace, long anon, int width, int bits,
 		 int over );
 #define array_num( a ) ( (a)->num )
 int bit_cmp( const void* ap, const void* bp );
@@ -149,12 +148,12 @@ int in_is_tty;
 #define PROGRESS_FMT "percent: %%.0lf/%%.0lf = %%.%dlf%%%% [%%d/%%d bits]%%c"
 char progress_format[80] = { 0 };
 
-int progress_callback(int percent, int largest, int target, 
+int progress_callback(int percent, int largest, int target,
 		      double counter, double expected, void* user);
 
 #define PURGED_KEY "last_purged"
 
-int main( int argc, char* argv[] ) 
+int main( int argc, char* argv[] )
 {
     long validity_period = 28*TIME_DAY; /* default validity period: 28 days */
     long purge_validity_period = 28*TIME_DAY; /* same default */
@@ -225,10 +224,10 @@ int main( int argc, char* argv[] )
     array_alloc( &tokens, 32 );
     array_alloc( &args, 32 );
 
-    while ( (opt=getopt(argc, argv, 
+    while ( (opt=getopt(argc, argv,
 		"-a:b:cde:f:g:hij:klmnop:qr:st:uvwx:yz:CEMO:PSVXZ:")) >0 ) {
 	switch ( opt ) {
-	case 'a': anon_flag = 1; 
+	case 'a': anon_flag = 1;
 	    if ( !parse_period( optarg, &anon_period ) ) {
 		usage( "error: -a invalid period arg" );
 	    }
@@ -237,8 +236,8 @@ int main( int argc, char* argv[] )
 	    if ( bits_flag ) { multiple_bits = 1; }
 	    bits_flag = 1;
 
-	    if ( strcmp( optarg, "default" ) == 0 ) { 
-		bits = default_bits; 
+	    if ( strcmp( optarg, "default" ) == 0 ) {
+		bits = default_bits;
 	    } else if ( optarg[0] == '-' || optarg[0] == '+' ) {
 		bits = atoi( optarg+1 );
 		if ( bits < 0 ) { usage( "error: -b invalid bits arg" ); }
@@ -256,17 +255,17 @@ int main( int argc, char* argv[] )
 	case 'C': case_flag = 1; break;
 	case 'c': check_flag = 1; break;
 	case 'd': db_flag = 1; break;
-	case 'e': 
+	case 'e':
 	    if ( validity_flag ) { multiple_validity = 1; }
-	    validity_flag = 1; 
+	    validity_flag = 1;
 	    if ( !parse_period( optarg, &validity_period ) ||
 		 validity_period < 0 ) {
-		usage( "error: -e invalid validity period" ); 
+		usage( "error: -e invalid validity period" );
 	    }
 	    break;
 	case 'E': str_type = TYPE_REGEXP; break;
 	case 'f': db_filename = strdup( optarg ); break;
-	case 'g': 
+	case 'g':
 	    if ( grace_flag ) { multiple_grace = 1; }
 	    grace_flag = 1;
 	    if ( optarg[0] == '-' ) {
@@ -278,8 +277,8 @@ int main( int argc, char* argv[] )
 	    break;
 	case 'h': usage( "" ); break;
 	case 'i': ignore_boundary_flag = 1; break;
-	case 'j': 
-	    array_push( &purge_resource, optarg, str_type, case_flag, 
+	case 'j':
+	    array_push( &purge_resource, optarg, str_type, case_flag,
 			0, 0, 0, 0, 0, 0 );
 	    over_flag = 0;
 	    break;
@@ -287,29 +286,29 @@ int main( int argc, char* argv[] )
 	case 'l': left_flag = 1; break;
 	case 'n': name_flag = 1; break;
 	case 'o': over_flag = 1; break;
-	case 'O': 
-	    core_flag = 1; 
-	    core = atoi( optarg ); 
+	case 'O':
+	    core_flag = 1;
+	    core = atoi( optarg );
 	    res = hashcash_use_core( core );
 	    if ( res < 1 ) {
-		usage( res == -1 ? "error: -O no such core\n" : 
+		usage( res == -1 ? "error: -O no such core\n" :
 		       "error: -O core does not work on this platform" );
 	    }
 	    break;
-	case 'm': mint_flag = 1; 
-	    if ( !bits_flag ) { 
-		bits_flag = 1; 
+	case 'm': mint_flag = 1;
+	    if ( !bits_flag ) {
+		bits_flag = 1;
 		bits = default_bits;
 	    }
 	    break;
 	case 'M': str_type = TYPE_WILD; break;
-	case 'p': 
+	case 'p':
 	    if ( purge_flag ) { usage("error: only one -p flag per call"); }
 	    purge_flag = 1;
 	    if ( strcmp( optarg, "now" ) == 0 ) { purge_period = 0; }
 	    else if ( !parse_period( optarg, &purge_period ) ||
 		      purge_period < 0 ) {
-		usage( "error: -p invalid purge interval" ); 
+		usage( "error: -p invalid purge interval" );
 	    }
 	    purge_validity_period = validity_period;
 	    break;
@@ -317,30 +316,30 @@ int main( int argc, char* argv[] )
 	case 'q': quiet_flag = 1; break;
 	case 1:
 	case 'r':
-	    if ( opt == 'r' ) { 
+	    if ( opt == 'r' ) {
 		if ( res_flag ) { multiple_resources = 1; }
-		res_flag = 1; 
+		res_flag = 1;
 	    }
 
 	    /* infer appropriate time_width from validity period */
 	    if ( validity_flag && !time_width_flag && !inferred_time_width ) {
                 time_width = hashcash_validity_to_width( validity_period );
-		if ( !time_width ) { 
-		    die_msg( "error: -ve validity period" ); 
+		if ( !time_width ) {
+		    die_msg( "error: -ve validity period" );
 		}
 		inferred_time_width = time_width;
 	    }
 
-	    array_push( &args, optarg, str_type, case_flag, validity_period, 
+	    array_push( &args, optarg, str_type, case_flag, validity_period,
 			grace_period, anon_period, time_width, bits, 0 );
 
 	    if ( opt == 'r' ) {
 		array_push( &resource, optarg, str_type, case_flag,
-			    validity_period, grace_period, anon_period, 
+			    validity_period, grace_period, anon_period,
 			    time_width, bits, over_flag );
 	    } else if ( opt == 1 ) {
-		array_push( &tokens, optarg, str_type, case_flag, 
-			    validity_period, grace_period, anon_period, 
+		array_push( &tokens, optarg, str_type, case_flag,
+			    validity_period, grace_period, anon_period,
 			    time_width, bits, 0 );
 	    }
 	    over_flag = 0;
@@ -356,8 +355,8 @@ int main( int argc, char* argv[] )
 		now_time += time_period;
 	    } else {
 		now_time = hashcash_from_utctimestr( optarg, utc_flag );
-		if ( now_time == (time_t)-1 ) { 
-		    usage( "error: -t invalid time format" ); 
+		if ( now_time == (time_t)-1 ) {
+		    usage( "error: -t invalid time format" );
 		}
 	    }
 	    break;
@@ -366,7 +365,7 @@ int main( int argc, char* argv[] )
         case 'V': version_flag = 1; break;
 	case 'w': width_flag = 1; break;
 	case 'x':
-	    ext = strdup( optarg ); 
+	    ext = strdup( optarg );
 /* deprecate old -x flag */
 /*	    hdr_flag = 1; */
 /*	    sstrncpy( header, optarg, MAX_HDR ); */
@@ -377,18 +376,18 @@ int main( int argc, char* argv[] )
 	    sstrncpy( header2, "Hashcash: ", MAX_HDR );
 	    break;
 	case 'y': yes_flag = 1; break;
-	case 'z': 
-	    time_width_flag = 1; 
+	case 'z':
+	    time_width_flag = 1;
 	    time_width = atoi( optarg );
 	    if ( time_width != 6 && time_width != 10 && time_width != 12 ) {
 	        usage( "error: -z invalid time width: must be 6, 10 or 12" );
 	    }
 	    break;
-	case 'Z': compress = atoi( optarg ); 
+	case 'Z': compress = atoi( optarg );
             /* temporary work around for bug discovered in 1.15, disable -Z2 */
 /*	    if ( compress > 1 ) { compress = 1; } */
 	    break;
-	case '?': 
+	case '?':
 	    fprintf( stderr, "error: unrecognized option -%c", optopt );
 	    usage( "" );
 	    break;
@@ -396,7 +395,7 @@ int main( int argc, char* argv[] )
 	    fprintf( stderr, "error: option -%c missing argument", optopt );
 	    usage( "" );
 	    break;
-	default: 
+	default:
 	    usage( "error with argument processing" );
 	    break;
 	}
@@ -404,13 +403,13 @@ int main( int argc, char* argv[] )
 
     if ( validity_flag && !time_width_flag && !inferred_time_width ) {
         time_width = hashcash_validity_to_width( resource.elt[0].validity );
-	if ( !time_width ) { 
-	    die_msg( "error: -ve validity period" ); 
+	if ( !time_width ) {
+	    die_msg( "error: -ve validity period" );
 	}
 	inferred_time_width = time_width;
     }
 
-    if ( array_num( &args ) == 0 && verbose_flag && 
+    if ( array_num( &args ) == 0 && verbose_flag &&
 	 name_flag + left_flag + width_flag + check_flag +
 	 mint_flag + purge_flag + speed_flag < 1 ) {
 	auto_version = 1;
@@ -418,7 +417,7 @@ int main( int argc, char* argv[] )
     }
 
     if ( version_flag ) {
-        QPRINTF( stderr, "Version: hashcash-%s\n", 
+        QPRINTF( stderr, "Version: hashcash-%s\n",
 		 HASHCASH_VERSION_STRING );
 	PPRINTF( stdout, "%s\n", HASHCASH_VERSION_STRING );
 	if ( auto_version ) { exit( EXIT_FAILURE ); }
@@ -444,12 +443,12 @@ int main( int argc, char* argv[] )
 	db_open( &db, db_filename );
 	db_opened = 1;
 
-	db_purge_arr( &db, &purge_resource, purge_all, purge_period, 
+	db_purge_arr( &db, &purge_resource, purge_all, purge_period,
 		  now_time, validity_flag ? purge_validity_period : 0,
 		  grace_period );
 
-	if ( mint_flag + check_flag + name_flag + left_flag + 
-	     width_flag + bits_flag + res_flag + speed_flag == 0 ) { 
+	if ( mint_flag + check_flag + name_flag + left_flag +
+	     width_flag + bits_flag + res_flag + speed_flag == 0 ) {
 	    db_close( &db );	/* just -p we're done */
 	    exit( EXIT_SUCCESS );
 	}
@@ -470,8 +469,8 @@ int main( int argc, char* argv[] )
 		    chomplf( line );
 		    trimspace( line );
 		    if ( line[0] != '\0' ) {
-			array_push( &args, line, 0, 0, validity_period, 
-				    grace_period, anon_period, time_width, 
+			array_push( &args, line, 0, 0, validity_period,
+				    grace_period, anon_period, time_width,
 				    bits, 0 );
 		    }
 		}
@@ -490,7 +489,7 @@ int main( int argc, char* argv[] )
 	}
 
 	if ( !verbose_flag && speed_flag && mint_flag ) {
-	    QPRINTF( stderr, "core: %s\n", 
+	    QPRINTF( stderr, "core: %s\n",
 		     hashcash_core_name( hashcash_core() ) );
 	    QPRINTF( stderr, "speed: %ld preimage tests per second\n",
                      hashcash_per_sec() );
@@ -525,7 +524,7 @@ int main( int argc, char* argv[] )
 
 	    ent = &(args.elt[i]);
 
-	    tries_expected = report_speed( ent->bits, NULL, 
+	    tries_expected = report_speed( ent->bits, NULL,
 					   verbose_flag||speed_flag );
 
 	    if ( !ent->case_flag ) { stolower( ent->str ); }
@@ -539,9 +538,9 @@ int main( int argc, char* argv[] )
 	    }
 	    sprintf( progress_format, PROGRESS_FMT, precision );
 
-	    err = hashcash_mint( now_time, ent->width, ent->str, ent->bits, 
-				 ent->anon, &new_token, &anon_random, 
-				 &tries_taken, ext, compress, 
+	    err = hashcash_mint( now_time, ent->width, ent->str, ent->bits,
+				 ent->anon, &new_token, &anon_random,
+				 &tries_taken, ext, compress,
 				 callback, NULL );
 	    end = clock();
 
@@ -567,34 +566,34 @@ int main( int argc, char* argv[] )
 	    default:
 		die_msg( "error: unknown failure" );
 	    }
-   
+
 	    if ( anon_flag ) {
-		VPRINTF( stderr, "anon period: %ld seconds\n", 
+		VPRINTF( stderr, "anon period: %ld seconds\n",
 			 (long)anon_period );
 		VPRINTF( stderr, "adding: %ld seconds\n", anon_random );
 	    }
 
 	    VPRINTF( stderr, "tries: %.0f", tries_taken );
-	    VPRINTF( stderr, " %.0f%% of expected                         \n", 
+	    VPRINTF( stderr, " %.0f%% of expected                         \n",
 		     tries_taken / tries_expected * 100 );
 
 	    if ( end < start ) { tmp = end; end = start; start = tmp; }
 	    taken = (end-start)/(double)CLOCKS_PER_SEC;
 	    VPRINTF( stderr, "time: %.0f seconds\n", taken );
-	    
+
 	    if ( hdr_flag ) {
 		header_wrapped = hashcash_make_header( new_token, HDR_LINE_LEN,
-						       header, '\t', 
+						       header, '\t',
 						       LINEFEED );
-		if ( header_wrapped == NULL ) { 
+		if ( header_wrapped == NULL ) {
 		    /* don't expect this but for security fail closed */
 		    fprintf(stderr, "out of memory\n");
 		    exit( EXIT_FAILURE );
 		}
 		fprintf( stdout, "%s", header_wrapped );
 		free( header_wrapped );
-	    } else { 
-		fprintf( stdout, "%s%s\n", 
+	    } else {
+		fprintf( stdout, "%s%s\n",
 			 ((quiet_flag||!out_is_tty)? "" : "hashcash stamp: "),
 			 new_token );
 	    }
@@ -602,7 +601,7 @@ int main( int argc, char* argv[] )
 	}
 	exit( EXIT_SUCCESS );
 
-    } else if ( check_flag || name_flag || width_flag || 
+    } else if ( check_flag || name_flag || width_flag ||
 		left_flag || bits_flag || res_flag || db_flag ) {
 
 	/* check token is valid */
@@ -619,7 +618,7 @@ int main( int argc, char* argv[] )
 	/* resource name if resource given is NULL */
 
 	if ( array_num( &resource ) == 0 ) {
-	    array_push( &resource, NULL, str_type, case_flag, validity_period, 
+	    array_push( &resource, NULL, str_type, case_flag, validity_period,
 			grace_period, anon_period, time_width, bits, 0 );
 	}
 
@@ -647,7 +646,7 @@ int main( int argc, char* argv[] )
 			    QPRINTF( stderr, "enter email headers:\n" );
 			}
 		    } else {
-			QPRINTF( stderr, 
+			QPRINTF( stderr,
 				 "enter stamps to check one per line:\n" );
 		    }
 		    tty_info = 1;
@@ -657,20 +656,20 @@ int main( int argc, char* argv[] )
 			     ahead, MAX_LINE );
 		if ( line[0] == '\0' ) { continue; }
 		if ( hdr_flag )	{
-		    token_found = (strncasecmp( line, header, 
+		    token_found = (strncasecmp( line, header,
 						hdr_len ) == 0);
-		    token2_found = header2[0] && 
+		    token2_found = header2[0] &&
 			(strncasecmp( line, header2, hdr2_len ) == 0);
-		    if ( token_found ) { 
+		    if ( token_found ) {
 			sstrncpy( token, line+hdr_len, MAX_TOK );
-			hdrs_found = 1; 
-		    } else if ( token2_found ) { 
+			hdrs_found = 1;
+		    } else if ( token2_found ) {
 			sstrncpy( token, line+hdr2_len, MAX_TOK );
 			hdrs_found = 1;
 			token_found = 1;
 		    }
 		} else {
-		    token_found = 1; 
+		    token_found = 1;
 		    sstrncpy( token, line, MAX_TOK );
 		}
 		trimspace( token );
@@ -689,23 +688,23 @@ int main( int argc, char* argv[] )
 
 		    /* keep going until find non overridden */
 
-		    if ( over && ent->over ) { 
+		    if ( over && ent->over ) {
 			if ( multiple_resources ) {
-			    VPRINTF( stderr, "checking against resource: %s\n", 
+			    VPRINTF( stderr, "checking against resource: %s\n",
 				     ent->str );
 			}
 			QPRINTF( stderr, "no match: overridden resource\n" );
-			continue; 
+			continue;
 		    }
 
 		    over = 0;
 
 		    if ( !ent->case_flag ) { stolower( ent->str ); }
-		    valid_for = hashcash_check( token, ent->case_flag, 
-						ent->str, 
+		    valid_for = hashcash_check( token, ent->case_flag,
+						ent->str,
 						&(ent->regexp), &re_err,
-						ent->type, now_time, 
-						ent->validity, ent->grace, 
+						ent->type, now_time,
+						ent->validity, ent->grace,
 						bits_flag ? ent->bits : 0,
 						&token_time );
 
@@ -735,7 +734,7 @@ int main( int argc, char* argv[] )
 
 			case HASHCASH_INSUFFICIENT_BITS:
 			    if ( !multiple_bits && bits_flag ) {
-			        QPRINTF( stderr, 
+			        QPRINTF( stderr,
 					 "skipped: stamp has insufficient bits\n" );
 				skip = 1; continue;
 			    }
@@ -758,7 +757,7 @@ int main( int argc, char* argv[] )
 		    }
 
 		    if ( multiple_resources ) {
-			VPRINTF( stderr, "checking against resource: %s\n", 
+			VPRINTF( stderr, "checking against resource: %s\n",
 				 ent->str );
 		    }
 
@@ -789,7 +788,7 @@ int main( int argc, char* argv[] )
 			}
 			break;
 		    case HASHCASH_EXPIRED:
-			if ( check_flag ) { 
+			if ( check_flag ) {
 			    QPUTS( stderr, "no match: stamp expired\n" );
 			    over = 1; accept = 0; continue;
 			}
@@ -805,7 +804,7 @@ int main( int argc, char* argv[] )
 			fprintf( stderr, "regexp error: " );
 			die_msg( re_err );
 			break;
-			
+
 		    default:
 			die_msg( "internal error" );
 			break;
@@ -833,7 +832,7 @@ int main( int argc, char* argv[] )
 					utcttime, MAX_UTC,
 					token_resource, MAX_RES, &ext, 0 );
 			parsed = 1;
-			QPRINTF( stderr, "stamp resource name: %s\n", 
+			QPRINTF( stderr, "stamp resource name: %s\n",
 				 token_resource );
 			PPRINTF( stdout, "%s", token_resource );
 		    }
@@ -847,12 +846,12 @@ int main( int argc, char* argv[] )
 			    parsed = 1;
 			}
 			if ( vers == 1 ) {
-			    count_bits = ( count_bits < claimed_bits ) ? 
+			    count_bits = ( count_bits < claimed_bits ) ?
 				0 : claimed_bits;
 			}
 			QPRINTF( stderr, "stamp value: %d\n", count_bits );
-			if ( name_flag || verbose_flag ) { 
-			    PPUTS( stdout, " " ); 
+			if ( name_flag || verbose_flag ) {
+			    PPUTS( stdout, " " );
 			}
 			PPRINTF( stdout, "%d", count_bits );
 		    }
@@ -906,7 +905,7 @@ int main( int argc, char* argv[] )
 		    }
 
 		    if ( db_flag ) {
-			VPUTS( stderr, 
+			VPUTS( stderr,
 			       "database: not double spent\n" );
 			checked = yes_flag || ( res_flag && bits_flag);
 			if ( checked ) {
@@ -926,7 +925,7 @@ int main( int argc, char* argv[] )
 	    if ( hdr_flag && !hdrs_found ) {
 		QPRINTF( stderr, "warning: no line matching %s found in input\n",
 			 header );
-	    } 
+	    }
 	    QPUTS( stderr, "rejected: no valid stamps found\n" );
 	    valid_for = HASHCASH_NO_TOKEN;
 	}
@@ -935,9 +934,9 @@ int main( int argc, char* argv[] )
 	if ( width_flag || left_flag || name_flag ) {
 	    exit( yes_flag ? EXIT_SUCCESS : EXIT_UNCHECKED );
 	}
-	QPRINTF( stderr, "check: %s", 
-		 ( valid_for >= 0 ) ? 
-		 ( checked ? "ok" : "ok but not fully checked as" ) : 
+	QPRINTF( stderr, "check: %s",
+		 ( valid_for >= 0 ) ?
+		 ( checked ? "ok" : "ok but not fully checked as" ) :
 		 "failed" );
 	if ( valid_for >= 0 ) {
 	    if ( !checked ) {
@@ -945,15 +944,15 @@ int main( int argc, char* argv[] )
 		    comma = 1; QPUTS( stderr, " bits" );
 		}
 		if ( !check_flag ) {
-		    if ( comma ) { QPUTS( stderr, "," ); } 
+		    if ( comma ) { QPUTS( stderr, "," ); }
 		    comma = 1; QPUTS( stderr, " expiry" );
 		}
 		if ( !res_flag ) {
-		    if ( comma ) { QPUTS( stderr, "," ); } 
+		    if ( comma ) { QPUTS( stderr, "," ); }
 		    comma = 1; QPUTS( stderr, " resource" );
 		}
 		if ( !db_flag ) {
-		    if ( comma ) { QPUTS( stderr, "," ); } 
+		    if ( comma ) { QPUTS( stderr, "," ); }
 		    comma = 1; QPUTS( stderr, " database" );
 		}
 		if ( comma ) { QPUTS( stderr, " not specified" ); }
@@ -961,14 +960,14 @@ int main( int argc, char* argv[] )
 	}
 	QPUTS( stderr, "\n" );
 	if ( valid_for < 0 ) { exit( EXIT_FAILURE ); }
-	exit( checked ? EXIT_SUCCESS : 
+	exit( checked ? EXIT_SUCCESS :
 	      ( yes_flag ? EXIT_SUCCESS : EXIT_UNCHECKED ) );
     }
     exit( EXIT_ERROR );		/* get here if no functional flags */
     return 0;
 }
 
-int progress_callback(int ignore, int largest, int target, 
+int progress_callback(int ignore, int largest, int target,
 		      double counter, double expected, void* user)
 {
     static int previous_percent = -1;
@@ -1021,7 +1020,7 @@ int parse_period( const char* aperiod, long* resp )
     case 'w': res *= TIME_DAY*7; break;
     case 'M': res *= TIME_MONTH; break;
     case 'y': case 'Y': res *= TIME_YEAR; break;
-    case '0': case '1': case '2': case '3': case '4': 
+    case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9': break;
     default: return 0;
     }
@@ -1107,18 +1106,18 @@ static int sdb_cb_token_matcher( const char* key, char* val,
 
     *err = 0;
     if ( strcmp( key, PURGED_KEY ) == 0 ) {
-	sstrncpy( val, arg->now_utime, MAX_UTC ); 
+	sstrncpy( val, arg->now_utime, MAX_UTC );
 	return 1;		/* update purge time */
     }
 
-    if ( !hashcash_parse( key, &vers, &bits, token_utime, MAX_UTC, 
+    if ( !hashcash_parse( key, &vers, &bits, token_utime, MAX_UTC,
 			  token_res, MAX_RES, NULL, 0 ) ) {
 	*err = EINPUT;		/* corrupted token in DB */
 	return 0;
     }
     if ( vers != 0 && vers != 1 ) {
 	*err = EINPUT; 		/* unsupported version number in DB */
-	return 0; 
+	return 0;
     }
     /* if purging only for given resource */
     if ( array_num( arg->resource ) > 0 ) {
@@ -1133,12 +1132,12 @@ static int sdb_cb_token_matcher( const char* key, char* val,
 		stolower( lower_token_res );
 		lowered = 1;
 	    }
-	    matched = hashcash_resource_match( type, case_flag ? 
-					       token_res : lower_token_res, 
+	    matched = hashcash_resource_match( type, case_flag ?
+					       token_res : lower_token_res,
 					       res, compile, &re_err );
-	    if ( re_err != NULL ) { 
-		fprintf( stderr, "regexp error: " ); 
-		die_msg( re_err ); 
+	    if ( re_err != NULL ) {
+		fprintf( stderr, "regexp error: " );
+		die_msg( re_err );
 	    }
 	}
 	if ( !matched ) { return 1; } /* if it doesn't match, keep it */
@@ -1152,7 +1151,7 @@ static int sdb_cb_token_matcher( const char* key, char* val,
     if ( expiry_period < 0 ) { *err = EINPUT; return 0; } /* corrupted */
     created = hashcash_from_utctimestr( token_utime, 1 );
     if ( created < 0 ) { *err = EINPUT; return 0; } /* corrupted */
-    expires = created 
+    expires = created
 	+ (arg->validity ? arg->validity : expiry_period) + arg->grace;
     if ( expires <= arg->expires_before ) { return 0; }	/* delete if expired */
     return 1;			/* otherwise keep */
@@ -1166,15 +1165,15 @@ int hashcash_db_purge( DB* db, const char* purge_resource, int type,
     array_alloc( purge_resource_arr, 1 );
     array_push( purge_resource_arr, purge_resource, type, case_flag,
 		validity_period, grace_period, 0, 0, 0, 0 );
-    return db_purge( db, purge_resource_arr, purge_all, purge_period, 
+    return db_purge( db, purge_resource_arr, purge_all, purge_period,
 		     now_time, validity_period, grace_period, 0, err );
 }
 
-void db_purge_arr( DB* db, ARRAY* purge_resource, int purge_all, 
+void db_purge_arr( DB* db, ARRAY* purge_resource, int purge_all,
 	       long purge_period, time_t now_time, long validity_period,
 	       long grace_period ) {
     int res, err = HASHCASH_FAIL;
-    res = db_purge( db, purge_resource, purge_all, purge_period, now_time, 
+    res = db_purge( db, purge_resource, purge_all, purge_period, now_time,
 		    validity_period, grace_period, verbose_flag, &err );
     switch ( res ) {
     case HASHCASH_INVALID_TIME:
@@ -1185,7 +1184,7 @@ void db_purge_arr( DB* db, ARRAY* purge_resource, int purge_all,
     }
 }
 
-int db_purge( DB* db, ARRAY* purge_resource, int purge_all, 
+int db_purge( DB* db, ARRAY* purge_resource, int purge_all,
 	       long purge_period, time_t now_time, long validity_period,
 	       long grace_period, int verbose, int* err ) {
     time_t last_time = 0 ;
@@ -1217,7 +1216,7 @@ int db_purge( DB* db, ARRAY* purge_resource, int purge_all,
     if ( purge_period == 0 || now_time >= last_time + purge_period ) {
 	VPRINTF( stderr, "purging database: ..." );
 	ret = sdb_updateiterate( db, sdb_cb_token_matcher, (void*)&arg, err );
-	VPRINTF( stderr, ret ? "done\n" : "failed\n" ); 
+	VPRINTF( stderr, ret ? "done\n" : "failed\n" );
     } else {
 	ret = 1;
     }
@@ -1252,7 +1251,7 @@ void db_close( DB* db ) {
     }
 }
 
-/* num = start size, auto-grows */ 
+/* num = start size, auto-grows */
 
 void array_alloc( ARRAY* array, int num ) {
     array->num = 0;
@@ -1263,9 +1262,9 @@ void array_alloc( ARRAY* array, int num ) {
 
 /* auto-grow array */
 
-void array_push( ARRAY* array, const char *str, int type, int case_flag, 
-		 long validity, long grace, long anon, int width, int bits, 
-		 int over ) 
+void array_push( ARRAY* array, const char *str, int type, int case_flag,
+		 long validity, long grace, long anon, int width, int bits,
+		 int over )
 {
     if ( array->num >= array->max ) {
 	array->elt = realloc( array->elt, sizeof( ELEMENT) * array->max * 2 );
@@ -1283,8 +1282,8 @@ void array_push( ARRAY* array, const char *str, int type, int case_flag,
     array->elt[array->num].over = over;
     if ( str ) {
 	array->elt[array->num].str = strdup( str );
-	if ( array->elt[array->num].str == NULL ) { 
-	    die_msg( "out of memory" ); 
+	if ( array->elt[array->num].str == NULL ) {
+	    die_msg( "out of memory" );
 	}
     } else {
 	array->elt[array->num].str = NULL;
@@ -1305,7 +1304,7 @@ void array_sort( ARRAY* array, int(*cmp)(const void*, const void*) )
     qsort( array->elt, array->num, sizeof( ELEMENT ), cmp );
 }
 
-void die( int err ) 
+void die( int err )
 {
     const char* str = "";
 
@@ -1324,7 +1323,7 @@ void die( int err )
     exit( EXIT_ERROR );
 }
 
-void die_msg( const char* str ) 
+void die_msg( const char* str )
 {
     QPUTS( stderr, str );
     QPUTS( stderr, "\n" );
@@ -1355,11 +1354,11 @@ void trimspace( char* token ) {
     }
 }
 
-double report_speed( int bits, double* time_est, int display ) 
+double report_speed( int bits, double* time_est, int display )
 {
     double te = 0;
     double tries_expected = hashcash_expected_tries( bits );
-    
+
     VPRINTF( stderr, "mint: %d bit partial hash preimage\n", bits );
     VPRINTF( stderr, "expected: %.0f tries (= 2^%d tries)\n",
 	     tries_expected, bits );
@@ -1388,13 +1387,13 @@ double report_speed( int bits, double* time_est, int display )
 	} else if ( te > 1 ) {
 	    /* already printed seconds */
 	} else if ( te > TIME_MILLI_SECOND ) {
-	    QPRINTF( stderr, " (%.0f milli-seconds)", 
+	    QPRINTF( stderr, " (%.0f milli-seconds)",
 		     te / TIME_MILLI_SECOND );
 	} else if ( te > TIME_MICRO_SECOND ) {
-	    QPRINTF( stderr, " (%.0f micro-seconds)", 
+	    QPRINTF( stderr, " (%.0f micro-seconds)",
 		     te / TIME_MICRO_SECOND );
 	} else if ( te > TIME_NANO_SECOND ) {
-	    QPRINTF( stderr, " (%.0f nano-seconds)", 
+	    QPRINTF( stderr, " (%.0f nano-seconds)",
 		     te / TIME_NANO_SECOND );
 	}
 	QPUTS( stderr, "\n" );
@@ -1420,7 +1419,7 @@ int read_append( char** s, int* smax, int* alloc, char* append )
     return 1;
 }
 
-char *read_header( FILE* f, char** s, int* smax, int* alloc, 
+char *read_header( FILE* f, char** s, int* smax, int* alloc,
 		   char* a, int amax )
 {
     char* junk;

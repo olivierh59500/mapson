@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include <assert.h>
 #include "sstring.h"
 
 #define BUILD_DLL
@@ -34,7 +33,7 @@ static int century_offset_to_year( int century_offset )
     int year = current_century * 100 + century_offset;
 
     /* assume year is in current century */
-    /* unless that leads to very old or very new, then adjust */ 
+    /* unless that leads to very old or very new, then adjust */
     if ( year - current_year > 50 ) { year -= 100; }
     else if ( year - current_year < -50 ) { year += 100; }
     return year;
@@ -74,7 +73,7 @@ time_t mk_utctime( struct tm* tms ) {
 
     putenv( "TZ=UTC+0" );
     res = mktime( tms );
-    if ( tz ) { 
+    if ( tz ) {
         set_tz = malloc( strlen( tz ) + 3 + 1 );
         sprintf( set_tz, "TZ=%s", tz );
 	putenv( set_tz );
@@ -164,7 +163,7 @@ int hashcash_to_utctimestr( char utct[MAX_UTC+1], int len, time_t t  )
     if ( len == 6 ) { goto leave; }
     sprintf( utct+6, "%02d", tms->tm_hour );
     if ( len == 8 ) { goto leave; }
-    sprintf( utct+8, "%02d", tms->tm_min ); 
+    sprintf( utct+8, "%02d", tms->tm_min );
     if ( len == 10 ) { goto leave; }
     sprintf( utct+10, "%02d", tms->tm_sec );
 
