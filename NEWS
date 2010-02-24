@@ -1,13 +1,10 @@
 #+TITLE: History of the mapSoN utility         -*- mode:org;fill-column:79; -*-
 #+STARTUP: showall
 
-* Noteworthy changes in release ?.? (????-??-??) [?]
-
-  Cleaned up the user documentation.
-
-* Noteworthy changes in release 3.2 (2010-02-24) [stable]
+* Noteworthy changes in release 3.3 (2010-02-24) [stable]
 
   Converted the entire build system to gnulib.
+  Cleaned up the user documentation.
 
 * Noteworthy changes in release 3.0 (2004-06-21) [stable]
 
