@@ -26,21 +26,6 @@ AC_PROG_CXX
 AC_PROG_RANLIB
 gl_INIT
 
-dnl Does the system have a working <getopt.h> include and
-dnl getopt_long() function?
-
-AC_CHECK_HEADER(getopt.h, have_gnu_getopt=yes, have_gnu_getopt=no, [#include <unistd.h>])
-AC_CHECK_FUNC(getopt_long, have_gnu_getopt=yes, have_gnu_getopt=no)
-AM_CONDITIONAL(HAVE_GNU_GETOPT, test x$have_gnu_getopt = xyes)
-
-dnl If the system is missing setenv(3) or unsetenv(3), use
-dnl the version included in this distribution instead.
-
-AC_CHECK_FUNC(setenv, have_setenv=yes, have_setenv=no)
-AM_CONDITIONAL(HAVE_SETENV, test x$have_setenv = xyes)
-AC_CHECK_FUNC(unsetenv, have_unsetenv=yes, have_unsetenv=no)
-AM_CONDITIONAL(HAVE_UNSETENV, test x$have_unsetenv = xyes)
-
 dnl Magically transform installation paths to avoid having the
 dnl name "mapson" in it several times.
 
@@ -69,25 +54,9 @@ case $prefix in
         ;;
 esac
 
-dnl Make sure u_int32_t is defined.
+dnl Enable large file support.
 
-AC_CHECK_TYPE(u_int32_t, [],
-    [
-    AC_CHECK_TYPE(uint32_t, [CPPFLAGS="$CPPFLAGS -Du_int32_t=uint32_t"],
-        [
-        AC_MSG_ERROR([Can't find an appropriate type for u_int32_t.])
-        ], [#include <sys/types.h>])
-    ], [#include <sys/types.h>])
-
-dnl Do we have large file system support?
-
-case "$hosttuple" in
-     *-*-solaris*)
-        ;;
-     *)
-        AC_SYS_LARGEFILE
-        ;;
-esac
+AC_SYS_LARGEFILE
 
 dnl Find some paths we might need.
 
