@@ -76,14 +76,14 @@ static void hashcash_detect_features(void)
 {
 #if defined(__POWERPC__) && defined(__ALTIVEC__)
 	int hasAltivec = 0;
-	
+
 	#if defined(__UNIX__) || defined(__MACH__)
 			/* Use generic SIGILL trap handler */
 			void *oldhandler;
-			
+
 			gIllegalInstructionTrapped = 0;
 			oldhandler = signal(SIGILL, sig_ill_handler);
-			
+
 			if(!setjmp(gEnv)) {
 				#ifdef __GNUC__
 				asm volatile ( "vor v0,v0,v0" );
@@ -91,9 +91,9 @@ static void hashcash_detect_features(void)
 				dummy_altivec_fn();
 				#endif
 			}
-			
+
 			signal(SIGILL, oldhandler);
-			
+
 			hasAltivec = !gIllegalInstructionTrapped;
 	#else
 			/* Carbon and MacOS Classic */
@@ -102,7 +102,7 @@ static void hashcash_detect_features(void)
 			if(err == 0)
 				hasAltivec = ((1 << gestaltPowerPCHasVectorInstructions) & cpuAttributes) != 0;
 	#endif
-	
+
 	if(hasAltivec)
 		gProcessorSupportFlags |= HC_CPU_SUPPORTS_ALTIVEC;
 	else
@@ -110,10 +110,10 @@ static void hashcash_detect_features(void)
 #elif defined(__i386__) && defined(__GNUC__)
 	void *oldhandler;
 	int hasMMX = 0;
-	
+
 	gIllegalInstructionTrapped = 0;
 	oldhandler = signal(SIGILL, sig_ill_handler);
-	
+
 	if(!setjmp(gEnv)) {
 		asm volatile (
 									"movl $1, %%eax\n\t"
@@ -126,9 +126,9 @@ static void hashcash_detect_features(void)
 									: "eax", "ecx"
 									);
 	}
-	
+
 	signal(SIGILL, oldhandler);
-	
+
 	if(hasMMX && !gIllegalInstructionTrapped)
 		gProcessorSupportFlags |= HC_CPU_SUPPORTS_MMX;
 	else
@@ -157,7 +157,7 @@ static const EncodeAlphabet encodings[] = {
 	EncodeBase64,
 	EncodeBase64,
 	EncodeBase64,
-	EncodeBase64 
+	EncodeBase64
 };
 
 void hashcash_select_minter()
@@ -206,13 +206,13 @@ void hashcash_select_minter()
 		"AMD64/x86 MMX Standard 1x2-pipe",
 		NULL };
 	int i = 0 ;
-	
+
 	/* Populate array */
 	if(!num_minters) {
 		num_minters = (sizeof(funcs) / sizeof(*funcs)) - 1;
 		if ( num_minters > MAX_MINTERS ) {
-			fprintf(stderr, 
-				"INTERNAL ERROR: " 
+			fprintf(stderr,
+				"INTERNAL ERROR: "
 				"increase size of MAX_MINTERS\n");
 			exit(3); /* EXIT_ERROR */
 		}
@@ -223,7 +223,7 @@ void hashcash_select_minter()
 			minters[i].encoding = encodings[i];
 		}
 	}
-	
+
 	/* If nothing else works, just use the compact_1 minter on x86
 	   and standard_1 elsewhere */
 
@@ -234,10 +234,10 @@ void hashcash_select_minter()
 	#else
 	fastest_minter = 2;
 	#endif
-	
+
 	/* Detect actual CPU capabilities */
 	hashcash_detect_features();
-	
+
 	/* See if any of the vectorised minters work, choose the
 	   highest-numbered one that does */
 
@@ -251,7 +251,7 @@ void hashcash_select_minter()
 unsigned long hashcash_per_sec_calc( void )
 {
 	static const unsigned int test_bits = 64;
-	static const char *test_string = 
+	static const char *test_string =
 		"1:32:040404:foo@fnord.gov::0123456789abcdef:00000000";
 	static const int test_tail = 52;
 	unsigned long rate = 0, iter_count = 256;
@@ -260,11 +260,11 @@ unsigned long hashcash_per_sec_calc( void )
 	unsigned char block[SHA1_INPUT_BYTES] = {0};
 	int gotbits = 0;
 	HC_Mint_Routine best_minter_fp;
-	
+
 	/* Ensure a valid minter backend is selected */
 	if(!num_minters) { hashcash_select_minter(); }
 	best_minter_fp = minters[fastest_minter].func;
-	
+
 	/* Determine clock resolution */
 	end = clock();
 	while((begin = clock()) == end)
@@ -273,7 +273,7 @@ unsigned long hashcash_per_sec_calc( void )
 		;
 	if ( end < begin ) { tmp = begin; begin = end; end = tmp; }
 	res = end - begin;
-	
+
         /* where there is poor resolution use this */
 	/* less accurate but faster -- otherwise takes 0.5secs */
 
@@ -287,13 +287,13 @@ unsigned long hashcash_per_sec_calc( void )
 			memset(block+test_tail+1, 0, 59-test_tail);
 			PUT_WORD(block+60, test_tail << 3);
 
-			best_minter_fp(test_bits, &gotbits, block, 
-				       SHA1_IV, test_tail, iter_count, 
+			best_minter_fp(test_bits, &gotbits, block,
+				       SHA1_IV, test_tail, iter_count,
 				       NULL, NULL, 0, 0);
 			if ( gotbits >= test_bits) {
-				/* The benchmark will be inaccurate 
+				/* The benchmark will be inaccurate
 				   if we actually find a preimage! */
-				fprintf(stderr, 
+				fprintf(stderr,
 "Error in hashcash_quickbench(): found preimage while trying to benchmark!\n");
 				return 1;
 			}
@@ -304,7 +304,7 @@ unsigned long hashcash_per_sec_calc( void )
 		} while ( taken < 8*res );
 		multiple = CLOCKS_PER_SEC / (double)(8*res);
 		rate *= multiple;
-		
+
 		return rate;
 	}
 
@@ -316,7 +316,7 @@ unsigned long hashcash_per_sec_calc( void )
 		block[test_tail] = 0x80;
 		memset(block+test_tail+1, 0, 59-test_tail);
 		PUT_WORD(block+60, test_tail << 3);
-		
+
 		/* Run minter, with clock running */
 		end = clock();
 		while((begin = clock()) == end) {}
@@ -331,13 +331,13 @@ unsigned long hashcash_per_sec_calc( void )
 		end = clock();
 		if ( end < begin ) { tmp = begin; begin = end; end = tmp; }
 		elapsed = (end-begin) / (double) CLOCKS_PER_SEC;
-		
+
 		if(end-begin > (res * 16))
 			break;
-		
+
 		iter_count <<= 1;
 	}
-	
+
 	rate = iter_count / elapsed;
 	return rate;
 }
@@ -368,10 +368,10 @@ unsigned long hashcash_benchtest(int verbose, int core)
 	unsigned long i, a, b;
 	int best_minter = -1, got_bits = 0;
 	static const unsigned int test_bits = 22;
-	static const char *test_string = 
+	static const char *test_string =
 		"1:22:040404:foo@bar.net::0123456789abcdef:0000000000";
 	static const int test_tail = 52;  /* must be less than 56 */
-	static const int bit_stats[] = { 8, 10, 16, 20, 22, 
+	static const int bit_stats[] = { 8, 10, 16, 20, 22,
 					 24, 26, 28, 30, 0 };
 	unsigned char block[SHA1_INPUT_BYTES+1] = {0};
 	volatile clock_t begin = 0, end = 0, tmp = 0;
@@ -383,16 +383,16 @@ unsigned long hashcash_benchtest(int verbose, int core)
 
 	/* If minter list isn't valid, make it so */
 	hashcash_select_minter();
-	
+
 	/* print header */
 	if(verbose > 0 ) {
 	        printf("    Rate  Name (* machine default)\n");
 	}
 	if(verbose >= 3) { printf("\n"); }
-	
-	if ( core >= 0 ) { 
-	  start = core; stop = start+1; 
-	} else { 
+
+	if ( core >= 0 ) {
+	  start = core; stop = start+1;
+	} else {
 	  start = 0; stop = num_minters;
 	}
 	for(i = start; i < stop; i++) {
@@ -403,27 +403,27 @@ unsigned long hashcash_benchtest(int verbose, int core)
 			}
 			continue;
 		}
-		
+
 		if(verbose) {
 			printf("          %s\r", minters[i].name);
 			fflush(stdout);
 		}
-		
+
 		/* set up SHA-1 block */
 		strncpy((char*)block, test_string, SHA1_INPUT_BYTES);
 		block[test_tail] = 0x80;
 		memset(block+test_tail+1, 0, 59-test_tail);
 		PUT_WORD(block+60, test_tail << 3);
-		
+
 		/* Run minter, with clock running */
 		end = clock();
 		while((begin = clock()) == end) {}
-		minters[i].func(test_bits, &got_bits, block, SHA1_IV, 
+		minters[i].func(test_bits, &got_bits, block, SHA1_IV,
 				test_tail, 1 << 30, NULL, NULL, 0, 0);
 		end = clock();
 		if ( end < begin ) { tmp = begin; begin = end; end = tmp; }
 		elapsed = (end-begin) / (double) CLOCKS_PER_SEC;
-		
+
 		/* Different minter iteration patterns will find
 		 * different solutions */
 		/* Verify solution correctness first, using reference
@@ -436,7 +436,7 @@ unsigned long hashcash_benchtest(int verbose, int core)
 		for(b=0; b < 8 && (hash[a] & 0x80) == 0; b++) {
 			hash[a] <<= 1;
 		}
-		if(got_bits != (a*8)+b || got_bits < test_bits || 
+		if(got_bits != (a*8)+b || got_bits < test_bits ||
 		   block[test_tail] != (unsigned char) 0x80) {
 			if(verbose) {
 				printf("ERROR!\n");
@@ -452,7 +452,7 @@ unsigned long hashcash_benchtest(int verbose, int core)
 			}
 			continue;
 		}
-		
+
 		/* Use knowledge of encoding alphabet to calculate
 		   iterations taken */
 		a = test_tail-8;
@@ -476,13 +476,13 @@ unsigned long hashcash_benchtest(int verbose, int core)
 			}
 			continue;
 		}
-		
+
 		/* We know the elapsed time and the iteration count,
 		   so calculate the rate */
 		rate = b / elapsed;
 		if(verbose) {
-			printf("%9lu %s %c\n", (unsigned long) rate, 
-			       minters[i].name, 
+			printf("%9lu %s %c\n", (unsigned long) rate,
+			       minters[i].name,
 			       (i == fastest_minter) ? '*' : ' ');
 		}
 
@@ -490,7 +490,7 @@ unsigned long hashcash_benchtest(int verbose, int core)
 			peak_rate = rate;
 			best_minter = i;
 		}
-		
+
 		/* Optionally print out the stats */
 		if(verbose >= 3) {
 			block[test_tail] = 0;
@@ -499,19 +499,19 @@ unsigned long hashcash_benchtest(int verbose, int core)
 			printf("    Time taken: %.3f\n\n", elapsed);
 		}
 	}
-	
+
 	fastest_minter = best_minter;
-	
+
 	if(verbose && best_minter >= 0) {
-		printf("Best minter: %s (%lu hashes/sec)\n", 
+		printf("Best minter: %s (%lu hashes/sec)\n",
 		       minters[best_minter].name, (unsigned long) peak_rate);
 	}
 	if(verbose >= 2 && best_minter >= 0) {
 		printf("Projected average times to mint:\n");
-		
+
 		for(i = 0; bit_stats[i]; i++) {
 			elapsed = (1 << bit_stats[i]) / peak_rate;
-			printf("%3d bits: %9.3f seconds", bit_stats[i], 
+			printf("%3d bits: %9.3f seconds", bit_stats[i],
 			       elapsed);
 			if(elapsed > 200000) {
 				printf(" (%.1f days)", elapsed/(3600*24));
@@ -520,13 +520,13 @@ unsigned long hashcash_benchtest(int verbose, int core)
 			} else if(elapsed > 100) {
 				printf(" (%.1f minutes)", elapsed/60);
 			} else if(elapsed < 0.005) {
-				printf(" (%.1f microseconds)", elapsed * 
+				printf(" (%.1f microseconds)", elapsed *
 				       1000000);
 			}
 			printf("\n");
 		}
 	}
-	
+
 	return (unsigned long) peak_rate;
 }
 
@@ -573,7 +573,7 @@ double hashcash_fastmint(const int bits, const char *token, int compress,
 	buffer = malloc(buflen);
 	memset(buffer, 0, buflen);
 	strncpy((char*)buffer, token, buflen);
-	
+
 	/* Add 96 bits of random data */
 	t = tail + 16;
 	for( ; tail < t; tail++) {
@@ -594,7 +594,7 @@ double hashcash_fastmint(const int bits, const char *token, int compress,
 #else
 	chars = 31/bit_rate;
 #endif
-	for ( i = compress ? 1 : chars; 
+	for ( i = compress ? 1 : chars;
 	      i <= chars && (first || gotBits < bits); i++ ) {
 		first = 0;
 		tail = save_tail;
@@ -603,7 +603,7 @@ double hashcash_fastmint(const int bits, const char *token, int compress,
 		switch (compress) {
 		case 0:		/* fast stamps */
         	        /* Align to optimal counting positions */
-			for( ; (tail % SHA1_INPUT_BYTES) != 32 && 
+			for( ; (tail % SHA1_INPUT_BYTES) != 32 &&
 			       (tail % SHA1_INPUT_BYTES) != 52; tail++) {
 				buffer[tail] = '0';
 			}
@@ -645,13 +645,13 @@ double hashcash_fastmint(const int bits, const char *token, int compress,
 		/* Fill in the padding and trailer */
 		buffer[tail] = 0x80;
 		/* if number of blocks change get rid of old padding */
-		if ( blocks > oldblocks) { 
+		if ( blocks > oldblocks) {
 			/* note only need 7 chars as 1 char wider */
-			memset(buffer+tail+1,0,7); 
+			memset(buffer+tail+1,0,7);
 		}
 		PUT_WORD(block+(blocks>1?64:0)+60, tail << 3);
 		tail -= t;
-	
+
 		/* Run the minter over the last block */
 		loop=best_minter(bits, &gotBits, block, IV, tail,
 				 0x1U << (i*bit_rate), cb,
@@ -659,7 +659,7 @@ double hashcash_fastmint(const int bits, const char *token, int compress,
 
 		if (loop==0) {
 			free(buffer);
-			if ( last ) { free( last ); }
+			free( last );
 		  	if (*best==-1) {return -1;}
 		  	else { return 0; }
 		}
@@ -677,7 +677,7 @@ double hashcash_fastmint(const int bits, const char *token, int compress,
 
 	/* if we succeeded call the callback also */
 	if ( gotBits >= bits ) { MINTER_CALLBACK(); }
-	
+
         /* Verify solution using reference library */
 	SHA1_Init(&crypter);
         SHA1_Update(&crypter, last, strlen( (char*)last ));
@@ -688,15 +688,15 @@ double hashcash_fastmint(const int bits, const char *token, int compress,
 	for(b=0; b < 8 && (hash[a] & 0x80) == 0; b++)
 		hash[a] <<= 1;
 	b += a*8;
-	
+
 	/* The minter appears to be broken! */
 	if(b < gotBits) {
 		fprintf(stderr, "ERROR: requested %d bits, reported %d bits, got %d bits using %s minter: \"%s\"\n",
-			bits, gotBits, b, minters[fastest_minter].name, 
+			bits, gotBits, b, minters[fastest_minter].name,
 			last );
 		exit(3);
 	}
-	
+
 	/* The minter might not be able to detect unusually large
 	 * (32+) bit counts, so we're allowed to give it another try.
 	 */
@@ -708,11 +708,11 @@ double hashcash_fastmint(const int bits, const char *token, int compress,
 	}
 
 	*result = (char*)buffer;
-	if ( last ) { free( last ); }
+	free( last );
 	return counter;
 }
 
-int hashcash_core(void) 
+int hashcash_core(void)
 {
 	if (!num_minters) { hashcash_select_minter(); }
 	return fastest_minter;

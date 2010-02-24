@@ -41,10 +41,10 @@ time_t round_off( time_t now_time, int digits );
 
 long per_sec = 0;		/* cache calculation */
 
-char *strrstr(char *s1,char *s2) 
+char *strrstr(char *s1,char *s2)
 {
     char *sc2 = NULL , *psc1 = NULL , *ps1 = NULL ;
- 
+
     if ( *s2 == '\0' ) { return s1; }
     ps1 = s1 + strlen(s1);
 
@@ -65,9 +65,9 @@ int wild_match( char* pat, char* str )
 
     do {
 	term = ptr; ptr = strchr( ptr, '*' );
-	if ( ptr ) { *ptr = '\0'; ptr++; } 
+	if ( ptr ) { *ptr = '\0'; ptr++; }
 	else { last = 1; }
-	
+
 	if ( *term != '\0' ) {
 	    if ( first ) {	/* begin */
 		if ( strncmp( pos, term, strlen( term ) ) != 0 ) {
@@ -84,13 +84,13 @@ int wild_match( char* pat, char* str )
 		pos += strlen( term );
 	    }
 	    if ( last && *pos != '\0' ) {
-		return 0; 
+		return 0;
 	    }
 	}
 
 	num++; first = 0;
     } while ( term && !last );
-    
+
     return 1;
 }
 
@@ -100,7 +100,7 @@ int email_match( const char* email, const char* pattern )
     char *pat_user = NULL, *pat_dom = NULL;
     char *em_user = NULL, *em_dom = NULL;
     char *pat_sub = NULL , *em_sub = NULL , *pat_next = NULL , *em_next = NULL , *state = NULL ;
-    
+
     sstrtok( pattern, "@", &pat_user, 0, &len, &state );
     sstrtok( NULL, "@", &pat_dom, 0, &len, &state );
 
@@ -108,7 +108,7 @@ int email_match( const char* email, const char* pattern )
     sstrtok( NULL, "@", &em_dom, 0, &len, &state );
 
     /* if @ in pattern, must have @ sign in email too */
-    if ( pat_dom && em_dom == NULL ) { goto done; } 
+    if ( pat_dom && em_dom == NULL ) { goto done; }
 
     if ( !wild_match( pat_user, em_user ) ) { goto done; }
 
@@ -117,31 +117,31 @@ int email_match( const char* email, const char* pattern )
     pat_next = pat_dom; em_next = em_dom;
     do {
 	pat_sub = pat_next; em_sub = em_next;
-	pat_next = strchr( pat_next, '.' ); 
+	pat_next = strchr( pat_next, '.' );
 	if ( pat_next ) { *pat_next = '\0'; pat_next++; }
-	em_next = strchr( em_next, '.' ); 
+	em_next = strchr( em_next, '.' );
 	if ( em_next ) { *em_next = '\0'; em_next++; }
 
 	if ( !wild_match( pat_sub, em_sub ) ) { goto done; }
-	
+
     } while ( pat_next && em_next );
 
     /* different numbers of subdomains, fail */
     if ( ( pat_next == NULL && em_next != NULL ) ||
 	 ( pat_next != NULL && em_next == NULL ) ) { goto done; }
-    
+
     ret = 1;
  done:
-    if ( pat_user ) { free( pat_user ); }
-    if ( pat_dom ) { free( pat_dom ); }
-    if ( em_user ) { free( em_user ); }
-    if ( em_dom ) { free( em_dom ); }
+    free( pat_user );
+    free( pat_dom );
+    free( em_user );
+    free( em_dom );
     return ret;
 }
 
 const char* hashcash_version( void ) { return HASHCASH_VERSION_STRING; }
 
-char* hashcash_simple_mint( const char* resource, unsigned bits, 
+char* hashcash_simple_mint( const char* resource, unsigned bits,
 			    long anon_period, char* ext, int compress ) {
     time_t now_time = time( 0 );
     char* stamp = NULL;
@@ -153,8 +153,8 @@ char* hashcash_simple_mint( const char* resource, unsigned bits,
     return stamp;
 }
 
-int hashcash_mint( time_t now_time, int time_width, const char* resource, 
-		   unsigned bits, long anon_period, char** new_token, 
+int hashcash_mint( time_t now_time, int time_width, const char* resource,
+		   unsigned bits, long anon_period, char** new_token,
 		   long* anon_random, double* tries_taken, char* ext,
 		   int compress, hashcash_callback cb, void* user_arg )
 {
@@ -199,7 +199,7 @@ int hashcash_mint( time_t now_time, int time_width, const char* resource,
     if ( !ext ) { ext = ""; }
     token = malloc( MAX_TOK+strlen(ext)+1 );
     if ( token == NULL ) { return HASHCASH_OUT_OF_MEMORY; }
-    sprintf( token, "%d:%d:%s:%s:%s:", 
+    sprintf( token, "%d:%d:%s:%s:%s:",
 	     HASHCASH_FORMAT_VERSION, bits, now_utime, resource, ext );
 
     taken = hashcash_fastmint( bits,token,compress,new_token,cb,user_arg );
@@ -218,8 +218,8 @@ int hashcash_mint( time_t now_time, int time_width, const char* resource,
 #define CONT '\t'
 #define LF "\r\n"
 
-char* hashcash_make_header( const char* stamp, int line_len, 
-			    const char* header, char cont, 
+char* hashcash_make_header( const char* stamp, int line_len,
+			    const char* header, char cont,
 			    const char* lf  )
 {
     int stamp_len = strlen( stamp ), i, fstep, step, tstep, lf_len;
@@ -254,7 +254,7 @@ char* hashcash_make_header( const char* stamp, int line_len,
 	tstep = i ? step : fstep;
 	if ( tstep > stamp_left ) { tstep = stamp_left; }
 	if ( i ) { strncat( resp, conts, 1 ); resp++; }
-	strncat( resp, stamp, tstep ); 
+	strncat( resp, stamp, tstep );
 	resp += tstep;
 	strncat( resp, lf, lf_len );
 	resp += lf_len;
@@ -267,7 +267,7 @@ time_t round_off( time_t now_time, int digits )
 {
     struct tm* now = NULL ;
 
-    if ( digits != 2 && digits != 4 && 
+    if ( digits != 2 && digits != 4 &&
 	 digits != 6 && digits != 8 && digits != 10 ) {
 	return now_time;
     }
@@ -289,7 +289,7 @@ int hashcash_validity_to_width( long validity_period )
     if ( validity_period < 0 ) { return 0; }
     if ( validity_period != 0 ) {
 /* YYMMDDhhmmss or YYMMDDhhmm or YYMMDD */
-	if ( validity_period < 2*TIME_MINUTE ) { time_width = 12; } 
+	if ( validity_period < 2*TIME_MINUTE ) { time_width = 12; }
 	else if ( validity_period < 2*TIME_HOUR ) { time_width = 10; }
 	else { time_width = 6; }
     }
@@ -308,8 +308,8 @@ int hashcash_validity_to_width( long validity_period )
 			"abcdefghijklmnopqrstuvwxyz="
 
 int hashcash_parse( const char* token, int* vers, int* bits, char* utct,
-		    int utct_max, char* token_resource, int res_max, 
-		    char** ext, int ext_max ) 
+		    int utct_max, char* token_resource, int res_max,
+		    char** ext, int ext_max )
 {
     char ver_arr[MAX_VER+1] = {0};
     char bits_arr[3+1] = {0};
@@ -318,9 +318,9 @@ int hashcash_parse( const char* token, int* vers, int* bits, char* utct,
     char *state = NULL ;
     int ver_len = 0 , utct_len = 0 , res_len = 0 , bit_len = 0 , rnd_len = 0 , cnt_len = 0 ;
 
-    /* parse out the resource name component 
+    /* parse out the resource name component
      * v1 format:   ver:bits:utctime:resource:ext:rand:counter
-     * where utctime is [YYMMDD[hhmm[ss]]] 
+     * where utctime is [YYMMDD[hhmm[ss]]]
      *
      * v0 format:   ver:utctime:resource:rand
      *
@@ -347,7 +347,7 @@ int hashcash_parse( const char* token, int* vers, int* bits, char* utct,
 	     !sstrtok( NULL, ":", ext, 0, &ext_max, &state ) ||
 	     !sstrtok( NULL, ":", &rnd, 0, &rnd_len, &state ) ||
 	     !sstrtok( NULL, ":", &cnt, 0, &cnt_len, &state ) ) {
-	    return 0; 
+	    return 0;
 	}
 	*bits = atoi( bits_str ); if ( *bits < 0 ) { return 0; }
 	if ( strspn( cnt, VALID_STR_CHARS ) != cnt_len ) { return 0; }
@@ -363,8 +363,8 @@ unsigned hashcash_count( const char* token )
     byte token_digest[ SHA1_DIGEST_BYTES ] = {0};
     char ver[MAX_VER+1] = {0};
     int vers = 0 ;
-    char* first_colon = NULL; 
-    char* second_colon = NULL; 
+    char* first_colon = NULL;
+    char* second_colon = NULL;
     int ver_len = 0 ;
     int i = 0 ;
     int last = 0 ;
@@ -386,24 +386,24 @@ unsigned hashcash_count( const char* token )
     SHA1_Init( &ctx );
     SHA1_Update( &ctx, token, strlen( token ) );
     SHA1_Final( &ctx, token_digest );
-   
-    for ( i = 0; 
-	  i < SHA1_DIGEST_BYTES && token_digest[ i ] == target_digest[ i ]; 
-	  i++ ) { 
+
+    for ( i = 0;
+	  i < SHA1_DIGEST_BYTES && token_digest[ i ] == target_digest[ i ];
+	  i++ ) {
     }
-    
+
     last = i;
     preimage_bits = 8 * i;
 
 #define bit( n, c ) (((c) >> (7 - (n))) & 1)
 
-    for ( i = 0; i < 8; i++ ) 
+    for ( i = 0; i < 8; i++ )
     {
-	if ( bit( i, token_digest[ last ] ) == 
-	     bit( i, target_digest[ last ] ) ) { 
-	    preimage_bits++; 
-	} else { 
-	    break; 
+	if ( bit( i, token_digest[ last ] ) ==
+	     bit( i, target_digest[ last ] ) ) {
+	    preimage_bits++;
+	} else {
+	    break;
 	}
     }
     return preimage_bits;
@@ -418,8 +418,8 @@ long hashcash_valid_for( time_t token_time, long validity_period,
     if ( validity_period == 0 )	{ return HASHCASH_VALID_FOREVER; }
 
     /* future date in token */
-    if ( token_time > now_time + grace_period ) { 
-	return HASHCASH_VALID_IN_FUTURE; 
+    if ( token_time > now_time + grace_period ) {
+	return HASHCASH_VALID_IN_FUTURE;
     }
 
     expiry_time = token_time + validity_period;
@@ -436,30 +436,30 @@ long hashcash_valid_for( time_t token_time, long validity_period,
 
 #define MAX_RE_ERR 256
 
-int regexp_match( const char* str, const char* regexp, 
-		  void** compile, char** err ) 
+int regexp_match( const char* str, const char* regexp,
+		  void** compile, char** err )
 {
 #if defined( REGEXP_BSD )
 	char* q = NULL ;
 	const char *r = NULL ;
 	char* quoted_regexp = malloc( strlen( regexp ) * 2 + 3 );
-	
+
 	*err = NULL;
-	
+
 	if ( quoted_regexp == NULL ) { *err = "out of memory"; return 0; }
 
 	q = quoted_regexp;
 	r = regexp;
 
 	if ( *r != '^' ) { *q++ = '^'; }
-	
+
 	for ( ; *r; *q++ = *r++ ) {
-	    if ( *r == '\\' ) { 
+	    if ( *r == '\\' ) {
 		if ( strchr( REGEXP_SAME, *(r+1) ) ) {
 		    *q++ = *r++; 	/* copy thru \\ unchanged */
-		} else { 
+		} else {
 		    r++; 		/* skip \c for any c other than \ */
-		} 
+		}
 	    } else if ( strchr( REGEXP_DIFF, *r ) ) {
 		*q++ = '\\';
 	    } else if ( strchr( REGEXP_UNSUP, *r ) ) {
@@ -470,8 +470,8 @@ int regexp_match( const char* str, const char* regexp,
 	}
 	if ( *(q-1) != '$' ) { *q++ = '$'; }
 	*q = '\0';
-	if ( ( *err = re_comp( quoted_regexp ) ) != NULL ) { 
-	    free( quoted_regexp ); return 0; 
+	if ( ( *err = re_comp( quoted_regexp ) ) != NULL ) {
+	    free( quoted_regexp ); return 0;
 	}
 	free( quoted_regexp );
 	return re_exec( str );
@@ -483,14 +483,14 @@ int regexp_match( const char* str, const char* regexp,
 	static char re_err[ MAX_RE_ERR+1 ] = {0};
 	re_err[0] = '\0';
 	*err = NULL;
-	
+
 	if ( *comp == NULL ) {
 	    *comp = malloc( sizeof(regex_t) );
 	    if ( *comp == NULL ) { *err = "out of memory"; return 0; }
 	    bre_len = re_len = strlen(regexp);
 	    if ( regexp[0] != '^' || regexp[re_len-1] != '$' ) {
 		bound_regexp = malloc( re_len+3 );
-		if ( regexp[0] != '^' ) { 
+		if ( regexp[0] != '^' ) {
 		    bound_regexp[0] = '^';
 		    sstrncpy( (bound_regexp+1), regexp, re_len );
 		    bre_len++;
@@ -505,7 +505,7 @@ int regexp_match( const char* str, const char* regexp,
 		bound_regexp = (char*)regexp;
 	    }
 
-	    if ( ( re_code = regcomp( *comp, bound_regexp, 
+	    if ( ( re_code = regcomp( *comp, bound_regexp,
 				      REG_EXTENDED | REG_NOSUB ) ) != 0 ) {
 		regerror( re_code, *comp, re_err, MAX_RE_ERR );
 		*err = re_err;
@@ -522,10 +522,10 @@ int regexp_match( const char* str, const char* regexp,
 }
 
 int hashcash_resource_match( int type, const char* token_res, const char* res,
-			     void** compile, char** err ) 
+			     void** compile, char** err )
 {
     switch ( type ) {
-    case TYPE_STR: 
+    case TYPE_STR:
 	if ( strcmp( token_res, res ) != 0 ) { return 0; }
 	break;
     case TYPE_WILD:
@@ -541,17 +541,17 @@ int hashcash_resource_match( int type, const char* token_res, const char* res,
 }
 
 int hashcash_check( const char* token, int case_flag, const char* resource,
-		    void **compile, char** re_err, int type, time_t now_time, 
-		    long validity_period, long grace_period, 
+		    void **compile, char** re_err, int type, time_t now_time,
+		    long validity_period, long grace_period,
 		    int required_bits, time_t* token_time ) {
     time_t token_t = 0 ;
     char token_utime[ MAX_UTC+1 ] = {0};
     char token_res[ MAX_RES+1 ] = {0};
     int bits = 0, claimed_bits = 0, vers = 0;
-    
+
     if ( token_time == NULL ) { token_time = &token_t; }
 
-    if ( !hashcash_parse( token, &vers, &claimed_bits, token_utime, 
+    if ( !hashcash_parse( token, &vers, &claimed_bits, token_utime,
 			  MAX_UTC, token_res, MAX_RES, NULL, 0 ) ) {
 	return HASHCASH_INVALID;
     }
@@ -569,10 +569,10 @@ int hashcash_check( const char* token, int case_flag, const char* resource,
 	stolower( token_res );
     }
 
-    if ( resource && 
-	 !hashcash_resource_match( type, token_res, 
+    if ( resource &&
+	 !hashcash_resource_match( type, token_res,
 				   resource, compile, re_err ) ) {
-	if ( *re_err != NULL ) { 
+	if ( *re_err != NULL ) {
 	    return HASHCASH_REGEXP_ERROR;
 	} else {
 	    return HASHCASH_WRONG_RESOURCE;
@@ -586,7 +586,7 @@ int hashcash_check( const char* token, int case_flag, const char* resource,
     if ( bits < required_bits ) {
 	return HASHCASH_INSUFFICIENT_BITS;
     }
-    return hashcash_valid_for( *token_time, validity_period, 
+    return hashcash_valid_for( *token_time, validity_period,
 			       grace_period, now_time );
 }
 
@@ -606,7 +606,7 @@ double hashcash_expected_tries( int b )
     return expected_tests;
 }
 
-void hashcash_free( void* ptr ) 
+void hashcash_free( void* ptr )
 {
-    if ( ptr != NULL ) { free( ptr ); }
+    free( ptr );
 }
