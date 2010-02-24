@@ -46,7 +46,7 @@ int random_final( void )
    the below just to be sure! */
 
 /* WARNING: on platforms other than windows this is not of
- * cryptographic quality 
+ * cryptographic quality
  */
 
 #include <stdlib.h>
@@ -117,7 +117,7 @@ static void random_stir( const byte input[SHA1_DIGEST_BYTES],
 #endif
 #if defined(WIN32)
     GetSystemTime(&tw);
-    SHA1_Update( &sha1, &tw, sizeof( tw ) );    
+    SHA1_Update( &sha1, &tw, sizeof( tw ) );
     if ( gen ) {
 	if (gen(hProvider, sizeof(buf), buf)) {
 	    SHA1_Update( &sha1, buf, sizeof(buf) );
@@ -144,9 +144,9 @@ int random_init( void )
 #if defined(WIN32)
     advapi = LoadLibrary(TEXT("ADVAPI32.DLL"));
     if (advapi) {
-	acquire = (CRYPTACQUIRECONTEXT) 
+	acquire = (CRYPTACQUIRECONTEXT)
 	    GetProcAddress(advapi, TEXT("CryptAcquireContextA"));
-	gen = (CRYPTGENRANDOM) 
+	gen = (CRYPTGENRANDOM)
 	    GetProcAddress(advapi, TEXT("CryptGenRandom"));
 	release = (CRYPTRELEASECONTEXT)
 	    GetProcAddress(advapi, TEXT("CryptReleaseContext"));
@@ -159,7 +159,7 @@ int random_init( void )
 #endif
     srand(clock());
     random_stir( state, state );
-    
+
     initialized = 1;
 
     return 1;

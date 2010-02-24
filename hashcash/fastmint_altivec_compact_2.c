@@ -7,7 +7,7 @@ int minter_altivec_compact_2_test(void)
 #if defined(__POWERPC__) && defined(__ALTIVEC__) && defined(__GNUC__)
 	return (gProcessorSupportFlags & HC_CPU_SUPPORTS_ALTIVEC) != 0;
 #endif
-	
+
 	/* Not a PowerPC, or compiler doesn't support Altivec or GNU assembly */
 	return 0;
 }
@@ -312,7 +312,7 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t li r11,0"
 		"\n\t li r12,16"
 		"\n\t mtctr r10"
-		
+
 		/* load entire circular W buffer into registers */
 		"\n\t lvx  v0,%[w],r11"
 		"\n\t addi r11,r11,32"
@@ -349,15 +349,15 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t addi r12,r12,32"
 		"\n\t cmpwi cr1,%[tail],32"
 		"\n\t addi r13,r11,32"
-		
+
 		/* special-case for the fast paths */
 		"\n\t beq+  cr0,myword12"
 		"\n\t bne-  cr1,myloop"
-		
+
 		/* for counting in word 7 */
 		"\n\t li r10,3"
 		"\n\t mtctr r10"
-		
+
 		"\n\t lvx  v0,%[w],r11"
 		"\n\t addi r11,r11,32"
 		"\n\t lvx  v1,%[w],r12"
@@ -392,7 +392,7 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t addi r12,r12,32"
 		"\n\t stvx  v8, %[w], r11"
 		"\n\t addi r11,r11,32"
-		
+
 		"\n\t lvx  v9,%[w],r12"
 		"\n\t addi r12,r12,32"
 		/* "\n\t lvx v10,%[w],r11"  -- word 26 */
@@ -436,12 +436,12 @@ static void WF(vector unsigned int *W, int tailIndex)
 
 		"\n\t addi r13,r11,32"
 		"\n\t b myloop"
-		
+
 		/* for counting in word 12 */
 		"\nmyword12:"
 		"\n\t li r10,3"
 		"\n\t mtctr r10"
-		
+
 		"\n\t lvx  v0,%[w],r11"
 		"\n\t addi r11,r11,32"
 		"\n\t lvx  v1,%[w],r12"
@@ -506,10 +506,10 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t stvx v15, %[w], r13"
 
 		"\n\t addi r13,r11,32"
-		
+
 		/* spew out the rest of the W buffer, in three or four passes */
 		"\nmyloop:"
-		
+
 		"\n\t vxor  v0, v0, v2"
 		"\n\t vxor  v1, v1, v3"
 		"\n\t vxor  v2, v2, v4"
@@ -528,7 +528,7 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t addi  r12, r12, 48"
 		"\n\t stvx  v2, %[w], r13"
 		"\n\t addi  r13, r13, 48"
-		
+
 		"\n\t vxor  v3, v3, v5"
 		"\n\t vxor  v4, v4, v6"
 		"\n\t vxor  v5, v5, v7"
@@ -547,7 +547,7 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t addi  r12, r12, 48"
 		"\n\t stvx  v5, %[w], r13"
 		"\n\t addi  r13, r13, 48"
-		
+
 		"\n\t vxor  v6, v6, v8"
 		"\n\t vxor  v7, v7, v9"
 		"\n\t vxor  v8, v8,v10"
@@ -566,7 +566,7 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t addi  r12, r12, 48"
 		"\n\t stvx  v8, %[w], r13"
 		"\n\t addi  r13, r13, 48"
-		
+
 		"\n\t vxor  v9, v9,v11"
 		"\n\t vxor v10,v10,v12"
 		"\n\t vxor v11,v11,v13"
@@ -585,7 +585,7 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t addi  r12, r12, 48"
 		"\n\t stvx v11, %[w], r13"
 		"\n\t addi  r13, r13, 48"
-		
+
 		"\n\t vxor v12,v12,v14"
 		"\n\t vxor v13,v13,v15"
 		"\n\t vxor v12,v12, v4"
@@ -598,7 +598,7 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t addi  r11, r11, 32"
 		"\n\t stvx v13, %[w], r12"
 		"\n\t addi  r12, r12, 32"
-		
+
 		"\n\t vxor v14,v14, v0"
 		"\n\t vxor v15,v15, v1"
 		"\n\t vxor v14,v14, v6"
@@ -612,7 +612,7 @@ static void WF(vector unsigned int *W, int tailIndex)
 		"\n\t stvx v15, %[w], r12"
 		"\n\t addi  r12, r12, 32"
 		"\n\t addi  r13, r11, 32"
-		
+
 		"\n\t bdnz myloop"
 		"\n\t mtctr r14"
 	: /* no outputs */
@@ -647,7 +647,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 	unsigned char *X1 = (unsigned char*) W1;
 	unsigned char *X2 = (unsigned char*) W2;
 	unsigned char *output = (unsigned char*) block, *X;
-	
+
 	if ( *best > 0 ) { maxBits = *best+1; }
 
 	/* Work out which bits to mask out for test */
@@ -665,7 +665,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 	*((uInt32*) &vBitMaskHigh) = bitMask1High;
 	vBitMaskHigh = vec_splat(vBitMaskHigh, 0);
 	maxBits = 0;
-	
+
 	/* Copy block and IV to vectorised internal storage */
 	for(t=0; t < 16; t++) {
 		X1[t*16+ 0] = X1[t*16+ 4] = X1[t*16+ 8] = X1[t*16+12] = output[t*4+0];
@@ -682,7 +682,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 		Hw[t*4+0] = Hw[t*4+1] = Hw[t*4+2] = Hw[t*4+3] = IV[t];
 		pH[t] = H[t];
 	}
-	
+
 	/* The Tight Loop - everything in here should be extra efficient */
 	for(iters=0; iters < maxIter-8; iters += 8) {
 		/* Encode iteration count into tail */
@@ -696,7 +696,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 		X2[(((tailIndex - 1) & ~3) << 2) + ((tailIndex - 1) & 3) +  8] = p[(iters & 0x38) + 5];
 		X1[(((tailIndex - 1) & ~3) << 2) + ((tailIndex - 1) & 3) + 12] = p[(iters & 0x38) + 6];
 		X2[(((tailIndex - 1) & ~3) << 2) + ((tailIndex - 1) & 3) + 12] = p[(iters & 0x38) + 7];
-		
+
 		if(!(iters & 0x3f)) {
 			if ( iters >> 6 ) {
 				X1[(((tailIndex - 2) & ~3) << 2) + ((tailIndex - 2) & 3) +  0] =
@@ -708,7 +708,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 				X2[(((tailIndex - 2) & ~3) << 2) + ((tailIndex - 2) & 3) +  8] =
 				X2[(((tailIndex - 2) & ~3) << 2) + ((tailIndex - 2) & 3) + 12] = p[(iters >>  6) & 0x3f];
 			}
-			if ( iters >> 12 ) { 
+			if ( iters >> 12 ) {
 				X1[(((tailIndex - 3) & ~3) << 2) + ((tailIndex - 3) & 3) +  0] =
 				X1[(((tailIndex - 3) & ~3) << 2) + ((tailIndex - 3) & 3) +  4] =
 				X1[(((tailIndex - 3) & ~3) << 2) + ((tailIndex - 3) & 3) +  8] =
@@ -749,7 +749,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 				X2[(((tailIndex - 6) & ~3) << 2) + ((tailIndex - 6) & 3) + 12] = p[(iters >> 30) & 0x3f];
 			}
 		}
-		
+
 		/* Bypass shortcuts below on certain iterations */
 		if((!(iters & 0xffffff)) && (tailIndex == 52 || tailIndex == 32)) {
 			WF(W1, 0);
@@ -760,7 +760,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 			C1 = C2 = H[2];
 			D1 = D2 = H[3];
 			E1 = E2 = H[4];
-			
+
 	    ROUNDn( 0, A, B, C, D, E, F1, K[0], W );
 	    ROUNDn( 1, E, A, B, C, D, F1, K[0], W );
 	    ROUNDn( 2, D, E, A, B, C, F1, K[0], W );
@@ -768,7 +768,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 	    ROUNDn( 4, B, C, D, E, A, F1, K[0], W );
 	    ROUNDn( 5, A, B, C, D, E, F1, K[0], W );
 	    ROUNDn( 6, E, A, B, C, D, F1, K[0], W );
-			
+
 			if(tailIndex == 52) {
 		    ROUNDn( 7, D, E, A, B, C, F1, K[0], W );
 		    ROUNDn( 8, C, D, E, A, B, F1, K[0], W );
@@ -776,7 +776,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 		    ROUNDn(10, A, B, C, D, E, F1, K[0], W );
 		    ROUNDn(11, E, A, B, C, D, F1, K[0], W );
 			}
-			
+
 			pH[0] = A1;
 			pH[1] = B1;
 			pH[2] = C1;
@@ -787,7 +787,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 		/* Populate W buffer */
 		WF(W1, tailIndex);
 		WF(W2, tailIndex);
-		
+
 		/*
 		for(t=16; t < 80; t++) {
 			if(vec_any_ne(W1[t], W2[t])) {
@@ -803,7 +803,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 		C1 = C2 = pH[2];
 		D1 = D2 = pH[3];
 		E1 = E2 = pH[4];
-		
+
 		/* Do the rounds */
 		switch(tailIndex) {
 			default:
@@ -826,46 +826,46 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 		    ROUNDn(14, B, C, D, E, A, F1, K[0], W );
 		}
     ROUND5(15, F1, K[0] );
-		
+
     ROUND5(20, F2, K[1] );
     ROUND5(25, F2, K[1] );
     ROUND5(30, F2, K[1] );
     ROUND5(35, F2, K[1] );
-		
+
     ROUND5(40, F3, K[2] );
     ROUND5(45, F3, K[2] );
     ROUND5(50, F3, K[2] );
     ROUND5(55, F3, K[2] );
-		
+
     ROUND5(60, F4, K[3] );
     ROUND5(65, F4, K[3] );
     ROUND5(70, F4, K[3] );
     ROUND5(75, F4, K[3] );
-		
+
 		/*
 		for(n=0; n < 4; n++) {
 	    ROUND5( 0 + n*5, F1, K[0] );
 		}
-		
+
 		for(n=0; n < 4; n++) {
 	    ROUND5( 0 + n*5, F2, K[1] );
 		}
-		
+
 		for(n=0; n < 4; n++) {
 	    ROUND5( 0 + n*5, F3, K[2] );
 		}
-		
+
 		for(n=0; n < 4; n++) {
 	    ROUND5( 0 + n*5, F4, K[3] );
 		}
 		*/
-		
+
 		/* Mix in the IV again */
 		A1 = vec_add(A1, H[0]);
 		B1 = vec_add(B1, H[1]);
 		A2 = vec_add(A2, H[0]);
 		B2 = vec_add(B2, H[1]);
-		
+
 		/* Debugging! */
 		if(0 && iters==0) {
 			for(t=0; t < 80; t++) {
@@ -874,27 +874,27 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 					*(X1++), *(X1++), *(X1++), *(X1++),
 					*(X1++), *(X1++), *(X1++), *(X1++) );
 			}
-			
+
 			X1 = (unsigned char*) W1;
 		}
-		
+
 		/* Quickly extract the best results from each pipe into a single vector set */
 		M = vec_sel(vec_cmpgt(A1,A2), vec_cmpgt(B1,B2), vec_cmpeq(A1,A2));
 		N = vec_sel((vector unsigned int) (0), (vector unsigned int) (1), M);
 		A = vec_sel(A1, A2, M);
 		B = vec_sel(B1, B2, M);
-		
+
 		/* Is this the best bit count so far? */
 		if(vec_any_ne( vec_and( vec_cmpeq(vec_and(A, vBitMaskLow), (vector unsigned int) (0)), vec_cmpeq(vec_and(A, vBitMaskHigh), (vector unsigned int) (0)) ), (vector unsigned int) (0))) {
 			uInt32 IA, IB;
-			
+
 			/* Go over each vector element in turn */
 			for(n=0; n < 4; n++) {
 				/* Extract A and B components */
 				IA = ((uInt32*) &A)[n];
 				IB = ((uInt32*) &B)[n];
 				m  = ((uInt32*) &N)[n];
-				
+
 				/* Count bits */
 				gotBits = 0;
 				if(IA) {
@@ -915,7 +915,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 						gotBits = 64;
 					}
 				}
-				
+
 				if ( gotBits > *best ) { *best = gotBits; }
 				/* Regenerate the bit mask */
 				maxBits = gotBits+1;
@@ -930,20 +930,20 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 				vBitMaskLow  = vec_splat(vBitMaskLow , 0);
 				*((uInt32*) &vBitMaskHigh) = bitMask1High;
 				vBitMaskHigh = vec_splat(vBitMaskHigh, 0);
-				
+
 				/* Copy this result back to the block buffer */
 				if(m)
 					X = X2;
 				else
 					X = X1;
-				
+
 				for(t=0; t < 16; t++) {
 					output[t*4+0] = X[t*16+0+n*4];
 					output[t*4+1] = X[t*16+1+n*4];
 					output[t*4+2] = X[t*16+2+n*4];
 					output[t*4+3] = X[t*16+3+n*4];
 				}
-				
+
 				/* Is it good enough to bail out? */
 				if(gotBits >= bits) {
 					return iters+8;
@@ -953,7 +953,7 @@ unsigned long minter_altivec_compact_2(int bits, int* best, unsigned char *block
 		if(0) return 0;
 		MINTER_CALLBACK();
 	}
-	
+
 	return iters+8;
 
 	/* For other platforms */

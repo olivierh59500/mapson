@@ -7,7 +7,7 @@ int minter_altivec_standard_2_test(void)
 #if defined(__POWERPC__) && defined(__ALTIVEC__) && defined(__GNUC__)
 	return (gProcessorSupportFlags & HC_CPU_SUPPORTS_ALTIVEC) != 0;
 #endif
-	
+
 	/* Not a PowerPC, or compiler doesn't support Altivec or GNU assembly */
 	return 0;
 }
@@ -335,7 +335,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 	unsigned char *X1 = (unsigned char*) W1;
 	unsigned char *X2 = (unsigned char*) W2;
 	unsigned char *output = (unsigned char*) block, *X;
-	
+
 	if ( *best > 0 ) { maxBits = *best+1; }
 
 	/* Work out which bits to mask out for test */
@@ -353,7 +353,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 	*((uInt32*) &vBitMaskHigh) = bitMask1High;
 	vBitMaskHigh = vec_splat(vBitMaskHigh, 0);
 	maxBits = 0;
-	
+
 	/* Copy block and IV to vectorised internal storage */
 	for(t=0; t < 16; t++) {
 		X1[t*16+ 0] = X1[t*16+ 4] = X1[t*16+ 8] = X1[t*16+12] = output[t*4+0];
@@ -370,7 +370,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 		Hw[t*4+0] = Hw[t*4+1] = Hw[t*4+2] = Hw[t*4+3] = IV[t];
 		pH[t] = H[t];
 	}
-	
+
 	/* The Tight Loop - everything in here should be extra efficient */
 	for(iters=0; iters < maxIter-8; iters += 8) {
 		/* Encode iteration count into tail */
@@ -384,7 +384,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 		X2[(((tailIndex - 1) & ~3) << 2) + ((tailIndex - 1) & 3) +  8] = p[(iters & 0x3c) + 5];
 		X1[(((tailIndex - 1) & ~3) << 2) + ((tailIndex - 1) & 3) + 12] = p[(iters & 0x3c) + 6];
 		X2[(((tailIndex - 1) & ~3) << 2) + ((tailIndex - 1) & 3) + 12] = p[(iters & 0x3c) + 7];
-		
+
 		if(!(iters & 0x3f)) {
 			if ( iters >> 6 ) {
 				X1[(((tailIndex - 2) & ~3) << 2) + ((tailIndex - 2) & 3) +  0] =
@@ -396,7 +396,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 				X2[(((tailIndex - 2) & ~3) << 2) + ((tailIndex - 2) & 3) +  8] =
 				X2[(((tailIndex - 2) & ~3) << 2) + ((tailIndex - 2) & 3) + 12] = p[(iters >>  6) & 0x3f];
 			}
-			if ( iters >> 12 ) { 
+			if ( iters >> 12 ) {
 				X1[(((tailIndex - 3) & ~3) << 2) + ((tailIndex - 3) & 3) +  0] =
 				X1[(((tailIndex - 3) & ~3) << 2) + ((tailIndex - 3) & 3) +  4] =
 				X1[(((tailIndex - 3) & ~3) << 2) + ((tailIndex - 3) & 3) +  8] =
@@ -445,12 +445,12 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 			C1 = C2 = H[2];
 			D1 = D2 = H[3];
 			E1 = E2 = H[4];
-			
+
 			for(t=16; t < 32; t++) {
 				Wf(W1,t,Fa,Ga);
 				Wf(W2,t,Fb,Gb);
 			}
-			
+
 	    ROUNDn( 0, A, B, C, D, E, F1, K[0], W );
 	    ROUNDn( 1, E, A, B, C, D, F1, K[0], W );
 	    ROUNDn( 2, D, E, A, B, C, F1, K[0], W );
@@ -458,7 +458,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 	    ROUNDn( 4, B, C, D, E, A, F1, K[0], W );
 	    ROUNDn( 5, A, B, C, D, E, F1, K[0], W );
 	    ROUNDn( 6, E, A, B, C, D, F1, K[0], W );
-			
+
 			if(tailIndex == 52) {
 		    ROUNDn( 7, D, E, A, B, C, F1, K[0], W );
 		    ROUNDn( 8, C, D, E, A, B, F1, K[0], W );
@@ -466,7 +466,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 		    ROUNDn(10, A, B, C, D, E, F1, K[0], W );
 		    ROUNDn(11, E, A, B, C, D, F1, K[0], W );
 			}
-			
+
 			pH[0] = A1;
 			pH[1] = B1;
 			pH[2] = C1;
@@ -480,7 +480,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 		C1 = C2 = pH[2];
 		D1 = D2 = pH[3];
 		E1 = E2 = pH[4];
-		
+
 		/* Do the rounds */
 		switch(tailIndex) {
 			default:
@@ -553,7 +553,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 	    ROUNDu(29, B, C, D, E, A, F2, K[1], W );
 	    ROUNDu(30, A, B, C, D, E, F2, K[1], W );
 	  }
-	  
+
     ROUNDu(31, E, A, B, C, D, F2, K[1], W );
     ROUNDu(32, D, E, A, B, C, F2, K[1], W );
     ROUNDu(33, C, D, E, A, B, F2, K[1], W );
@@ -563,23 +563,23 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
     ROUNDu(37, D, E, A, B, C, F2, K[1], W );
     ROUNDu(38, C, D, E, A, B, F2, K[1], W );
     ROUNDu(39, B, C, D, E, A, F2, K[1], W );
-		
+
     ROUND5(40, F3, K[2] );
     ROUND5(45, F3, K[2] );
     ROUND5(50, F3, K[2] );
     ROUND5(55, F3, K[2] );
-		
+
     ROUND5(60, F4, K[3] );
     ROUND5(65, F4, K[3] );
     ROUND5(70, F4, K[3] );
     ROUND5(75, F4, K[3] );
-		
+
 		/* Mix in the IV again */
 		A1 = vec_add(A1, H[0]);
 		B1 = vec_add(B1, H[1]);
 		A2 = vec_add(A2, H[0]);
 		B2 = vec_add(B2, H[1]);
-		
+
 		/* Debugging! */
 		if(0 && iters==0) {
 			for(t=0; t < 80; t++) {
@@ -588,27 +588,27 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 					*(X1++), *(X1++), *(X1++), *(X1++),
 					*(X1++), *(X1++), *(X1++), *(X1++) );
 			}
-			
+
 			X1 = (unsigned char*) W1;
 		}
-		
+
 		/* Quickly extract the best results from each pipe into a single vector set */
 		M = vec_sel(vec_cmpgt(A1,A2), vec_cmpgt(B1,B2), vec_cmpeq(A1,A2));
 		N = vec_sel((vector unsigned int) (0), (vector unsigned int) (1), M);
 		A = vec_sel(A1, A2, M);
 		B = vec_sel(B1, B2, M);
-		
+
 		/* Is this the best bit count so far? */
 		if(vec_any_ne( vec_and( vec_cmpeq(vec_and(A, vBitMaskLow), (vector unsigned int) (0)), vec_cmpeq(vec_and(A, vBitMaskHigh), (vector unsigned int) (0)) ), (vector unsigned int) (0))) {
 			uInt32 IA, IB;
-			
+
 			/* Go over each vector element in turn */
 			for(n=0; n < 4; n++) {
 				/* Extract A and B components */
 				IA = ((uInt32*) &A)[n];
 				IB = ((uInt32*) &B)[n];
 				m  = ((uInt32*) &N)[n];
-				
+
 				/* Count bits */
 				gotBits = 0;
 				if(IA) {
@@ -629,7 +629,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 						gotBits = 64;
 					}
 				}
-				
+
 				if ( gotBits > *best ) { *best = gotBits; }
 				/* Regenerate the bit mask */
 				maxBits = gotBits+1;
@@ -644,20 +644,20 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 				vBitMaskLow  = vec_splat(vBitMaskLow , 0);
 				*((uInt32*) &vBitMaskHigh) = bitMask1High;
 				vBitMaskHigh = vec_splat(vBitMaskHigh, 0);
-				
+
 				/* Copy this result back to the block buffer */
 				if(m)
 					X = X2;
 				else
 					X = X1;
-				
+
 				for(t=0; t < 16; t++) {
 					output[t*4+0] = X[t*16+0+n*4];
 					output[t*4+1] = X[t*16+1+n*4];
 					output[t*4+2] = X[t*16+2+n*4];
 					output[t*4+3] = X[t*16+3+n*4];
 				}
-				
+
 				/* Is it good enough to bail out? */
 				if(gotBits >= bits) {
 					return iters+8;
@@ -667,7 +667,7 @@ unsigned long minter_altivec_standard_2(int bits, int* best, unsigned char *bloc
 		if(0) return 0;
 		MINTER_CALLBACK();
 	}
-	
+
 	return iters+8;
 
 	/* For other platforms */

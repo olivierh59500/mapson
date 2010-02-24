@@ -20,7 +20,7 @@
 
 static int swap_endian32( void*, size_t );
 
-/* A run time endian test.  
+/* A run time endian test.
 
    little_endian is the broken one: 80x86s, VAXs
    big_endian is: most unix machines, RISC chips, 68000, etc
@@ -69,12 +69,12 @@ void SHA1_Xform( word32* iv, const byte* data ) {
 
 /* plan C, copy & convert the data on input */
 #undef SHA1_Transform
-    if ( little_endian ) { 
+    if ( little_endian ) {
 	memcpy( d, data, SHA1_INPUT_BYTES );
 	make_local_endian32( d, SHA1_INPUT_WORDS );
 	SHA1_Transform( &c, d );
     } else {			/* not necessary on big endian */
-	SHA1_Transform( &c, data ); 
+	SHA1_Transform( &c, data );
     }
     iv[0]=c.h0; iv[1]=c.h1; iv[2]=c.h2; iv[3]=c.h3; iv[4]=c.h4;
 }
@@ -144,7 +144,7 @@ void SHA1_Init( SHA1_ctx* ctx )
 /* this is only used if you want to modify the IV */
 /* ignore this function for purposes of the standard */
 
-void SHA1_Init_With_IV( SHA1_ctx* ctx, 
+void SHA1_Init_With_IV( SHA1_ctx* ctx,
 			const byte user_IV[ SHA1_DIGEST_BYTES ] )
 {
     SHA1_zero_bitcount( ctx );
@@ -152,7 +152,7 @@ void SHA1_Init_With_IV( SHA1_ctx* ctx,
     make_local_endian32( ctx->H, SHA1_DIGEST_WORDS );
 }
 
-void SHA1_Transform(  word32 H[ SHA1_DIGEST_WORDS ], 
+void SHA1_Transform(  word32 H[ SHA1_DIGEST_WORDS ],
 		      const byte M[ SHA1_INPUT_BYTES ] )
 {
 #ifdef	COMPACT
@@ -243,7 +243,7 @@ void SHA1_Transform(  word32 H[ SHA1_DIGEST_WORDS ],
     for ( t = 0; t < 16; t++ ) {
 	fprintf( stderr, "W[%2d] = %08x\n", t, W[ t ] );
     }
-    fprintf( stderr, 
+    fprintf( stderr,
 "            A           B           C           D           E\n\n" );
 #endif
 
@@ -269,7 +269,7 @@ void SHA1_Transform(  word32 H[ SHA1_DIGEST_WORDS ],
 /* rounds 60..79 */
 
     ROUND20( 60, F4, K4 );
-    
+
     H[ 0 ] += A;
     H[ 1 ] += B;
     H[ 2 ] += C;
@@ -347,17 +347,17 @@ void SHA1_Final( SHA1_ctx* ctx, byte digest[ SHA1_DIGEST_BYTES ] )
 	SHA1_Transform( ctx->H, ctx->M );
 	memset( ctx->M, 0x00, SHA1_INPUT_BYTES - BIT_COUNT_BYTES );
     }
-    
+
 #if defined( word64 )
     if ( little_endian ) {
 	temp = ( ctx->bits << 32 | ctx->bits >> 32 );
     } else {
 	temp = ctx->bits;
     }
-    memcpy( ctx->M + SHA1_INPUT_BYTES - BIT_COUNT_BYTES, &temp, 
+    memcpy( ctx->M + SHA1_INPUT_BYTES - BIT_COUNT_BYTES, &temp,
 	    BIT_COUNT_BYTES );
 #else
-    memcpy( ctx->M + SHA1_INPUT_BYTES - BIT_COUNT_BYTES, &(ctx->hbits), 
+    memcpy( ctx->M + SHA1_INPUT_BYTES - BIT_COUNT_BYTES, &(ctx->hbits),
 	    BIT_COUNT_BYTES );
 #endif
     SHA1_Transform( ctx->H, ctx->M );
@@ -375,11 +375,11 @@ static int swap_endian32( void* data, size_t len )
     word32* data_as_word32s = (word32*) data;
     byte* data_as_bytes = NULL ;
     size_t i = 0 ;
-    
+
     for ( i = 0; i < len; i++ ) {
 	tmp32 = data_as_word32s[ i ];
 	data_as_bytes = (byte*) &( data_as_word32s[ i ] );
-	
+
 	data_as_bytes[ 0 ] = tmp32_as_bytes[ 3 ];
 	data_as_bytes[ 1 ] = tmp32_as_bytes[ 2 ];
 	data_as_bytes[ 2 ] = tmp32_as_bytes[ 1 ];

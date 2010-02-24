@@ -29,7 +29,7 @@ int minter_ansi_standard_1_test(void)
 #define ROUNDn(t,A,B,C,D,E,Func,K) \
 	E += S(5,A) + Func(B,C,D) + W[t] + K; \
 	B = S(30,B);
-	
+
 #define ROUND(t,A,B,C,D,E,Func,K) ROUNDu(t,A,B,C,D,E,Func,K)
 
 #define ROUND5( t, Func, K ) \
@@ -59,12 +59,12 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 	int addressMask = 0 ;
 	static const int endTest = 3;
 	unsigned char *output = (unsigned char*) block;
-	
+
 	if ( *best > 0 ) { maxBits = *best+1; }
 
 	/* Work out whether we need to swap bytes during encoding */
 	addressMask = ( *(char*)&endTest );
-	
+
 	/* Work out which bits to mask out for test */
 	if(maxBits < 32) {
 		if ( bits == 0 ) { bitMask1Low = 0; } else {
@@ -76,13 +76,13 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 		bitMask1High = ~((((uInt32) 1) << (64 - maxBits)) - 1);
 	}
 	maxBits = 0;
-	
+
 	/* Copy block and IV to internal storage */
 	for(t=0; t < 16; t++)
 		W[t] = GET_WORD(output + t*4);
 	for(t=0; t < 5; t++)
 		pH[t] = H[t] = IV[t];
-	
+
 	/* The Tight Loop - everything in here should be extra efficient */
 	for(iters=0; iters < maxIter; iters++) {
 		/* Encode iteration count into tail */
@@ -91,13 +91,13 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 		  	if ( iters >> 6 ) {
 				X[(tailIndex - 2) ^ addressMask] = p[(iters >>  6) & 0x3f];
 			}
-			if ( iters >> 12 ) { 
+			if ( iters >> 12 ) {
 				X[(tailIndex - 3) ^ addressMask] = p[(iters >> 12) & 0x3f];
 			}
 			if ( iters >> 18 ) {
 				X[(tailIndex - 4) ^ addressMask] = p[(iters >> 18) & 0x3f];
 			}
-			if ( iters >> 24 ) { 
+			if ( iters >> 24 ) {
 				X[(tailIndex - 5) ^ addressMask] = p[(iters >> 24) & 0x3f];
 			}
 			if ( iters >> 30 ) {
@@ -112,10 +112,10 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 			C = H[2];
 			D = H[3];
 			E = H[4];
-			
+
 			for(t=16; t < 32; t++)
 				Wf(t);
-			
+
 	    ROUND( 0, A, B, C, D, E, F1, K1 );
 	    ROUND( 1, E, A, B, C, D, F1, K1 );
 	    ROUND( 2, D, E, A, B, C, F1, K1 );
@@ -123,7 +123,7 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 	    ROUND( 4, B, C, D, E, A, F1, K1 );
 	    ROUND( 5, A, B, C, D, E, F1, K1 );
 	    ROUND( 6, E, A, B, C, D, F1, K1 );
-			
+
 			if(tailIndex == 52) {
 		    ROUND( 7, D, E, A, B, C, F1, K1 );
 		    ROUND( 8, C, D, E, A, B, F1, K1 );
@@ -131,7 +131,7 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 		    ROUND(10, A, B, C, D, E, F1, K1 );
 		    ROUND(11, E, A, B, C, D, F1, K1 );
 			}
-			
+
 			pH[0] = A;
 			pH[1] = B;
 			pH[2] = C;
@@ -145,7 +145,7 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 		C = pH[2];
 		D = pH[3];
 		E = pH[4];
-		
+
 		/* Do the rounds */
 		switch(tailIndex) {
 			default:
@@ -218,7 +218,7 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 	    ROUNDu(29, B, C, D, E, A, F2, K2 );
 	    ROUNDu(30, A, B, C, D, E, F2, K2 );
 	  }
-	  
+
     ROUNDu(31, E, A, B, C, D, F2, K2 );
     ROUNDu(32, D, E, A, B, C, F2, K2 );
     ROUNDu(33, C, D, E, A, B, F2, K2 );
@@ -228,17 +228,17 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
     ROUNDu(37, D, E, A, B, C, F2, K2 );
     ROUNDu(38, C, D, E, A, B, F2, K2 );
     ROUNDu(39, B, C, D, E, A, F2, K2 );
-		
+
 		ROUND20(40,F3,K3);
 		ROUND20(60,F4,K4);
-		
+
 		/* Mix in the IV again */
 		A += H[0];
 		B += H[1];
 		C += H[2];
 		D += H[3];
 		E += H[4];
-		
+
 		/* Is this the best bit count so far? */
 		if(!(A & bitMask1Low) && !(B & bitMask1High)) {
 			/* Count bits */
@@ -261,7 +261,7 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 					gotBits = 64;
 				}
 			}
-			
+
 			if ( gotBits > *best ) { *best = gotBits; }
 			/* Regenerate the bit mask */
 			maxBits = gotBits+1;
@@ -276,7 +276,7 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 			/* Copy this result back to the block buffer */
 			for(t=0; t < 16; t++)
 				PUT_WORD(output + t*4, W[t]);
-			
+
 			/* Is it good enough to bail out? */
 			if(gotBits >= bits) {
 				return iters+1;
@@ -284,6 +284,6 @@ unsigned long minter_ansi_standard_1(int bits, int* best, unsigned char *block, 
 		}
 		MINTER_CALLBACK();
 	}
-	
+
 	return iters+1;
 }

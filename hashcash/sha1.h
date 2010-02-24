@@ -60,7 +60,7 @@ void SHA1_Init_With_IV( SHA1_ctx*, const byte[ SHA1_DIGEST_BYTES ] );
 
 #endif
 
-void SHA1_Xform( word32[ SHA1_DIGEST_WORDS ], 
+void SHA1_Xform( word32[ SHA1_DIGEST_WORDS ],
 		 const byte[ SHA1_INPUT_BYTES ] );
 
 #if defined( __cplusplus )

@@ -53,7 +53,7 @@ unsigned long minter_library(int bits, int* best, unsigned char *block, const uI
 		bitMask1High = ~((((uInt32) 1) << (64 - maxBits)) - 1);
 	}
 	maxBits = 0;
-	
+
 #if defined( DEBUG )
 	fprintf( stderr, "mask0 = " );
 	for ( i = 0; i < 32; i++ ) {
@@ -74,13 +74,13 @@ unsigned long minter_library(int bits, int* best, unsigned char *block, const uI
 		  	if ( iters >> 6 ) {
 				X[(tailIndex - 2) ^ addressMask] = p[(iters >>  6) & 0x3f];
 			}
-			if ( iters >> 12 ) { 
+			if ( iters >> 12 ) {
 				X[(tailIndex - 3) ^ addressMask] = p[(iters >> 12) & 0x3f];
 			}
 			if ( iters >> 18 ) {
 				X[(tailIndex - 4) ^ addressMask] = p[(iters >> 18) & 0x3f];
 			}
-			if ( iters >> 24 ) { 
+			if ( iters >> 24 ) {
 				X[(tailIndex - 5) ^ addressMask] = p[(iters >> 24) & 0x3f];
 			}
 			if ( iters >> 30 ) {
@@ -100,12 +100,12 @@ unsigned long minter_library(int bits, int* best, unsigned char *block, const uI
 #if defined( DEBUG )
 #define P(n) (X[n] ? ( (X[n] == 0x80) ?'$' : ((X[n]<32)?'#':X[n]) ) : '@')
 
-		fprintf( stderr, 
+		fprintf( stderr,
 			 "H(%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c"
 			 "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c"
 			 "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c"
 			 "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%02x%02x"
-			 ") = 0x%08x%08x\n", 
+			 ") = 0x%08x%08x\n",
 			 P(0+3),P(0+2),P(0+1),P(0+0),
 			 P(4+3),P(4+2),P(4+1),P(4+0),
 			 P(8+3),P(8+2),P(8+1),P(8+0),
@@ -147,7 +147,7 @@ unsigned long minter_library(int bits, int* best, unsigned char *block, const uI
 					gotBits = 64;
 				}
 			}
-			
+
 			if ( gotBits > *best ) { *best = gotBits; }
 			/* Regenerate the bit mask */
 			maxBits = gotBits+1;
@@ -164,8 +164,8 @@ unsigned long minter_library(int bits, int* best, unsigned char *block, const uI
 			}
 
 			/* Copy this result back to the block buffer */
-			for(t=0; t < 16*blocks; t++) { 
-				PUT_WORD(output + t*4, W[t]); 
+			for(t=0; t < 16*blocks; t++) {
+				PUT_WORD(output + t*4, W[t]);
 			}
 #if defined( DEBUG )
 			fprintf( stderr, "output: %s\n", output );
@@ -190,6 +190,6 @@ unsigned long minter_library(int bits, int* best, unsigned char *block, const uI
 		}
 		MINTER_CALLBACK();
 	}
-	
+
 	return iters+1;
 }

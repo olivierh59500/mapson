@@ -13,7 +13,7 @@ int SHA1_file( char* filename, byte md[ SHA1_DIGEST_BYTES ] )
     size_t bytes_read = 0 ;
     int opened = 0;
     SHA1_ctx ctx;
-    
+
     if ( strcmp( filename, "-" ) == 0 ) {
 	file = stdin;
     } else {
@@ -54,7 +54,7 @@ int main( int argc, char* argv[] )
     int i = 0 ;
     byte digest[ SHA1_DIGEST_BYTES ] = {0};
     int status = 0 ;
-    
+
     if ( argc == 1 ) {
 	status = SHA1_file( "-", digest );
 	if ( status < 0 ) {

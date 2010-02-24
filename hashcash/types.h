@@ -7,7 +7,7 @@
 
 #define word unsigned
 
-#define byte unsigned char 
+#define byte unsigned char
 
 #define bool byte
 #define true 1
@@ -27,7 +27,7 @@
 #elif ( UINT_MAX == 0xFFFFFFFFUL )
     #define int32 signed int
     #define word32 unsigned int
-#else 
+#else
     #define int32 signed long
     #define word32 unsigned long
 #endif

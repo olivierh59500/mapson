@@ -13,7 +13,7 @@
  * if tok is NULL do not return the parsed value
  */
 
-char* sstrtok( const char* str, const char* delim, char** tok, int tok_max, 
+char* sstrtok( const char* str, const char* delim, char** tok, int tok_max,
 	       int* tok_len, char** s )
 {
     char *end = NULL ;
@@ -23,7 +23,7 @@ char* sstrtok( const char* str, const char* delim, char** tok, int tok_max,
     if ( str != NULL ) { *s = (char*)str; }
     if ( **s == '\0' ) { return NULL; } /* consumed last token */
     end = strpbrk( *s, delim );
-    if ( end == NULL ) { 
+    if ( end == NULL ) {
 	*tok_len = strlen(*s);
     } else {
 	*tok_len = end - *s;
@@ -33,10 +33,10 @@ char* sstrtok( const char* str, const char* delim, char** tok, int tok_max,
 	if ( tok_max > 0 ) {
 	    use = tok_max < *tok_len ? tok_max : *tok_len;
 	} else {
-	    use = *tok_len; 
+	    use = *tok_len;
 	}
 	if ( !*tok ) { *tok = malloc( use+1 ); }
-	sstrncpy( *tok, *s, use ); 
+	sstrncpy( *tok, *s, use );
     }
     *s += *tok_len + ( end == NULL ? 0 : 1 );
     return tok ? *tok : "";

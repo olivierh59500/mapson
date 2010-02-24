@@ -80,12 +80,12 @@ unsigned long minter_ansi_ultracompact_1(int bits, int* best, unsigned char *blo
 	unsigned char *output = (unsigned char*) block;
 	const int W32[] = {21,23,24,26,27,29,30,31,0}, W52[] = {20,23,26,28,29,31,0};
 	char wordUpdate[80] = {0};
-	
+
 	if ( *best > 0 ) { maxBits = *best+1; }
 
 	/* Work out whether we need to swap bytes during encoding */
 	addressMask = ( *(char*)&endTest );
-	
+
 	/* Work out which bits to mask out for test */
 	if(maxBits < 32) {
 		if ( bits == 0 ) { bitMask1Low = 0; } else {
@@ -97,25 +97,25 @@ unsigned long minter_ansi_ultracompact_1(int bits, int* best, unsigned char *blo
 		bitMask1High = ~((((uInt32) 1) << (64 - maxBits)) - 1);
 	}
 	maxBits = 0;
-	
+
 	/* Copy block and IV to internal storage */
 	for(t=0; t < 16; t++)
 		W[t] = GET_WORD(output + t*4);
 	for(t=0; t < 5; t++)
 		pH[t] = H[t] = IV[t];
-	
+
 	/* Precalculate which words need the W buffer updating */
 	switch(tailIndex) {
 		default:
 			for(t=16; t < 32; t++)
 				wordUpdate[t] = 1;
 			break;
-			
+
 		case 32:
 			for(t=0; W32[t]; t++)
 				wordUpdate[W32[t]] = 1;
 			break;
-			
+
 		case 52:
 			for(t=0; W52[t]; t++)
 				wordUpdate[W52[t]] = 1;
@@ -123,14 +123,14 @@ unsigned long minter_ansi_ultracompact_1(int bits, int* best, unsigned char *blo
 	}
 	for(t=32; t < 80; t++)
 		wordUpdate[t] = 1;
-	
+
 	/* The Tight Loop - everything in here should be extra efficient */
 	for(iters=0; iters < maxIter; iters++) {
-	
+
 		/* Encode iteration count into tail */
 		X[(tailIndex - 1) ^ addressMask] = p[(iters      ) & 0x3f];
 		if(!(iters & 0x3f)) {
-		  	if ( iters >> 6 ) { 
+		  	if ( iters >> 6 ) {
 				X[(tailIndex - 2) ^ addressMask] = p[(iters >>  6) & 0x3f];
 			}
 			if ( iters >> 12 ) {
@@ -154,49 +154,49 @@ unsigned long minter_ansi_ultracompact_1(int bits, int* best, unsigned char *blo
 			C = H[2];
 			D = H[3];
 			E = H[4];
-			
+
 			for(t=16; t < 32; t++)
 				Wf(t);
-			
+
 			for(t = 0; t < ((tailIndex-1) / 20) * 5; t += 5) {
 				ROUND5( t, F1, K1 );
 			}
-			
+
 			pH[0] = A;
 			pH[1] = B;
 			pH[2] = C;
 			pH[3] = D;
 			pH[4] = E;
 		}
-		
+
 		/* Fill W buffer */
 		for(t=16; t < 80; t++)
 			if(wordUpdate[t])
 				Wf(t);
-		
+
 		/* Set up working variables */
 		A = pH[0];
 		B = pH[1];
 		C = pH[2];
 		D = pH[3];
 		E = pH[4];
-				
+
 		/* Do the rounds */
 		for(t = ((tailIndex-1) / 20) * 5; t < 20; t += 5) {
 			ROUND5( t, F1, K1 );
 		}
-		
+
 		ROUND20(20,F2,K2);
 		ROUND20(40,F3,K3);
 		ROUND20(60,F4,K4);
-		
+
 		/* Mix in the IV again */
 		A += H[0];
 		B += H[1];
 		C += H[2];
 		D += H[3];
 		E += H[4];
-		
+
 		/* Is this the best bit count so far? */
 		if(!(A & bitMask1Low) && !(B & bitMask1High)) {
 			/* Count bits */
@@ -219,7 +219,7 @@ unsigned long minter_ansi_ultracompact_1(int bits, int* best, unsigned char *blo
 					gotBits = 64;
 				}
 			}
-			
+
 			if ( gotBits > *best ) { *best = gotBits; }
 			/* Regenerate the bit mask */
 			maxBits = gotBits+1;
@@ -234,7 +234,7 @@ unsigned long minter_ansi_ultracompact_1(int bits, int* best, unsigned char *blo
 			/* Copy this result back to the block buffer */
 			for(t=0; t < 16; t++)
 				PUT_WORD(output + t*4, W[t]);
-			
+
 			/* Is it good enough to bail out? */
 			if(gotBits >= bits) {
 				return iters+1;
@@ -242,6 +242,6 @@ unsigned long minter_ansi_ultracompact_1(int bits, int* best, unsigned char *blo
 		}
 		MINTER_CALLBACK();
 	}
-	
+
 	return iters+1;
 }

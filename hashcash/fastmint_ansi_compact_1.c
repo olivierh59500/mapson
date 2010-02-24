@@ -55,12 +55,12 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 	int addressMask = 0 ;
 	static const int endTest = 3;
 	unsigned char *output = (unsigned char*) block;
-	
+
 	if ( *best > 0 ) { maxBits = *best+1; }
 
 	/* Work out whether we need to swap bytes during encoding */
 	addressMask = ( *(char*)&endTest );
-	
+
 	/* Work out which bits to mask out for test */
 	if(maxBits < 32) {
 		if ( bits == 0 ) { bitMask1Low = 0; } else {
@@ -72,16 +72,16 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 		bitMask1High = ~((((uInt32) 1) << (64 - maxBits)) - 1);
 	}
 	maxBits = 0;
-	
+
 	/* Copy block and IV to internal storage */
 	for(t=0; t < 16; t++)
 		W[t] = GET_WORD(output + t*4);
 	for(t=0; t < 5; t++)
 		pH[t] = H[t] = IV[t];
-	
+
 	/* The Tight Loop - everything in here should be extra efficient */
 	for(iters=0; iters < maxIter; iters++) {
-	
+
 		/* Encode iteration count into tail */
 		X[(tailIndex - 1) ^ addressMask] = p[(iters      ) & 0x3f];
 		if(!(iters & 0x3f)) {
@@ -91,7 +91,7 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 			if ( iters >> 12 ) {
 				X[(tailIndex - 3) ^ addressMask] = p[(iters >> 12) & 0x3f];
 			}
-			if ( iters >> 18 ) { 
+			if ( iters >> 18 ) {
 				X[(tailIndex - 4) ^ addressMask] = p[(iters >> 18) & 0x3f];
 			}
 			if ( iters >> 24 ) {
@@ -109,10 +109,10 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 			C = H[2];
 			D = H[3];
 			E = H[4];
-			
+
 			for(t=16; t < 32; t++)
 				Wf(t);
-			
+
 	    ROUND( 0, A, B, C, D, E, F1, K1 );
 	    ROUND( 1, E, A, B, C, D, F1, K1 );
 	    ROUND( 2, D, E, A, B, C, F1, K1 );
@@ -120,7 +120,7 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 	    ROUND( 4, B, C, D, E, A, F1, K1 );
 	    ROUND( 5, A, B, C, D, E, F1, K1 );
 	    ROUND( 6, E, A, B, C, D, F1, K1 );
-			
+
 			if(tailIndex == 52) {
 		    ROUND( 7, D, E, A, B, C, F1, K1 );
 		    ROUND( 8, C, D, E, A, B, F1, K1 );
@@ -128,14 +128,14 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 		    ROUND(10, A, B, C, D, E, F1, K1 );
 		    ROUND(11, E, A, B, C, D, F1, K1 );
 			}
-			
+
 			pH[0] = A;
 			pH[1] = B;
 			pH[2] = C;
 			pH[3] = D;
 			pH[4] = E;
 		}
-		
+
 		/* Fill W buffer */
 		switch(tailIndex) {
 			default:
@@ -160,14 +160,14 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 		}
 		for(t=32; t < 80; t++)
 			Wf(t);
-		
+
 		/* Set up working variables */
 		A = pH[0];
 		B = pH[1];
 		C = pH[2];
 		D = pH[3];
 		E = pH[4];
-				
+
 		/* Do the rounds */
 		switch(tailIndex) {
 			default:
@@ -194,18 +194,18 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 		    ROUND(18, C, D, E, A, B, F1, K1 );
 		    ROUND(19, B, C, D, E, A, F1, K1 );
 		}
-		
+
 		ROUND20(20,F2,K2);
 		ROUND20(40,F3,K3);
 		ROUND20(60,F4,K4);
-		
+
 		/* Mix in the IV again */
 		A += H[0];
 		B += H[1];
 		C += H[2];
 		D += H[3];
 		E += H[4];
-		
+
 		/* Is this the best bit count so far? */
 		if(!(A & bitMask1Low) && !(B & bitMask1High)) {
 			/* Count bits */
@@ -228,7 +228,7 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 					gotBits = 64;
 				}
 			}
-			
+
 			if ( gotBits > *best ) { *best = gotBits; }
 			/* Regenerate the bit mask */
 			maxBits = gotBits+1;
@@ -243,7 +243,7 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 			/* Copy this result back to the block buffer */
 			for(t=0; t < 16; t++)
 				PUT_WORD(output + t*4, W[t]);
-			
+
 			/* Is it good enough to bail out? */
 			if(gotBits >= bits) {
 				return iters+1;
@@ -251,6 +251,6 @@ unsigned long minter_ansi_compact_1(int bits, int* best, unsigned char *block, c
 		}
 		MINTER_CALLBACK();
 	}
-	
+
 	return iters+1;
 }

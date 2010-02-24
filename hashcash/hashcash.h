@@ -86,24 +86,24 @@ const char* hashcash_version( void );
  *
  * returns HASHCASH_OK on success or one of the error codes above on
  * failure (values < 0)
- * 
+ *
  * arguments are:
  *
- * now_time        -- should be time in UTC, use time(2) 
+ * now_time        -- should be time in UTC, use time(2)
  *
- * time_width      -- how many chars to abbreviate the time to 
+ * time_width      -- how many chars to abbreviate the time to
  *                    default 0 is 6 chars YYMMDD
  *
  * resource        -- resource name, unique descriptor for resource you're
  *                    trying to protect
  *
  * bits            -- bits of partial preimage the resource demands
- * 
+ *
  * anon_period     -- add (or subtract if negative) a random period
  *                    in seconds between this value and 0
  *                    to get same as mixmaster does set this to -3days
  *                    (default 0)
- * 
+ *
  * stamp           -- the stamp output
  *
  * anon_random     -- default NULL, if set to pointer to long
@@ -121,7 +121,7 @@ const char* hashcash_version( void );
  * small           -- optimize for stamp size (true) or stamp generation speed
  *                    (false)
  *
- * cb              -- user defined callback function which is called every 
+ * cb              -- user defined callback function which is called every
  *		      1/10th second; if it returns false hashcash_mint
  *                    will return HASHCASH_USER_ABORT; if you do not need
  *		      the callback function, pass NULL
@@ -135,39 +135,39 @@ const char* hashcash_version( void );
 /* note: it is the callers responsibility to call hashcash_free on
  * stamp when finished */
 
-typedef int (*hashcash_callback)(int percent, int largest, int target, 
+typedef int (*hashcash_callback)(int percent, int largest, int target,
 				 double count, double expected,
 				 void* user);
 
 HCEXPORT
-int hashcash_mint( time_t now_time, int time_width, const char* resource, 
-		   unsigned bits, long anon_period, char** stamp, 
+int hashcash_mint( time_t now_time, int time_width, const char* resource,
+		   unsigned bits, long anon_period, char** stamp,
 		   long* anon_random, double* tries_taken, char* ext,
 		   int compress, hashcash_callback cb, void* user_arg );
 
 /* simpler API for minting  */
 
 HCEXPORT
-char* hashcash_simple_mint( const char* resource, unsigned bits, 
+char* hashcash_simple_mint( const char* resource, unsigned bits,
 			    long anon_period, char* ext, int compress );
 
 /* convert a stamp into a X-Hashcash: header wrapping lines at line_len
  * chars.  If line_len = 0, does not wrap, just prepends header.
- * 
+ *
  * arguments are:
  *
  * stamp     -- the stamp to put in the header
  * line_len  -- the number of chars you want to wrap after (or no wrapping
  *              if 0 is given)
- * lf        -- what kind of line feed you want "\r\n" (DOS), "\n" (UNIX), 
+ * lf        -- what kind of line feed you want "\r\n" (DOS), "\n" (UNIX),
  *              "\r" (MAC).  Actually I think RFC822 requires DOS lf.  If
  *              you pass NULL it uses the standard RFC822 lf ("\r\n").
- * 
+ *
  */
 
 HCEXPORT
-char* hashcash_make_header( const char* stamp, int line_len, 
-			    const char* header, char cont, 
+char* hashcash_make_header( const char* stamp, int line_len,
+			    const char* header, char cont,
 			    const char* lf  );
 
 /* return time field width necessary to express time in sufficient
@@ -184,8 +184,8 @@ int hashcash_validity_to_width( long validity_period );
 HCEXPORT
 unsigned hashcash_count( const char* stamp );
 
-/* parse stamp into time field and resouce name 
- * max lengths exclude space for trailing \0 
+/* parse stamp into time field and resouce name
+ * max lengths exclude space for trailing \0
  *
  * arguments are:
  *
@@ -207,8 +207,8 @@ unsigned hashcash_count( const char* stamp );
  * responsibility to call hashcash_free on ext when finished */
 
 HCEXPORT
-int hashcash_parse( const char* stamp, int* vers, int* bits, char* utct, 
-		    int utct_max, char* stamp_resource, int res_max, 
+int hashcash_parse( const char* stamp, int* vers, int* bits, char* utct,
+		    int utct_max, char* stamp_resource, int res_max,
 		    char** ext, int ext_max );
 
 /* return how many seconds the stamp remains valid for
@@ -226,19 +226,19 @@ int hashcash_parse( const char* stamp, int* vers, int* bits, char* utct,
  */
 
 HCEXPORT
-long hashcash_valid_for( time_t stamp_time, long validity_period, 
+long hashcash_valid_for( time_t stamp_time, long validity_period,
 			 long grace_period, time_t now_time );
 
-/* simple function calling hashcash_parse, hashcash_count for convenience 
+/* simple function calling hashcash_parse, hashcash_count for convenience
  *
  * on error returns -ve values:
- * 
+ *
  * HASHCASH_INVALID
  * HASHCASH_UNSUPPORTED_VERSION,
  * HASHCASH_WRONG_RESOURCE
  * HASHCASH_REGEXP_ERROR
  * HASHCASH_INSUFFICIENT_BITS
- * 
+ *
  * on success returns time: left
  *
  * HASHCASH_FOREVER (actually 0)
@@ -250,7 +250,7 @@ long hashcash_valid_for( time_t stamp_time, long validity_period,
  * case_flag       -- if set true case-sensitive (false case insensitive)
  * resource        -- resource expecting (maybe wildcard, regexp...)
  * compile         -- cache for compiled regexp (caller free afterwards)
- * re_err          -- if get HASHCASH_REGEXP_ERROR this contains error 
+ * re_err          -- if get HASHCASH_REGEXP_ERROR this contains error
  * type            -- type of string (TYPE_STR, TYPE_WILD, TYPE_REGEXP)
  * now_time        -- current time (UTC)
  * validity_period -- how long stamps are valid for
@@ -261,16 +261,16 @@ long hashcash_valid_for( time_t stamp_time, long validity_period,
 
 /* note: compile argument can be NULL in which case regexps
  * compilations are not cached (and compile arg does not have to be
- * hashcash_free'd) 
+ * hashcash_free'd)
  */
 
 /* note: it is the callers responsibility to call hashcash_free on
  * compile when finished if regexps are used */
 
 HCEXPORT
-int hashcash_check( const char* stamp, int case_flag, const char* resource, 
-		    void **compile, char** re_err, int type, time_t now_time, 
-		    long validity_period, long grace_period, 
+int hashcash_check( const char* stamp, int case_flag, const char* resource,
+		    void **compile, char** re_err, int type, time_t now_time,
+		    long validity_period, long grace_period,
 		    int required_bits, time_t* stamp_time );
 
 /* return how many tries per second the machine can do */
@@ -301,7 +301,7 @@ double hashcash_expected_tries( int b );
  *
  * arguments are:
  *
- * type            -- type of comparison: TYPE_STR (simple string), 
+ * type            -- type of comparison: TYPE_STR (simple string),
  *                    TYPE_WILD (wildcard '*'), TYPE_REGEXP
  *                    (full regular expression)
  *
@@ -311,12 +311,12 @@ double hashcash_expected_tries( int b );
  *
  * compile         -- cache for regexp compilation result
  *                    (hashcash_free it when you've finished)
- * 
+ *
  * err             -- NULL on success, regexp error string if regexp fails
  */
 
 HCEXPORT
-int hashcash_resource_match( int type, const char* stamp_res, const char* res, 
+int hashcash_resource_match( int type, const char* stamp_res, const char* res,
 			     void** compile, char** err );
 
 /* free memory which may beallocated by:
@@ -341,7 +341,7 @@ void hashcash_free( void* ptr);
 /* convert utct string into a time_t
  *
  * returns (time_t)-1 on error
- * 
+ *
  * arguments are:
  *
  * utct        -- utct string to convert

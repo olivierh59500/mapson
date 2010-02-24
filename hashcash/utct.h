@@ -26,7 +26,7 @@ time_t mk_utctime( struct tm* tms ); /* mktime like with utc struct tm */
  *    YYMMDDhhmm[ss]Z
  */
 
-/* when creating utc string, if requested len is odd Z is appended, 
+/* when creating utc string, if requested len is odd Z is appended,
  * if even Z is omitted
  *
  * when parsing Z or missing Z is tolerated

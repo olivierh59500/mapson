@@ -57,11 +57,11 @@ int hashcash_db_close( DB* db, int* err );
 
 /* empty string matches any key for sdb_find, sdb_findnext */
 
-#define ANY_KEY ""		
+#define ANY_KEY ""
 
-typedef int (*sdb_wcallback)( const char* key, char* val, 
+typedef int (*sdb_wcallback)( const char* key, char* val,
 			      void* arg, int* err );
-typedef int (*sdb_rcallback)( const char* key, const char* val, 
+typedef int (*sdb_rcallback)( const char* key, const char* val,
 			      void* arg, int* err );
 
 /* NOTE: keys should not contain spaces */
@@ -86,13 +86,13 @@ HCEXPORT
 int sdb_close( DB*, int* err );
 
 HCEXPORT
-int sdb_callbacklookup( DB*, sdb_rcallback cb, void* arg, 
+int sdb_callbacklookup( DB*, sdb_rcallback cb, void* arg,
 			char* key, int klen, char* val, int vlen,
 			int* err );
 
 HCEXPORT
-int sdb_callbacklookupnext( DB*, sdb_rcallback cb, void* arg, 
-			    char* key, int klen, char* val, int vlen, 
+int sdb_callbacklookupnext( DB*, sdb_rcallback cb, void* arg,
+			    char* key, int klen, char* val, int vlen,
 			    int* err );
 
 

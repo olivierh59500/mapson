@@ -11,7 +11,7 @@ int minter_mmx_compact_1_test(void)
 #if (defined(__i386__) || defined(__AMD64__)) && defined(__GNUC__) && defined(__MMX__)
 	return (gProcessorSupportFlags & HC_CPU_SUPPORTS_MMX) != 0;
 #endif
-  
+
   /* Not an x86 or AMD64, or compiler doesn't support MMX or GNU assembly */
   return 0;
 }
@@ -194,7 +194,7 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
   const char *p = encodeAlphabets[EncodeBase64];
   unsigned char *X = (unsigned char*) W;
   unsigned char *output = (unsigned char*) block;
-	
+
   if ( *best > 0 ) { maxBits = *best+1; }
 
   /* Splat Kn constants into MMX-style array */
@@ -202,7 +202,7 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
   ((uInt32*)K)[2] = ((uInt32*)K)[3] = K2;
   ((uInt32*)K)[4] = ((uInt32*)K)[5] = K3;
   ((uInt32*)K)[6] = ((uInt32*)K)[7] = K4;
-	
+
   /* Work out which bits to mask out for test */
   if(maxBits < 32) {
     if ( bits == 0 ) { bitMask1Low = 0; } else {
@@ -218,7 +218,7 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
   ((uInt32*) &vBitMaskHigh)[0] = bitMask1High;
   ((uInt32*) &vBitMaskHigh)[1] = bitMask1High;
   maxBits = 0;
-	
+
   /* Copy block and IV to vectorised internal storage */
   /* Assume little-endian order, as we're on x86 or AMD64 */
   for(t=0; t < 16; t++) {
@@ -231,7 +231,7 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
     Hw[t*2+0] = Hw[t*2+1] =
     pHw[t*2+0] = pHw[t*2+1] = IV[t];
 	}
-	
+
   /* The Tight Loop - everything in here should be extra efficient */
   for(iters=0; iters < maxIter-2; iters += 2) {
     /* Encode iteration count into tail */
@@ -272,7 +272,7 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
       C = H[2];
       D = H[3];
       E = H[4];
-			
+
       ROUND( 0, A, B, C, D, E, F1, K[0] );
       ROUND( 1, E, A, B, C, D, F1, K[0] );
       ROUND( 2, D, E, A, B, C, F1, K[0] );
@@ -280,7 +280,7 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
       ROUND( 4, B, C, D, E, A, F1, K[0] );
       ROUND( 5, A, B, C, D, E, F1, K[0] );
       ROUND( 6, E, A, B, C, D, F1, K[0] );
-			
+
       if(tailIndex == 52) {
 				ROUND( 7, D, E, A, B, C, F1, K[0] );
 				ROUND( 8, C, D, E, A, B, F1, K[0] );
@@ -288,14 +288,14 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
 				ROUND(10, A, B, C, D, E, F1, K[0] );
 				ROUND(11, E, A, B, C, D, F1, K[0] );
       }
-			
+
       pH[0] = A;
       pH[1] = B;
       pH[2] = C;
       pH[3] = D;
       pH[4] = E;
     }
-		
+
     /* Populate W buffer */
     for(t=16; t < 80; t += 4) {
       asm volatile (
@@ -359,7 +359,7 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
     C = pH[2];
     D = pH[3];
     E = pH[4];
-		
+
     /* Do the rounds */
     switch(tailIndex) {
     default:
@@ -386,32 +386,32 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
       ROUND(18, C, D, E, A, B, F1, K[0] );
       ROUND(19, B, C, D, E, A, F1, K[0] );
     }
-		
+
     ROUND5(20, F2, K[1] );
     ROUND5(25, F2, K[1] );
     ROUND5(30, F2, K[1] );
     ROUND5(35, F2, K[1] );
-		
+
     ROUND5(40, F3, K[2] );
     ROUND5(45, F3, K[2] );
     ROUND5(50, F3, K[2] );
     ROUND5(55, F3, K[2] );
-		
+
     ROUND5(60, F4, K[3] );
     ROUND5(65, F4, K[3] );
     ROUND5(70, F4, K[3] );
     ROUND5(75, F4, K[3] );
-		
+
     /* Mix in the IV again */
     MA = ADD(A, H[0]);
     MB = ADD(B, H[1]);
-					
+
     /* Go over each vector element in turn */
     for(n=0; n < 2; n++) {
       /* Extract A and B components */
       IA = ((uInt32*) &MA)[n];
       IB = ((uInt32*) &MB)[n];
-				
+
       /* Is this the best bit count so far? */
       if(!(IA & bitMask1Low) && !(IB & bitMask1High)) {
 				/* Count bits */
@@ -448,7 +448,7 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
 				((uInt32*) &vBitMaskLow )[1] = bitMask1Low ;
 				((uInt32*) &vBitMaskHigh)[0] = bitMask1High;
 				((uInt32*) &vBitMaskHigh)[1] = bitMask1High;
-				
+
 				/* Copy this result back to the block buffer, little-endian */
 				for(t=0; t < 16; t++) {
 					output[t*4+0] = X[t*8+3+n*4];
@@ -456,19 +456,19 @@ unsigned long minter_mmx_compact_1(int bits, int* best, unsigned char *block, co
 					output[t*4+2] = X[t*8+1+n*4];
 					output[t*4+3] = X[t*8+0+n*4];
 				}
-				
+
 				/* Is it good enough to bail out? */
 				if(gotBits >= bits) {
 					/* Shut down use of MMX */
 					__builtin_ia32_emms();
-				  
+
 					return iters+2;
 				}
       }
     }
     MINTER_CALLBACK();
   }
-	
+
   /* Shut down use of MMX */
   __builtin_ia32_emms();
 
