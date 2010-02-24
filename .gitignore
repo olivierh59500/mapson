@@ -12,6 +12,7 @@
 /gnulib
 /libgnu
 /mapson-*.tar.gz
+/mapson-*.tar.gz.sig
 Makefile
 Makefile.in
 

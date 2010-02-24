@@ -1,6 +1,6 @@
-                        mapSoN 3.2 beta 1
+                          mapSoN 3.2
 
-                  Peter Simons <simons@cryp.to>
+                Peter Simons <simons@cryp.to>
 
 
 Installing mapSoN 3.x
@@ -18,18 +18,18 @@ fine. Just do the usual Autoconf routine:
 With that part out of the way, go to /usr/local/mapson/etc,
 rename the file "sample-config" to "config", and customize to
 your system. This is a side-wide configuration file! Users may
-override all settings by creating a configuration file of their
-own in "$HOME/.mapson/config".
+override all settings by creating a configuration file of
+their own in "$HOME/.mapson/config".
 
 Now go to /usr/local/mapson/share and rename the file
-"sample-challenge-template" to "challenge-template". Again, you
-might want to customize it to your preferred wording, language
-etc. This is a site-wide file, too. Users can override it by
-changing the path in their local configuration file or by
-creating "$HOME/.mapson/challenge-template".
+"sample-challenge-template" to "challenge-template". Again,
+you might want to customize it to your preferred wording,
+language etc. This is a site-wide file, too. Users can
+override it by changing the path in their local configuration
+file or by creating "$HOME/.mapson/challenge-template".
 
-Further details on how to configure mapSoN (and how to activate
-it) can be found in the fine manual "mapson.html".
+Further details on how to configure mapSoN (and how to
+activate it) can be found in the fine manual "mapson.html".
 
 
 Upgrading from Version 2
@@ -69,5 +69,3 @@ the software:
  * To enable HashCash support, all you have to do is to create
    the file pointed to by WhoamiDB. All other settings have
    defaults.
-
-Alright ... have fun. :-)

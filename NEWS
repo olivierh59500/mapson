@@ -1,65 +1,55 @@
-                        History of the mapSoN utility
-                        =============================
+#+TITLE: History of the mapSoN utility         -*- mode:org;fill-column:79; -*-
+#+STARTUP: showall
 
-2004-06-21:
+* Noteworthy changes in release 3.2 (2010-02-24) [stable]
 
-	Released version 3.0.
+  Converted the entire build system to gnulib.
 
-	The StrictRFCParser option is gone. Didn't do anything useful anyway.
+* Noteworthy changes in release 3.0 (2004-06-21) [stable]
 
-	Added WhiteListDB option. This points to a file containing one regular
-	expression per line. Every incoming sender address that matches any of
-	those regexes is is accepted and added to the AddressDB as well.
+  The StrictRFCParser option is gone. Didn't do anything useful anyway.
 
-	The cumbersome ReqConfirmTemplate config option has been renamed to
-	ChallengeTemplate. Along, the default file name has been renamed from
-	reqmail.template to challenge-template.
+  Added WhiteListDB option. This points to a file containing one regular
+  expression per line. Every incoming sender address that matches any of
+  those regexes is is accepted and added to the AddressDB as well.
 
-	Added support for HashCash: http://www.hashcash.org/ This required
-	adding the following config options:
+  The cumbersome ReqConfirmTemplate config option has been renamed to
+  ChallengeTemplate. Along, the default file name has been renamed from
+  reqmail.template to challenge-template.
 
-	    WhoamiDB          - list of accepted address
-	    HashCashDB        - path to seen-database
-	    HashCashExpiry    - expiry time for HashCashes
-	    HashCashGrace     - grace time to allow for clock skew
-	    ReqHashCashBits   - required number of collisien bits
+  Added support for HashCash <http://www.hashcash.org/>. This required adding
+  the following config options:
 
-	To enable HashCash support, you _must_ create the WhoamiDB file and
-	state your e-mail addresses, one per line, so that mapSoN can verify
-	the signature in the X-Hashcash header.
+      WhoamiDB          - list of accepted address
+      HashCashDB        - path to seen-database
+      HashCashExpiry    - expiry time for HashCashes
+      HashCashGrace     - grace time to allow for clock skew
+      ReqHashCashBits   - required number of collisien bits
 
-2003-06-28:
+  To enable HashCash support, you _must_ create the WhoamiDB file and
+  state your e-mail addresses, one per line, so that mapSoN can verify
+  the signature in the X-Hashcash header.
 
-	Released version 2.4.
+* Noteworthy changes in release 2.3 (2003-05-27) [stable]
 
-2003-05-27:
+  Added the --dont-scan option to the command line. Specifying this will
+  tell mapSoN _not_ to scan the body of the incoming mail for a cookie.
+  This is useful in setups, where the cookie is extracted via procmail's
+  "+argument" mechanism, for instance, thus it is passed to mapSoN via
+  the --cookie flag anyway.
 
-	Released version 2.3.
+* Noteworthy changes in release 2.0 (2002-05-03) [major]
 
-	Added the --dont-scan option to the command line. Specifying this will
-	tell mapSoN _not_ to scan the body of the incoming mail for a cookie.
-	This is useful in setups, where the cookie is extracted via procmail's
-	"+argument" mechanism, for instance, thus it is passed to mapSoN via
-	the --cookie flag anyway.
+  Added the "--cookie" command line parameter: If it is specified mapSoN
+  does not scan the e-mail but tries to approve that one directly.
 
-2002-06-26:
+  The request-for-confirmation template file may now contain environment
+  variables, too.
 
-	Released version 2.1.
+  Added the "--accept" parameter to the command line: If it is
+  specified, mapSoN will accept the incoming mail unconditionally.
 
-2002-05-03:
+  Improved the sample request-for-confirmation template to be
+  user-independent. Users can simply use the installed default now.
 
-	Released version 2.0.
-
-	Added the "--cookie" command line parameter: If it is specified mapSoN
-	does not scan the e-mail but tries to approve that one directly.
-
-	The request-for-confirmation template file may now contain environment
-	variables, too.
-
-	Added the "--accept" parameter to the command line: If it is
-	specified, mapSoN will accept the incoming mail unconditionally.
-
-	Improved the sample request-for-confirmation template to be
-	user-independent. Users can simply use the installed default now.
-
-	mapSoN will log to $HOME/.mapson/log now rather than via syslog(3).
+  mapSoN will log to $HOME/.mapson/log now rather than via syslog(3).
