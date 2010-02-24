@@ -29,8 +29,6 @@ sed -i -e 's/^sc_program_name:/disabled_sc_program_name:/' \
        -e 's/^sc_useless_cpp_parens/disabled_sc_useless_cpp_parens/' \
   maint.mk
 
-#       -e 's/^/disabled_/' \
-
 build-aux/gitlog-to-changelog >ChangeLog
 
 autoreconf --install -Wall
