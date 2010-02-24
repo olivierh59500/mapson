@@ -21,11 +21,11 @@
 #define timer(x) gettimeofday(x,NULL)
 #endif
 
-#define MINTER_CALLBACK_ARGS hashcash_callback cb, void* user_args,	\
-	double counter, double expected
+#define MINTER_CALLBACK_ARGS hashcash_callback cb, void* user_args,     \
+        double counter, double expected
 
-#define MINTER_CALLBACK_VARS double percent;	\
-	TIMETYPE prev=TIME0, curr;		\
+#define MINTER_CALLBACK_VARS double percent;    \
+        TIMETYPE prev=TIME0, curr;              \
         int lastBits = *best
 
 /* in minter if have to do something for acces to floating point
@@ -38,52 +38,52 @@
 
 #if defined(WIN32)
 #define small_time_diff_gt( c, p, intv ) \
-	((c>p?c-p:(c+(((TIMETYPE)-1)-p)))>(intv))
+        ((c>p?c-p:(c+(((TIMETYPE)-1)-p)))>(intv))
 #else
 /* works for intervals < 1 second */
-#define small_time_diff_gt( c, p, intv )				\
-        (c.tv_sec-p.tv_sec>1 ||						\
-	(c.tv_usec+((c.tv_sec - p.tv_sec)?1000000:0))-p.tv_usec>(intv))
+#define small_time_diff_gt( c, p, intv )                                \
+        (c.tv_sec-p.tv_sec>1 ||                                         \
+        (c.tv_usec+((c.tv_sec - p.tv_sec)?1000000:0))-p.tv_usec>(intv))
 #endif
 
-#define MINTER_CALLBACK()						     \
-	do {								     \
-		if (cb != NULL && (iters & 0xFFFF) == 0) {		     \
-			timer(&curr);                                        \
-			if (gotBits > lastBits ||                            \
-			    small_time_diff_gt(curr,prev,100*MILLISEC)) {    \
-                                MINTER_CALLBACK_CLEANUP_FP;		     \
-				percent = (int)(((counter+iters)/	     \
-					expected*100)+0.5);		     \
-				if (!cb(percent,*best,bits,                  \
-					counter+iters,expected,user_args)) { \
-					*best = -1;                          \
-					return 0;			     \
-				}					     \
-				prev = curr;                                 \
-				lastBits = gotBits;			     \
-			}						     \
-		}							     \
-	} while (0)
+#define MINTER_CALLBACK()                                                    \
+        do {                                                                 \
+                if (cb != NULL && (iters & 0xFFFF) == 0) {                   \
+                        timer(&curr);                                        \
+                        if (gotBits > lastBits ||                            \
+                            small_time_diff_gt(curr,prev,100*MILLISEC)) {    \
+                                MINTER_CALLBACK_CLEANUP_FP;                  \
+                                percent = (int)(((counter+iters)/            \
+                                        expected*100)+0.5);                  \
+                                if (!cb(percent,*best,bits,                  \
+                                        counter+iters,expected,user_args)) { \
+                                        *best = -1;                          \
+                                        return 0;                            \
+                                }                                            \
+                                prev = curr;                                 \
+                                lastBits = gotBits;                          \
+                        }                                                    \
+                }                                                            \
+        } while (0)
 
 typedef unsigned int uInt32;
 typedef unsigned long (* HC_Mint_Routine)(int bits, int* best, unsigned char *block, const uInt32 IV[5], int tailIndex, unsigned long maxIter, MINTER_CALLBACK_ARGS);
 typedef int (* HC_Mint_Capable_Routine)(void);
 
 typedef enum {
-	EncodeHexUpper,     /* 0123456789ABCDEF */
-	EncodeHexLower,     /* 0123456789abcdef */
-	EncodeAlpha16Upper, /* ABCDEFGHIJKLMNOP */
-	EncodeAlpha16Lower, /* abcdefghijklmnop */
-	EncodeBase64        /* 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/ */
+        EncodeHexUpper,     /* 0123456789ABCDEF */
+        EncodeHexLower,     /* 0123456789abcdef */
+        EncodeAlpha16Upper, /* ABCDEFGHIJKLMNOP */
+        EncodeAlpha16Lower, /* abcdefghijklmnop */
+        EncodeBase64        /* 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/ */
 } EncodeAlphabet;
 
 
 typedef struct {
-	const char *name;
-	EncodeAlphabet encoding;
-	HC_Mint_Routine func;
-	HC_Mint_Capable_Routine test;
+        const char *name;
+        EncodeAlphabet encoding;
+        HC_Mint_Routine func;
+        HC_Mint_Capable_Routine test;
 } HC_Minter;
 
 #define HC_CPU_SUPPORTS_ALTIVEC 0x01
@@ -97,18 +97,18 @@ extern void hashcash_select_minter();
 
 /* Portably write a word into a byte array */
 #define PUT_WORD(_dst, _src) { \
-		*((unsigned char*)(_dst)+0) = ((_src) >> 24) & 0xFF; \
-		*((unsigned char*)(_dst)+1) = ((_src) >> 16) & 0xFF; \
-		*((unsigned char*)(_dst)+2) = ((_src) >>  8) & 0xFF; \
-		*((unsigned char*)(_dst)+3) = ((_src)      ) & 0xFF; \
-	}
+                *((unsigned char*)(_dst)+0) = ((_src) >> 24) & 0xFF; \
+                *((unsigned char*)(_dst)+1) = ((_src) >> 16) & 0xFF; \
+                *((unsigned char*)(_dst)+2) = ((_src) >>  8) & 0xFF; \
+                *((unsigned char*)(_dst)+3) = ((_src)      ) & 0xFF; \
+        }
 
 /* Portably load bytes into a word */
 #define GET_WORD(_src) ( \
-		(*((unsigned char*)(_src)+0) << 24) | \
-		(*((unsigned char*)(_src)+1) << 16) | \
-		(*((unsigned char*)(_src)+2) <<  8) | \
-		(*((unsigned char*)(_src)+3)      ) )
+                (*((unsigned char*)(_src)+0) << 24) | \
+                (*((unsigned char*)(_src)+1) << 16) | \
+                (*((unsigned char*)(_src)+2) <<  8) | \
+                (*((unsigned char*)(_src)+3)      ) )
 
 /* Attempt to mint a hashcash token with a given bit-value.
  * Will append a random string to token that produces the required preimage,

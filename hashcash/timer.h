@@ -44,7 +44,7 @@ extern timer timer_at_end;
 
 
 #define timer_lt( t, u ) ((t)->secs < (u)->secs || \
-			  ((t)->secs == (u)->secs && (t)->usecs < (u)->usecs))
+                          ((t)->secs == (u)->secs && (t)->usecs < (u)->usecs))
 
 #define timer_gt( t, u ) timer_lt( u, t )
 

@@ -75,7 +75,7 @@ int random_final( void )
 #if defined( WIN32 )
     #define pid_t int
     typedef BOOL (WINAPI *CRYPTACQUIRECONTEXT)(HCRYPTPROV *, LPCTSTR, LPCTSTR,
-					       DWORD, DWORD);
+                                               DWORD, DWORD);
     typedef BOOL (WINAPI *CRYPTGENRANDOM)(HCRYPTPROV, DWORD, BYTE *);
     typedef BOOL (WINAPI *CRYPTRELEASECONTEXT)(HCRYPTPROV, DWORD);
     HCRYPTPROV hProvider = 0;
@@ -90,7 +90,7 @@ long counter = 0;
 /* output = SHA1( input || time || pid || counter++ ) */
 
 static void random_stir( const byte input[SHA1_DIGEST_BYTES],
-			 byte output[SHA1_DIGEST_BYTES] )
+                         byte output[SHA1_DIGEST_BYTES] )
 {
     SHA1_ctx sha1;
 #if defined(__unix__) || defined(WIN32)
@@ -119,9 +119,9 @@ static void random_stir( const byte input[SHA1_DIGEST_BYTES],
     GetSystemTime(&tw);
     SHA1_Update( &sha1, &tw, sizeof( tw ) );
     if ( gen ) {
-	if (gen(hProvider, sizeof(buf), buf)) {
-	    SHA1_Update( &sha1, buf, sizeof(buf) );
-	}
+        if (gen(hProvider, sizeof(buf), buf)) {
+            SHA1_Update( &sha1, buf, sizeof(buf) );
+        }
     }
 #endif
     SHA1_Update( &sha1, input, SHA1_DIGEST_BYTES );
@@ -144,17 +144,17 @@ int random_init( void )
 #if defined(WIN32)
     advapi = LoadLibrary(TEXT("ADVAPI32.DLL"));
     if (advapi) {
-	acquire = (CRYPTACQUIRECONTEXT)
-	    GetProcAddress(advapi, TEXT("CryptAcquireContextA"));
-	gen = (CRYPTGENRANDOM)
-	    GetProcAddress(advapi, TEXT("CryptGenRandom"));
-	release = (CRYPTRELEASECONTEXT)
-	    GetProcAddress(advapi, TEXT("CryptReleaseContext"));
+        acquire = (CRYPTACQUIRECONTEXT)
+            GetProcAddress(advapi, TEXT("CryptAcquireContextA"));
+        gen = (CRYPTGENRANDOM)
+            GetProcAddress(advapi, TEXT("CryptGenRandom"));
+        release = (CRYPTRELEASECONTEXT)
+            GetProcAddress(advapi, TEXT("CryptReleaseContext"));
     }
     if ( acquire && gen ) {
-	if (!acquire(&hProvider, 0, 0, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
-	    gen = NULL;
-	}
+        if (!acquire(&hProvider, 0, 0, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
+            gen = NULL;
+        }
     }
 #endif
     srand(clock());
@@ -184,9 +184,9 @@ int random_getbytes( void* rnd, size_t len )
 
     random_stir( state, state ); /* mix in the time, pid */
     for ( ; len > 0; len -= use, rndp += CHUNK_LEN ) {
-	random_stir( state, output );
-	use = len > CHUNK_LEN ? CHUNK_LEN : len;
-	memcpy( rndp, output, use );
+        random_stir( state, output );
+        use = len > CHUNK_LEN ? CHUNK_LEN : len;
+        memcpy( rndp, output, use );
     }
     return 1;
 }
@@ -209,8 +209,8 @@ int random_rectangular( long top, long* resp )
     if ( top < 0 ) { neg = -1; top = -top; }
     mask = ~( LONG_MAX << count_bits( top ) );
     do {
-	if ( !random_getbytes( &res, sizeof( long ) ) ) { return 0; }
-	res &= mask;
+        if ( !random_getbytes( &res, sizeof( long ) ) ) { return 0; }
+        res &= mask;
     } while ( res > top );
     *resp = res * neg;
     return 1;

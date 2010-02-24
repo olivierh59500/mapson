@@ -32,10 +32,10 @@ word32 find_tick_us( void )
 
     do
     {
-	timer_read( &t2 );
+        timer_read( &t2 );
     }
     while ( timer_usecs( &t1 ) == timer_usecs( &t2 ) &&
-	    timer_secs( &t1 ) == timer_secs( &t2 ) );
+            timer_secs( &t1 ) == timer_secs( &t2 ) );
     elapsed = timer_interval( &t1, &t2 );
 
 /* see how many us the tick took */
@@ -80,19 +80,19 @@ void timer_diff( timer* s, timer* e, timer* diff )
     timer* t;
     double interval;
 
-    if ( timer_gt( s, e ) )	/* s > e */
+    if ( timer_gt( s, e ) )     /* s > e */
     {
-	t = s; s = e; e = t;	/* swap( s, e ) */
+        t = s; s = e; e = t;    /* swap( s, e ) */
     }
 
     interval = ( ( (double) e->secs ) - ( (double) s->secs ) )
-	* 1000000.0 + ( (double) e->usecs ) - ( (double) s->usecs );
+        * 1000000.0 + ( (double) e->usecs ) - ( (double) s->usecs );
 
 /* if diff is not NULL, store the difference between end and start in it */
     if ( diff )
     {
-	diff->secs = (word32)(interval / 1000000.0);
-	diff->usecs = (word32)(interval - diff->secs);
+        diff->secs = (word32)(interval / 1000000.0);
+        diff->usecs = (word32)(interval - diff->secs);
     }
 }
 
@@ -101,13 +101,13 @@ double timer_interval( timer* s, timer* e )
     timer* t;
     double interval;
 
-    if ( timer_gt( s, e ) )	/* s > e */
+    if ( timer_gt( s, e ) )     /* s > e */
     {
-	t = s; s = e; e = t;	/* swap( s, e ) */
+        t = s; s = e; e = t;    /* swap( s, e ) */
     }
 
     interval = ( ( (double) e->secs ) - ( (double) s->secs ) )
-	* 1000000.0 + ( (double) e->usecs ) - ( (double) s->usecs );
+        * 1000000.0 + ( (double) e->usecs ) - ( (double) s->usecs );
 
 /* return interval in usecs */
     return interval;

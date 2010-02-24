@@ -122,13 +122,13 @@ const char* hashcash_version( void );
  *                    (false)
  *
  * cb              -- user defined callback function which is called every
- *		      1/10th second; if it returns false hashcash_mint
+ *                    1/10th second; if it returns false hashcash_mint
  *                    will return HASHCASH_USER_ABORT; if you do not need
- *		      the callback function, pass NULL
+ *                    the callback function, pass NULL
  *
  * user_arg        -- user argument passed to the callback function, if you
- * 		      do not need the callback function or if you do not need
- *		      the arguement pass NULL.
+ *                    do not need the callback function or if you do not need
+ *                    the arguement pass NULL.
  *
  */
 
@@ -136,20 +136,20 @@ const char* hashcash_version( void );
  * stamp when finished */
 
 typedef int (*hashcash_callback)(int percent, int largest, int target,
-				 double count, double expected,
-				 void* user);
+                                 double count, double expected,
+                                 void* user);
 
 HCEXPORT
 int hashcash_mint( time_t now_time, int time_width, const char* resource,
-		   unsigned bits, long anon_period, char** stamp,
-		   long* anon_random, double* tries_taken, char* ext,
-		   int compress, hashcash_callback cb, void* user_arg );
+                   unsigned bits, long anon_period, char** stamp,
+                   long* anon_random, double* tries_taken, char* ext,
+                   int compress, hashcash_callback cb, void* user_arg );
 
 /* simpler API for minting  */
 
 HCEXPORT
 char* hashcash_simple_mint( const char* resource, unsigned bits,
-			    long anon_period, char* ext, int compress );
+                            long anon_period, char* ext, int compress );
 
 /* convert a stamp into a X-Hashcash: header wrapping lines at line_len
  * chars.  If line_len = 0, does not wrap, just prepends header.
@@ -167,8 +167,8 @@ char* hashcash_simple_mint( const char* resource, unsigned bits,
 
 HCEXPORT
 char* hashcash_make_header( const char* stamp, int line_len,
-			    const char* header, char cont,
-			    const char* lf  );
+                            const char* header, char cont,
+                            const char* lf  );
 
 /* return time field width necessary to express time in sufficient
  * resolution to avoid premature expiry of stamp minted
@@ -208,8 +208,8 @@ unsigned hashcash_count( const char* stamp );
 
 HCEXPORT
 int hashcash_parse( const char* stamp, int* vers, int* bits, char* utct,
-		    int utct_max, char* stamp_resource, int res_max,
-		    char** ext, int ext_max );
+                    int utct_max, char* stamp_resource, int res_max,
+                    char** ext, int ext_max );
 
 /* return how many seconds the stamp remains valid for
  * return value HASHCASH_VALID_FOREVER (value 0) means forever
@@ -227,7 +227,7 @@ int hashcash_parse( const char* stamp, int* vers, int* bits, char* utct,
 
 HCEXPORT
 long hashcash_valid_for( time_t stamp_time, long validity_period,
-			 long grace_period, time_t now_time );
+                         long grace_period, time_t now_time );
 
 /* simple function calling hashcash_parse, hashcash_count for convenience
  *
@@ -269,9 +269,9 @@ long hashcash_valid_for( time_t stamp_time, long validity_period,
 
 HCEXPORT
 int hashcash_check( const char* stamp, int case_flag, const char* resource,
-		    void **compile, char** re_err, int type, time_t now_time,
-		    long validity_period, long grace_period,
-		    int required_bits, time_t* stamp_time );
+                    void **compile, char** re_err, int type, time_t now_time,
+                    long validity_period, long grace_period,
+                    int required_bits, time_t* stamp_time );
 
 /* return how many tries per second the machine can do */
 
@@ -317,7 +317,7 @@ double hashcash_expected_tries( int b );
 
 HCEXPORT
 int hashcash_resource_match( int type, const char* stamp_res, const char* res,
-			     void** compile, char** err );
+                             void** compile, char** err );
 
 /* free memory which may beallocated by:
  *

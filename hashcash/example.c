@@ -17,12 +17,12 @@ void die( int err );
 void die_msg( const char* str );
 int parse_period( const char* aperiod, long* resp );
 int progress_callback(int percent, int largest, int target,
-		      double counter, double expected, void* user);
+                      double counter, double expected, void* user);
 
-#define EOK 0			/* no error */
-#define EINPUT -1		/* error invalid input */
+#define EOK 0                   /* no error */
+#define EINPUT -1               /* error invalid input */
 
-#define MAX_PERIOD 11		/* max time_t = 10 plus 's' */
+#define MAX_PERIOD 11           /* max time_t = 10 plus 's' */
 #define MAX_HDR 256
 #define EXIT_ERROR 3
 
@@ -55,201 +55,201 @@ int main( int argc, char* argv[] ) {
     hashcash_callback callback = NULL;
 
     while ( (opt=getopt( argc, argv,
-	 "-a:b:cde:f:g:hij:klmnop:qr:sSt:uvwx:yz:CEMO:PSVXZ:")) >0 ) {
-	switch( opt ) {
-	case 'a':
-	    if ( !parse_period( optarg, &anon_period ) ) {
-		usage( "error: -a invalid period arg" );
-	    }
-	    break;
-	case 'b': bits = atoi( optarg+1 );
-	    if ( bits < 0 ) { usage( "error: -b invalid bits arg" ); }
-	    break;
-	case 'C': case_flag = 1; break;
-	case 'c': check_flag = 1; break;
-	case 'd': db_flag = 1; break;
-	case 'e':
-	    if ( !parse_period( optarg, &validity_period ) ||
-		 validity_period < 0 ) {
-		usage( "error: -e invalid validity period" );
-	    }
-	    break;
-	case 'E': str_type = TYPE_REGEXP; break;
-	case 'f': db_filename = strdup( optarg ); break;
-	case 'g':
-	    if ( optarg[0] == '-' ) {
-		usage( "error: -g -ve grace period not valid" );
-	    }
-	    if ( !parse_period( optarg, &grace_period ) ) {
-		usage( "error: -g invalid grace period format" );
-	    }
-	    break;
-	case 'h': usage( "" ); break;
-	case 'i': ignore_boundary_flag = 1; break;
-	case 'j': purge_resource = optarg; break;
-	case 'k': purge_all = 1; break;
-	case 'm': mint_flag = 1; break;
-	case 'M': str_type = TYPE_WILD; break;
-	case 'O': core_flag = 1;
-	    core = atoi( optarg );
-	    res = hashcash_use_core( core );
-	    if ( res < 1 ) {
-		usage( res == -1 ? "error: -O no such core\n" :
-		       "error: -O core does not work on this platform" );
-	    }
-	    break;
-	case 'p':
-	    purge_flag = 1;
-	    if ( strcmp( optarg, "now" ) == 0 ) { purge_period = 0; }
-	    else if ( !parse_period( optarg, &purge_period ) ||
-		      purge_period < 0 ) {
-		usage( "error: -p invalid purge interval" );
-	    }
-	    break;
-	case 'P': callback = progress_callback; break;
-	case 1:
-	case 'r': resource = optarg; break;
-	case 's': speed_flag = 1; break;
-	case 'S': str_type = TYPE_STR; break;
-	case 't':
-	    if ( optarg[0] == '-' || optarg[0] == '+' ) {
-		if ( !parse_period( optarg, &time_period ) ) {
-		    usage( "error: -t invalid relative time format" );
-		}
-		now_time += time_period;
-	    } else {
-		now_time = hashcash_from_utctimestr( optarg, utc_flag );
-		if ( now_time == (time_t)-1 ) {
-		    usage( "error: -t invalid time format" );
-		}
-	    }
-	    break;
-	case 'u': utc_flag = 1; break;
+         "-a:b:cde:f:g:hij:klmnop:qr:sSt:uvwx:yz:CEMO:PSVXZ:")) >0 ) {
+        switch( opt ) {
+        case 'a':
+            if ( !parse_period( optarg, &anon_period ) ) {
+                usage( "error: -a invalid period arg" );
+            }
+            break;
+        case 'b': bits = atoi( optarg+1 );
+            if ( bits < 0 ) { usage( "error: -b invalid bits arg" ); }
+            break;
+        case 'C': case_flag = 1; break;
+        case 'c': check_flag = 1; break;
+        case 'd': db_flag = 1; break;
+        case 'e':
+            if ( !parse_period( optarg, &validity_period ) ||
+                 validity_period < 0 ) {
+                usage( "error: -e invalid validity period" );
+            }
+            break;
+        case 'E': str_type = TYPE_REGEXP; break;
+        case 'f': db_filename = strdup( optarg ); break;
+        case 'g':
+            if ( optarg[0] == '-' ) {
+                usage( "error: -g -ve grace period not valid" );
+            }
+            if ( !parse_period( optarg, &grace_period ) ) {
+                usage( "error: -g invalid grace period format" );
+            }
+            break;
+        case 'h': usage( "" ); break;
+        case 'i': ignore_boundary_flag = 1; break;
+        case 'j': purge_resource = optarg; break;
+        case 'k': purge_all = 1; break;
+        case 'm': mint_flag = 1; break;
+        case 'M': str_type = TYPE_WILD; break;
+        case 'O': core_flag = 1;
+            core = atoi( optarg );
+            res = hashcash_use_core( core );
+            if ( res < 1 ) {
+                usage( res == -1 ? "error: -O no such core\n" :
+                       "error: -O core does not work on this platform" );
+            }
+            break;
+        case 'p':
+            purge_flag = 1;
+            if ( strcmp( optarg, "now" ) == 0 ) { purge_period = 0; }
+            else if ( !parse_period( optarg, &purge_period ) ||
+                      purge_period < 0 ) {
+                usage( "error: -p invalid purge interval" );
+            }
+            break;
+        case 'P': callback = progress_callback; break;
+        case 1:
+        case 'r': resource = optarg; break;
+        case 's': speed_flag = 1; break;
+        case 'S': str_type = TYPE_STR; break;
+        case 't':
+            if ( optarg[0] == '-' || optarg[0] == '+' ) {
+                if ( !parse_period( optarg, &time_period ) ) {
+                    usage( "error: -t invalid relative time format" );
+                }
+                now_time += time_period;
+            } else {
+                now_time = hashcash_from_utctimestr( optarg, utc_flag );
+                if ( now_time == (time_t)-1 ) {
+                    usage( "error: -t invalid time format" );
+                }
+            }
+            break;
+        case 'u': utc_flag = 1; break;
         case 'V': version_flag = 1; break;
-	case 'x': ext = strdup( optarg ); break;
-	case 'X':
-	    hdr_flag = 1;
-	    sstrncpy( header, "X-Hashcash: ", MAX_HDR );
-	    break;
-	case 'z':
-	    time_width = atoi( optarg );
-	    if ( time_width != 6 && time_width != 10 && time_width != 12 ) {
-	        usage( "error: -z invalid time width: must be 6, 10 or 12" );
-	    }
-	    break;
-	case 'Z': compress = atoi( optarg ); break;
-	case '?':
-	    fprintf( stderr, "error: unrecognized option -%c", optopt );
-	    usage( "" );
-	    break;
-	case ':':
-	    fprintf( stderr, "error: option -%c missing argument", optopt );
-	    usage( "" );
-	    break;
-	default:
-	    usage( "error with argument processing" );
-	    break;
-	}
+        case 'x': ext = strdup( optarg ); break;
+        case 'X':
+            hdr_flag = 1;
+            sstrncpy( header, "X-Hashcash: ", MAX_HDR );
+            break;
+        case 'z':
+            time_width = atoi( optarg );
+            if ( time_width != 6 && time_width != 10 && time_width != 12 ) {
+                usage( "error: -z invalid time width: must be 6, 10 or 12" );
+            }
+            break;
+        case 'Z': compress = atoi( optarg ); break;
+        case '?':
+            fprintf( stderr, "error: unrecognized option -%c", optopt );
+            usage( "" );
+            break;
+        case ':':
+            fprintf( stderr, "error: option -%c missing argument", optopt );
+            usage( "" );
+            break;
+        default:
+            usage( "error with argument processing" );
+            break;
+        }
     }
 
     if ( version_flag ) {
-	fprintf( stdout, "%s\n", HASHCASH_VERSION_STRING );
-	exit( EXIT_FAILURE );
+        fprintf( stdout, "%s\n", HASHCASH_VERSION_STRING );
+        exit( EXIT_FAILURE );
     }
 
     if ( speed_flag ) {
-	if ( core_flag ) {
-	    hashcash_benchtest( 3, core );
-	} else {
-	    hashcash_benchtest( 3, -1 );
-	}
-	exit( EXIT_FAILURE );
+        if ( core_flag ) {
+            hashcash_benchtest( 3, core );
+        } else {
+            hashcash_benchtest( 3, -1 );
+        }
+        exit( EXIT_FAILURE );
     }
 
     if ( mint_flag ) {
-	err = hashcash_mint( now_time, time_width, resource, bits,
-			     anon_period, &new_token, &anon_random,
-			     &tries_taken, ext, compress,
-			     callback, NULL );
+        err = hashcash_mint( now_time, time_width, resource, bits,
+                             anon_period, &new_token, &anon_random,
+                             &tries_taken, ext, compress,
+                             callback, NULL );
     } else if ( purge_flag ) {
-	if ( !hashcash_db_open( &db, db_filename, &err ) ) {
-	    die(err);
-	}
-	if ( !hashcash_db_purge( &db, purge_resource, str_type, case_flag,
-				 validity_period, grace_period, purge_all,
-				 purge_period, now_time, &err ) ) {
-	    die(err);
-	}
-	if ( !hashcash_db_close( &db, &err ) ) {
-	    die(err);
-	}
+        if ( !hashcash_db_open( &db, db_filename, &err ) ) {
+            die(err);
+        }
+        if ( !hashcash_db_purge( &db, purge_resource, str_type, case_flag,
+                                 validity_period, grace_period, purge_all,
+                                 purge_period, now_time, &err ) ) {
+            die(err);
+        }
+        if ( !hashcash_db_close( &db, &err ) ) {
+            die(err);
+        }
     } else if ( check_flag ) {
-	valid_for = hashcash_check( token, case_flag, resource, compile,
-				    &re_err, str_type, now_time,
-				    validity_period, grace_period, bits,
-				    &token_time );
-	if ( valid_for < 0 ) {
-	    switch ( valid_for ) {
-	    case HASHCASH_INSUFFICIENT_BITS:
-		fprintf( stderr, "no match: token has insufficient bits\n" );
-		break;
-	    case HASHCASH_VALID_IN_FUTURE:
-		fprintf( stderr, "no match: valid in future\n" );
-		break;
-	    case HASHCASH_EXPIRED:
-		fprintf( stderr, "no match: token expired\n" );
-		break;
-	    case HASHCASH_WRONG_RESOURCE:
-		fprintf( stderr, "no match: wrong resource\n" );
-		break;
-	    case HASHCASH_REGEXP_ERROR:
-		fprintf( stderr, "regexp error: " );
-		die_msg( re_err );
-		break;
+        valid_for = hashcash_check( token, case_flag, resource, compile,
+                                    &re_err, str_type, now_time,
+                                    validity_period, grace_period, bits,
+                                    &token_time );
+        if ( valid_for < 0 ) {
+            switch ( valid_for ) {
+            case HASHCASH_INSUFFICIENT_BITS:
+                fprintf( stderr, "no match: token has insufficient bits\n" );
+                break;
+            case HASHCASH_VALID_IN_FUTURE:
+                fprintf( stderr, "no match: valid in future\n" );
+                break;
+            case HASHCASH_EXPIRED:
+                fprintf( stderr, "no match: token expired\n" );
+                break;
+            case HASHCASH_WRONG_RESOURCE:
+                fprintf( stderr, "no match: wrong resource\n" );
+                break;
+            case HASHCASH_REGEXP_ERROR:
+                fprintf( stderr, "regexp error: " );
+                die_msg( re_err );
+                break;
 
-	    default:
-		die_msg( "internal error" );
-		break;
-	    }
-	    exit( EXIT_FAILURE );
-	}
-	checked = 1;
+            default:
+                die_msg( "internal error" );
+                break;
+            }
+            exit( EXIT_FAILURE );
+        }
+        checked = 1;
     }
 
     if ( db_flag && check_flag && checked ) {
-	if ( !hashcash_db_open( &db, db_filename, &err ) ) {
-	    die(err);
-	}
-	if ( hashcash_db_in( &db, token, token_utime, &err ) ) {
-	    if ( err ) { die(err); }
-	    fprintf( stderr, "stamp: double spent\n" );
-	}
-	sprintf( period, "%ld", (long)validity_period );
-	if ( !hashcash_db_add( &db, token, period, &err ) ) {
-	    die(err);
-	}
-	if ( !hashcash_db_close( &db, &err ) ) {
-	    die(err);
-	}
+        if ( !hashcash_db_open( &db, db_filename, &err ) ) {
+            die(err);
+        }
+        if ( hashcash_db_in( &db, token, token_utime, &err ) ) {
+            if ( err ) { die(err); }
+            fprintf( stderr, "stamp: double spent\n" );
+        }
+        sprintf( period, "%ld", (long)validity_period );
+        if ( !hashcash_db_add( &db, token, period, &err ) ) {
+            die(err);
+        }
+        if ( !hashcash_db_close( &db, &err ) ) {
+            die(err);
+        }
     }
 
     exit( EXIT_SUCCESS );
 }
 
 int progress_callback(int percent, int largest, int target,
-		      double counter, double expected, void* user)
+                      double counter, double expected, void* user)
 {
     static int previous_percent = -1;
     static int previous_largest = -1;
     static double previous_counter = -1;
 
     if ( previous_counter != counter ||
-	 previous_percent != percent || previous_largest != largest ) {
-	fprintf( stderr, "percent: %.0lf/%.0lf = %d%% [%d/%d bits]\r",
-		 counter, expected, percent, largest, target );
-	previous_percent = percent;
-	previous_largest = largest;
-	previous_counter = counter;
+         previous_percent != percent || previous_largest != largest ) {
+        fprintf( stderr, "percent: %.0lf/%.0lf = %d%% [%d/%d bits]\r",
+                 counter, expected, percent, largest, target );
+        previous_percent = percent;
+        previous_largest = largest;
+        previous_counter = counter;
     }
     return 1;
 }
@@ -305,15 +305,15 @@ int parse_period( const char* aperiod, long* resp )
     if ( period_len == 0 ) { return 0; }
     last_char = aperiod[period_len-1];
     if ( ! isdigit( last_char ) && ! strchr( "YyMdhmsw", last_char ) ) {
-	return 0;
+        return 0;
     }
 
     sstrncpy( period, aperiod, MAX_PERIOD );
 
     if ( ! isdigit( last_char ) ) { period[--period_len] = '\0'; }
     if ( period[0] == '+' || period[0] == '-' ) {
-	if ( period[0] == '-' ) { res = -1; }
-	period++; period_len--;
+        if ( period[0] == '-' ) { res = -1; }
+        period++; period_len--;
     }
     if ( period_len > 0 ) { res *= atoi( period ); }
     switch ( last_char )
@@ -339,14 +339,14 @@ void die( int err )
 
     switch ( err ) {
     case EOK:
-	exit( EXIT_SUCCESS );
-	break;
+        exit( EXIT_SUCCESS );
+        break;
     case EINPUT:
-	str = "invalid inputs";
-	break;
+        str = "invalid inputs";
+        break;
     default:
-	str = strerror( err );
-	break;
+        str = strerror( err );
+        break;
     }
     fprintf( stderr, "error: %s\n", str );
     exit( EXIT_ERROR );

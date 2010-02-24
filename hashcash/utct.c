@@ -39,7 +39,7 @@ static int century_offset_to_year( int century_offset )
     return year;
 }
 
-#define MAX_DATE 50		/* Sun Mar 10 19:25:06 2002 (EST) */
+#define MAX_DATE 50             /* Sun Mar 10 19:25:06 2002 (EST) */
 
 /* more logical time_t to string conversion */
 
@@ -51,15 +51,15 @@ const char* strtime( time_t* timep, int utc )
     char* timestr = NULL ;
     char* zone = NULL ;
     if ( utc ) {
-	timestr = asctime( gmtime( timep ) );
-	zone = "UTC";
+        timestr = asctime( gmtime( timep ) );
+        zone = "UTC";
     } else {
         isdst = localtime( timep );
-	timestr = asctime( isdst );
-	zone = tzname[isdst->tm_isdst];
+        timestr = asctime( isdst );
+        zone = tzname[isdst->tm_isdst];
     }
     sstrncpy( date, timestr, MAX_DATE );
-    date[strlen(date)-1]='\0';	/* remove trailing \n */
+    date[strlen(date)-1]='\0';  /* remove trailing \n */
     snprintf( str, MAX_DATE, "%s (%s)", date, zone );
     return str;
 }
@@ -76,8 +76,8 @@ time_t mk_utctime( struct tm* tms ) {
     if ( tz ) {
         set_tz = malloc( strlen( tz ) + 3 + 1 );
         sprintf( set_tz, "TZ=%s", tz );
-	putenv( set_tz );
-	free( set_tz );
+        putenv( set_tz );
+        free( set_tz );
     } else { putenv( "TZ" ); }
     return res;
 }
@@ -93,13 +93,13 @@ time_t hashcash_from_utctimestr( const char utct[MAX_UTC+1], int utc )
     int century_offset = 0;
 
     if ( utct_len > MAX_UTC || utct_len < 2 || ( utct_len % 2 == 1 ) ) {
-	return failed;
+        return failed;
     }
 
 /* defaults */
     tms.tm_mon = 0; tms.tm_mday = 1;
     tms.tm_hour = 0; tms.tm_min = 0; tms.tm_sec = 0;
-    tms.tm_isdst = 0;	/* daylight saving on */
+    tms.tm_isdst = 0;   /* daylight saving on */
     tms_hour = tms.tm_hour;
 
 /* year */
@@ -142,11 +142,11 @@ time_t hashcash_from_utctimestr( const char utct[MAX_UTC+1], int utc )
        conversions, this code will do whatever the system calls do */
 
         tms_hour = tms.tm_hour;
-        res = mktime( &tms );	/* get time without DST adjust */
- 	dst = localtime( &res ); /* convert back to get DST adjusted  */
-	dst->tm_hour = tms_hour; /* put back in hour to convert */
- 	res = mktime( dst ); /* redo conversion with DST adjustment  */
- 	return res;
+        res = mktime( &tms );   /* get time without DST adjust */
+        dst = localtime( &res ); /* convert back to get DST adjusted  */
+        dst->tm_hour = tms_hour; /* put back in hour to convert */
+        res = mktime( dst ); /* redo conversion with DST adjustment  */
+        return res;
     }
 }
 
