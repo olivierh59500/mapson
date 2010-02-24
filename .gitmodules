@@ -1,0 +1,3 @@
+[submodule "varexp"]
+	path = varexp
+	url = git://git.savannah.nongnu.org/varexp.git

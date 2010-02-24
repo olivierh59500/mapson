@@ -21,7 +21,3 @@ lib*.a
 /mapson
 /mapson.1
 /mapson.html
-
-# sub modules
-
-/varexp
