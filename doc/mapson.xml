@@ -9,12 +9,12 @@
     <!ENTITY configfile SYSTEM "configfile.inc">
     <!ENTITY license SYSTEM "license.inc">
     <!ENTITY defreqmail SYSTEM "defreqmail.inc">
-    <!ENTITY varexp "<application>libvarexp</application>">
-    <!ENTITY arrays SYSTEM "../varexp/docs/arrays-of-variables.inc">
-    <!ENTITY looping SYSTEM "../varexp/docs/looping.inc">
-    <!ENTITY operations SYSTEM "../varexp/docs/operations-on-variables.inc">
-    <!ENTITY quoted-pairs SYSTEM "../varexp/docs/quoted-pairs.inc">
-    <!ENTITY expressions SYSTEM "../varexp/docs/variable-expressions.inc">
+    <!ENTITY varexp "<application>varexp</application>">
+    <!ENTITY arrays SYSTEM "../varexp/doc/arrays-of-variables.inc">
+    <!ENTITY looping SYSTEM "../varexp/doc/looping.inc">
+    <!ENTITY operations SYSTEM "../varexp/doc/operations-on-variables.inc">
+    <!ENTITY quoted-pairs SYSTEM "../varexp/doc/quoted-pairs.inc">
+    <!ENTITY expressions SYSTEM "../varexp/doc/variable-expressions.inc">
     ]>
 
 <article lang="en">
