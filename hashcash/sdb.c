@@ -1,5 +1,6 @@
 /* -*- Mode: C; c-file-style: "stroustrup" -*- */
 
+#include "config.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>

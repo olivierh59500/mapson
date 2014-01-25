@@ -18,6 +18,8 @@
 #ifndef MAPSON_HPP_INCLUDED
 #define MAPSON_HPP_INCLUDED
 
+#include "config.h"
+
 #include <set>
 #include <string>
 #include <ctime>
