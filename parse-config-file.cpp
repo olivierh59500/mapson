@@ -55,7 +55,7 @@ void parse_config_file(char const * filename, AbstractConfig& config)
 
   std::ifstream file(filename);
   if (!file)
-    throw system_error(std::string("parse_config_file() failed to open '") + filename + "'");
+    throw Mapson::system_error(std::string("parse_config_file() failed to open '") + filename + "'");
 
   // Now we read line by line and process each one seperately.
 

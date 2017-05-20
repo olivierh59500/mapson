@@ -44,13 +44,13 @@ string spool(const string& mail)
   info("Spooling e-mail '%s' as '%s'.", config->message_id.c_str(), filename.c_str());
   int fd = open(filename.c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
   if (fd < 0)
-    throw system_error(string("Can't open spool file '") + filename + "' for writing");
+    throw Mapson::system_error(string("Can't open spool file '") + filename + "' for writing");
   fd_sentry sentry(fd);
   for (size_t len = 0; len < mail.size(); )
   {
     ssize_t rc = write(fd, mail.data()+len, mail.size()-len);
     if (rc < 0)
-      throw system_error(string("Failed writing to the spool file '") + filename + "'");
+      throw Mapson::system_error(string("Failed writing to the spool file '") + filename + "'");
     else
       len += rc;
   }

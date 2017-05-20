@@ -62,7 +62,7 @@ static void gather_addresses(int argc, char** argv)
 
       fd = open(argv[i], O_RDONLY, 0);
       if (fd < 0)
-        throw system_error("Can't open file for reading");
+        throw Mapson::system_error("Can't open file for reading");
       fd_sentry sentry(fd);
       string mail;
       for (rc = read(fd, buffer, sizeof(buffer));
@@ -72,7 +72,7 @@ static void gather_addresses(int argc, char** argv)
         mail.append(buffer, rc);
       }
       if (rc < 0)
-        throw system_error("Failed to read from file");
+        throw Mapson::system_error("Failed to read from file");
 
       // Extract the mail addresses.
 
@@ -196,7 +196,7 @@ try
     mail.append(buffer, rc);
   }
   if (rc < 0)
-    throw system_error("Failed to read mail from standard input");
+    throw Mapson::system_error("Failed to read mail from standard input");
 
   // Check whether the mail contains a valid cookie. If it does,
   // mail will be replaced with the original e-mail, that was

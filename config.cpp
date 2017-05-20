@@ -70,9 +70,9 @@ namespace
     string tmp = string(name) + "=" + value;
     char* env = strdup(tmp.c_str());
     if (env == 0)
-      throw system_error("strdup() failed");
+      throw Mapson::system_error("strdup() failed");
     if (putenv(env) != 0)
-      throw system_error("putenv() failed");
+      throw Mapson::system_error("putenv() failed");
   }
 }
 
@@ -84,7 +84,7 @@ configuration::configuration(int argc, char** argv)
 
   pwd_sentry sentry(getpwuid(getuid()));
   if (sentry.pwd == 0)
-    throw system_error("Can't get my user name");
+    throw Mapson::system_error("Can't get my user name");
   log_file.assign(sentry.pwd->pw_dir).append("/.mapson/log");
   spool_dir.assign(sentry.pwd->pw_dir).append("/.mapson/spool");
   address_db.assign(sentry.pwd->pw_dir).append("/.mapson/address-db");

@@ -29,7 +29,7 @@ string lines2regex(string const & filename)
     if (errno == ENOENT)
       return "";
     else
-      throw system_error(string("Can't open regex db '") +
+      throw Mapson::system_error(string("Can't open regex db '") +
                         filename + "' for reading");
   }
   fd_sentry sentry(fd);
@@ -40,7 +40,7 @@ string lines2regex(string const & filename)
   lock.l_start  = 0;
   lock.l_len    = 0;
   if (fcntl(fd, F_SETLKW, &lock) != 0)
-    throw system_error(string("Can't lock file '") + filename + "'");
+    throw Mapson::system_error(string("Can't lock file '") + filename + "'");
 
   // Read the file into memory.
 
@@ -52,7 +52,7 @@ string lines2regex(string const & filename)
        rc = read(fd, buffer, sizeof(buffer)))
     data.append(buffer, rc);
   if (rc < 0)
-    throw system_error(string("Failed to read regex db '") +
+    throw Mapson::system_error(string("Failed to read regex db '") +
                       filename + "' into memory");
 
   // Walk through the lines and compile the regexes.

@@ -23,6 +23,8 @@
 #include <string>
 #include <cstring>
 
+namespace Mapson {
+
 class system_error : public std::runtime_error
 {
 public:
@@ -42,5 +44,7 @@ private:
     return string(strerror(errno));
   }
 };
+
+} // namespace Mapson
 
 #endif

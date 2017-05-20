@@ -157,7 +157,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
   string filename = config->request_for_confirmation_file;
   int fd = multi_open(filename, O_RDONLY, S_IRUSR | S_IWUSR);
   if (fd < 0)
-    throw system_error(string("Can't open request-mail template file '") + filename + "' for reading");
+    throw Mapson::system_error(string("Can't open request-mail template file '") + filename + "' for reading");
   fd_sentry sentry(fd);
 
   // Read the file into memory.
@@ -167,7 +167,7 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
   for (rc = read(fd, buffer, sizeof(buffer)); rc > 0; rc = read(fd, buffer, sizeof(buffer)))
     mail_template.append(buffer, rc);
   if (rc < 0)
-    throw system_error(string("Failed to read request-mail template file '") + filename + "' into memory");
+    throw Mapson::system_error(string("Failed to read request-mail template file '") + filename + "' into memory");
 
   // Expand variables in the template.
 
@@ -180,11 +180,11 @@ void request_confirmation(const string& mail, const string& hash, const mail_add
   debug(("Executing mail transport agent '%s'.", config->mta.c_str()));
   FILE* fh = popen(config->mta.c_str(), "w");
   if (fh == NULL)
-    throw system_error(string("Can't start MTA '") + config->mta + "'");
+    throw Mapson::system_error(string("Can't start MTA '") + config->mta + "'");
   if (fwrite(mail_template.data(), mail_template.size(), 1, fh) != 1)
   {
     pclose(fh);
-    throw system_error(string("Failed to pipe to MTA process '") + config->mta + "'");
+    throw Mapson::system_error(string("Failed to pipe to MTA process '") + config->mta + "'");
   }
   pclose(fh);
 }

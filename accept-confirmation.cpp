@@ -52,7 +52,7 @@ inline void deliver_approved_mail(string const & filename, string const & cookie
     for (rc = read(fd, tmp, sizeof(tmp)); rc > 0; rc = read(fd, tmp, sizeof(tmp)))
       mail.append(tmp, rc);
     if (rc < 0)
-      throw system_error(string("Failed to read mail file '") + filename + "'");
+      throw Mapson::system_error(string("Failed to read mail file '") + filename + "'");
     deliver(mail);
     unlink(filename.c_str());
   }

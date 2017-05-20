@@ -30,10 +30,10 @@ inline string make_timestamp()
   char buf[64];
   time_t tstamp = time(0);
   if (tstamp == static_cast<time_t>(-1))
-    throw system_error("time(2) failed");
+    throw Mapson::system_error("time(2) failed");
   struct tm* tmtime = localtime(&tstamp);
   if (tmtime == 0)
-    throw system_error("localtime(3) failed");
+    throw Mapson::system_error("localtime(3) failed");
   strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", tmtime);
   return buf;
 }
@@ -42,7 +42,7 @@ void init_logging(const char* file)
 {
   fileh.file = fopen(file, "a");
   if (fileh.file == 0)
-    throw system_error(string("Could not open log file ") + file);
+    throw Mapson::system_error(string("Could not open log file ") + file);
 
   struct flock lock;
   lock.l_type = F_WRLCK;
@@ -50,7 +50,7 @@ void init_logging(const char* file)
   lock.l_start  = 0;
   lock.l_len    = 0;
   if (fcntl(fileno(fileh.file), F_SETLKW, &lock) != 0)
-    throw system_error(string("Can't lock file '") + file + "'");
+    throw Mapson::system_error(string("Can't lock file '") + file + "'");
 }
 
 void _debug(const char* fmt, ...)

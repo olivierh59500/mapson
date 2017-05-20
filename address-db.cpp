@@ -26,7 +26,7 @@ AddressDB::AddressDB(const string& filename_arg)
 
   fd = open(filename.c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd < 0)
-    throw system_error(string("Can't open address db '") +
+    throw Mapson::system_error(string("Can't open address db '") +
                       filename + "' for reading");
   fd_sentry sentry(fd);
 
@@ -36,7 +36,7 @@ AddressDB::AddressDB(const string& filename_arg)
   lock.l_start  = 0;
   lock.l_len    = 0;
   if (fcntl(fd, F_SETLKW, &lock) != 0)
-    throw system_error(string("Can't lock file '") + filename + "'");
+    throw Mapson::system_error(string("Can't lock file '") + filename + "'");
 
   // Read the file into memory.
 
@@ -47,7 +47,7 @@ AddressDB::AddressDB(const string& filename_arg)
        rc = read(fd, buffer, sizeof(buffer)))
     data.append(buffer, rc);
   if (rc < 0)
-    throw system_error(string("Failed to read address db '") +
+    throw Mapson::system_error(string("Failed to read address db '") +
                       filename + "' into memory");
 
   // Success. Don't close the file descriptor.
@@ -107,7 +107,7 @@ void AddressDB::insert(const string& key)
   {
     ssize_t rc = write(fd, data.data()+len, data.size()-len);
     if (rc < 0)
-      throw system_error(string("Failed writing to the address db '") + filename + "'");
+      throw Mapson::system_error(string("Failed writing to the address db '") + filename + "'");
     else
       len += rc;
   }

@@ -31,11 +31,11 @@ void deliver(const string& mail)
 
     FILE* fh = popen(config->mailbox.c_str()+1, "w");
     if (fh == NULL)
-      throw system_error(string("Can't start delivery pipe '") + config->mailbox + "'");
+      throw Mapson::system_error(string("Can't start delivery pipe '") + config->mailbox + "'");
     int len = fwrite(mail.data(), mail.size(), 1, fh);
     pclose(fh);
     if (len != 1)
-      throw system_error(string("Failed to pipe to MTA process '") + config->mailbox + "'");
+      throw Mapson::system_error(string("Failed to pipe to MTA process '") + config->mailbox + "'");
   }
   else
   {
@@ -43,7 +43,7 @@ void deliver(const string& mail)
 
     int fd = open(config->mailbox.c_str(), O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
     if (fd < 0)
-      throw system_error(string("Can't open mailbox file '") + config->mailbox + "' for writing");
+      throw Mapson::system_error(string("Can't open mailbox file '") + config->mailbox + "' for writing");
     fd_sentry sentry(fd);
 
     struct flock lock;
@@ -52,13 +52,13 @@ void deliver(const string& mail)
     lock.l_start  = 0;
     lock.l_len    = 0;
     if (fcntl(fd, F_SETLKW, &lock) != 0)
-      throw system_error(string("Can't lock file '") + config->mailbox + "'");
+      throw Mapson::system_error(string("Can't lock file '") + config->mailbox + "'");
 
     for (size_t len = 0; len < mail.size(); )
     {
       ssize_t rc = write(fd, mail.data()+len, mail.size()-len);
       if (rc < 0)
-        throw system_error(string("Failed writing to the mailbox file '") + config->mailbox + "'");
+        throw Mapson::system_error(string("Failed writing to the mailbox file '") + config->mailbox + "'");
       else
         len += rc;
     }
