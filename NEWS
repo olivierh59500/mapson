@@ -1,8 +1,9 @@
 #+TITLE: History of the mapSoN utility         -*- mode:org;fill-column:79; -*-
 #+STARTUP: showall
 
-* Noteworthy changes in release ?.? (????-??-??) [?]
+* Noteworthy changes in release 3.3.1 (2017-05-22) [stable]
 
+  Fixed build error with C++11 compilers.
   Updated varexp library to release version 1.2.
 
 * Noteworthy changes in release 3.3 (2010-02-24) [stable]
