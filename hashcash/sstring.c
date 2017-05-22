@@ -48,4 +48,3 @@ void stolower( char* str ) {
         *str = tolower( *str );
     }
 }
-

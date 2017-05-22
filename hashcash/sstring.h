@@ -6,4 +6,3 @@ char* sstrtok( const char* str, const char* delim, char** tok, int tok_max,
                int* tok_len, char** s );
 
 void stolower( char* str );
-

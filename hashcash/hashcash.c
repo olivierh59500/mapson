@@ -428,7 +428,7 @@ int main( int argc, char* argv[] )
     }
 
     if ( mint_flag && ( name_flag || width_flag || left_flag ) ) {
-        usage( "can not use -n, -w or -l with -m" );
+        usage( "cannot use -n, -w or -l with -m" );
     }
 
     if ( mint_flag + check_flag + name_flag + left_flag + width_flag + db_flag+
@@ -1045,7 +1045,7 @@ void usage( const char* msg )
     fprintf( stderr, "\t-o\t\tprevious resource overrides this resource\n" );
     fprintf( stderr, "\t-e period\ttime until stamp expires\n" );
     fprintf( stderr, "\t-g\t\tgrace period for clock skew\n" );
-    fprintf( stderr, "\t-t time\t\tmodify current time stamp created at\n" );
+    fprintf( stderr, "\t-t time\t\tmodify current timestamp created at\n" );
     fprintf( stderr, "\t-a time\t\tmodify time by random amount in range given\n" );
     fprintf( stderr, "\t-u\t\tgive time in UTC instead of local time\n" );
     fprintf( stderr, "\t-q\t\tquiet -- suppress all informational output\n" );
