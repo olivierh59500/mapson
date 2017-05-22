@@ -546,7 +546,7 @@ simple way to avoid that happening: Import their addresses into
 
     <para>Unfortunately, most mail readers archive old mails in one
 single file: Each new mail is just appended at the end, just like the
-mailbox format itself. Currently, &mapson; can not deal with those
+mailbox format itself. Currently, &mapson; cannot deal with those
 files. The current version can import addresses only from an archive
 where a each mail is stored in a separate file, like the archives
 maintained by the <application>Gnus</application> software, that is

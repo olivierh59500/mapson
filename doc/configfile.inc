@@ -84,7 +84,7 @@ created if it does not exist. The default location is
     <varlistentry>
       <term><literal>HashCashExpiry</literal> <parameter>seconds</parameter></term>
       <listitem>
-        <para>HashCash cookies contain a time stamp, which tells, when they were
+        <para>HashCash cookies contain a timestamp, which tells, when they were
 generated. Per defaultt, &mapson; will ignore all HashCashes, which are older
 than a week (604800 seconds). You can change this setting here.</para>
       </listitem>
