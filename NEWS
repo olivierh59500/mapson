@@ -1,6 +1,9 @@
 #+TITLE: History of the mapSoN utility         -*- mode:org;fill-column:79; -*-
 #+STARTUP: showall
 
+* Noteworthy changes in release ?.? (????-??-??) [?]
+
+
 * Noteworthy changes in release 3.3.1 (2017-05-22) [stable]
 
   Fixed build error with C++11 compilers.
