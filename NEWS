@@ -16,7 +16,7 @@
 
   Added WhiteListDB option. This points to a file containing one regular
   expression per line. Every incoming sender address that matches any of
-  those regexes is is accepted and added to the AddressDB as well.
+  those regexes is accepted and added to the AddressDB as well.
 
   The cumbersome ReqConfirmTemplate config option has been renamed to
   ChallengeTemplate. Along, the default file name has been renamed from
