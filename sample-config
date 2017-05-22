@@ -55,7 +55,7 @@ WhoamiDB        ${HOME}/.mapson/whoami-db
 HashCashDB      ${HOME}/.mapson/hashcash-db
 
 # HashCashExpiry <seconds>
-#       HashCash cookies contain a time stamp, which tells, when they
+#       HashCash cookies contain a timestamp, which tells, when they
 #       were generated. Per defaultt, mapSoN will ignore all
 #       HashCashes, which are older than a week. You can change this
 #       setting here.
