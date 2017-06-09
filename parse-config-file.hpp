@@ -18,6 +18,8 @@
 #ifndef PARSE_CONFIG_FILE_HPP_INCLUDED
 #define PARSE_CONFIG_FILE_HPP_INCLUDED
 
+#include "config.h"
+
 #include <string>
 
 class AbstractConfig

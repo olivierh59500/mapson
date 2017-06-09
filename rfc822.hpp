@@ -18,6 +18,8 @@
 #ifndef RFC822_HPP_INCLUDED
 #define RFC822_HPP_INCLUDED
 
+#include "config.h"
+
 #include <iostream>
 #include <stdexcept>
 #include <string>

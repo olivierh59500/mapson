@@ -18,6 +18,8 @@
 #ifndef SYSTEM_ERROR_HPP_INCLUDED
 #define SYSTEM_ERROR_HPP_INCLUDED
 
+#include "config.h"
+
 #include <stdexcept>
 #include <cerrno>
 #include <string>

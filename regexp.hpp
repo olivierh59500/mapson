@@ -18,6 +18,8 @@
 #ifndef REGEXPP_HPP_INCLUDED
 #define REGEXPP_HPP_INCLUDED
 
+#include "config.h"
+
 #include <stdexcept>
 #include <vector>
 #include <string>
