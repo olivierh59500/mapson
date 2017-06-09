@@ -119,6 +119,17 @@ AC_ARG_WITH(debug, [  --with-debug            Support debugging? (default: yes)]
     AC_MSG_RESULT(yes)
     ])
 
+dnl Find docbook utilities
+
+AC_PATH_PROG(xmlto, xmlto, none)
+if test "$xmlto" = "none"; then
+    AC_MSG_ERROR(cannot locate xmlto utility)
+fi
+AC_PATH_PROGS(docbook2man, docbook2man docbook2x-man, none)
+if test "$docbook2man" = "none"; then
+    AC_MSG_ERROR(cannot locate docbook2man utility)
+fi
+
 dnl Grande Finale
 
 AC_CONFIG_HEADERS([config.h])
