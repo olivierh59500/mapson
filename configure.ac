@@ -5,7 +5,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.11 -Wall gnu])
 AC_CONFIG_SRCDIR([mapson.cpp])
 AC_COPYRIGHT([dnl
-Copyright 2010 Peter Simons
+Copyright (c) 2010-2017 Peter Simons
 
 This program is free software: you can redistribute it and/or
 modify it under the terms of the GNU General Public License as
