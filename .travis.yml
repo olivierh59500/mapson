@@ -1,0 +1,21 @@
+# .travis.yml
+
+language: c
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - docbook2x
+      - sendmail
+      - xmlto
+
+install:
+  - git clone --depth=1 git://git.savannah.gnu.org/gnulib.git
+
+script:
+  - ./bootstrap.sh
+  - ./configure
+  - make -j$(nproc)
+  - make check
+  - make distcheck
