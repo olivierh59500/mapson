@@ -15,11 +15,11 @@ else
   gnulibtool=gnulib-tool
 fi
 
-gnulib_modules=( git-version-gen gitlog-to-changelog gnupload
+gnulib_modules=" git-version-gen gitlog-to-changelog gnupload
                  maintainer-makefile announce-gen crypto/md5
-                 getopt-gnu setenv unsetenv )
+                 getopt-gnu setenv unsetenv "
 
-$gnulibtool --m4-base build-aux --source-base libgnu --import "${gnulib_modules[@]}"
+$gnulibtool --m4-base build-aux --source-base libgnu --import $gnulib_modules
 
 sed -i -e 's/^sc_program_name:/disabled_sc_program_name:/' \
        -e 's/^sc_prohibit_atoi_atof/disabled_sc_prohibit_atoi_atof/' \
